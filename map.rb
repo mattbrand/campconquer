@@ -7,15 +7,14 @@ class Map
   attr_reader :pieces
 
   def add_piece(piece)
-    hash = {position: Point.new(0,0), destination: Point.new(0,0)}.merge(piece)
-    pieces.push(hash)
+    pieces.push(piece)
   end
 
   def move_pieces()
     pieces.each do |piece|
 
-      position = piece[:position]
-      destination = piece[:destination]
+      position = piece.position
+      destination = piece.destination
       velocity = 1.to_f
 
       if position == destination
@@ -28,19 +27,19 @@ class Map
       delta_y = offset.y * velocity / total_distance
 
       new_position = Point.new(position.x + delta_x, position.y + delta_y)
-      piece[:position] = new_position
+      piece.move_to(new_position)
     end
   end
 
   def piece_named(name)
     pieces.detect do |piece|
-      piece[:name] == name
+      piece.name == name
     end
   end
 
   def position_of(name)
     piece = piece_named(name)
-    piece[:position]
+    piece.position
   end
 end
 

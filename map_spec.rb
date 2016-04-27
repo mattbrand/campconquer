@@ -18,11 +18,12 @@ describe Map do
   describe 'when it has one piece' do
     before do
       @map = Map.new
-      @map.add_piece({name: "abby"})
+      @abby = Piece.new(name: "abby")
+      @map.add_piece(@abby)
     end
 
     it 'should have that piece' do
-      expect(@map.pieces).to include({name: "abby", position: Point.new(0,0), destination: Point.new(0, 0)})
+      expect(@map.pieces).to include(@abby)
     end
 
     it 'should know that piece\'s position' do
@@ -38,8 +39,8 @@ describe Map do
   describe 'when it has two pieces' do
     before do
       @map = Map.new
-      @map.add_piece({name: "abby", destination: Point.new(10,10)})
-      @map.add_piece({name: "daisy", destination: Point.new(10,0)})
+      @map.add_piece(Piece.new(name: "abby", destination: Point.new(10,10)))
+      @map.add_piece(Piece.new(name: "daisy", destination: Point.new(10,0)))
     end
 
     it 'should know both piece\'s positions' do
