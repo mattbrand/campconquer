@@ -1,10 +1,16 @@
-
 class Map
-  def initialize
-    @pieces = []
-  end
+  WIDTH = 50
+  HEIGHT = 50
 
   attr_reader :pieces
+  attr_reader :flag_red
+  attr_reader :flag_blue
+
+  def initialize
+    @pieces = []
+    @flag_red = Flag.new(team_color: "red", position: Point.new(0, 0))
+    @flag_blue = Flag.new(team_color: "blue", position: Point.new(WIDTH, HEIGHT))
+  end
 
   def add_piece(piece)
     pieces.push(piece)
@@ -41,5 +47,19 @@ class Map
     piece = piece_named(name)
     piece.position
   end
-end
 
+  def set_red_flag_position(position)
+    @flag_red.position = position
+  end
+
+  def is_piece_at_red_flag(piece)
+    x_diff = (piece.position.x - @flag_red.position.x).abs
+    y_diff = (piece.position.y - @flag_red.position.y).abs
+    if(x_diff < 0.5 && y_diff < 0.5)
+      @flag_red.status = "taken"
+      true
+    else
+      false
+    end
+  end
+end
