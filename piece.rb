@@ -2,7 +2,6 @@ class Piece
   attr_reader :name
   attr_reader :team_color
   attr_writer :team_color
-  attr_reader :
   attr_reader :position
   attr_writer :position
   attr_reader :destination
