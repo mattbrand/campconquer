@@ -89,6 +89,11 @@ RSpec.describe GamesController, type: :controller do
         post :create, {:game => valid_attributes}, valid_session
         expect(response).to redirect_to(games_url)
       end
+
+      it "is locked on creation" do
+        post :create, {:game => valid_attributes}, valid_session
+        expect(assigns(:game).locked).to be_truthy
+      end
     end
 
     context "with invalid params" do
@@ -136,6 +141,15 @@ RSpec.describe GamesController, type: :controller do
         put :update, {:id => game.to_param, :game => valid_attributes}, valid_session
         expect(response).to redirect_to(@game)
       end
+
+      it "unlocks the game" do
+        game = Game.create! valid_attributes
+        put :update, {:id => game.to_param, :game => valid_attributes}, valid_session
+        expect(assigns(:game).locked).to be_falsey
+        expect(game.reload.locked).to be_falsey
+      end
+
+
     end
 
     context "with invalid params" do
@@ -150,6 +164,14 @@ RSpec.describe GamesController, type: :controller do
         put :update, {:id => game.to_param, :game => invalid_attributes}, valid_session
         expect(response).to render_template("edit")
       end
+
+      it "leaves the game locked" do
+        game = Game.create! valid_attributes
+        put :update, {:id => game.to_param, :game => invalid_attributes}, valid_session
+        expect(assigns(:game).locked).to be_truthy
+        expect(game.reload.locked).to be_truthy
+      end
+
     end
   end
 
