@@ -90,6 +90,19 @@ RSpec.describe GamesController, type: :controller do
         expect(response).to redirect_to(games_url)
       end
 
+      it "does not redirect if the request type is JSON" do
+
+        request.accept = "application/json"
+
+        post :create, {:game => valid_attributes}, valid_session
+
+        expect(response).not_to redirect_to(games_url)
+        expect(response).to be_success
+
+        expect(response.content_type).to eq("application/json")
+        expect(response).to have_http_status(:created)
+      end
+
       it "is locked on creation" do
         post :create, {:game => valid_attributes}, valid_session
         expect(assigns(:game).locked).to be_truthy
@@ -119,6 +132,8 @@ RSpec.describe GamesController, type: :controller do
 
   describe "PUT #update" do
     context "with valid params" do
+      render_views #???
+
       let(:updated_attributes) {
         {winner: 'bob'}
       }
@@ -142,6 +157,21 @@ RSpec.describe GamesController, type: :controller do
         expect(response).to redirect_to(@game)
       end
 
+      it "returns JSON if asked" do
+        request.accept = "application/json"
+        game = Game.create! valid_attributes
+        put :update, {:id => game.to_param, :game => valid_attributes}, valid_session
+        expect(response).to be_success
+        expect(response).to render_template("show")
+
+        # todo: move view testing to 'request spec' maybe
+        print "body=#{response.body}"
+        json = JSON.parse(response.body)
+        expect(json['status']).to eq('ok')
+        expect(json['game']).not_to be_nil
+        expect(json['game']['locked']).to be_falsey
+      end
+
       it "unlocks the game" do
         game = Game.create! valid_attributes
         put :update, {:id => game.to_param, :game => valid_attributes}, valid_session
@@ -153,6 +183,9 @@ RSpec.describe GamesController, type: :controller do
     end
 
     context "with invalid params" do
+
+      # todo: test bad params with JSON renders JSON not HTML
+
       it "assigns the game as @game" do
         game = Game.create! valid_attributes
         put :update, {:id => game.to_param, :game => invalid_attributes}, valid_session
