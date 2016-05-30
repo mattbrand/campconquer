@@ -10,6 +10,36 @@ Konker? I just met 'er!
 - [ ] API Auth
 - [ ] User Auth
 
+## API Docs
+
+### Atom
+
+1. Install <https://atom.io/>
+2. Install <http://apiworkbench.com/> with `apm install api-workbench`
+   * **or** open `Settings/Preferences -> Install` and search for `api-workbench`
+3. Read <http://apiworkbench.com/docs/>
+
+<!--
+### command-line raml2html
+
+raml2html doesn't fully support RAML 1.0 yet...
+
+First, install [raml2html](https://github.com/raml2html/raml2html)
+```
+cd ..
+git clone git@github.com:raml2html/raml2html.git
+cd raml2html
+git checkout raml1.0  # may no longer be needed?
+chmod a+x ./bin/raml2html
+npm install
+```
+
+Then go back to this dir and run:
+
+```
+../raml2html/bin/raml2html campconquer.raml > campconquer-api.html && open campconquer-api.html
+```
+-->
 
 # Unity links
 

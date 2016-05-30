@@ -1,0 +1,164 @@
+#%RAML 1.0
+# see https://github.com/raml-org/raml-spec/blob/master/versions/raml-10/raml-10.md/
+title: Camp Conquer Private API
+description: Hi, Matt!
+version: v1
+baseUri: https://campconquer.herokuapp.com
+mediaType:  application/json
+
+types:
+  Player:
+    type: object
+    properties:
+      name: string
+      team:
+        type: string
+        description: "enum: [blue, red] (todo: replace with team_id)"
+
+  Point:
+    properties:
+      x: number
+      y: number
+
+  Game:
+    type: object
+    description: the setup for a single game
+    properties:
+      id: number
+      pieces: Piece[]
+      locked:
+        type: boolean
+        description: if true, game setup cannot be changed
+      outcome:
+        type: Outcome
+        description: |
+          once game is finished, the results of that game
+
+  Piece:
+    type: object
+    description: a player's piece and its starting setup
+    properties:
+      team:
+        type: string
+      # player_name:
+      #   type: string
+      #   description: for display purposes during gameplay (???)
+      job:
+        type: string
+        description: "enum: [striker, bruiser, speedster]"
+      role:
+        type: string
+        description: "enum: [offense, defense]"
+      path:
+        type: Point[]
+        description: |
+          for defense, an array with a single element;
+          for offense, the path to follow
+      speed:
+        type: number
+      hit_points:
+        type: integer
+      range:
+        type: number
+        description: distance of target within which a shot will be launched
+
+  Outcome:
+    type: object
+    description: the results of a finished game
+    properties:
+      created: datetime
+      winner:
+        type: string
+        description: team name of winner, or null if a draw
+      team_stats:
+        type: TeamStats[]
+        description: if played, all the stats for that game
+      pieces:
+        type: Piece[]
+
+  TeamStats:
+    type: object
+    properties:
+      team:
+        type: string
+      deaths:
+        type: number
+        description: count of players on *this* team who died
+
+/games:
+  description: all the games
+
+  get:
+    description: get all the games
+    responses:
+      200:
+        body:
+          type: Game[]
+          description: |
+            a single game, and its stats if it's been played
+
+  post:
+    description: create a game -- OBSOLETE; the server should create a new game as soon as the previous one is played [locked?]
+
+  /current:
+    description: the currently active game; the one that is about to be played
+    get:
+      description: |
+        get a single game
+        * client should note the id
+      responses:
+        200:
+          body:
+            type: Game
+
+  /{game_id}:
+    description: a single game
+    get:
+      description: get all the values for a single game
+      responses:
+        200:
+          body:
+            type: Game
+
+    /lock:
+      post:
+        description: lock the given game
+      delete:
+        description: unlock the current game (???)
+
+    /outcome:
+      post:
+        description: |
+          referee posts the results of the given game
+          * the game is now considered played and a new current game is created
+        queryParameters:
+          outcome: Outcome
+
+/players/{player_name}:
+  description: a single player
+  get:
+    description: get a single player
+    responses:
+      200:
+        body:
+          type: Player
+  post:
+    description: |
+      update a single player's setup for the next game
+      (should this be of type Piece instead?)
+
+    queryParameters:
+      team:
+        type: string
+        required: false
+      job:
+        type: string
+        required: false
+        description: "enum: [striker, bruiser, speedster]"
+      role:
+        type: string
+        required: false
+        description: "enum: [offense, defense]"
+      path:
+        type: Point[]
+        required: false

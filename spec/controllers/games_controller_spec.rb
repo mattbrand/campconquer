@@ -61,6 +61,8 @@ RSpec.describe GamesController, type: :controller do
       get :new, {}, valid_session
       expect(assigns(:game)).to be_a_new(Game)
     end
+
+    pending "only works for HTML"
   end
 
   describe "GET #edit" do
@@ -69,6 +71,8 @@ RSpec.describe GamesController, type: :controller do
       get :edit, {:id => game.to_param}, valid_session
       expect(assigns(:game)).to eq(game)
     end
+
+    pending "only works for HTML"
   end
 
   describe "POST #create" do
