@@ -16,8 +16,13 @@ Konker? I just met 'er!
 
 1. Install <https://atom.io/>
 2. Install <http://apiworkbench.com/> with `apm install api-workbench`
-   * **or** open `Settings/Preferences -> Install` and search for `api-workbench`
-3. Read <http://apiworkbench.com/docs/>
+    * **or** open `Settings/Preferences -> Install` and search for `api-workbench`
+3. Activate [autosave](https://github.com/atom/autosave):
+
+        autosave:
+          enabled: true
+
+4. Read <http://apiworkbench.com/docs/>
 
 <!--
 ### command-line raml2html
