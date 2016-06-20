@@ -75,6 +75,9 @@ types:
         description: if played, all the stats for that game
       pieces:
         type: Piece[]
+      match_length:
+        type: integer
+        description: duration of game in seconds
 
   TeamStats:
     type: object
@@ -84,6 +87,9 @@ types:
       deaths:
         type: number
         description: count of players on *this* team who died
+      takedowns:
+        type: number
+        description: count of players on *other* teams who died
       throws:
         type: number
         description: number of balloons thrown
