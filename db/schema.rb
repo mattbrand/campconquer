@@ -11,13 +11,52 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160502144526) do
+ActiveRecord::Schema.define(version: 20160620133909) do
 
   create_table "games", force: :cascade do |t|
     t.string   "winner"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean  "locked"
+  end
+
+  create_table "outcomes", force: :cascade do |t|
+    t.string   "winner"
+    t.integer  "team_stats_id"
+    t.integer  "match_length"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  create_table "pieces", force: :cascade do |t|
+    t.string   "team"
+    t.string   "job"
+    t.string   "role"
+    t.text     "path"
+    t.float    "speed"
+    t.integer  "hit_points"
+    t.float    "range"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "game_id"
+    t.integer  "player_id"
+  end
+
+  create_table "players", force: :cascade do |t|
+    t.string   "name"
+    t.string   "team"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "team_outcomes", force: :cascade do |t|
+    t.string   "team"
+    t.integer  "deaths"
+    t.integer  "takedowns"
+    t.integer  "throws"
+    t.integer  "captures"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end

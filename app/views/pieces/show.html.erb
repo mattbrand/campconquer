@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Team:</strong>
+  <%= @piece.team %>
+</p>
+
+<p>
+  <strong>Job:</strong>
+  <%= @piece.job %>
+</p>
+
+<p>
+  <strong>Role:</strong>
+  <%= @piece.role %>
+</p>
+
+<p>
+  <strong>Path:</strong>
+  <%= @piece.path %>
+</p>
+
+<p>
+  <strong>Speed:</strong>
+  <%= @piece.speed %>
+</p>
+
+<p>
+  <strong>Hit points:</strong>
+  <%= @piece.hit_points %>
+</p>
+
+<p>
+  <strong>Range:</strong>
+  <%= @piece.range %>
+</p>
+
+<%= link_to 'Edit', edit_piece_path(@piece) %> |
+<%= link_to 'Back', pieces_path %>

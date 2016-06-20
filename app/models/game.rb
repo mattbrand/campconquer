@@ -10,6 +10,9 @@
 #
 
 class Game < ActiveRecord::Base
+  has_many :pieces
+  has_one :outcome
+
   validates_presence_of :winner, unless: :new_record?
 
   before_create do

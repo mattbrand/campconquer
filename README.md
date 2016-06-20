@@ -7,8 +7,14 @@ Konker? I just met 'er!
 - [ ] error JSON
 - [ ] weird pending validation tests (winner is null during create but required during update)
 - [ ] remove HTML altogether? (pure API)
+- [ ] use ActiveAdmin for dev admin access?
 - [ ] API Auth
 - [ ] User Auth
+
+- [ ] Enum for team
+- [ ] new "locked" flow
+
+
 
 ## API Docs
 

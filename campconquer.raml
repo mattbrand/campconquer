@@ -16,6 +16,7 @@ types:
         description: "enum: [blue, red] (todo: replace with team_id)"
 
   Point:
+    description: a tuple representing an x,y coordinate on the game map; values are floats
     properties:
       x: number
       y: number
@@ -25,7 +26,9 @@ types:
     description: the setup for a single game
     properties:
       id: number
-      pieces: Piece[]
+      pieces:
+        type: Piece[]
+        description: state of all pieces at the beginning of the game
       locked:
         type: boolean
         description: if true, game setup cannot be changed
@@ -70,31 +73,30 @@ types:
       winner:
         type: string
         description: team name of winner, or null if a draw
-      team_stats:
-        type: TeamStats[]
+      team_outcomes:
+        type: TeamOutcome[]
         description: if played, all the stats for that game
-      pieces:
-        type: Piece[]
       match_length:
         type: integer
         description: duration of game in seconds
 
-  TeamStats:
+  TeamOutcome:
     type: object
+    description: the results of a finished game for a particular team
     properties:
       team:
         type: string
       deaths:
-        type: number
+        type: integer
         description: count of players on *this* team who died
       takedowns:
-        type: number
+        type: integer
         description: count of players on *other* teams who died
       throws:
-        type: number
+        type: integer
         description: number of balloons thrown
       captures:
-        type: number
+        type: integer
         description: number of times flag was picked up
 
 /games:

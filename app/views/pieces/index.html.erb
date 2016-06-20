@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Pieces</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Team</th>
+      <th>Job</th>
+      <th>Role</th>
+      <th>Path</th>
+      <th>Speed</th>
+      <th>Hit points</th>
+      <th>Range</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @pieces.each do |piece| %>
+      <tr>
+        <td><%= piece.team %></td>
+        <td><%= piece.job %></td>
+        <td><%= piece.role %></td>
+        <td><%= piece.path %></td>
+        <td><%= piece.speed %></td>
+        <td><%= piece.hit_points %></td>
+        <td><%= piece.range %></td>
+        <td><%= link_to 'Show', piece %></td>
+        <td><%= link_to 'Edit', edit_piece_path(piece) %></td>
+        <td><%= link_to 'Destroy', piece, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Piece', new_piece_path %>

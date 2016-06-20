@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Team:</strong>
+  <%= @team_outcome.team %>
+</p>
+
+<p>
+  <strong>Deaths:</strong>
+  <%= @team_outcome.deaths %>
+</p>
+
+<p>
+  <strong>Takedowns:</strong>
+  <%= @team_outcome.takedowns %>
+</p>
+
+<p>
+  <strong>Throws:</strong>
+  <%= @team_outcome.throws %>
+</p>
+
+<p>
+  <strong>Captures:</strong>
+  <%= @team_outcome.captures %>
+</p>
+
+<%= link_to 'Edit', edit_team_outcome_path(@team_outcome) %> |
+<%= link_to 'Back', team_outcomes_path %>

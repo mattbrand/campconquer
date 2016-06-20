@@ -1,0 +1,45 @@
+<%= form_for(@piece) do |f| %>
+  <% if @piece.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@piece.errors.count, "error") %> prohibited this piece from being saved:</h2>
+
+      <ul>
+      <% @piece.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :team %><br>
+    <%= f.text_field :team %>
+  </div>
+  <div class="field">
+    <%= f.label :job %><br>
+    <%= f.text_field :job %>
+  </div>
+  <div class="field">
+    <%= f.label :role %><br>
+    <%= f.text_field :role %>
+  </div>
+  <div class="field">
+    <%= f.label :path %><br>
+    <%= f.text_area :path %>
+  </div>
+  <div class="field">
+    <%= f.label :speed %><br>
+    <%= f.text_field :speed %>
+  </div>
+  <div class="field">
+    <%= f.label :hit_points %><br>
+    <%= f.number_field :hit_points %>
+  </div>
+  <div class="field">
+    <%= f.label :range %><br>
+    <%= f.text_field :range %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
