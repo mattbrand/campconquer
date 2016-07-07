@@ -69,6 +69,6 @@ class TeamOutcomesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def team_outcome_params
-      params.require(:team_outcome).permit(:team, :deaths, :takedowns, :throws, :captures)
+      params.require(:team_outcome).permit(:team, :takedowns, :throws, :pickups)
     end
 end

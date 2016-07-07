@@ -11,10 +11,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160620133909) do
+ActiveRecord::Schema.define(version: 20160707220644) do
 
   create_table "games", force: :cascade do |t|
-    t.string   "winner"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean  "locked"
@@ -51,10 +50,9 @@ ActiveRecord::Schema.define(version: 20160620133909) do
 
   create_table "team_outcomes", force: :cascade do |t|
     t.string   "team"
-    t.integer  "deaths"
     t.integer  "takedowns"
     t.integer  "throws"
-    t.integer  "captures"
+    t.integer  "pickups"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

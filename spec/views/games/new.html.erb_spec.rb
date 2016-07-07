@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "games/new", type: :view do
   before(:each) do
     assign(:game, Game.new(
-      :winner => "blue"
+      # :winner => "blue"
     ))
   end
 

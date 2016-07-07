@@ -4,10 +4,9 @@ RSpec.describe "team_outcomes/edit", type: :view do
   before(:each) do
     @team_outcome = assign(:team_outcome, TeamOutcome.create!(
       :team => "blue",
-      :deaths => 1,
       :takedowns => 1,
       :throws => 1,
-      :captures => 1
+      :pickups => 1
     ))
   end
 
@@ -18,13 +17,11 @@ RSpec.describe "team_outcomes/edit", type: :view do
 
       assert_select "input#team_outcome_team[name=?]", "team_outcome[team]"
 
-      assert_select "input#team_outcome_deaths[name=?]", "team_outcome[deaths]"
-
       assert_select "input#team_outcome_takedowns[name=?]", "team_outcome[takedowns]"
 
       assert_select "input#team_outcome_throws[name=?]", "team_outcome[throws]"
 
-      assert_select "input#team_outcome_captures[name=?]", "team_outcome[captures]"
+      assert_select "input#team_outcome_pickups[name=?]", "team_outcome[pickups]"
     end
   end
 end

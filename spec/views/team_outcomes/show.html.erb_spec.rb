@@ -4,10 +4,9 @@ RSpec.describe "team_outcomes/show", type: :view do
   before(:each) do
     @team_outcome = assign(:team_outcome, TeamOutcome.create!(
       :team => "blue",
-      :deaths => 1,
       :takedowns => 2,
       :throws => 3,
-      :captures => 4
+      :pickups => 4
     ))
   end
 

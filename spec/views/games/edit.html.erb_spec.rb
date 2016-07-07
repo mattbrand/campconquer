@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "games/edit", type: :view do
   before(:each) do
     @game = assign(:game, Game.create!(
-      :winner => "blue"
+      # :winner => "blue"
     ))
   end
 
@@ -12,7 +12,7 @@ RSpec.describe "games/edit", type: :view do
 
     assert_select "form[action=?][method=?]", game_path(@game), "post" do
 
-      assert_select "input#game_winner[name=?]", "game[winner]"
+      # assert_select "input#game_winner[name=?]", "game[winner]"
     end
   end
 end

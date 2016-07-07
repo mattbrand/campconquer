@@ -4,10 +4,9 @@
 #
 #  id         :integer          not null, primary key
 #  team       :string
-#  deaths     :integer
 #  takedowns  :integer
 #  throws     :integer
-#  captures   :integer
+#  pickups    :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
