@@ -75,7 +75,7 @@ types:
         description: team name of winner, or null if a draw
       team_outcomes:
         type: TeamOutcome[]
-        description: if played, all the stats for that game
+        description: if played, all the stats for that game; team outcomes should be in alphabetical order by name when returned by server
       match_length:
         type: integer
         description: duration of game in seconds
@@ -86,16 +86,13 @@ types:
     properties:
       team:
         type: string
-      deaths:
-        type: integer
-        description: count of players on *this* team who died
       takedowns:
         type: integer
-        description: count of players on *other* teams who died
+        description: count of players on *other* teams who died at this team's hand
       throws:
         type: integer
         description: number of balloons thrown
-      captures:
+      pickups:
         type: integer
         description: number of times flag was picked up
 
