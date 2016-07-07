@@ -17,7 +17,7 @@
   <tbody>
     <% @team_outcomes.each do |team_outcome| %>
       <tr>
-        <td><%= team_outcome.team %></td>
+        <td><%= Team::NAMES.label_for(team_outcome.team) %></td>
         <td><%= team_outcome.deaths %></td>
         <td><%= team_outcome.takedowns %></td>
         <td><%= team_outcome.throws %></td>

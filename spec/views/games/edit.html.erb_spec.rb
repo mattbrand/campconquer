@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "games/edit", type: :view do
   before(:each) do
     @game = assign(:game, Game.create!(
-      :winner => "MyString"
+      :winner => "blue"
     ))
   end
 

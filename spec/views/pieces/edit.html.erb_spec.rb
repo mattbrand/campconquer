@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "pieces/edit", type: :view do
   before(:each) do
     @piece = assign(:piece, Piece.create!(
-      :team => "MyString",
+      :team => "blue",
       :job => "MyString",
       :role => "MyString",
       :path => "MyText",

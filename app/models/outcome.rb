@@ -12,4 +12,10 @@
 
 class Outcome < ActiveRecord::Base
   has_many :team_outcomes
+
+  validates :winner, inclusion: {
+    in: Team::NAMES.values,
+    message: Team::NAMES.validation_message,
+  }
+
 end

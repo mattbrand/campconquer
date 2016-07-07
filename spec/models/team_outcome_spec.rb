@@ -15,5 +15,13 @@
 require 'rails_helper'
 
 RSpec.describe TeamOutcome, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it "requires team name" do
+    team_outcome = TeamOutcome.new(team: nil)
+    expect(team_outcome).not_to be_valid
+  end
+
+  it "validates team name" do
+    team_outcome = TeamOutcome.new(team: 'blue')
+    expect(team_outcome).to be_valid
+  end
 end

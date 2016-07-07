@@ -14,5 +14,5 @@
 
 class TeamOutcome < ActiveRecord::Base
   belongs_to :outcome
-  # todo: team enum validation
+  validates :team, inclusion: { in: Team::NAMES.values, message: Team::NAMES.validation_message}
 end

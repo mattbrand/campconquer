@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "outcomes/edit", type: :view do
   before(:each) do
     @outcome = assign(:outcome, Outcome.create!(
-      :winner => "MyString",
+      :winner => "blue",
       :team_stats_id => 1,
       :match_length => 1
     ))

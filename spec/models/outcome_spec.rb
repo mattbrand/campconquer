@@ -13,5 +13,14 @@
 require 'rails_helper'
 
 RSpec.describe Outcome, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+
+  it "requires a winner" do
+    team_outcome = Outcome.new(winner: nil)
+    expect(team_outcome).not_to be_valid
+  end
+
+  it "validates winner's team name" do
+    outcome = Outcome.new(winner: 'blue')
+    expect(outcome).to be_valid
+  end
 end

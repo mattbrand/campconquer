@@ -4,10 +4,12 @@ RSpec.describe "players/index", type: :view do
   before(:each) do
     assign(:players, [
       Player.create!(
-        :name => "Name"
+        :name => "Name",
+        :team => "blue",
       ),
       Player.create!(
-        :name => "Name"
+        :name => "Name",
+        :team => "blue",
       )
     ])
   end

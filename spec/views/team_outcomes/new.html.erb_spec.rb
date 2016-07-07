@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "team_outcomes/new", type: :view do
   before(:each) do
     assign(:team_outcome, TeamOutcome.new(
-      :team => "MyString",
+      :team => "blue",
       :deaths => 1,
       :takedowns => 1,
       :throws => 1,

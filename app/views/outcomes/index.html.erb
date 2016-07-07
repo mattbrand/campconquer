@@ -15,7 +15,7 @@
   <tbody>
     <% @outcomes.each do |outcome| %>
       <tr>
-        <td><%= outcome.winner %></td>
+        <td><%= Team::NAMES.label_for(outcome.winner) %></td>
         <td><%= outcome.team_stats_id %></td>
         <td><%= outcome.match_length %></td>
         <td><%= link_to 'Show', outcome %></td>

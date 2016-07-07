@@ -10,7 +10,5 @@
 #
 
 class Player < ActiveRecord::Base
-  # todo: use https://gist.github.com/alexch/a7be54e1b085718473ff for team enum (Rails enums are stupid)
-  # todo: AR validation of enum values
-  # todo: the above in every model with a `team` string
+  validates :team, inclusion: { in: Team::NAMES.values, message: Team::NAMES.validation_message}
 end
