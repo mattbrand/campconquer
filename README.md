@@ -4,15 +4,17 @@ Konker? I just met 'er!
 
 # TODO
 
+- [ ] remove HTML altogether? (pure API)
+- [ ] new "locked" flow
+
 - [ ] error JSON
 - [ ] weird pending validation tests (winner is null during create but required during update)
-- [ ] remove HTML altogether? (pure API)
-- [ ] use ActiveAdmin for dev admin access?
+
 - [ ] API Auth
 - [ ] User Auth
+- [ ] Admin Auth (Devise? we used `rails generate active_admin:install --skip-users`  )
 
-- [ ] Enum for team
-- [ ] new "locked" flow
+- [X] Enum for team
 
 
 
@@ -51,6 +53,13 @@ Then go back to this dir and run:
 ../raml2html/bin/raml2html campconquer.raml > campconquer-api.html && open campconquer-api.html
 ```
 -->
+
+## Admin
+
+We are using ActiveAdmin for non-API
+
+http://activeadmin.info/docs/documentation.html
+
 
 # Unity links
 
