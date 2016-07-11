@@ -52,11 +52,6 @@ describe Game, type: :model do
         expect(game).not_to eq(@previous_game)
       end
 
-      it "copies the pieces from the previous game" do
-        game = Game.current.reload
-        expect(game.pieces.size).to eq(1)
-        expect(game.pieces[0].team).to eq('blue')
-      end
     end
 
     context "when there is a current game" do
@@ -87,6 +82,19 @@ describe Game, type: :model do
       game_c = Game.create! current: true
 
       expect(Game.previous).to eq(game_b)
+    end
+  end
+
+  describe 'winner' do
+    it "proxies to outcome" do
+      game = Game.current
+      game.outcome = Outcome.new(winner: 'red')
+      expect(game.winner).to eq('red')
+    end
+
+    it "works if there is no outcome yet" do
+      game = Game.current
+      expect(game.winner).to be_nil
     end
   end
 

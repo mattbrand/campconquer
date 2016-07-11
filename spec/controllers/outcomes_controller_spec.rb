@@ -62,7 +62,9 @@ describe OutcomesController, type: :controller do
       it "sets the newly created outcome on the game" do
         expect(@game.outcome).to be_nil
         post :create, {game_id: @game.id, outcome: valid_attributes}, valid_session
-        expect(@game.reload.outcome).not_to be_nil
+        @game.reload
+        expect(@game.outcome).not_to be_nil
+        expect(@game.winner).to eq("blue")
       end
 
       it "renders an 'ok' message" do

@@ -10,5 +10,18 @@
 #
 
 class Player < ActiveRecord::Base
+  has_one :piece
+
   validates :team, inclusion: { in: Team::NAMES.values, message: Team::NAMES.validation_message}
+
+  def set_piece(params = {})
+    params = params.pick(:job, :role, :path)
+    if self.piece
+      self.piece.update!(params) # todo: whitelist
+    else
+      self.piece = Piece.new({team: self.team} + params)
+    end
+    self.piece
+  end
+
 end

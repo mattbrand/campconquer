@@ -112,7 +112,7 @@ types:
     get:
       description: |
         get a single game
-        * client should note the id
+        client should note the id and use it in further calls
       responses:
         200:
           body:
@@ -121,7 +121,7 @@ types:
   /{game_id}:
     description: a single game
     get:
-      description: get all the values for a single game
+      description: get all the values for a single game, including nested Pieces, Outcome, etc.
       responses:
         200:
           body:
@@ -129,9 +129,9 @@ types:
 
     /lock:
       post:
-        description: lock the given game
+        description: lock the given game; copies all players' pieces into this game
       delete:
-        description: unlock the current game (???)
+        description: unlock the current game, cancelling the current game and allowing players to update their setup again
 
     /outcome:
       post:
@@ -141,31 +141,24 @@ types:
         queryParameters:
           outcome: Outcome
 
-/players/{player_name}:
-  description: a single player
+/players:
+  post:
+    description: create a player
+      queryParameters:
+        name: string
+
+  /{player_name}:
   get:
     description: get a single player
     responses:
       200:
         body:
           type: Player
-  post:
-    description: |
-      update a single player's setup for the next game
-      (should this be of type Piece instead?)
 
-    queryParameters:
-      team:
-        type: string
-        required: false
-      job:
-        type: string
-        required: false
-        description: "enum: [striker, bruiser, speedster]"
-      role:
-        type: string
-        required: false
-        description: "enum: [offense, defense]"
-      path:
-        type: Point[]
-        required: false
+    /piece:
+      post:
+        description: |
+          change the player's piece for the next game(s) -
+          only some attributes are allowed (role, job, path, ...?)
+        type: Piece
+

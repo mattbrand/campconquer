@@ -26,30 +26,43 @@ class Game < ActiveRecord::Base
     if current_game.nil?
       current_game = Game.create! locked: false, current: true
     end
-
-    previous_game = previous
-    if previous_game
-      copy_pieces(previous_game, current_game)
-    end
-
     current_game
-  end
-
-  def self.copy_pieces(from_game, to_game)
-    from_game.pieces.each do |piece|
-      to_game.pieces << piece.dup
-    end
-    to_game.save!   # unnecessary?
   end
 
   def self.previous
     where(current: false).order(updated_at: :desc).first
   end
 
-  # include ActiveModel::Serialization
-  #
-  # def as_json(options={})
-  #   serializable_hash(options)  # default
-  # end
+  include ActiveModel::Serialization
+
+  def as_json(options=nil)
+    if options.nil?
+      options = {
+        root: true,
+        include: [
+          {:pieces => {
+            :only => [:team, :job, :role, :path, :speed, :hit_points, :range],
+            :methods => [:player_name] # Rails is SO unencapsulated :-(
+          }},
+          :outcome
+        ]
+      }
+    end
+    super(options)
+  end
+
+  def winner
+    self.outcome.try(:winner)
+  end
+
+  def lock_game!
+    update!(locked: true)
+
+    Player.all.includes(:piece).each do |player|
+      self.pieces << player.piece.dup
+    end
+    save! # unnecessary?
+
+  end
 
 end

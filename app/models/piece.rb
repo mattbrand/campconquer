@@ -18,6 +18,7 @@
 
 class Piece < ActiveRecord::Base
   belongs_to :game
+  belongs_to :player
 
   # todo: job enum
   # todo: role enum
@@ -25,5 +26,7 @@ class Piece < ActiveRecord::Base
   # todo: validate that `path` is an array of Points
   serialize :path
 
-
+  def player_name
+    self.player.try(:name)
+  end
 end

@@ -4,6 +4,8 @@ class Hash
     with_indifferent_access.select { |key, value| keys.include?(key.to_sym) }
   end
 
+  alias pick grab
+
   alias + merge
 
   alias << merge!

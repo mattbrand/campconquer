@@ -76,84 +76,6 @@ describe GamesController, type: :controller do
     end
   end
 
-  # describe "PUT #update" do
-  #   context "with valid params" do
-  #     render_views #???
-  #
-  #     let(:updated_attributes) {
-  #       # {winner: 'bob'}
-  #     }
-  #
-  #     it "updates the requested game" do
-  #       game = Game.create! valid_attributes
-  #       put :update, {:id => game.to_param, :game => updated_attributes}, valid_session
-  #       game.reload
-  #       # expect(game.winner).to eq('blue')
-  #     end
-  #
-  #     it "assigns the requested game as @game" do
-  #       game = Game.create! valid_attributes
-  #       put :update, {:id => game.to_param, :game => valid_attributes}, valid_session
-  #       expect(assigns(:game)).to eq(game)
-  #     end
-  #
-  #     it "redirects to the game page" do
-  #       game = Game.create! valid_attributes
-  #       put :update, {:id => game.to_param, :game => valid_attributes}, valid_session
-  #       expect(response).to redirect_to(@game)
-  #     end
-  #
-  #     it "returns JSON if asked" do
-  #       request.accept = "application/json"
-  #       game = Game.create! valid_attributes
-  #       put :update, {:id => game.to_param, :game => valid_attributes}, valid_session
-  #       expect(response).to be_success
-  #       expect(response).to render_template("show")
-  #
-  #       # todo: move view testing to 'request spec' maybe
-  #       print "body=#{response.body}"
-  #       json = JSON.parse(response.body)
-  #       expect(json['status']).to eq('ok')
-  #       expect(json['game']).not_to be_nil
-  #       expect(json['game']['locked']).to be_falsey
-  #     end
-  #
-  #     it "unlocks the game" do
-  #       game = Game.create! valid_attributes
-  #       put :update, {:id => game.to_param, :game => valid_attributes}, valid_session
-  #       expect(assigns(:game).locked).to be_falsey
-  #       expect(game.reload.locked).to be_falsey
-  #     end
-  #
-  #
-  #   end
-  #
-  #   context "with invalid params" do
-  #
-  #     # todo: test bad params with JSON renders JSON not HTML
-  #
-  #     it "assigns the game as @game" do
-  #       game = Game.create! valid_attributes
-  #       put :update, {:id => game.to_param, :game => invalid_attributes}, valid_session
-  #       expect(assigns(:game)).to eq(game)
-  #     end
-  #
-  #     it "re-renders the 'edit' template" do
-  #       game = Game.create! valid_attributes
-  #       put :update, {:id => game.to_param, :game => invalid_attributes}, valid_session
-  #       expect(response).to render_template("edit")
-  #     end
-  #
-  #     it "leaves the game locked" do
-  #       game = Game.create! valid_attributes
-  #       put :update, {:id => game.to_param, :game => invalid_attributes}, valid_session
-  #       expect(assigns(:game).locked).to be_truthy
-  #       expect(game.reload.locked).to be_truthy
-  #     end
-  #
-  #   end
-  # end
-
   describe "DELETE #destroy" do
     it "destroys the requested game" do
       game = Game.create! valid_attributes
@@ -175,20 +97,78 @@ describe GamesController, type: :controller do
     end
 
     describe 'POST /games/1/lock' do
+      before do
+        @betsy = Player.create!(name: 'Betsy', team: 'blue')
+        @betsys_piece = @betsy.set_piece(job: 'striker', role: 'offense')
+
+        @randy = Player.create!(name: 'Randy', team: 'red')
+        @randys_piece = @randy.set_piece(job: 'bruiser', role: 'defense')
+
+      end
+
       it 'locks the game' do
         post :lock, {:id => @game.to_param}, valid_session
         expect(@game.reload).to be_locked
       end
 
-      it 'copies the pieces from the players into the game?'
+      it 'copies the pieces from the players into the game' do
+
+        post :lock, {:id => @game.to_param}, valid_session
+
+        @game.reload
+
+        # make sure it's not the original
+        expect(@game.pieces).not_to include(@betsys_piece)
+        expect(@game.pieces).not_to include(@randys_piece)
+
+        # make sure it has the original's values
+        pieces_hash = @game.pieces.as_json.map do |hash|
+          hash.pick(:team, :job, :role, :path)
+        end
+        betsys_hash = @betsys_piece.as_json.pick(:team, :job, :role, :path)
+        randys_hash = @randys_piece.as_json.pick(:team, :job, :role, :path)
+        expect(pieces_hash).to include(betsys_hash)
+        expect(pieces_hash).to include(randys_hash)
+      end
+
+      it 'returns the entire game including pieces' do
+        post :lock, {:id => @game.to_param}, valid_session
+
+        json = JSON.parse(response.body)
+        expect(json).to include({'status' => 'ok'})
+        expect(json).to include('game')
+        expect(json['game']).to include('pieces')
+        expect(json['game']['pieces'].size).to eq(2)
+
+        ap json
+      end
     end
 
     describe 'DELETE /games/1/lock' do
+      before do
+        @betsy = Player.create!(name: 'Betsy', team: 'blue')
+        @betsys_piece = @betsy.set_piece(job: 'striker', role: 'offense')
+
+        @game.lock_game!
+      end
+
       it 'unlocks the game' do
-        @game.update!(locked: true)
         delete :unlock, {:id => @game.to_param}, valid_session
         expect(@game.reload).not_to be_locked
       end
+
+      it 'says ok' do
+        delete :unlock, {:id => @game.to_param}, valid_session
+        json = JSON.parse(response.body)
+        expect(json).to include({'status' => 'ok'})
+        expect(json).to include({'message' => "game #{@game.id} unlocked"})
+      end
+
+      it 'removes the pieces' do
+        delete :unlock, {:id => @game.to_param}, valid_session
+        expect(@game.reload.pieces).to be_empty
+      end
+
     end
 
   end
