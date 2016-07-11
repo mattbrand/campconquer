@@ -26,6 +26,21 @@ class Piece < ActiveRecord::Base
   # todo: validate that `path` is an array of Points
   serialize :path
 
+  validates :team, inclusion: {
+    in: Team::NAMES.values,
+    message: Team::NAMES.validation_message
+  }
+
+  validates :job, inclusion: {
+    in: Job::NAMES.values,
+    message: Job::NAMES.validation_message
+  }, allow_nil: true
+
+  validates :role, inclusion: {
+    in: Role::NAMES.values,
+    message: Role::NAMES.validation_message
+  }, allow_nil: true
+
   def player_name
     self.player.try(:name)
   end

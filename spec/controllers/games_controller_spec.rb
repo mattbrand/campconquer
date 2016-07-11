@@ -140,7 +140,6 @@ describe GamesController, type: :controller do
         expect(json['game']).to include('pieces')
         expect(json['game']['pieces'].size).to eq(2)
 
-        ap json
       end
     end
 

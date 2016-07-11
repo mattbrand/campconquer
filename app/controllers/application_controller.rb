@@ -19,4 +19,14 @@ class ApplicationController < ActionController::Base
     render args.merge(json: body)
   end
 
+  def set_player
+    player_id = params[:player_id] || params[:id]
+    if player_id == 'current'
+      @player = Player.current
+    else
+      @player = Player.find(player_id)
+    end
+  end
+
+
 end

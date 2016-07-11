@@ -3,11 +3,9 @@ class OutcomesController < ApplicationController
   before_action :set_outcome, only: [:show, :edit, :update, :destroy]
 
   # POST /outcomes
-  # POST /outcomes.json
   def create
     params = outcome_params
     params[:team_outcomes_attributes] = params.delete(:team_outcomes) if params[:team_outcomes]
-    ap params
     @outcome = Outcome.new(params)
     begin
       old_outcome = @game.outcome
@@ -20,7 +18,7 @@ class OutcomesController < ApplicationController
   end
 
   private
-  # Use callbacks to share common setup or constraints between actions.
+
   def set_outcome
     @outcome = Outcome.find(params[:id])
   end
