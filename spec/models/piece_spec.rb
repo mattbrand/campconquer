@@ -19,5 +19,8 @@
 require 'rails_helper'
 
 RSpec.describe Piece, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it "validates team"
+  it "validates job"
+  it "validates role"
+  it "serializes a list of points into path"
 end

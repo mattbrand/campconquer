@@ -1,80 +1,62 @@
 class GamesController < ApplicationController
-  before_action :set_game, only: [:show, :edit, :update, :destroy]
+  before_action :set_game,
+                only: [:show,
+                       :edit, :update, :destroy,
+                       :lock, :unlock]
 
-  skip_before_action :verify_authenticity_token # todo: put back in when we have auth
+  skip_before_action :verify_authenticity_token # todo: put back in when we have auth?
 
   # GET /games
   # GET /games.json
   def index
-    @games = Game.all
+    @games = Game.all.order(updated_at: :desc)
+    render json: {status: 'ok', games: @games.as_json(include: [:pieces, :outcome])}
   end
 
   # GET /games/1
   # GET /games/1.json
   def show
-  end
-
-  # GET /games/new
-  def new
-    @game = Game.new
-  end
-
-  # GET /games/1/edit
-  def edit
-  end
-
-  # POST /games
-  # POST /games.json
-  def create
-    @game = Game.new() # todo: game_params_for_create if/when we have them
-
-    respond_to do |format|
-      if @game.save
-        format.html { redirect_to games_url, notice: 'Game was successfully created.' }
-        format.json { render :show, status: :created, location: @game }
-      else
-        format.html { render :new }
-        format.json { render json: @game.errors, status: :unprocessable_entity }
-      end
-    end
+    render_game
   end
 
   # PATCH/PUT /games/1
   # PATCH/PUT /games/1.json
   def update
-    respond_to do |format|
-      if @game.update(game_params_for_update)
-        if @game.locked
-          @game.locked = false
-          @game.save!
-        end
-        format.html { redirect_to @game, notice: 'Game was successfully updated.' }
-        format.json { render :show, status: :ok, location: @game }
-      else
-        format.html { render :edit }
-        format.json { render json: @game.errors, status: :unprocessable_entity }
+    if @game.update(game_params_for_update)
+      if @game.locked
+        @game.locked = false # ???
+        @game.save!
       end
+      render :show, status: :ok, location: @game
+    else
+      render json: @game.errors, status: :unprocessable_entity
     end
   end
 
   # DELETE /games/1
   # DELETE /games/1.json
   def destroy
-    @game.destroy
-    respond_to do |format|
-      format.html { redirect_to games_url, notice: 'Game was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    @game.destroy!
+    render json: { status: 'ok', message: "game #{@game.id} deleted" }
+  end
+
+  # POST /games/1/lock
+  def lock
+    @game.update!(locked: true)
+    render_game
+  end
+
+  # DELETE /games/1/lock
+  def unlock
+    @game.update!(locked: false)
+    render_game
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_game
-      @game = Game.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def game_params_for_update
-      params.require(:game).permit(:winner)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def game_params_for_update
+    params.require(:game).permit(:winner)
+  end
+
 end

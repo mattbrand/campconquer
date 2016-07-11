@@ -42,9 +42,9 @@ types:
     properties:
       team:
         type: string
-      # player_name:
-      #   type: string
-      #   description: for display purposes during gameplay (???)
+      player_name:
+        type: string
+        description: for display purposes during gameplay (???)
       job:
         type: string
         description: "enum: [striker, bruiser, speedster]"
@@ -105,13 +105,10 @@ types:
         body:
           type: Game[]
           description: |
-            a single game, and its stats if it's been played
-
-  post:
-    description: create a game -- OBSOLETE; the server should create a new game as soon as the previous one is played [locked?]
+            a list of all games, including stats for those that have been played
 
   /current:
-    description: the currently active game; the one that is about to be played
+    description: the currently active game; the one that is about to be played. If there is no currently active game then a new one is created, using the same setup as the previous game.
     get:
       description: |
         get a single game

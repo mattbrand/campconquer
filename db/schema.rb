@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160707223050) do
+ActiveRecord::Schema.define(version: 20160711153832) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -29,18 +29,23 @@ ActiveRecord::Schema.define(version: 20160707223050) do
   add_index "active_admin_comments", ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id"
 
   create_table "games", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.boolean  "locked"
+    t.boolean  "current",    default: false
   end
+
+  add_index "games", ["current"], name: "index_games_on_current"
 
   create_table "outcomes", force: :cascade do |t|
     t.string   "winner"
-    t.integer  "team_stats_id"
     t.integer  "match_length"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.integer  "game_id"
   end
+
+  add_index "outcomes", ["game_id"], name: "index_outcomes_on_game_id"
 
   create_table "pieces", force: :cascade do |t|
     t.string   "team"
@@ -68,8 +73,12 @@ ActiveRecord::Schema.define(version: 20160707223050) do
     t.integer  "takedowns"
     t.integer  "throws"
     t.integer  "pickups"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.integer  "team_stats_id"
+    t.integer  "outcome_id"
   end
+
+  add_index "team_outcomes", ["outcome_id"], name: "index_team_outcomes_on_outcome_id"
 
 end

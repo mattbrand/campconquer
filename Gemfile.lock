@@ -61,6 +61,7 @@ GEM
     arbre (1.1.1)
       activesupport (>= 3.0.0)
     arel (6.0.3)
+    awesome_print (1.7.0)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     bourbon (4.2.7)
@@ -222,6 +223,7 @@ PLATFORMS
 DEPENDENCIES
   activeadmin!
   annotate
+  awesome_print
   byebug
   coffee-rails (~> 4.1.0)
   jbuilder (~> 2.0)
