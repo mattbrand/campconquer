@@ -16,4 +16,7 @@ Rails.application.routes.draw do
     resource :piece, only: ['create', 'update']
   end
 
+
+  match "*path", :to => "application#route_not_found", :via => :all
+
 end

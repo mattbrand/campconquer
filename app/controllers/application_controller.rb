@@ -10,6 +10,17 @@ class ApplicationController < ActionController::Base
   rescue_from ActiveRecord::RecordNotFound, :with => :record_not_found
   rescue_from ActiveRecord::RecordInvalid, :with => :record_invalid
   rescue_from ActiveRecord::RecordNotSaved, :with => :record_not_saved
+  rescue_from ActionController::RoutingError, :with => :route_not_found
+
+
+  public
+  def route_not_found
+    render :status => :not_found,
+           :json => {
+             'status' => 'error',
+             'message' => "path '#{params[:path]}' not found"
+           }
+  end
 
   protected
 

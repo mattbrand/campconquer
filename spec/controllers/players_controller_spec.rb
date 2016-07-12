@@ -42,10 +42,12 @@ describe PlayersController, type: :controller do
   end
 
   describe "GET #show" do
-    it "assigns the requested player as @player" do
+    it "renders the requested player as json" do
       player = Player.create! valid_attributes
       get :show, {:id => player.to_param}, valid_session
-      expect(assigns(:player)).to eq(player)
+      expect(response_json['status']).to eq('ok')
+      expect(response_json['player']).to include(valid_attributes.stringify_keys)
+      expect(response_json['player']).to include({'id' => player.id})
     end
   end
 

@@ -12,6 +12,10 @@ class PlayersController < ApplicationController
 
   # GET /players/1
   def show
+    render json: {
+      status: 'ok',
+      player: @player.as_json,
+    }
   end
 
   # POST /players
