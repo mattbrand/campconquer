@@ -25,7 +25,6 @@ class PlayersController < ApplicationController
   end
 
   # PATCH/PUT /players/1
-  # PATCH/PUT /players/1.json
   def update
     @player.update!(player_params)
     render :json => {

@@ -34,7 +34,6 @@ describe PlayersController, type: :controller do
     it "renders all players as response_json" do
       player = Player.create! valid_attributes
       get :index, {}, valid_session
-      ap response.body
       expect(response_json['status']).to eq('ok')
       expect(response_json['players'].size).to eq(1)
       expect(response_json['players'].first).to include(valid_attributes.stringify_keys)
