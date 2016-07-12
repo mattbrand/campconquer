@@ -40,10 +40,7 @@ class Game < ActiveRecord::Base
       options = {
         root: true,
         include: [
-          {:pieces => {
-            :only => [:team, :job, :role, :path, :speed, :hit_points, :range],
-            :methods => [:player_name] # Rails is SO unencapsulated :-(
-          }},
+          {:pieces => Piece.serialization_options},
           :outcome
         ]
       }

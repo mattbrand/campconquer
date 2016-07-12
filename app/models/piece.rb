@@ -44,4 +44,22 @@ class Piece < ActiveRecord::Base
   def player_name
     self.player.try(:name)
   end
+
+  # include ActiveModel::Serialization
+  # def as_json(options=nil)
+  #   if options.nil?
+  #     options = {root: true} + self.class.serialization_options
+  #   end
+  #   super(options)
+  # end
+
+  # Rails doesn't recursively call as_json or serializable_hash
+  # so we have to call these options explicitly from the parent's as_json
+  def self.serialization_options
+    {
+      only: [:team, :job, :role, :path, :speed, :hit_points, :range],
+      :methods => [:player_name] # Rails is SO unencapsulated :-(
+    }
+  end
+
 end

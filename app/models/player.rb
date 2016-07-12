@@ -24,4 +24,14 @@ class Player < ActiveRecord::Base
     self.piece
   end
 
+  include ActiveModel::Serialization
+  def as_json(options=nil)
+    if options.nil?
+      options = {
+        include: [{:piece => Piece.serialization_options}],
+      }
+    end
+    super(options)
+  end
+
 end

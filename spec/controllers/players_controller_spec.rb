@@ -49,6 +49,8 @@ describe PlayersController, type: :controller do
       expect(response_json['player']).to include(valid_attributes.stringify_keys)
       expect(response_json['player']).to include({'id' => player.id})
     end
+
+    it "includes the piece"
   end
 
   describe "POST #create" do
