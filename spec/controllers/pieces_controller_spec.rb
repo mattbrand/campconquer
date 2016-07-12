@@ -9,7 +9,7 @@ describe PiecesController, type: :controller do
     {
       job: 'striker',
       role: 'offense',
-      path: '',  # todo
+      path: '', # todo
     }
   }
 
@@ -79,10 +79,10 @@ describe PiecesController, type: :controller do
     context "with invalid params" do
       it "renders an error body" do
         post :create, {:player_id => @player.id, :piece => invalid_attributes}, valid_session
-        expect(response.body).to eq({
-                                      status: 'error',
-                                      errors: ['Job must be "bruiser" or "striker" or "speedster"']
-                                    }.to_json)
+        expect(response_json).to include({
+                                  'status' => 'error',
+                                  'message' => 'Job must be "bruiser" or "striker" or "speedster"'
+                                })
       end
     end
   end

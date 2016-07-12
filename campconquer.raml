@@ -142,10 +142,25 @@ types:
           outcome: Outcome
 
 /players:
+
+  get:
+    description: get all players
+    responses:
+      200:
+        body:
+          type: Player[]
+
   post:
     description: create a player
       queryParameters:
         name: string
+        team: string
+
+  put:
+    description: update a player
+      queryParameters:
+        name: string
+        team: string
 
   /{player_name}:
   get:

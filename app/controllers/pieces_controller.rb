@@ -13,8 +13,6 @@ class PiecesController < ApplicationController
         @piece = Piece.create!(params)
       end
       render json: {status: 'ok'}, status: :created
-    rescue ActiveRecord::RecordNotSaved, ActiveRecord::RecordInvalid => e
-      render json: {status: 'error', errors: e.record.errors.full_messages}, status: :unprocessable_entity
     end
   end
 

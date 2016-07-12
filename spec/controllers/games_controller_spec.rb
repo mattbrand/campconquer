@@ -134,11 +134,10 @@ describe GamesController, type: :controller do
       it 'returns the entire game including pieces' do
         post :lock, {:id => @game.to_param}, valid_session
 
-        json = JSON.parse(response.body)
-        expect(json).to include({'status' => 'ok'})
-        expect(json).to include('game')
-        expect(json['game']).to include('pieces')
-        expect(json['game']['pieces'].size).to eq(2)
+        expect(response_json).to include({'status' => 'ok'})
+        expect(response_json).to include('game')
+        expect(response_json['game']).to include('pieces')
+        expect(response_json['game']['pieces'].size).to eq(2)
 
       end
     end
@@ -158,9 +157,8 @@ describe GamesController, type: :controller do
 
       it 'says ok' do
         delete :unlock, {:id => @game.to_param}, valid_session
-        json = JSON.parse(response.body)
-        expect(json).to include({'status' => 'ok'})
-        expect(json).to include({'message' => "game #{@game.id} unlocked"})
+        expect(response_json).to include({'status' => 'ok'})
+        expect(response_json).to include({'message' => "game #{@game.id} unlocked"})
       end
 
       it 'removes the pieces' do

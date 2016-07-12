@@ -40,6 +40,10 @@ RSpec.configure do |config|
     mocks.verify_partial_doubles = true
   end
 
+  require 'controllers/controller_helpers'
+  config.include ControllerHelpers, :type => :controller
+
+
 # The settings below are suggested to provide a good initial experience
 # with RSpec, but feel free to customize to your heart's content.
 =begin

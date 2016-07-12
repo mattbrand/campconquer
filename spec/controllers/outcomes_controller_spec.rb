@@ -98,10 +98,10 @@ describe OutcomesController, type: :controller do
 
       it "renders an error body" do
         post :create, {:game_id => @game.id, :outcome => invalid_attributes}, valid_session
-        expect(response.body).to eq({
-                                      status: 'error',
-                                      errors: ['Winner must be "blue" or "red"']
-                                    }.to_json)
+        expect(response_json).to include({
+                                  'status' => 'error',
+                                  'message' => 'Winner must be "blue" or "red"'
+                                })
       end
     end
   end
