@@ -4,6 +4,15 @@ class OutcomesController < ApplicationController
 
   # POST /outcomes
   def create
+    if !@game.locked?
+      render status: :conflict,
+             json: {
+               status: 'error',
+               message: 'You can only set an outcome on a locked game'
+             }
+      return
+    end
+
     params = outcome_params
     params[:team_outcomes_attributes] = params.delete(:team_outcomes) if params[:team_outcomes]
 
