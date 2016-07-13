@@ -20,8 +20,8 @@ class Outcome < ActiveRecord::Base
   accepts_nested_attributes_for :team_outcomes
 
   validates :winner, inclusion: {
-    in: Team::NAMES.values,
-    message: Team::NAMES.validation_message,
+    in: Team::NAMES.values + ["none"],
+    message: Team::NAMES.validation_message + ' or "none"',
   }
 
 end

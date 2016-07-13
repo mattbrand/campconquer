@@ -74,6 +74,8 @@ describe PiecesController, type: :controller do
         expect(@player.piece.job).to eq('bruiser')
       end
 
+      it "prevents updating the player's piece while the current game is locked"
+
     end
 
     context "with invalid params" do

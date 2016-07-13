@@ -27,4 +27,9 @@ RSpec.describe Outcome, type: :model do
     outcome = Outcome.new(winner: 'blue')
     expect(outcome).to be_valid
   end
+
+  it "winner can be none" do
+    outcome = Outcome.new(winner: 'none')
+    expect(outcome).to be_valid
+  end
 end

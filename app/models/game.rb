@@ -52,6 +52,12 @@ class Game < ActiveRecord::Base
     self.outcome.try(:winner)
   end
 
+  # todo: test me
+  def unlock_game!
+    update!(locked: false)
+  end
+
+  # todo: test me
   def lock_game!
     update!(locked: true)
 

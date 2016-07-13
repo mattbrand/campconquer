@@ -4,11 +4,11 @@ Konker? I just met 'er!
 
 # TODO
 
-- [ ] remove HTML altogether? (pure API)
-- [ ] new "locked" flow
+- [X] remove HTML altogether? (pure API)
+- [X] new "locked" flow
 
-- [ ] error JSON
-- [ ] weird pending validation tests (winner is null during create but required during update)
+- [X] error JSON
+- [X] weird pending validation tests (winner is null during create but required during update)
 
 - [ ] API Auth
 - [ ] User Auth

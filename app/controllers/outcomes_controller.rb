@@ -10,6 +10,8 @@ class OutcomesController < ApplicationController
     @outcome = Outcome.new(params)
 
     replace_outcome(@game, @outcome)
+    @game.update!(current: false, locked: false)
+    @game.unlock_game!
 
     render status: :created,
            json: {status: 'ok'}

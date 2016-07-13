@@ -41,8 +41,8 @@ describe OutcomesController, type: :controller do
 
   before do
     @game = Game.current
+    @game.lock_game!
   end
-
 
   describe "POST #create" do
 
@@ -88,6 +88,23 @@ describe OutcomesController, type: :controller do
         expect(team_outcomes.size).to eq(2)
       end
 
+      context 'when the game is not locked' do
+        it 'should fail to post an outcome'
+      end
+
+      context 'when the game is locked' do
+        it 'unlocks the game' do
+          @game.lock_game!
+          post :create, {game_id: @game.id, outcome: valid_attributes}, valid_session
+          expect(@game.reload).not_to be_locked
+        end
+
+        it 'marks the game as no longer current' do
+          post :create, {game_id: @game.id, outcome: valid_attributes}, valid_session
+          expect(@game.reload).not_to be_current
+        end
+      end
+
     end
 
     context "with invalid params" do
@@ -99,9 +116,9 @@ describe OutcomesController, type: :controller do
       it "renders an error body" do
         post :create, {:game_id => @game.id, :outcome => invalid_attributes}, valid_session
         expect(response_json).to include({
-                                  'status' => 'error',
-                                  'message' => 'Winner must be "blue" or "red"'
-                                })
+                                           'status' => 'error',
+                                           'message' => 'Winner must be "blue" or "red" or "none"'
+                                         })
       end
     end
   end
