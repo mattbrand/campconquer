@@ -74,17 +74,38 @@ describe PiecesController, type: :controller do
         expect(@player.piece.job).to eq('bruiser')
       end
 
-      it "prevents updating the player's piece while the current game is locked"
+      context "while the current game is locked" do
+        before do
+          @game = Game.current
+          @game.lock_game!
+        end
 
+        it "prevents updating the player's piece" do
+          post :create, {:player_id => @player.id,
+                         :piece => valid_attributes}, valid_session
+          expect(response).not_to be_ok
+          expect(response_json).to include({
+                                             'status' => 'error',
+                                             'message' => Player::CANT_CHANGE_PIECE_WHEN_GAME_LOCKED
+                                           })
+        end
+      end
     end
 
     context "with invalid params" do
+      before do
+        @game = Game.current
+      end
+
       it "renders an error body" do
-        post :create, {:player_id => @player.id, :piece => invalid_attributes}, valid_session
-        expect(response_json).to include({
-                                  'status' => 'error',
-                                  'message' => 'Job must be "bruiser" or "striker" or "speedster"'
-                                })
+        post :create, {:player_id => @player.id,
+                       :piece => invalid_attributes}, valid_session
+        expect(response).not_to be_ok
+        expect(response_json).to include(
+                                   {
+                                     'status' => 'error',
+                                     'message' => 'Job must be "bruiser" or "striker" or "speedster"'
+                                   })
       end
     end
   end

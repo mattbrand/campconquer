@@ -5,13 +5,7 @@ class PiecesController < ApplicationController
   # POST /pieces
   def create
     begin
-      @piece = @player.piece
-      if @piece
-        @piece.update!(piece_params)
-      else
-        params = {player_id: @player.id, team: @player.team} + piece_params
-        @piece = Piece.create!(params)
-      end
+      @piece = @player.set_piece(piece_params)
       render json: {status: 'ok'}, status: :created
     end
   end

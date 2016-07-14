@@ -30,9 +30,15 @@ class ApplicationController < ActionController::Base
   end
 
   def record_not_saved(e)
+    message = if e.record
+                e.record.errors.full_messages.join("\n")
+              else
+                "record not saved: #{e.message}"
+              end
+
     render status: :unprocessable_entity,
            json: exception_as_json(e) + {
-             message: e.record.errors.full_messages.join("\n")
+             message: message
            }
   end
 

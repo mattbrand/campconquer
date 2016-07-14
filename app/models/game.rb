@@ -59,10 +59,15 @@ class Game < ActiveRecord::Base
 
   # todo: test me
   def lock_game!
+    if locked?
+      # todo: use an AR exception that lets the response be not a 500
+      raise "you can't lock a game that is already locked"
+    end
+
     update!(locked: true)
 
     Player.all.includes(:piece).each do |player|
-      self.pieces << player.piece.dup
+      self.pieces << player.piece.dup if player.piece
     end
     save! # unnecessary?
 

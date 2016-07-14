@@ -98,4 +98,60 @@ describe Game, type: :model do
     end
   end
 
+  describe 'lock_game!' do
+    before do
+      @game = Game.current
+    end
+    context 'when the game is unlocked' do
+      it 'locks it' do
+        @game.lock_game!
+        expect(@game).to be_locked
+      end
+
+      def create_alice_with_piece
+        alice = Player.create!(name: 'alice', team: 'blue')
+        piece_attributes = {
+          job: 'striker',
+          role: 'offense',
+          path: '', # todo
+        }
+        alice.set_piece(piece_attributes)
+        return alice
+      end
+
+      it "copies all players' pieces" do
+        alice = create_alice_with_piece
+        @game.lock_game!
+        expect(@game.pieces).not_to be_empty
+        piece = @game.pieces.first
+        expect(piece.player).to eq(alice)
+        expect(piece.team).to eq(alice.team)
+        expect(piece.job).to eq('striker')
+        expect(piece.role).to eq('offense')
+        expect(piece.path).to eq('')
+      end
+
+      context 'when there is a player with no piece' do
+        it 'ignores it' do
+          alice = create_alice_with_piece
+          bob = Player.create!(name: 'bob', team: 'blue')
+          @game.lock_game! # assert no raise
+          expect(@game).to be_locked
+          expect(@game.pieces.size).to eq(1)
+          piece = @game.pieces.first
+          expect(piece.player).to eq(alice)
+
+        end
+      end
+    end
+    context 'when the game is locked' do
+      it 'fails' do
+        @game.lock_game!
+        expect do
+          @game.lock_game!
+        end.to raise_error
+      end
+    end
+  end
+
 end

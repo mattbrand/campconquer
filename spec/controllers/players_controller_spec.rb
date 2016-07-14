@@ -50,7 +50,13 @@ describe PlayersController, type: :controller do
       expect(response_json['player']).to include({'id' => player.id})
     end
 
-    it "includes the piece"
+    it "includes the piece" do
+      player = Player.create! valid_attributes
+      player.set_piece(role: 'offense')
+      get :show, {:id => player.to_param}, valid_session
+      expect(response_json['status']).to eq('ok')
+      expect(response_json['player']['piece']).to include({'role' => 'offense'})
+    end
   end
 
   describe "POST #create" do
