@@ -152,28 +152,28 @@ types:
 
   post:
     description: create a player
-      queryParameters:
+    queryParameters:
         name: string
         team: string
 
-  put:
-    description: update a player
+  /{player_id}:
+    put:
+      description: update a player
       queryParameters:
-        name: string
-        team: string
+          name: string
+          team: string
 
-  /{player_name}:
-  get:
-    description: get a single player
-    responses:
-      200:
-        body:
-          type: Player
+    get:
+      description: get a single player
+      responses:
+        200:
+          body:
+            type: Player
 
     /piece:
       post:
         description: |
           change the player's piece for the next game(s) -
           only some attributes are allowed (role, job, path, ...?)
-        type: Piece
-
+        queryParameters:
+          type: Piece

@@ -54,6 +54,18 @@ Then go back to this dir and run:
 ```
 -->
 
+### sample request
+
+```
+outcome[winner]:red
+outcome[team_outcomes][][team]:red
+outcome[team_outcomes][][takedowns]:20
+outcome[team_outcomes][][throws]:6
+outcome[team_outcomes][][team]:blue
+outcome[team_outcomes][][takedowns]:10
+outcome[team_outcomes][][throws]:12
+```
+
 ## Admin
 
 We are using ActiveAdmin for non-API
