@@ -154,4 +154,8 @@ describe Game, type: :model do
     end
   end
 
+  describe "as_json" do
+    it "includes outcome and team_outcomes"
+  end
+
 end

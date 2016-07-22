@@ -83,7 +83,7 @@ describe PlayersController, type: :controller do
     end
 
     context "with invalid params" do
-      it "render an error template" do
+      it "renders an error template" do
         post :create, {:player => invalid_attributes}, valid_session
         expect(response_json['status']).to eq('error')
         expect(response_json['message']).to include("Team must be \"blue\" or \"red\"")
