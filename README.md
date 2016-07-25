@@ -72,6 +72,10 @@ We are using ActiveAdmin for non-API
 
 http://activeadmin.info/docs/documentation.html
 
+## local dev with fitbit
+
+https://ngrok.com/
+
 
 # Unity links
 
