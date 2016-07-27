@@ -37,6 +37,19 @@ class PlayersController < ApplicationController
     }
   end
 
+  def auth
+    fitbit = Fitbit.new() # todo: get from player, persist
+    redirect_to fitbit.begin_authorization
+  end
+
+  def auth_callback
+    fitbit = Fitbit.new() # todo: get from player, persist
+    fitbit.code = params[:code]
+
+    user_profile = fitbit.get_user_profile
+    render json: user_profile
+  end
+
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_player

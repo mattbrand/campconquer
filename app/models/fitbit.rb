@@ -11,7 +11,7 @@ class Fitbit
     # todo: get these from ENV
     @client_id = '227W5K'
     @client_secret = 'd4d5c9c23c517c19ba238851c153f771'
-    @callback_url = 'http://localhost:3000/authorized' # must correspond with https://dev.fitbit.com/apps/edit/227W5K
+    @callback_url = 'http://localhost:3000/players/auth-callback' # must correspond with https://dev.fitbit.com/apps/edit/227W5K
 
     @authorization_url = 'https://www.fitbit.com/oauth2/authorize'
     @token_uri = 'https://api.fitbit.com/oauth2/token'
@@ -67,7 +67,7 @@ class Fitbit
   # @param code the value of the code parameter sent from fitbit.com to our callback endpoint
   def code=(code)
     @token = client.auth_code.get_token(code,
-                                        redirect_uri: 'http://localhost:3000/authorized',
+                                        redirect_uri: @callback_url,
                                         headers: headers)
 
     ap token
