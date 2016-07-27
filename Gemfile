@@ -25,7 +25,7 @@ gem 'oauth2'
 group :development, :test do
   gem 'sqlite3'
   gem 'byebug'   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-
+  gem "rspec-rails"
 end
 
 group :development do
@@ -34,7 +34,9 @@ group :development do
   gem 'annotate'
 end
 
-gem "rspec-rails", :group => [:development, :test]
+group :test do
+  gem 'webmock'
+end
 
 group :production do
   gem 'rails_12factor'

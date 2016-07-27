@@ -130,6 +130,8 @@ describe PlayersController, type: :controller do
     end
   end
 
-  describe 'GET #auth'
+  describe 'GET #auth' do
+    pending
+  end
 
 end

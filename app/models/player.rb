@@ -2,17 +2,20 @@
 #
 # Table name: players
 #
-#  id         :integer          not null, primary key
-#  name       :string
-#  team       :string
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id                 :integer          not null, primary key
+#  name               :string
+#  team               :string
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  fitbit_token_hash  :text
+#  anti_forgery_token :string
 #
 
 class Player < ActiveRecord::Base
   CANT_CHANGE_PIECE_WHEN_GAME_LOCKED = "you can't change your piece if the current game is locked"
 
   has_one :piece
+  serialize :fitbit_token_hash
 
   validates :team, inclusion: { in: Team::NAMES.values, message: Team::NAMES.validation_message}
 
@@ -41,4 +44,20 @@ class Player < ActiveRecord::Base
     super(options)
   end
 
+  def fitbit
+    Fitbit.new(token_hash: fitbit_token_hash)
+  end
+
+  def begin_auth
+    anti_forgery_token = rand(100000).to_s
+    update!(anti_forgery_token: anti_forgery_token) # todo: better encryption
+    fitbit.authorization_url(state: anti_forgery_token)
+  end
+
+  def finish_auth(code)
+    self.anti_forgery_token = nil
+    fitbit = Fitbit.new(code: code)
+    self.fitbit_token_hash = fitbit.token_hash
+    self.save!
+  end
 end

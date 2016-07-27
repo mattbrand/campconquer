@@ -15,8 +15,11 @@ Rails.application.routes.draw do
   resources :players do
     resource :piece, only: ['create', 'update']
 
-    collection do
+    member do
       get :auth
+    end
+
+    collection do
       get :'auth-callback'
     end
   end

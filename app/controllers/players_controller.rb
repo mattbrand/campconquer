@@ -1,5 +1,5 @@
 class PlayersController < ApplicationController
-  before_action :set_player, only: [:show, :edit, :update, :destroy]
+  before_action :set_player, only: [:show, :edit, :update, :destroy, :auth]
 
   # GET /players
   def index
@@ -38,15 +38,15 @@ class PlayersController < ApplicationController
   end
 
   def auth
-    fitbit = Fitbit.new() # todo: get from player, persist
-    redirect_to fitbit.begin_authorization
+    redirect_to @player.begin_auth # todo: test
   end
 
   def auth_callback
-    fitbit = Fitbit.new() # todo: get from player, persist
-    fitbit.code = params[:code]
+    player = Player.find_by_anti_forgery_token(params[:state])
+    player.finish_auth(params[:code]) # todo: test
 
-    user_profile = fitbit.get_user_profile
+    puts "getting profile"
+    user_profile = player.fitbit.get_user_profile
     render json: user_profile
   end
 
