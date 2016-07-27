@@ -103,6 +103,9 @@ class Fitbit
   end
 
   def get(path, params = {})
+    # todo: test this error
+    raise "No access token; you must auth" unless token
+
     token.get(path, {
       params: params,
       headers: headers,

@@ -44,9 +44,14 @@ class PlayersController < ApplicationController
   def auth_callback
     player = Player.find_by_anti_forgery_token(params[:state])
     player.finish_auth(params[:code]) # todo: test
+    redirect_to profile_player_path(player)
+  end
 
-    puts "getting profile"
-    user_profile = player.fitbit.get_user_profile
+  # just for demo
+  def profile
+    set_player
+    puts "fetching user profile"
+    user_profile = @player.fitbit.get_user_profile
     render json: user_profile
   end
 

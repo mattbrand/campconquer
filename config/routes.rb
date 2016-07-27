@@ -17,6 +17,7 @@ Rails.application.routes.draw do
 
     member do
       get :auth
+      get :profile
     end
 
     collection do
