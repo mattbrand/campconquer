@@ -51,8 +51,7 @@ class PlayersController < ApplicationController
   def profile
     set_player
     puts "fetching user profile"
-    user_profile = @player.fitbit.get_user_profile
-    render json: user_profile
+    render json: @player.fitbit_profile
   end
 
   private

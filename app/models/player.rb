@@ -44,20 +44,33 @@ class Player < ActiveRecord::Base
     super(options)
   end
 
+  # FitBit stuff
+
   def fitbit
-    Fitbit.new(token_hash: fitbit_token_hash)
+    @fitbit ||= Fitbit.new(token_hash: fitbit_token_hash, token_saver: self)
   end
 
   def begin_auth
-    anti_forgery_token = rand(100000).to_s
-    update!(anti_forgery_token: anti_forgery_token) # todo: better encryption
+    anti_forgery_token = rand(100000).to_s # todo: better encryption
+    update!(anti_forgery_token: anti_forgery_token)
     fitbit.authorization_url(state: anti_forgery_token)
   end
 
   def finish_auth(code)
     self.anti_forgery_token = nil
-    fitbit = Fitbit.new(code: code)
-    self.fitbit_token_hash = fitbit.token_hash
-    self.save!
+    fitbit.code = code # note: this should callback to update_token
   end
+
+  # todo: test
+  def update_token(fitbit)
+    print "update_token called: #{fitbit.token_hash}"
+    self.fitbit_token_hash = fitbit.token_hash
+    save!
+    @fitbit = nil
+  end
+
+  def fitbit_profile
+    fitbit.get_user_profile
+  end
+
 end

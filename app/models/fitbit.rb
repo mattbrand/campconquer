@@ -5,18 +5,26 @@
 
 class Fitbit
 
-  # todo: get these from ENV
+  # 86400 for 1 day
+  # 604800 for 1 week
+  # 2592000 for 30 days
+  # 31536000 for 1 year
+  EXPIRES_IN_SEC = 86400
+
+  def from_env(key)
+    ENV[key] || raise("You must set the environment variable #{key}")
+  end
 
   def client_id
-    '227W5K'
+    from_env('FITBIT_CLIENT_ID')
   end
 
   def client_secret
-    'd4d5c9c23c517c19ba238851c153f771'
+    from_env('FITBIT_CLIENT_SECRET')
   end
 
   def callback_url
-    'http://localhost:3000/players/auth-callback' # must correspond with https://dev.fitbit.com/apps/edit/227W5K
+    from_env('FITBIT_CALLBACK_URL')
   end
 
   def authorize_url
@@ -31,12 +39,16 @@ class Fitbit
     'https://api.fitbit.com'
   end
 
-
   attr_reader :token
 
-  def initialize(code: nil, token_hash: nil)
+  def initialize(code: nil, token_hash: nil, token_saver: nil)
     self.code = code if code
+
     @token = ::OAuth2::AccessToken.from_hash(client, token_hash) if token_hash
+
+    # set the token saver *after* setting the token,
+    # so initializing it from a hash # does not trigger an update
+    @token_saver = token_saver
   end
 
   protected
@@ -69,13 +81,14 @@ class Fitbit
   # @param open_in_browser for local development, open the redirect URL in a local browser
   # @param state the anti-forgery token, for finding the user during the callback
   # @return the URL to the fitbit.com oauth2 authorize page, which asks users to allow us permissions
+
   def authorization_url(open_in_browser: false, state: nil)
     require 'oauth2'
 
     authorize_url = client.auth_code.authorize_url(redirect_uri: callback_url,
                                                    scope: scope,
                                                    state: state,
-                                                   expires_in: 604800
+                                                   expires_in: EXPIRES_IN_SEC
     )
 
     `open '#{authorize_url}'` if open_in_browser
@@ -91,26 +104,50 @@ class Fitbit
                                         headers: headers,
                                         redirect_uri: callback_url
     )
-
+    @token_saver.update_token(self) if @token_saver # todo: test
   end
 
   def token_hash
     token.to_hash
   end
 
+
   def refresh!
-    token.refresh! headers: headers
+    # todo: push this back up to player
+    @token = token.refresh! headers: headers
+  end
+
+  def refreshing
+    begin
+      yield
+    rescue OAuth2::Error => e
+      hash = e.try(:response).try(:parsed) # defensive coding
+      unless hash.nil?
+        print hash
+        error_type = hash["errors"][0]["errorType"]
+        if ['expired_token', 'invalid_token'].include? error_type
+          print "Token invalid; refreshing..."
+          refresh!
+          yield
+          return
+        end
+      end
+      raise e
+    end
   end
 
   def get(path, params = {})
     # todo: test this error
     raise "No access token; you must auth" unless token
 
-    token.get(path, {
-      params: params,
-      headers: headers,
-      raise_errors: true
-    })
+    refreshing do
+      print "FITBIT fetching #{path} #{params}"
+      token.get(path, {
+        params: params,
+        headers: headers,
+        raise_errors: true
+      })
+    end
   end
 
   def headers

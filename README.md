@@ -4,19 +4,9 @@ Konker? I just met 'er!
 
 # TODO
 
-- [X] remove HTML altogether? (pure API)
-- [X] new "locked" flow
-
-- [X] error JSON
-- [X] weird pending validation tests (winner is null during create but required during update)
-
 - [ ] API Auth
 - [ ] User Auth
 - [ ] Admin Auth (Devise? we used `rails generate active_admin:install --skip-users`  )
-
-- [X] Enum for team
-
-
 
 ## API Docs
 
@@ -68,13 +58,32 @@ outcome[team_outcomes][][throws]:12
 
 ## Admin
 
-We are using ActiveAdmin for non-API
+We are using ActiveAdmin for some non-API UI 
 
-http://activeadmin.info/docs/documentation.html
+<http://activeadmin.info/docs/documentation.html>
 
-## local dev with fitbit
 
-https://ngrok.com/
+## Local Development Setup
+
+* `git pull`
+* `bundle install`
+* edit `.env` (see below)
+* `rake db:migrate`
+* `rails server`
+
+## Local development with FitBit
+
+* Create an app for yourself at <https://dev.fitbit.com/apps>
+
+* Put values inside `.env` in the project dir, e.g.:
+
+      FITBIT_CLIENT_ID=227W5K
+      FITBIT_CLIENT_SECRET=d4d5c9c23c517c19ba238851c153f771
+      FITBIT_CALLBACK_URL=http://localhost:3000/players/auth-callback
+
+> Note that FITBIT_CALLBACK_URL **must** correspond with the *Callback URL* on https://dev.fitbit.com/apps/edit/xxxxx
+
+* https://ngrok.com/ may be useful if you want to demo a locally-running app to someone on the wider Internet
 
 
 # Unity links
