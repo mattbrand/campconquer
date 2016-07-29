@@ -113,8 +113,8 @@ class Fitbit
 
 
   def refresh!
-    # todo: push this back up to player
     @token = token.refresh! headers: headers
+    @token_saver.update_token(self) if @token_saver # todo: test
   end
 
   def refreshing
@@ -123,13 +123,12 @@ class Fitbit
     rescue OAuth2::Error => e
       hash = e.try(:response).try(:parsed) # defensive coding
       unless hash.nil?
-        print hash
+        puts hash
         error_type = hash["errors"][0]["errorType"]
         if ['expired_token', 'invalid_token'].include? error_type
           print "Token invalid; refreshing..."
           refresh!
-          yield
-          return
+          return yield
         end
       end
       raise e
@@ -141,12 +140,15 @@ class Fitbit
     raise "No access token; you must auth" unless token
 
     refreshing do
-      print "FITBIT fetching #{path} #{params}"
-      token.get(path, {
+      puts "FITBIT fetching #{path} #{params}"
+      response = token.get(path, {
         params: params,
         headers: headers,
         raise_errors: true
       })
+      # todo: error check
+      # if response.ok?
+      JSON.parse(response.body)
     end
   end
 
@@ -155,9 +157,7 @@ class Fitbit
   end
 
   def get_user_profile
-    response = self.get('/1/user/-/profile.json')
-    # todo: error check
-    JSON.parse(response.body)
+    self.get('/1/user/-/profile.json')
   end
 
 

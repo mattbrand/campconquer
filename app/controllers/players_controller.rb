@@ -48,6 +48,17 @@ class PlayersController < ApplicationController
   end
 
   # just for demo
+  def activities
+    set_player
+    puts "fetching user activities"
+    # output['activity-types'] = @player.fitbit.get('/1/activities.json') # the whole list -- big
+    output = {}
+    yesterday = (Time.current - 1.day).strftime('%F')
+    output[yesterday] = @player.fitbit.get("/1/user/-/activities/date/#{yesterday}.json")
+    render json: output
+  end
+
+  # just for demo
   def profile
     set_player
     puts "fetching user profile"
