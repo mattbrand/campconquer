@@ -19,6 +19,7 @@ Rails.application.routes.draw do
       get :auth
       get :profile
       get :activities
+      get :steps
     end
 
     collection do
