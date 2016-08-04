@@ -12,7 +12,7 @@ types:
       name: string
       team:
         type: string
-        description: "enum: [blue, red] (todo: replace with team_id)"
+        description: "enum: [blue, red]"
 
   Point:
     description: a tuple representing an x,y coordinate on the game map; values are floats
@@ -28,7 +28,7 @@ types:
       pieces:
         type: Piece[]
         description: state of all pieces at the beginning of the game
-      locked:
+      locked: # to-do: change to state
         type: boolean
         description: if true, game setup cannot be changed
       outcome:
@@ -45,9 +45,9 @@ types:
       player_name:
         type: string
         description: for display purposes during gameplay (???)
-      job:
+      body_type:
         type: string
-        description: "enum: [striker, bruiser, speedster]"
+        description: "enum: [gender_neutral_1, gender_neutral_2, male, female]"
       role:
         type: string
         description: "enum: [offense, defense]"
@@ -58,11 +58,46 @@ types:
           for offense, the path to follow
       speed:
         type: number
-      hit_points:
+      health:
         type: integer
       range:
         type: number
         description: distance of target within which a shot will be launched
+      health_bonus:
+        type: number
+      speed_bonus:
+        type: integer
+      range_bonus:
+        type: number
+      # should purchased gear be on Piece or Player?
+      gear:
+        type: string[]  # should we make this a full Gear object instead?
+        description: gear short name
+      gear_equipped:
+        type: string[]
+      ammo:
+        type: string[]
+        description: list of ammo IDs (balloon, arrow, bomb)
+
+  Gear:
+    type: object
+    description: all possible gear types, including bonuses etc - editable by admin only
+    properties:
+      name:
+        type: string
+        description: the short name, e.g. 'hat1', used for lookup of visual assets and identifying in lists
+      display_name:
+        type: string
+        description: human readable name
+      description:
+        type: string
+        description: longer, visible in store and tooltips
+      health_bonus:
+        type: number
+      speed_bonus:
+        type: integer
+      range_bonus:
+        type: number
 
   Outcome:
     type: object
@@ -150,6 +185,8 @@ types:
         body:
           type: Player[]
 
+  # currently this is done by admin web UI - should remove from API?
+  # -- we need a UI that creates *and* auths a player in one flow
   post:
     description: create a player
     queryParameters:
@@ -157,8 +194,9 @@ types:
         team: string
 
   /{player_id}:
+    # currently this is done by admin web UI - should remove from API?
     put:
-      description: update a player
+      description: update a player - change her team or name only
       queryParameters:
           name: string
           team: string
@@ -169,11 +207,27 @@ types:
         200:
           body:
             type: Player
+            description: some attributes are calculated, like health_bonus
+
+    /buy:
+      post:
+        description: buy a piece of gear
+        queryParameters:
+          name: gear[name]
 
     /piece:
       post:
         description: |
           change the player's piece for the next game(s) -
-          only some attributes are allowed (role, job, path, ...?)
+          only some attributes are allowed:
+          * role
+          * path
+          * gear_equipped
+          * ammo # this will change once ammo costs money
+          some attributes are only settable once:
+          * speed
+          * health:
+          * range
+
         queryParameters:
           type: Piece
