@@ -32,9 +32,7 @@ describe GearsController, type: :controller do
 
       expect(response_json).to include({'status' => 'ok'})
       expect(response_json).to include('gears')
-      expect(response_json['gears']).to include(
-                                          ({"id": trucker_cap.id} + trucker_cap_attrs).stringify_keys
-                                        )
+      expect(response_json['gears']).to include(trucker_cap_attrs.stringify_keys)
     end
 
   end

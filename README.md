@@ -8,6 +8,27 @@ Konker? I just met 'er!
 - [ ] User Auth
 - [ ] Admin Auth (Devise? we used `rails generate active_admin:install --skip-users`  )
 
+# Updating the Seed DB
+
+To update the gear database, 
+
+1. go to
+<https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ07TFsBi973VmIqgnLO6c/>
+1. select the "Gear" worksheet
+1. select "File > Download As > CSV (current sheet)"
+1. save as `db/gear.csv`
+1. locally run `rake db:seed` (or `rake db:setup` to wipe the local DB first)
+1. verify everything locally (`rake spec`, `open http://localhost:3000`, etc.)
+1. `git add db; git push; git push heroku`
+1. `heroku run rake db:seed`
+
+> NEVER remove or change the short name ("ObjectId") of an item that exists inside a player's inventory or a game that has ever been played 
+
+(we may want to add a "disabled" flag to the spreadsheet for that scenario, or "upsert" the seeds instead of wiping them and re-inserting them)
+
+> You may be tempted to edit the gear etc. via the admin interface. RESIST THE TEMPTATION. Do it through git or local demos, staging, etc. will get out of sync with production.
+
+
 ## API Docs
 
 ### Atom

@@ -63,7 +63,7 @@ class Player < ActiveRecord::Base
 
   # todo: test
   def update_token(fitbit)
-    print "update_token called: #{fitbit.token_hash}"
+    # puts "update_token called: #{fitbit.token_hash}"
     self.fitbit_token_hash = fitbit.token_hash
     save!
     @fitbit = nil

@@ -1,0 +1,23 @@
+ObjectId,Type,Item Name,Description,Asset Name,Icon Name,Gold,Gems,Level,Health Bonus,Speed Bonus,Range Bonus
+hat0,HEAD,Bandana,,,,0,0,0,0,0,0
+hat1,HEAD,Headscarf,,,,0,2,0,0,0,0
+hat2,HEAD,Baseball Cap,,,,200,2,0,0,0,1
+hat3,HEAD,Beanie,,,,200,2,0,1,0,0
+shirt0,SHIRT,T-Shirt 0,,,,0,0,0,0,0,0
+shirt1,SHIRT,T-Shirt 1,,,,300,2,0,0,0,0
+shirt2,SHIRT,T-Shirt 2,,,,300,2,0,0,0,0
+belt0,BELT,Belt 0,,,,0,0,0,0,0,0
+belt1,BELT,Belt 1,,,,200,2,0,1,0,0
+belt2,BELT,Belt 2,,,,200,2,0,0,1,0
+shoes0,SHOES,Sneakers 0,,,,0,0,0,0,0,0
+shoes1,SHOES,Sneakers 1,,,,300,2,0,0,1,0
+shoes2,SHOES,Sneakers 2,,,,300,2,0,0,1,0
+accessory0,ACCESSORY,Glasses,,,,50,0,0,0,0,0
+accessory1,ACCESSORY,Sunglasses,,,,150,1,0,0,0,0
+accessory2,ACCESSORY,Bracelet,,,,150,1,0,0,0,0
+accessory3,ACCESSORY,Scarf,,,,150,1,0,0,0,0
+accessory4,ACCESSORY,Watch,,,,150,1,0,0,0,0
+pet1,PET,Wolf,,,,500,6,0,1,1,0
+pet2,PET,Rabbit,,,,500,6,0,0,1,1
+pet3,PET,Bear,,,,500,6,0,1,0,1
+pet4,PET,Fox,,,,500,6,0,1,1,0

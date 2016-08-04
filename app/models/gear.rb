@@ -13,4 +13,20 @@
 
 class Gear < ActiveRecord::Base
 
+  def as_json(options=nil)
+    if options.nil?
+      options = {
+        only: [
+          :name,
+          :display_name,
+          :description,
+          :health_bonus,
+          :speed_bonus,
+          :range_bonus,
+        ],
+      }
+    end
+    super(options)
+  end
+
 end

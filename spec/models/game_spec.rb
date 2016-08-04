@@ -149,7 +149,7 @@ describe Game, type: :model do
         @game.lock_game!
         expect do
           @game.lock_game!
-        end.to raise_error
+        end.to raise_error(RuntimeError)
       end
     end
   end

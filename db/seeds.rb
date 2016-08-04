@@ -5,13 +5,27 @@
 # we have to make sure not to leave any gear lists / refs containing
 # obsolete gear names
 Gear.destroy_all
-Gear.create!([
-               {name: 'hat1',
-                display_name: 'Trucker Cap',
-                description: 'good for long rides',
-                health_bonus: 0,
-                speed_bonus: 0,
-                range_bonus: 4,
-               },
-             ])
+
+# To update the gear database, go to
+# https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ07TFsBi973VmIqgnLO6c/
+# select "File > Download As > CSV (current sheet)"
+# save as db/gear.csv
+
+f = File.expand_path("gear.csv", File.dirname(__FILE__))
+gears = CSV.read(f, headers: :first_row)
+
+gears.each do |row|
+  Gear.create!([
+                 {name: row["ObjectId"],
+                  display_name: row["Item Name"],
+                  description: row["Description"],
+                  health_bonus: row["Health Bonus"],
+                  speed_bonus: row["Speed Bonus"],
+                  range_bonus: row["Range Bonus"],
+                  # todo: type, gold, gems, level, asset_name, icon_name
+                 },
+               ])
+
+end
+
 
