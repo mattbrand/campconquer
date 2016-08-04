@@ -13,6 +13,28 @@ describe Enum do
       expect(subject.value).to eq(:rocky_road)
     end
 
+    context 'when missing a label' do
+      subject { Enum::Item.new(:rocky_road) }
+      it 'generates one based on the value' do
+        expect(subject.label).to eq("Rocky Road")
+      end
+    end
+
+    context 'when missing a value' do
+      subject { Enum::Item.new(nil, "Rocky Road") }
+      it 'generates one based on the label' do
+        expect(subject.value).to eq(:rocky_road)
+      end
+    end
+
+    context 'when missing both value and label' do
+      it 'fails' do
+        expect do
+          Enum::Item.new(nil, nil)
+        end.to raise_error(RuntimeError, Enum::Item::NEEDS_VALUE)
+      end
+    end
+
   end
 
   context "when initialized with a list of item tuples" do

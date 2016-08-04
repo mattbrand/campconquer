@@ -25,7 +25,7 @@ class Player < ActiveRecord::Base
       raise Player::CANT_CHANGE_PIECE_WHEN_GAME_LOCKED
     end
 
-    params = params.pick(:job, :role, :path)
+    params = params.pick(:body_type, :role, :path)
     if self.piece
       self.piece.update!(params) # todo: whitelist
     else

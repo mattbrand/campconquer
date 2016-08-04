@@ -4,24 +4,34 @@
 #
 #  id         :integer          not null, primary key
 #  team       :string
-#  job        :string
 #  role       :string
 #  path       :text
 #  speed      :float
-#  hit_points :integer
+#  health     :integer
 #  range      :float
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  game_id    :integer
 #  player_id  :integer
+#  body_type  :string
 #
 
 class Piece < ActiveRecord::Base
+
+  BODY_TYPES = Enum.new([
+                       [:gender_neutral_1],
+                       [:gender_neutral_2],
+                       [:male],
+                       [:female],
+                     ])
+
+  ROLES = Enum.new([
+                       [:offense],
+                       [:defense],
+                     ])
+
   belongs_to :game
   belongs_to :player
-
-  # todo: job enum
-  # todo: role enum
 
   # todo: validate that `path` is an array of Points
   serialize :path
@@ -31,14 +41,14 @@ class Piece < ActiveRecord::Base
     message: Team::NAMES.validation_message
   }
 
-  validates :job, inclusion: {
-    in: Job::NAMES.values,
-    message: Job::NAMES.validation_message
+  validates :body_type, inclusion: {
+    in: BODY_TYPES.values,
+    message: BODY_TYPES.validation_message
   }, allow_nil: true
 
   validates :role, inclusion: {
-    in: Role::NAMES.values,
-    message: Role::NAMES.validation_message
+    in: ROLES.values,
+    message: ROLES.validation_message
   }, allow_nil: true
 
   def player_name
@@ -57,7 +67,7 @@ class Piece < ActiveRecord::Base
   # so we have to call these options explicitly from the parent's as_json
   def self.serialization_options
     {
-      only: [:team, :job, :role, :path, :speed, :hit_points, :range],
+      only: [:team, :body_type, :role, :path, :speed, :health, :range],
       :methods => [:player_name] # Rails is SO unencapsulated :-(
     }
   end

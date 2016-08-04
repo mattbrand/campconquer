@@ -22,14 +22,23 @@ class Enum
   class Item
     attr_reader :value, :label
 
-    def initialize value, label
-      @value, @label = value.to_sym, label
+    NEEDS_VALUE = "An enum needs either a value or a label (or both)"
+
+    def initialize value, label=nil
+      raise NEEDS_VALUE unless value || label
+      @value = value.try(:to_sym)
+      @value = label.parameterize('_').to_sym if @value.nil?
+      @label = label || @value.to_s.titleize
     end
 
     def ==(other)
       other.is_a?(Enum::Item) and
         other.value == value and
         other.label == label
+    end
+
+    def label
+      @label || value.to_s.titleize
     end
   end
 

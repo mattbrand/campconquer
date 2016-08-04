@@ -18,6 +18,6 @@ class PiecesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def piece_params
-    params.require(:piece).permit(:job, :role, :path)
+    params.require(:piece).permit(:body_type, :role, :path)
   end
 end

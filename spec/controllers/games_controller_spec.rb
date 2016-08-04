@@ -99,10 +99,10 @@ describe GamesController, type: :controller do
     describe 'POST /games/1/lock' do
       before do
         @betsy = Player.create!(name: 'Betsy', team: 'blue')
-        @betsys_piece = @betsy.set_piece(job: 'striker', role: 'offense')
+        @betsys_piece = @betsy.set_piece(body_type: 'female', role: 'offense')
 
         @randy = Player.create!(name: 'Randy', team: 'red')
-        @randys_piece = @randy.set_piece(job: 'bruiser', role: 'defense')
+        @randys_piece = @randy.set_piece(body_type: 'male', role: 'defense')
 
       end
 
@@ -123,10 +123,10 @@ describe GamesController, type: :controller do
 
         # make sure it has the original's values
         pieces_hash = @game.pieces.as_json.map do |hash|
-          hash.pick(:team, :job, :role, :path)
+          hash.pick(:team, :body_type, :role, :path)
         end
-        betsys_hash = @betsys_piece.as_json.pick(:team, :job, :role, :path)
-        randys_hash = @randys_piece.as_json.pick(:team, :job, :role, :path)
+        betsys_hash = @betsys_piece.as_json.pick(:team, :body_type, :role, :path)
+        randys_hash = @randys_piece.as_json.pick(:team, :body_type, :role, :path)
         expect(pieces_hash).to include(betsys_hash)
         expect(pieces_hash).to include(randys_hash)
       end
@@ -144,7 +144,7 @@ describe GamesController, type: :controller do
     describe 'DELETE /games/1/lock' do
       before do
         @betsy = Player.create!(name: 'Betsy', team: 'blue')
-        @betsys_piece = @betsy.set_piece(job: 'striker', role: 'offense')
+        @betsys_piece = @betsy.set_piece(body_type: 'female', role: 'offense')
 
         @game.lock_game!
       end

@@ -7,14 +7,14 @@ describe PiecesController, type: :controller do
   # adjust the attributes here as well.
   let(:valid_attributes) {
     {
-      job: 'striker',
+      body_type: 'female',
       role: 'offense',
       path: '', # todo
     }
   }
 
   let(:invalid_attributes) {
-    {job: 'coder'}
+    {role: 'coach'}
   }
 
   let(:empty_attributes) {
@@ -64,14 +64,14 @@ describe PiecesController, type: :controller do
       end
 
       it "updates an existing piece on the player" do
-        existing_piece = Piece.create!({player_id: @player.id, team: @player.team, job: 'striker', role: 'offense'})
+        existing_piece = Piece.create!({player_id: @player.id, team: @player.team, body_type: 'female', role: 'offense'})
 
-        post :create, {player_id: @player.id, piece: {job: 'bruiser'}}, valid_session
+        post :create, {player_id: @player.id, piece: {body_type: 'gender_neutral_1'}}, valid_session
 
         @player.reload
         expect(@player.piece).not_to be_nil
         expect(@player.piece).to eq(existing_piece)
-        expect(@player.piece.job).to eq('bruiser')
+        expect(@player.piece.body_type).to eq('gender_neutral_1')
       end
 
       context "while the current game is locked" do
@@ -104,7 +104,8 @@ describe PiecesController, type: :controller do
         expect(response_json).to include(
                                    {
                                      'status' => 'error',
-                                     'message' => 'Job must be "bruiser" or "striker" or "speedster"'
+                                     'message' =>
+                                       'Role must be "offense" or "defense"'
                                    })
       end
     end

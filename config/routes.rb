@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
   ActiveAdmin.routes(self)
+
+  resources :gears, only: ['index']
+
   resources :games, only: ['index', 'show', 'destroy'] do
 
     member do

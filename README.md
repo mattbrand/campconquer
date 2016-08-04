@@ -65,11 +65,23 @@ We are using ActiveAdmin for some non-API UI
 
 ## Local Development Setup
 
-* `git pull`
+### First Time:
+
+* `git clone git@github.com:mattbrand/campconquer.git`
+* `cd campconquer`
 * `bundle install`
 * edit `.env` (see below)
+* `rake db:setup`
+
+### Every Time:
+
+* `git pull`
+* `bundle install`
 * `rake db:migrate`
+* `rake db:seed` (if `seeds.rb` has changed)
+* `rake spec`
 * `rails server`
+* `open http://localhost:3000`
 
 Alex recommends [JSON Viewer](https://chrome.google.com/webstore/detail/json-viewer/gbmdgpbipfallnflgajpaliibnhdgobh) for nicely viewing JSON output in Chrome
 

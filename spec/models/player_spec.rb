@@ -32,12 +32,12 @@ describe Player, type: :model do
 
     it 'only has one piece' do
       expect do
-        player.set_piece(job: 'striker')
-        player.set_piece(job: 'bruiser')
+        player.set_piece(body_type: 'female')
+        player.set_piece(body_type: 'male')
       end.to change(Piece, :count).by(1)
 
       player.reload
-      expect(player.piece.job).to eq('bruiser')
+      expect(player.piece.body_type).to eq('male')
     end
 
     it 'sets the team' do
@@ -47,7 +47,7 @@ describe Player, type: :model do
     end
 
     it 'rejects all but a few attributes' do
-      {job: 'striker', role: 'offense', path: [{'x' => 0, 'y' => 0}]}.each_pair do |key, value|
+      {body_type: 'female', role: 'offense', path: [{'x' => 0, 'y' => 0}]}.each_pair do |key, value|
         params = {}
         params[key] = value
         player.set_piece(params)
@@ -56,7 +56,7 @@ describe Player, type: :model do
       {
         team: 'red',
         speed: 9,
-        hit_points: 9,
+        health: 9,
         range: 9,
         created_at: 9,
         updated_at: 9,

@@ -130,6 +130,16 @@ types:
         type: integer
         description: number of times flag was picked up
 
+/gears:
+  get:
+    description: get all the gears
+    responses:
+      200:
+        body:
+          type: Gear[]
+          description: |
+            a list of all gear types
+
 /games:
   description: all the games
 

@@ -111,7 +111,7 @@ describe Game, type: :model do
       def create_alice_with_piece
         alice = Player.create!(name: 'alice', team: 'blue')
         piece_attributes = {
-          job: 'striker',
+          body_type: 'female',
           role: 'offense',
           path: '', # todo
         }
@@ -126,7 +126,7 @@ describe Game, type: :model do
         piece = @game.pieces.first
         expect(piece.player).to eq(alice)
         expect(piece.team).to eq(alice.team)
-        expect(piece.job).to eq('striker')
+        expect(piece.body_type).to eq('female')
         expect(piece.role).to eq('offense')
         expect(piece.path).to eq('')
       end
