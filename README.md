@@ -58,7 +58,7 @@ outcome[team_outcomes][][throws]:12
 
 ## Admin
 
-We are using ActiveAdmin for some non-API UI 
+We are using ActiveAdmin for some non-API UI
 
 <http://activeadmin.info/docs/documentation.html>
 
@@ -114,3 +114,6 @@ Want to see what other Fitbit info is available? Check out https://dev.fitbit.co
 # Unity links
 
 BestHTTP: https://docs.google.com/document/d/181l8SggPrVF1qRoPMEwobN_1Fn7NXOu-VtfjE6wvokg/edit#
+
+Game Database:
+https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ07TFsBi973VmIqgnLO6c/
