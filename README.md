@@ -71,6 +71,10 @@ We are using ActiveAdmin for some non-API UI
 * `rake db:migrate`
 * `rails server`
 
+Alex recommends [JSON Viewer](https://chrome.google.com/webstore/detail/json-viewer/gbmdgpbipfallnflgajpaliibnhdgobh) for nicely viewing JSON output in Chrome
+
+and [Postman](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?utm_source=chrome-ntp-launcher) for exploring APIs
+
 ## Local development with FitBit
 
 * Create an app for yourself at <https://dev.fitbit.com/apps>
@@ -84,6 +88,27 @@ We are using ActiveAdmin for some non-API UI
 > Note that FITBIT_CALLBACK_URL **must** correspond with the *Callback URL* on https://dev.fitbit.com/apps/edit/xxxxx
 
 * https://ngrok.com/ may be useful if you want to demo a locally-running app to someone on the wider Internet
+
+# Staging
+
+## Deploy to Heroku
+
+```
+git push heroku
+heroku run rake db:migrate
+heroku config:set `cat .env`
+```
+
+## FitBit Integration Is (Barely) Functional!
+
+* Create a player: https://campconquer-staging.herokuapp.com/admin/players/new
+* **NOTE THE ID** and use it below instead of 999
+* Authenticate that player: https://campconquer-staging.herokuapp.com/players/999/auth
+* See your profile: https://campconquer-staging.herokuapp.com/players/999/profile
+* See your steps for the past 3 months: https://campconquer-staging.herokuapp.com/players/999/steps
+* See your activities from yesterday: https://campconquer-staging.herokuapp.com/players/999/activities
+
+Want to see what other Fitbit info is available? Check out https://dev.fitbit.com/docs/activity/ for docs
 
 
 # Unity links
