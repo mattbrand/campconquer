@@ -139,6 +139,27 @@ describe GamesController, type: :controller do
         expect(response_json['game']).to include('pieces')
         expect(response_json['game']['pieces'].size).to eq(2)
       end
+
+      let(:galoshes) { Gear.create!(name: 'galoshes', gear_type: 'shoes') }
+      let(:tee_shirt) { Gear.create!(name: 'tee-shirt', gear_type: 'shirt') }
+
+      it 'copies gear' do
+        @betsys_piece.items.create!(gear_id: tee_shirt.id, equipped: false)
+        @betsys_piece.items.create!(gear_id: galoshes.id, equipped: true)
+
+        post :lock, {:id => @game.to_param}, valid_session
+
+        @game.reload
+
+        betsys_copied_piece = @game.pieces.find_by(player_id: @betsy.id)
+
+        expect(betsys_copied_piece.gear_equipped).to eq(['galoshes'])
+        expect(betsys_copied_piece.gear_owned).to include('galoshes', 'tee-shirt')
+
+        # make sure it's a copy, not the original item
+        expect(betsys_copied_piece.items).not_to include(galoshes)
+        expect(betsys_copied_piece.items).not_to include(tee_shirt)
+      end
     end
 
     describe 'DELETE /games/1/lock' do

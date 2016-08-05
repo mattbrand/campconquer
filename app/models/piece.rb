@@ -33,6 +33,10 @@ class Piece < ActiveRecord::Base
   belongs_to :game
   belongs_to :player
 
+  has_many :items
+  has_many :items_equipped, -> { where(equipped: true).includes(:gear) },
+           class_name: 'Item'
+
   # todo: validate that `path` is an array of Points
   serialize :path
 
@@ -71,6 +75,15 @@ class Piece < ActiveRecord::Base
     end
   end
 
+  def gear_owned
+    items.map{|item| item.gear_name}
+  end
+
+  def gear_equipped
+    items_equipped.map{|item| item.gear_name}
+  end
+
+
   include ActiveModel::Serialization
 
   def as_json(options=nil)
@@ -85,7 +98,7 @@ class Piece < ActiveRecord::Base
   def self.serialization_options
     {
       only: [:team, :body_type, :role, :path, :speed, :health, :range],
-      :methods => [:player_name] # Rails is SO unencapsulated :-(
+      :methods => [:player_name, :gear_owned, :gear_equipped] # Rails is SO unencapsulated :-(
     }
   end
 

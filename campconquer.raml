@@ -69,9 +69,9 @@ types:
         type: integer
       range_bonus:
         type: number
-      # should purchased gear be on Piece or Player?
-      gear:
-        type: string[]  # should we make this a full Gear object instead?
+      # should owned gear be on Piece or Player?
+      gear_owned:
+        type: string[]  # should we include a full Gear object instead of just a name?
         description: gear short name
       gear_equipped:
         type: string[]

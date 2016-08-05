@@ -66,11 +66,26 @@ class Game < ActiveRecord::Base
 
     update!(locked: true)
 
-    Player.all.includes(:piece).each do |player|
-      self.pieces << player.piece.dup if player.piece
-    end
-    save! # unnecessary?
+    duplicate_players
 
+  end
+
+  def duplicate_players
+    Player.all.includes(:piece).each do |player|
+      original_piece = player.piece
+      if original_piece
+        copied_piece = original_piece.dup
+        self.pieces << copied_piece
+        duplicate_items(copied_piece, original_piece)
+      end
+    end
+    save! # needed?
+  end
+
+  def duplicate_items(copied_piece, original_piece)
+    original_piece.items.each do |item|
+      copied_piece.items << item.dup
+    end
   end
 
 end

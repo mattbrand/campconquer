@@ -65,4 +65,35 @@ RSpec.describe Piece, type: :model do
       expect(piece.as_json['path']).to eq([{x:1, y:2}, {x:3, y:4}])
     end
   end
+
+  context "gear" do
+    let!(:piece) { Piece.create!(team: 'blue') }
+    let!(:tee_shirt) { Gear.create!(name: 'T-Shirt', gear_type: 'shirt') }
+    let!(:galoshes) { Gear.create!(name: 'Galoshes', gear_type: 'shoes') }
+
+    before do
+      piece.items.create!(gear_id: tee_shirt.id)
+      piece.items.create!(gear_id: galoshes.id, equipped: true)
+      piece.reload # :-( -- otherwise we get duplicates for some dumb reason
+    end
+
+    it "has items" do
+      expect(piece.items.size).to eq(2)
+      expect(piece.items.map(&:gear)).to include(tee_shirt)
+      expect(piece.items.map(&:gear)).to include(galoshes)
+    end
+
+    it "has equipped items" do
+      expect(piece.items_equipped.size).to eq(1)
+      expect(piece.items.map(&:gear)).to include(galoshes)
+    end
+
+    it "jsons all items as gear" do
+      expect(piece.as_json['gear_owned']).to eq([tee_shirt.name, galoshes.name])
+    end
+
+    it "jsons equipped items as gear_equipped" do
+      expect(piece.as_json['gear_equipped']).to eq([galoshes.name])
+    end
+  end
 end
