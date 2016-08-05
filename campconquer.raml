@@ -86,6 +86,9 @@ types:
       name:
         type: string
         description: the short name, e.g. 'hat1', used for lookup of visual assets and identifying in lists
+      gear_type:
+        type: string
+        description: enum: [head, shirt, belt, shoes, accessory, pet]
       display_name:
         type: string
         description: human readable name
@@ -98,6 +101,16 @@ types:
         type: integer
       range_bonus:
         type: number
+      gold:
+        type: number
+      gems:
+        type: number
+      level:
+        type: number
+      asset_name:
+        type: string
+      icon_name:
+        type: string
 
   Outcome:
     type: object

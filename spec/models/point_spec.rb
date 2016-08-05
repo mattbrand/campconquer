@@ -38,4 +38,10 @@ describe Point do
     expect(p.y).to eq(2)
   end
 
+  it "checks its parameters" do
+    expect { Point.from_a([]) }.to raise_error(RuntimeError)
+    expect { Point.from_a([1]) }.to raise_error(RuntimeError)
+    expect { Point.from_a([1,2,3]) }.to raise_error(RuntimeError)
+  end
+
 end

@@ -4,8 +4,9 @@ class Point
   attr_reader :x
   attr_reader :y
 
-  def self.from_a(array)
-    new(x: array[0], y: array[1])
+  def self.from_a(tuple)
+    raise "Point.from_a expected a 2-tuple but received #{tuple.inspect}" unless tuple.size == 2
+    new(x: tuple[0], y: tuple[1])
   end
 
   def self.from_hash(hash)

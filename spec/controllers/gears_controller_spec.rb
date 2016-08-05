@@ -15,6 +15,12 @@ describe GearsController, type: :controller do
       health_bonus: 1,
       speed_bonus: 4,
       range_bonus: 2,
+      gear_type: 'head',
+      asset_name: nil,
+      icon_name: nil,
+      gold: 0,
+      gems: 0,
+      level: 0
     }
   }
 
