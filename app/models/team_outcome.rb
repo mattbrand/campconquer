@@ -2,15 +2,14 @@
 #
 # Table name: team_outcomes
 #
-#  id            :integer          not null, primary key
-#  team          :string
-#  takedowns     :integer
-#  throws        :integer
-#  pickups       :integer
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  team_stats_id :integer
-#  outcome_id    :integer
+#  id         :integer          not null, primary key
+#  team       :string
+#  takedowns  :integer
+#  throws     :integer
+#  pickups    :integer
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  outcome_id :integer
 #
 # Indexes
 #
@@ -20,4 +19,20 @@
 class TeamOutcome < ActiveRecord::Base
   belongs_to :outcome
   validates :team, inclusion: { in: Team::NAMES.values, message: Team::NAMES.validation_message}
+
+  include ActiveModel::Serialization
+  def as_json(options=nil)
+    if options.nil?
+      options = self.class.serialization_options
+    end
+    super(options)
+  end
+
+  # Rails doesn't recursively call as_json or serializable_hash
+  # so we have to call these options explicitly from the parent's as_json
+  def self.serialization_options
+    {
+      only: [:team, :takedowns, :throws, :pickups],
+    }
+  end
 end

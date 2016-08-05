@@ -17,6 +17,7 @@ class Player < ActiveRecord::Base
   has_one :piece
   serialize :fitbit_token_hash
 
+  validates_uniqueness_of :name
   validates :team, inclusion: { in: Team::NAMES.values, message: Team::NAMES.validation_message}
 
   def set_piece(params = {})

@@ -24,4 +24,21 @@ class Outcome < ActiveRecord::Base
     message: Team::NAMES.validation_message + ' or "none"',
   }
 
+  # include ActiveModel::Serialization
+  # def as_json(options=nil)
+  #   if options.nil?
+  #     options = {root: true} + self.class.serialization_options
+  #   end
+  #   super(options)
+  # end
+
+  # Rails doesn't recursively call as_json or serializable_hash
+  # so we have to call these options explicitly from the parent's as_json
+  def self.serialization_options
+    {
+      only: [:winner, :match_length, :created_at, :updated_at],
+      include: [{:team_outcomes => TeamOutcome.serialization_options}]
+    }
+  end
+
 end

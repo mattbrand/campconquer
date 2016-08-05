@@ -19,7 +19,11 @@ describe Player, type: :model do
     expect(player).to be_valid
   end
 
-  it "validates player name uniqueness"
+  it "validates player name uniqueness" do
+    Player.create!(name: "Joe", team: 'blue')
+    player = Player.new(name: "Joe", team: 'red')
+    expect(player).not_to be_valid
+  end
 
   describe 'set_piece' do
     let(:player) { Player.create!(name: "Joe", team: 'blue') }

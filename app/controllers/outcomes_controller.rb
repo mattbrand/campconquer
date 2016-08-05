@@ -34,7 +34,7 @@ class OutcomesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def outcome_params
-    params.require(:outcome).permit(:winner, :team_stats_id, :match_length,
+    params.require(:outcome).permit(:winner, :match_length,
                                     team_outcomes: [
                                       :team, :takedowns, :throws, :pickups
                                     ])

@@ -41,7 +41,7 @@ class Game < ActiveRecord::Base
         root: true,
         include: [
           {:pieces => Piece.serialization_options},
-          :outcome
+          {:outcome => Outcome.serialization_options},
         ]
       }
     end

@@ -31,5 +31,9 @@ RSpec.describe Piece, type: :model do
     expect(Piece.new(team: 'blue', role: 'offense')).to be_valid
     expect(Piece.new(team: 'blue', role: 'management')).not_to be_valid
   end
-  it "serializes a list of points into path"
+
+  it "serializes a list of points into path" do
+
+
+  end
 end

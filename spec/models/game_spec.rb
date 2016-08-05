@@ -155,7 +155,24 @@ describe Game, type: :model do
   end
 
   describe "as_json" do
-    it "includes outcome and team_outcomes"
+    it "includes outcome and team_outcomes" do
+      game = Game.current
+      game.outcome = Outcome.new(winner: 'red', team_outcomes: [
+        TeamOutcome.new(team: 'blue', takedowns: 2),
+        TeamOutcome.new(team: 'red', takedowns: 3),
+      ])
+      game.save!
+
+      expect(game.as_json['game']['outcome']).to be
+      expect(game.as_json['game']['outcome']['winner']).to eq('red')
+
+      expect(game.as_json['game']['outcome']['team_outcomes']).to be
+      expect(game.as_json['game']['outcome']['team_outcomes'].size).to eq(2)
+      expect(game.as_json['game']['outcome']['team_outcomes'][0]['team']).to eq('blue')
+      expect(game.as_json['game']['outcome']['team_outcomes'][0]['takedowns']).to eq(2)
+      expect(game.as_json['game']['outcome']['team_outcomes'][1]['team']).to eq('red')
+      expect(game.as_json['game']['outcome']['team_outcomes'][1]['takedowns']).to eq(3)
+    end
   end
 
 end

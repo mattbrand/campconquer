@@ -2,15 +2,14 @@
 #
 # Table name: team_outcomes
 #
-#  id            :integer          not null, primary key
-#  team          :string
-#  takedowns     :integer
-#  throws        :integer
-#  pickups       :integer
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  team_stats_id :integer
-#  outcome_id    :integer
+#  id         :integer          not null, primary key
+#  team       :string
+#  takedowns  :integer
+#  throws     :integer
+#  pickups    :integer
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  outcome_id :integer
 #
 # Indexes
 #
