@@ -51,12 +51,16 @@ describe Player, type: :model do
     end
 
     it 'rejects all but a few attributes' do
-      {body_type: 'female', role: 'offense', path: [{'x' => 0, 'y' => 0}]}.each_pair do |key, value|
+      {body_type: 'female',
+       role: 'offense',
+       path: [Point.new(x:0, y:0)]
+      }.each_pair do |key, value|
         params = {}
         params[key] = value
         player.set_piece(params)
         expect(player.piece.send(key)).to eq(value)
       end
+
       {
         team: 'red',
         speed: 9,

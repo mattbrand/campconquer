@@ -113,7 +113,7 @@ describe Game, type: :model do
         piece_attributes = {
           body_type: 'female',
           role: 'offense',
-          path: '', # todo
+          path: [[0,0]]
         }
         alice.set_piece(piece_attributes)
         return alice
@@ -128,7 +128,7 @@ describe Game, type: :model do
         expect(piece.team).to eq(alice.team)
         expect(piece.body_type).to eq('female')
         expect(piece.role).to eq('offense')
-        expect(piece.path).to eq('')
+        expect(piece.path).to eq([Point.new(x:0, y:0)])
       end
 
       context 'when there is a player with no piece' do

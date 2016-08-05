@@ -19,16 +19,16 @@
 class Piece < ActiveRecord::Base
 
   BODY_TYPES = Enum.new([
-                       [:gender_neutral_1],
-                       [:gender_neutral_2],
-                       [:male],
-                       [:female],
-                     ])
+                          [:gender_neutral_1],
+                          [:gender_neutral_2],
+                          [:male],
+                          [:female],
+                        ])
 
   ROLES = Enum.new([
-                       [:offense],
-                       [:defense],
-                     ])
+                     [:offense],
+                     [:defense],
+                   ])
 
   belongs_to :game
   belongs_to :player
@@ -55,13 +55,30 @@ class Piece < ActiveRecord::Base
     self.player.try(:name)
   end
 
-  # include ActiveModel::Serialization
-  # def as_json(options=nil)
-  #   if options.nil?
-  #     options = {root: true} + self.class.serialization_options
-  #   end
-  #   super(options)
-  # end
+  def path=(value)
+    if value.blank?
+      super(nil)
+    else
+      super(value.map do |p|
+        if p.is_a? Point
+          p
+        elsif p.is_a? Hash
+          Point.from_hash(p)
+        else
+          Point.from_a(p)
+        end
+      end)
+    end
+  end
+
+  include ActiveModel::Serialization
+
+  def as_json(options=nil)
+    if options.nil?
+      options = self.class.serialization_options
+    end
+    super(options)
+  end
 
   # Rails doesn't recursively call as_json or serializable_hash
   # so we have to call these options explicitly from the parent's as_json
@@ -70,6 +87,14 @@ class Piece < ActiveRecord::Base
       only: [:team, :body_type, :role, :path, :speed, :health, :range],
       :methods => [:player_name] # Rails is SO unencapsulated :-(
     }
+  end
+
+  def read_attribute_for_serialization(name)
+    if name.to_sym == :path
+      path && path.map { |point| point.to_hash }
+    else
+      self.send(name)
+    end
   end
 
 end

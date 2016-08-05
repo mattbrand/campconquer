@@ -2,18 +2,38 @@ require 'rails_helper'
 
 describe Point do
   it "can be initialized with x, y" do
-    p = Point.new(x:1, y:2)
+    p = Point.new(x: 1, y: 2)
     expect(p.x).to eq(1)
     expect(p.y).to eq(2)
   end
 
+  it "equals a point with the same values" do
+    expect(Point.new(x: 1, y: 2)).to eq(Point.new(x: 1, y: 2))
+  end
+
+  it "does not equal a point with different values" do
+    expect(Point.new(x: 1, y: 2)).not_to eq(Point.new(x: 1, y: 9))
+    expect(Point.new(x: 1, y: 2)).not_to eq(Point.new(x: 9, y: 2))
+  end
+
   it "can turn into an array" do
-    p = Point.new(x:1, y:2)
-    expect(p.to_a).to eq([1,2])
+    p = Point.new(x: 1, y: 2)
+    expect(p.to_a).to eq([1, 2])
   end
 
   it "can be initialized from an array" do
-    p = Point.from_a([1,2])
+    p = Point.from_a([1, 2])
+    expect(p.x).to eq(1)
+    expect(p.y).to eq(2)
+  end
+
+  it "can turn into a hash" do
+    p = Point.new(x: 1, y: 2)
+    expect(p.to_hash).to eq({x: 1, y: 2})
+  end
+
+  it "can be initialized from a hash" do
+    p = Point.from_hash({x: 1, y: 2})
     expect(p.x).to eq(1)
     expect(p.y).to eq(2)
   end
