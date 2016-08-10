@@ -13,6 +13,9 @@ class OutcomesController < ApplicationController
       return
     end
 
+    puts "HI! MOVES="
+    ap params[:moves]
+
     params = outcome_params
     params[:team_outcomes_attributes] = params.delete(:team_outcomes) if params[:team_outcomes]
 

@@ -22,5 +22,22 @@ module Campconquer
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+
+    config.middleware.use "Loggo"
+  end
+end
+
+require 'ap'
+class Loggo
+  def initialize(app)
+    @app = app
+  end
+  def call(env)
+    ap env
+
+    ap env['rack.input'].string
+    ap env['rack.request.form_input'].string
+
+    @app.call(env)
   end
 end
