@@ -36,10 +36,10 @@ class Loggo
   def call(env)
     r = Rack::Request.new(env)
     if r.post?
-      puts "-- params:"
-      ap r.params
-      puts "-- body:"
+      puts "-- POST body:"
       ap r.body.read
+      puts "-- POST params:"
+      ap r.params
     end
     @app.call(env)
   end

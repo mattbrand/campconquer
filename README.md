@@ -10,7 +10,7 @@ Konker? I just met 'er!
 
 # Updating the Seed DB
 
-To update the gear database, 
+To update the gear database,
 
 1. go to
 <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ07TFsBi973VmIqgnLO6c/>
@@ -110,13 +110,15 @@ and [Postman](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdgg
 
 ## Local development with FitBit
 
-* Create an app for yourself at <https://dev.fitbit.com/apps>
+* Create an app for yourself at <https://dev.fitbit.com/apps> named e.g. "Matt's Local CampConquer"
+    * Callback URL must be `http://localhost:3000/players/auth-callback`
+
 
 * Put values inside `.env` in the project dir, e.g.:
 
-      FITBIT_CLIENT_ID=227W5K
-      FITBIT_CLIENT_SECRET=d4d5c9c23c517c19ba238851c153f771
-      FITBIT_CALLBACK_URL=http://localhost:3000/players/auth-callback
+        FITBIT_CLIENT_ID=123XXX
+        FITBIT_CLIENT_SECRET=abc123abc123abc123abc123abc123abc123
+        FITBIT_CALLBACK_URL=http://localhost:3000/players/auth-callback
 
 > Note that FITBIT_CALLBACK_URL **must** correspond with the *Callback URL* on https://dev.fitbit.com/apps/edit/xxxxx
 
