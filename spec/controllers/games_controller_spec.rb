@@ -59,7 +59,7 @@ describe GamesController, type: :controller do
   describe "GET /games/current" do
     it "assigns the current game as @game" do
       game = Game.current
-      get :show, {:id => game.to_param}, valid_session
+      get :show, {:id => 'current'}, valid_session
       expect(assigns(:game)).to eq(game)
     end
 
@@ -73,6 +73,21 @@ describe GamesController, type: :controller do
         expect(assigns(:game)).to be_current
         expect(assigns(:game)).to eq(Game.find(assigns(:game).id))
       end
+    end
+  end
+
+  describe "GET /games/previous" do
+    it "assigns the most recently completed (non-current) game as @game" do
+      game_a = Game.create! current: false
+      # todo: use Rails 5 touch method
+      game_a.update_columns(updated_at: Time.new(2015, 2, 16, 0, 0, 0))
+      game_b = Game.create! current: false
+      game_c = Game.create! current: true
+
+      expect(Game.previous).to eq(game_b)
+
+      get :show, {:id => 'previous'}, valid_session
+      expect(assigns(:game)).to eq(game_b)
     end
   end
 

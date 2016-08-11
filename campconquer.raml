@@ -179,6 +179,17 @@ types:
           body:
             type: Game
 
+  /previous:
+    description: the most recently played game
+    get:
+      description: |
+        get a single game
+        client should note the id and use it in further calls
+      responses:
+        200:
+          body:
+            type: Game
+
   /{game_id}:
     description: a single game
     get:

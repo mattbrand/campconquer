@@ -61,6 +61,8 @@ class ApplicationController < ActionController::Base
     game_id = params[:game_id] || params[:id]
     if game_id == 'current'
       @game = Game.current
+    elsif game_id == 'previous'
+      @game = Game.previous
     else
       @game = Game.find(game_id)
     end
@@ -85,11 +87,7 @@ class ApplicationController < ActionController::Base
 
   def set_player
     player_id = params[:player_id] || params[:id]
-    if player_id == 'current'
-      @player = Player.current
-    else
-      @player = Player.find(player_id)
-    end
+    @player = Player.find(player_id)
   end
 
 
