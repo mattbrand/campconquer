@@ -109,21 +109,12 @@ describe OutcomesController, type: :controller do
           expect(@game.reload).not_to be_current
         end
 
-        pending 'reads a move list'#  do
-          # pending
+        it 'reads & saves a move list as a raw json blob' do
 
-          # moves = [
-          #   {
-          #     "RM":[{"ID":"0","T":"Run","X":1.5125,"Y":5.0,"S":0,"F":false},{"ID":"1","T":"Run","X":1.52188,"Y":5.0,"S":0,"F":false},{"ID":"2","T":"Run","X":1.5125,"Y":5.0,"S":0,"F":false},{"ID":"3","T":"Run","X":1.51875,"Y":5.0,"S":0,"F":false}],
-          #    "BM":[{"ID":"0","T":"Run","X":13.4875,"Y":5.0,"S":0,"F":false},{"ID":"1","T":"Run","X":13.48125,"Y":5.0,"S":0,"F":false},{"ID":"2","T":"Run","X":13.48438,"Y":5.0,"S":0,"F":false},{"ID":"3","T":"Run","X":13.4875,"Y":5.0,"S":0,"F":false}
-          #    ]
-          #   }
-          #
-          #
-          #
-          #
-          # post :create, {game_id: @game.id, outcome: valid_attributes + {moves: }}, valid_session
-        # end
+          moves = "MOVESJSON"
+          post :create, {game_id: @game.id, outcome: valid_attributes + {moves: moves}}, valid_session
+          expect(assigns(:outcome).reload.moves).to eq(moves)
+        end
       end
 
       context "with invalid params" do

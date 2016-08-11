@@ -8,6 +8,7 @@
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #  game_id      :integer
+#  moves        :text
 #
 # Indexes
 #
@@ -36,7 +37,12 @@ class Outcome < ActiveRecord::Base
   # so we have to call these options explicitly from the parent's as_json
   def self.serialization_options
     {
-      only: [:winner, :match_length, :created_at, :updated_at],
+      only: [:winner,
+             :match_length,
+             :created_at,
+             :updated_at,
+             :moves
+      ],
       include: [{:team_outcomes => TeamOutcome.serialization_options}]
     }
   end

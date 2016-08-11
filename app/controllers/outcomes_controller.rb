@@ -13,9 +13,6 @@ class OutcomesController < ApplicationController
       return
     end
 
-    puts "HI! MOVES="
-    ap params[:moves]
-
     params = outcome_params
     params[:team_outcomes_attributes] = params.delete(:team_outcomes) if params[:team_outcomes]
 
@@ -37,7 +34,9 @@ class OutcomesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def outcome_params
-    params.require(:outcome).permit(:winner, :match_length,
+    params.require(:outcome).permit(:winner,
+                                    :match_length,
+                                    :moves,
                                     team_outcomes: [
                                       :team, :takedowns, :throws, :pickups
                                     ])

@@ -8,6 +8,7 @@
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #  game_id      :integer
+#  moves        :text
 #
 # Indexes
 #
