@@ -16,11 +16,7 @@ class OutcomesController < ApplicationController
     params = outcome_params
     params[:team_outcomes_attributes] = params.delete(:team_outcomes) if params[:team_outcomes]
 
-    @outcome = Outcome.new(params)
-
-    replace_outcome(@game, @outcome)
-    @game.update!(current: false, locked: false)
-    @game.unlock_game!
+    @game.finish_game!(params)
 
     render status: :created,
            json: {status: 'ok'}
@@ -40,15 +36,6 @@ class OutcomesController < ApplicationController
                                     team_outcomes: [
                                       :team, :takedowns, :throws, :pickups
                                     ])
-  end
-
-  # should this be inside the model?
-  def replace_outcome(game, outcome)
-    outcome.validate! # force a RecordInvalid exception on the outcome before saving the game
-    # should these be in a transaction?
-    old_outcome = game.outcome
-    game.outcome = outcome # this saves it too
-    old_outcome.destroy! if old_outcome
   end
 
 

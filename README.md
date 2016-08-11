@@ -145,6 +145,14 @@ heroku config:set `cat .env`
 
 Want to see what other Fitbit info is available? Check out https://dev.fitbit.com/docs/activity/ for docs
 
+# Messing around
+
+```
+rails console
+g = Game.current
+g.lock_game!
+g.finish_game! winner: 'red'
+```
 
 # Unity links
 

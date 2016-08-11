@@ -33,3 +33,23 @@ gears.each do |row|
                ])
 
 end
+
+words=File.read("/usr/share/dict/words").split
+def random_name(words)
+  words[rand(words.length)]
+end
+
+Player.destroy_all
+%w(red blue).each do |team_name|
+  50.times do
+    p = Player.create!(name: random_name(words), team: team_name)
+    Piece.create!(player_id: p.id,
+                  team: p.team,
+                  role: 'defense',
+                  path: [Point.new(x: rand(15), y: rand(10))]
+    )
+  end
+end
+
+# TODO:
+#    - seed actual paths

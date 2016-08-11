@@ -70,6 +70,30 @@ class Game < ActiveRecord::Base
 
   end
 
+  # params:  :winner,
+  # :match_length,
+  #     :moves,
+  #     team_outcomes: [{
+  #     :team, :takedowns, :throws, :pickups
+  #                     }]
+
+  # todo: test me
+  def finish_game! params
+    # todo: fail if already completed
+    replace_outcome(Outcome.new(params))
+    update!(current: false, locked: false)
+    unlock_game!
+  end
+
+  def replace_outcome(outcome)
+    outcome.validate! # force a RecordInvalid exception on the outcome before saving the game
+    # should these be in a transaction?
+    old_outcome = self.outcome
+    self.outcome = outcome # this saves it too
+    old_outcome.destroy! if old_outcome
+  end
+
+
   def duplicate_players
     Player.all.includes(:piece).each do |player|
       original_piece = player.piece

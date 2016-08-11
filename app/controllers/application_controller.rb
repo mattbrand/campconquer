@@ -60,9 +60,9 @@ class ApplicationController < ActionController::Base
   def set_game
     game_id = params[:game_id] || params[:id]
     if game_id == 'current'
-      @game = Game.current
+      @game = Game.current || raise(ActiveRecord::RecordNotFound, "current game not found")
     elsif game_id == 'previous'
-      @game = Game.previous
+      @game = Game.previous || raise(ActiveRecord::RecordNotFound, "previous game not found")
     else
       @game = Game.find(game_id)
     end
