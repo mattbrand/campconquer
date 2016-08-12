@@ -43,10 +43,6 @@ class Board
     @words[rand(@words.length)]
   end
 
-  def heads?
-    rand(2) == 0
-  end
-
   def left_side_of_base
     case @team_name
     when 'blue'
@@ -84,12 +80,16 @@ class Board
     50.times do
       p = Player.create!(name: random_name, team: @team_name)
 
-      @role = heads? ? 'defense' : 'offense'
+      @role = Piece::ROLES.values.sample
 
       Piece.create!(player_id: p.id,
                     team: @team_name,
                     role: @role,
-                    path: path
+                    path: path,
+                    speed: 1 + rand(10),
+                    health: 1 + rand(10),
+                    range: 1 + rand(5),
+                    body_type: Piece::BODY_TYPES.values.sample
       )
 
       # puts p.as_json

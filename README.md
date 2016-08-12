@@ -85,9 +85,9 @@ We are using ActiveAdmin for some non-API UI
 <http://activeadmin.info/docs/documentation.html>
 
 
-## Local Development Setup
+## Local Development
 
-### First Time:
+### First Time Setup:
 
 * `git clone git@github.com:mattbrand/campconquer.git`
 * `cd campconquer`
@@ -95,19 +95,39 @@ We are using ActiveAdmin for some non-API UI
 * edit `.env` (see below)
 * `rake db:setup`
 
-### Every Time:
-
-* `git pull`
-* `bundle install`
-* `rake db:migrate`
-* `rake db:seed` (if `seeds.rb` has changed)
-* `rake spec`
-* `rails server`
-* `open http://localhost:3000`
+Optional setup:
 
 Alex recommends [JSON Viewer](https://chrome.google.com/webstore/detail/json-viewer/gbmdgpbipfallnflgajpaliibnhdgobh) for nicely viewing JSON output in Chrome
 
 and [Postman](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?utm_source=chrome-ntp-launcher) for exploring APIs
+
+### Pulling Code
+
+* `git pull`
+* `bundle install`
+* `rake db:migrate`
+* `rake db:seed` (if `seeds.rb` or its data files have changed)
+* `rake spec`
+* `rails server`
+* `open http://localhost:3000`
+
+### Making a New Game
+ 
+```
+rails console
+g = Game.current
+g.lock_game!
+g.finish_game! winner: 'red'
+```
+
+### Seeding Players
+
+This makes a new set of 100 players with random roles / positions / paths :
+
+`rake db:seed`
+
+(Soon it should be made into a different rake task)
+
 
 ## Local development with FitBit
 
@@ -146,16 +166,8 @@ heroku config:set `cat .env`
 
 Want to see what other Fitbit info is available? Check out https://dev.fitbit.com/docs/activity/ for docs
 
-# Messing around
 
-```
-rails console
-g = Game.current
-g.lock_game!
-g.finish_game! winner: 'red'
-```
-
-# Unity links
+# Miscellaneous Links
 
 BestHTTP: https://docs.google.com/document/d/181l8SggPrVF1qRoPMEwobN_1Fn7NXOu-VtfjE6wvokg/edit#
 
