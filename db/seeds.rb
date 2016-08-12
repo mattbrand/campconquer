@@ -34,22 +34,67 @@ gears.each do |row|
 
 end
 
-words=File.read("/usr/share/dict/words").split
-def random_name(words)
-  words[rand(words.length)]
-end
+class Board
+  def initialize
+    @words = File.read("/usr/share/dict/words").split
+  end
 
-Player.destroy_all
-%w(red blue).each do |team_name|
-  50.times do
-    p = Player.create!(name: random_name(words), team: team_name)
-    Piece.create!(player_id: p.id,
-                  team: p.team,
-                  role: 'defense',
-                  path: [Point.new(x: rand(15), y: rand(10))]
-    )
+  def random_name
+    @words[rand(@words.length)]
+  end
+
+  def heads?
+    rand(2) == 0
+  end
+
+  def left_side_of_base
+    case @team_name
+    when 'blue'
+      0
+    else
+      10
+    end
+  end
+
+  def path
+    # everyone starts in a base
+    p = [point_in_base]
+    if @role == 'offense'
+      10.times { p << point_anywhere }
+    end
+    p
+  end
+
+  def point_in_base
+    Point.new(x: left_side_of_base + rand(5), y: 1 + rand(8))
+  end
+
+  def point_anywhere
+    Point.new(x: rand(15), y: rand(10))
+  end
+
+  def seed_teams
+    %w(red blue).each do |team_name|
+      @team_name = team_name
+      seed_team
+    end
+  end
+
+  def seed_team
+    50.times do
+      p = Player.create!(name: random_name, team: @team_name)
+
+      @role = heads? ? 'defense' : 'offense'
+
+      Piece.create!(player_id: p.id,
+                    team: @team_name,
+                    role: @role,
+                    path: path
+      )
+
+      # puts p.as_json
+    end
   end
 end
 
-# TODO:
-#    - seed actual paths
+Board.new.seed_teams
