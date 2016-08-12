@@ -88,7 +88,6 @@ class Piece < ActiveRecord::Base
     items_equipped.map{|item| item.gear_name}
   end
 
-
   include ActiveModel::Serialization
 
   def as_json(options=nil)

@@ -66,7 +66,7 @@ class Game < ActiveRecord::Base
 
     update!(locked: true)
 
-    duplicate_players
+    copy_player_pieces
 
   end
 
@@ -93,23 +93,23 @@ class Game < ActiveRecord::Base
     outcome
   end
 
-  def duplicate_players
-    # todo: bulk copy somehow? duping is slow
-    Player.all.includes(:piece).each do |player|
-      original_piece = player.piece
-      if original_piece
-        copied_piece = original_piece.dup
-        self.pieces << copied_piece
-        duplicate_items(copied_piece, original_piece)
-      end
-    end
-    save! # needed?
-  end
+  private
 
-  def duplicate_items(copied_piece, original_piece)
-    # todo: bulk copy somehow? duping is slow
-    original_piece.items.each do |item|
-      copied_piece.items << item.dup
+  def copy_player_pieces
+    Piece.bulk_insert do |bulk_pieces|
+      Player.all.includes(piece: :items).where('pieces.game_id IS NULL').references(:pieces).each do |player|
+        original_piece = player.piece
+        if original_piece
+
+          piece_attrs = original_piece.attributes + {game_id: self.id}
+          bulk_pieces.add(piece_attrs)
+
+          copied_piece = original_piece.dup
+          original_piece.items.each do |item|
+            copied_piece.items << item.dup
+          end
+        end
+      end
     end
   end
 

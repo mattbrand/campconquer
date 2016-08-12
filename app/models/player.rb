@@ -14,7 +14,7 @@
 class Player < ActiveRecord::Base
   CANT_CHANGE_PIECE_WHEN_GAME_LOCKED = "you can't change your piece if the current game is locked"
 
-  has_one :piece
+  has_one :piece, -> { where(game_id: nil) }
   serialize :fitbit_token_hash
 
   validates_uniqueness_of :name

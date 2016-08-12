@@ -119,17 +119,27 @@ describe Game, type: :model do
         return alice
       end
 
-      it "copies all players' pieces" do
+      it "copies a player's pieces" do
         alice = create_alice_with_piece
+        old_piece = alice.piece
+
         @game.lock_game!
         expect(@game.pieces).not_to be_empty
+
         piece = @game.pieces.first
+        expect(piece.game).to eq(@game)
         expect(piece.player).to eq(alice)
         expect(piece.team).to eq(alice.team)
         expect(piece.body_type).to eq('female')
         expect(piece.role).to eq('offense')
         expect(piece.path).to eq([Point.new(x:0, y:0)])
+
+        expect(alice.reload.piece).to eq(old_piece)
       end
+
+      it "copies a player's items"
+      it "copies all players' pieces"
+      it "copies all players' items"
 
       context 'when there is a player with no piece' do
         it 'ignores it' do
@@ -143,7 +153,19 @@ describe Game, type: :model do
 
         end
       end
+
+      it 'only copies one piece per player (not old games) (bug)' do
+        alice = create_alice_with_piece
+        @game.lock_game!
+        expect(@game.pieces.count).to eq(1)
+
+        @game.finish_game! winner: 'red' # todo: abort_game! ?
+        @game = Game.current
+        @game.lock_game!
+        expect(@game.pieces.count).to eq(1)
+      end
     end
+
     context 'when the game is locked' do
       it 'fails' do
         @game.lock_game!

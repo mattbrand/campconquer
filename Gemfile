@@ -21,6 +21,8 @@ gem 'activeadmin', github: 'activeadmin'
 
 gem 'awesome_print'
 gem 'oauth2'
+gem 'bulk_insert' # https://github.com/jamis/bulk_insert
+
 
 group :development, :test do
   gem 'sqlite3'

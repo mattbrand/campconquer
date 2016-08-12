@@ -97,4 +97,5 @@ class Board
   end
 end
 
+Player.destroy_all
 Board.new.seed_teams
