@@ -16,7 +16,7 @@ class OutcomesController < ApplicationController
     params = outcome_params
     params[:team_outcomes_attributes] = params.delete(:team_outcomes) if params[:team_outcomes]
 
-    @game.finish_game!(params)
+    @outcome = @game.finish_game!(params)
 
     render status: :created,
            json: {status: 'ok'}

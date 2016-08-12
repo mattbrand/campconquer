@@ -58,9 +58,14 @@ describe OutcomesController, type: :controller do
       end
 
       context "with valid params" do
+
+        before { bypass_rescue }
+
         it "creates a new Outcome" do
           expect {
             post :create, {game_id: @game.id, outcome: valid_attributes}, valid_session
+            expect_ok
+
           }.to change(Outcome, :count).by(1)
         end
 
@@ -80,7 +85,7 @@ describe OutcomesController, type: :controller do
 
         it "renders an 'ok' message" do
           post :create, {game_id: @game.id, outcome: valid_attributes}, valid_session
-          expect(response.body).to eq({status: 'ok'}.to_json)
+          expect_ok
         end
 
         it "replaces an existing outcome on the game" do
@@ -104,23 +109,27 @@ describe OutcomesController, type: :controller do
           expect(@game.reload).not_to be_locked
         end
 
-        it 'marks the game as no longer current' do
+        it 'marks the game as no longer current or locked' do
           post :create, {game_id: @game.id, outcome: valid_attributes}, valid_session
           expect(@game.reload).not_to be_current
         end
 
         it 'reads & saves a move list as a raw json blob' do
-
           moves = "MOVESJSON"
           post :create, {game_id: @game.id, outcome: valid_attributes + {moves: moves}}, valid_session
+          expect_ok
           expect(assigns(:outcome).reload.moves).to eq(moves)
         end
       end
 
       context "with invalid params" do
-        it "assigns a newly created but unsaved outcome as @outcome" do
+        it "does not reset the current or locked flags" do
+          expect(@game).to be_current
+          expect(@game).to be_locked
           post :create, {:game_id => @game.id, :outcome => invalid_attributes}, valid_session
-          expect(assigns(:outcome)).to be_a_new(Outcome)
+          @game.reload
+          expect(@game).to be_current
+          expect(@game).to be_locked
         end
 
         it "renders an error body" do

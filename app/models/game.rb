@@ -79,20 +79,19 @@ class Game < ActiveRecord::Base
 
   # todo: test me
   def finish_game! params
-    # todo: fail if already completed
-    replace_outcome(Outcome.new(params))
-    update!(current: false, locked: false)
-    unlock_game!
-  end
-
-  def replace_outcome(outcome)
+    # todo: fail if the game is already completed
+    outcome = Outcome.new(params)
     outcome.validate! # force a RecordInvalid exception on the outcome before saving the game
+
     # should these be in a transaction?
     old_outcome = self.outcome
     self.outcome = outcome # this saves it too
+    self.current = false
+    self.locked = false
+    save!
     old_outcome.destroy! if old_outcome
+    outcome
   end
-
 
   def duplicate_players
     Player.all.includes(:piece).each do |player|
