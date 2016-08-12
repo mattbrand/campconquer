@@ -20,6 +20,21 @@ types:
       x: number
       y: number
 
+  # maybe this type needs a better name like “SelectablePath” since the piece’s path does not need “active” or “role”
+  Path:
+    type: object
+    description: |
+      for defense, an array with a single element;
+      for offense, the path to follow
+    properties:
+      route: Point[]
+      role:
+        type: string
+        description: "enum: [offense, defense]"
+      active:
+        type: boolean
+        description: is this path currently selectable by players?
+
   Game:
     type: object
     description: the setup for a single game
@@ -51,11 +66,9 @@ types:
       role:
         type: string
         description: "enum: [offense, defense]"
-      path:
+      path: # todo: rename to "route"
         type: Point[]
-        description: |
-          for defense, an array with a single element;
-          for offense, the path to follow
+        description: see Path
       speed:
         type: number
       health:
@@ -88,7 +101,7 @@ types:
         description: the short name, e.g. 'hat1', used for lookup of visual assets and identifying in lists
       gear_type:
         type: string
-        description: enum: [head, shirt, belt, shoes, accessory, pet]
+        description: "enum: [head, shirt, belt, shoes, accessory, pet]"
       display_name:
         type: string
         description: human readable name
@@ -250,7 +263,7 @@ types:
       post:
         description: buy a piece of gear
         queryParameters:
-          name: gear[name]
+          name: string
 
     /piece:
       post:
@@ -268,3 +281,16 @@ types:
 
         queryParameters:
           type: Piece
+
+/paths:
+  get:
+    description: get all paths selectable (or not) by player during setup
+    queryParameters:
+      active:
+        type: boolean
+        required: false
+        description: if present, only return the active paths
+    responses:
+      200:
+        body:
+          type: Path[]
