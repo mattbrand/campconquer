@@ -28,6 +28,7 @@ To update the gear database,
 
 > You may be tempted to edit the gear etc. via the admin interface. RESIST THE TEMPTATION. Do it through git or local demos, staging, etc. will get out of sync with production.
 
+Currently `rake db:seed` creates lots of random players and positions too... we should probably make a separate rake task for that
 
 ## API Docs
 

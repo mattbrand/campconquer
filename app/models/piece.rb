@@ -33,9 +33,14 @@ class Piece < ActiveRecord::Base
   belongs_to :game
   belongs_to :player
 
-  has_many :items
-  has_many :items_equipped, -> { where(equipped: true).includes(:gear) },
-           class_name: 'Item'
+  has_many :items, -> { includes(:gear) }
+
+  # has_many :items_equipped, -> { where(equipped: true).includes(:gear) },
+  #          class_name: 'Item'
+  # a method is quicker than a separate query for some weird eager preload reason
+  def items_equipped
+    items.select { |item| item.equipped? }
+  end
 
   # todo: validate that `path` is an array of Points
   serialize :path

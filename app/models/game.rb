@@ -14,8 +14,8 @@
 #
 
 class Game < ActiveRecord::Base
-  has_many :pieces
-  has_one :outcome, dependent: :destroy
+  has_many :pieces, -> { includes :player, :items }
+  has_one :outcome, -> { includes :team_outcomes }, dependent: :destroy
 
   validates_uniqueness_of :current,
                           unless: Proc.new { |game| !game.current? },
@@ -94,6 +94,7 @@ class Game < ActiveRecord::Base
   end
 
   def duplicate_players
+    # todo: bulk copy somehow? duping is slow
     Player.all.includes(:piece).each do |player|
       original_piece = player.piece
       if original_piece
@@ -106,6 +107,7 @@ class Game < ActiveRecord::Base
   end
 
   def duplicate_items(copied_piece, original_piece)
+    # todo: bulk copy somehow? duping is slow
     original_piece.items.each do |item|
       copied_piece.items << item.dup
     end
