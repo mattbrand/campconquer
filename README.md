@@ -173,3 +173,6 @@ BestHTTP: https://docs.google.com/document/d/181l8SggPrVF1qRoPMEwobN_1Fn7NXOu-Vt
 
 Game Database:
 https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ07TFsBi973VmIqgnLO6c/
+
+Xamarin Studio Community Edition:
+https://www.xamarin.com/download
