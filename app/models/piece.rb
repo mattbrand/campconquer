@@ -101,7 +101,7 @@ class Piece < ActiveRecord::Base
   # so we have to call these options explicitly from the parent's as_json
   def self.serialization_options
     {
-      only: [:team, :body_type, :role, :path, :speed, :health, :range],
+      only: [:player_id, :team, :body_type, :role, :path, :speed, :health, :range],
       :methods => [:player_name, :gear_owned, :gear_equipped] # Rails is SO unencapsulated :-(
     }
   end

@@ -158,7 +158,7 @@ describe GamesController, type: :controller do
       let(:galoshes) { Gear.create!(name: 'galoshes', gear_type: 'shoes') }
       let(:tee_shirt) { Gear.create!(name: 'tee-shirt', gear_type: 'shirt') }
 
-      it 'copies gear' do
+      pending 'copies gear' do
         @betsys_piece.items.create!(gear_id: tee_shirt.id, equipped: false)
         @betsys_piece.items.create!(gear_id: galoshes.id, equipped: true)
 
