@@ -158,15 +158,20 @@ describe GamesController, type: :controller do
       let(:galoshes) { Gear.create!(name: 'galoshes', gear_type: 'shoes') }
       let(:tee_shirt) { Gear.create!(name: 'tee-shirt', gear_type: 'shirt') }
 
-      pending 'copies gear' do
+      it 'copies gear' do
         @betsys_piece.items.create!(gear_id: tee_shirt.id, equipped: false)
         @betsys_piece.items.create!(gear_id: galoshes.id, equipped: true)
+
+        @betsys_piece.items.reload
+        expect(@betsys_piece.gear_equipped).to eq(['galoshes'])
+        expect(@betsys_piece.gear_owned).to include('galoshes', 'tee-shirt')
 
         post :lock, {:id => @game.to_param}, valid_session
 
         @game.reload
 
         betsys_copied_piece = @game.pieces.find_by(player_id: @betsy.id)
+        betsys_copied_piece.items.reload
 
         expect(betsys_copied_piece.gear_equipped).to eq(['galoshes'])
         expect(betsys_copied_piece.gear_owned).to include('galoshes', 'tee-shirt')
@@ -200,7 +205,6 @@ describe GamesController, type: :controller do
         delete :unlock, {:id => @game.to_param}, valid_session
         expect(@game.reload.pieces).to be_empty
       end
-
     end
 
   end

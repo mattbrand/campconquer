@@ -96,18 +96,27 @@ class Game < ActiveRecord::Base
   private
 
   def copy_player_pieces
+    players = Player.all.includes(piece: :items).where('pieces.game_id IS NULL').references(:pieces)
+
     Piece.bulk_insert do |bulk_pieces|
-      Player.all.includes(piece: :items).where('pieces.game_id IS NULL').references(:pieces).each do |player|
+      players.each do |player|
         original_piece = player.piece
         if original_piece
-
           piece_attrs = original_piece.attributes + {game_id: self.id}
           bulk_pieces.add(piece_attrs)
+        end
+      end
+    end
 
-          copied_piece = original_piece.dup
-          original_piece.items.each do |item|
-            copied_piece.items << item.dup
-          end
+    # tack on the gear
+    # todo: move to Piece
+    Item.bulk_insert do |bulk_items|
+      pieces = self.pieces.includes(:items)
+      pieces.each do |piece|
+        original_piece = piece.player.piece # :-)
+        original_piece.items.each do |original_item|
+          item_attrs = original_item.attributes + {piece_id: piece.id}
+          bulk_items.add(item_attrs)
         end
       end
     end

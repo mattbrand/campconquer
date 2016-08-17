@@ -113,7 +113,7 @@ describe Game, type: :model do
         piece_attributes = {
           body_type: 'female',
           role: 'offense',
-          path: [[0,0]]
+          path: [[0, 0]]
         }
         alice.set_piece(piece_attributes)
         return alice
@@ -132,12 +132,38 @@ describe Game, type: :model do
         expect(piece.team).to eq(alice.team)
         expect(piece.body_type).to eq('female')
         expect(piece.role).to eq('offense')
-        expect(piece.path).to eq([Point.new(x:0, y:0)])
+        expect(piece.path).to eq([Point.new(x: 0, y: 0)])
 
         expect(alice.reload.piece).to eq(old_piece)
       end
 
-      it "copies a player's items"
+      let(:galoshes) { Gear.create!(name: 'galoshes', gear_type: 'shoes') }
+      let(:tee_shirt) { Gear.create!(name: 'tee-shirt', gear_type: 'shirt') }
+
+      it "copies a player's items" do
+
+        alice = create_alice_with_piece
+
+        alice.piece.items.create!(gear_id: tee_shirt.id, equipped: false)
+        alice.piece.items.create!(gear_id: galoshes.id, equipped: true)
+
+        alice.piece.items.reload
+        expect(alice.piece.gear_equipped).to eq(['galoshes'])
+        expect(alice.piece.gear_owned).to include('galoshes', 'tee-shirt')
+
+        @game.lock_game!
+
+        copied_piece = @game.pieces.find_by(player_id: alice.id)
+        copied_piece.items.reload
+
+        expect(copied_piece.gear_equipped).to eq(['galoshes'])
+        expect(copied_piece.gear_owned).to include('galoshes', 'tee-shirt')
+
+        # make sure it's a copy, not the original item
+        expect(copied_piece.items).not_to include(galoshes)
+        expect(copied_piece.items).not_to include(tee_shirt)
+      end
+
       it "copies all players' pieces"
       it "copies all players' items"
 
