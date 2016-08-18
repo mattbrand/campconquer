@@ -142,13 +142,13 @@ describe PlayersController, type: :controller do
   end
 
   describe 'GET #auth-callback' do
-    it "finds the player corresponding to the given auth token, finishes auth, and redirects to the profile" do
+    it "finds the player corresponding to the given auth token, finishes auth, and redirects to the admin players list" do
       player = Player.create! valid_attributes + {anti_forgery_token: "CALLBACK_STATE"}
       expect(Player).to receive(:find_by_anti_forgery_token).with("CALLBACK_STATE") { player }
       expect(player).to receive(:finish_auth).with("CALLBACK_CODE")
       bypass_rescue
       get :auth_callback, {:state => "CALLBACK_STATE", :code => "CALLBACK_CODE"}
-      expect(response).to redirect_to(profile_player_path(player))
+      expect(response).to redirect_to(admin_players_path)
     end
   end
 

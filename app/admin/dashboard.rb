@@ -27,6 +27,7 @@ ActiveAdmin.register_page "Dashboard" do
       column do
         panel "Info" do
           para "Welcome to Camp Conquer!"
+          para "Click in the top nav on the resource you want."
         end
       end
     end

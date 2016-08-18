@@ -74,4 +74,8 @@ class Player < ActiveRecord::Base
     fitbit.get_user_profile
   end
 
+  def authenticated?
+    fitbit_token_hash
+  end
+
 end

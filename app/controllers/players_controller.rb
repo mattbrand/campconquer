@@ -45,7 +45,8 @@ class PlayersController < ApplicationController
   def auth_callback
     player = Player.find_by_anti_forgery_token(params[:state])
     player.finish_auth(params[:code]) # todo: test
-    redirect_to profile_player_path(player)
+    # redirect_to profile_player_path(player)
+    redirect_to admin_players_path
   end
 
   # just for demo

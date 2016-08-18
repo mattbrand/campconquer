@@ -4,9 +4,14 @@ Konker? I just met 'er!
 
 # TODO
 
+> a partial list
+
 - [ ] API Auth
-- [ ] User Auth
+- [ ] User Auth for web site
+- [ ] User Auth for fitbit
 - [ ] Admin Auth (Devise? we used `rails generate active_admin:install --skip-users`  )
+- [ ] store fitbit user id
+
 
 # Updating the Seed DB
 
@@ -80,7 +85,7 @@ outcome[team_outcomes][][throws]:12
 
 ## Admin
 
-We are using ActiveAdmin for some non-API UI
+We are using [ActiveAdmin](http://activeadmin.info/) for some non-API UI
 
 <http://activeadmin.info/docs/documentation.html>
 
@@ -176,3 +181,4 @@ https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ07TFsBi973VmIqgnL
 
 Xamarin Studio Community Edition:
 https://www.xamarin.com/download
+
