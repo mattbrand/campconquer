@@ -11,18 +11,34 @@ ActiveAdmin.register Player do
     column :team
     column :created_at
     column :updated_at
-    column "FitBit" do |player|
+    column "FitBit User" do |player|
       if player.authenticated?
-        span raw("&check;"), style: 'display: inline-block; width: 3em'
+        span raw("&check;") +         player.fitbit_token_hash['user_id'], style: 'display: inline-block; width: 3em'
+        auth_label = "Re-Auth"
       else
         span "-", style: 'display: inline-block; width: 3em'
+        auth_label = "Auth"
       end
-      link_to "Auth", auth_player_path(player)
+      div do
+        link_to auth_label, auth_player_path(player)
+      end
     end
-    actions do |player|
+    actions defaults: false do |player|
+      link_to "Edit", edit_admin_player_path(player)
+      # link_to "Delete", delete_admin_player_path(player) # no route? huh?
     end
   end
 
+  form do |f|
+    inputs do
+      f.semantic_errors
+      f.input :name
+      f.input :team
+      # https://github.com/justinfrench/formtastic/issues/171
+      f.input :fitbit_token_hash, as: :string, input_html: {readonly: true, style: 'background: #ddd'}
+      f.input :anti_forgery_token, input_html: {readonly: true, style: 'background: #ddd'}
+    end
+  end
 
 # See permitted parameters documentation:
 # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
@@ -37,5 +53,21 @@ ActiveAdmin.register Player do
 #   permitted
 # end
 
-
 end
+
+# # https://github.com/justinfrench/formtastic/issues/171#issuecomment-174265846
+# class ReadonlyInput < Formtastic::Inputs::StringInput
+#   def to_html
+#     puts "method=#{method}"
+#     stuff = object.send(method)
+#     wrapper_classes_raw
+#     h = raw("<div>#{stuff.inspect}</div>")
+#     input_wrapping do
+#       label_html << h
+#     end
+#   end
+#
+#   def input_html_options
+#     super + {readonly:
+#   end
+# end

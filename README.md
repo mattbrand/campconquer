@@ -8,10 +8,11 @@ Konker? I just met 'er!
 
 - [ ] API Auth
 - [ ] User Auth for web site
-- [ ] User Auth for fitbit
+- [x] User Auth for fitbit
 - [ ] Admin Auth (Devise? we used `rails generate active_admin:install --skip-users`  )
-- [ ] store fitbit user id
-
+- [x] store fitbit user id
+- [ ] [upgrade to Rails 5](http://blog.bigbinary.com/2016/08/18/new-framework-defaults-in-rails-5-to-make-upgrade-easier.html)
+- [ ] de-auth
 
 # Updating the Seed DB
 

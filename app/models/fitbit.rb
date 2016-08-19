@@ -88,6 +88,7 @@ class Fitbit
     authorize_url = client.auth_code.authorize_url(redirect_uri: callback_url,
                                                    scope: scope,
                                                    state: state,
+                                                   prompt: 'login',
                                                    expires_in: EXPIRES_IN_SEC
     )
 

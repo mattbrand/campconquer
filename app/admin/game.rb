@@ -18,6 +18,7 @@ ActiveAdmin.register Game do
 
     actions
   end
+
 #
 # or
 #
