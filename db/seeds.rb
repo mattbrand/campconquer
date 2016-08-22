@@ -189,7 +189,7 @@ def convert_paths
   puts "],"
 end
 
-convert_paths; exit
+# convert_paths; exit
 
 Player.destroy_all
 Board.new.seed_teams
