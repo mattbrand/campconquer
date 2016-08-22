@@ -13,6 +13,26 @@ types:
       team:
         type: string
         description: "enum: [blue, red]"
+      coins:
+        type: integer
+        description: number of coins currently available to be spent on gear
+      gems:
+        type: integer
+        description: number of gems currently available to be spent on gear
+      steps_available:
+        type: integer
+        description: number of steps currently available to be redeemed for coins
+      moderate_exercise:
+        type: integer
+        description: number of minutes of moderate exercise today
+      vigorous_exercise:
+        type: integer
+        description: number of minutes of vigorous exercise today
+      gems_available:
+        type: integer
+        description: number of gems available to be redeemed [do they automatically redeem? do we split them into moderate gem and vigorous gem?]
+      history:
+        type: PlayerHistory
 
   Point:
     description: a tuple representing an x,y coordinate on the game map; values are floats
@@ -162,6 +182,56 @@ types:
         type: integer
         description: number of times flag was picked up
 
+  PlayerOutcome:
+    type: object
+    description: the results of a finished game for a particular player
+    properties:
+      team:
+        type: string
+      takedowns:
+        type: integer
+        description: count of players on *other* teams who died at this player's hand
+      throws:
+        type: integer
+        description: number of balloons thrown
+      pickups:
+        type: integer
+        description: number of times flag was picked up
+
+  TeamHistory:
+    description: team stats for a whole "season" (all games played thus far)
+    properties:
+      team:
+        type: string
+      takedowns:
+        type: integer
+        description: count of players on *other* teams who died at this team's hand
+      throws:
+        type: integer
+        description: number of balloons thrown
+      pickups:
+        type: integer
+        description: number of times this team picked up the flag
+      wins:
+        type: integer
+        description: number of games this team won
+
+  # todo: design an endpoint that will return this data
+  PlayerHistory:
+    description: player stats for a whole "season" (all games played thus far)
+    properties:
+      team:
+        type: string
+      takedowns:
+        type: integer
+        description: count of players on *other* teams who died at this player's hand
+      throws:
+        type: integer
+        description: number of balloons thrown
+      pickups:
+        type: integer
+        description: number of times this player picked up the flag
+
 /gears:
   get:
     description: get all the gears
@@ -260,7 +330,8 @@ types:
         200:
           body:
             type: Player
-            description: some attributes are calculated, like health_bonus
+            description: |
+            * some attributes are calculated, like health_bonus
 
     /buy:
       post:
@@ -284,6 +355,23 @@ types:
 
         queryParameters:
           type: Piece
+
+    /history:
+      get:
+        description: this player's stats for this season
+      responses:
+        200:
+          body:
+            type: PlayerHistory
+
+/history:
+  get:
+    description: team stats for this season
+  responses:
+    200:
+      body:
+        type: PlayerHistory[]
+        description: one entry per team... array or hash?
 
 /paths:
   get:

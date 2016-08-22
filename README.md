@@ -13,8 +13,11 @@ Konker? I just met 'er!
 - [x] store fitbit user id
 - [ ] [upgrade to Rails 5](http://blog.bigbinary.com/2016/08/18/new-framework-defaults-in-rails-5-to-make-upgrade-easier.html)
 - [ ] de-auth a player (disconnect fitbit)
-- [ ] coin redemption
+- [ ] step/goal redemption
 - [ ] better splash page
+- [ ] player & team history
+- [ ] paths: kill json, use csv and google doc
+
 
 # Updating the Seed DB
 
@@ -34,7 +37,7 @@ To update the gear database,
 
 (we may want to add a "disabled" flag to the spreadsheet for that scenario, or "upsert" the seeds instead of wiping them and re-inserting them)
 
-> You may be tempted to edit the gear etc. via the admin interface. RESIST THE TEMPTATION. Do it through git or local demos, staging, etc. will get out of sync with production.
+> You may be tempted to edit the gear etc. via the admin interface. RESIST THE TEMPTATION. Do it through Google Doc / Export CSV / Git or else local demos, staging, etc. will get out of sync with production.
 
 Currently `rake db:seed` creates lots of random players and positions too... we should probably make a separate rake task for that
 

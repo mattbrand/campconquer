@@ -34,6 +34,7 @@ gears.each do |row|
 
 end
 
+
 class Board
   def initialize
     @words = File.read("/usr/share/dict/words").split
@@ -131,6 +132,7 @@ class Team
 
 end
 
+# todo: split player seeding into separate rake task
 
 Player.destroy_all
 Board.new.seed_teams
