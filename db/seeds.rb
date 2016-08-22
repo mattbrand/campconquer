@@ -37,90 +37,25 @@ end
 class Board
   def initialize
     @words = File.read("/usr/share/dict/words").split
+    @paths = {}
+    @teams = {red: Team.new('red'), blue: Team.new('blue')}
+
+  end
+
+  def team
+    @teams[@team_name.to_sym]
   end
 
   def random_name
     @words[rand(@words.length)]
   end
 
-  def left_side_of_base
-    case @team_name
-    when 'blue'
-      10
-    else
-      0
-    end
-  end
-
-  def team_paths
-    {
-      red: [
-        [
-          [3.75, 5.0],
-          [5.25, 4.5],
-          [9.75, 4.5],
-          [11.25, 5.0],
-          [14.5, 5.0],
-        ],
-        [
-          [3.75, 5.0],
-          [5.25, 4.5],
-          [7.5, 9.0],
-          [14.4, 9.0],
-          [14.4, 8.5],
-          [14.5, 5.0],
-        ],
-        [
-          [3.75, 5.0],
-          [5.25, 4.5],
-          [7.5, 1.0],
-          [14.4, 1.0],
-          [14.4, 1.5],
-          [14.5, 5.0],
-        ],
-      ],
-      blue: [
-        [
-          [11.25, 5.0],
-          [9.75, 4.5],
-          [5.25, 4.5],
-          [3.75, 5.0],
-          [0.5, 5.0],
-        ],
-        [
-          [11.25, 5.0],
-          [9.75, 4.5],
-          [7.5, 9.0],
-          [0.5, 9.0],
-          [0.5, 5.0],
-        ],
-        [
-          [11.25, 5.0],
-          [9.75, 4.5],
-          [7.5, 1.0],
-          [0.5, 1.0],
-          [0.5, 5.0],
-        ],
-      ],
-    }
-  end
-
-  def random_path
-    # everyone starts in a base
-    p = [point_in_base]
-    if @role == 'offense'
-      10.times { p << point_anywhere }
-    end
-    p
-  end
-
   def path
     # everyone starts in a base
     if @role == 'defense'
-      [point_in_base]
+      [team.defense_points.sample]
     else
-      paths = team_paths[@team_name.to_sym]
-      paths.sample.map{|tuple| Point.from_a(tuple)}
+      team.offense_paths.sample
     end
   end
 
@@ -160,36 +95,42 @@ class Board
   end
 end
 
-def convert_path(json)
-  junk = JSON.load(json)
-  junk.each do |stuff|
-    puts '  ['
-    xs = stuff["X"]
-    ys = stuff["Y"]
-    xs.size.times do |i|
-      print "    "
-      print [xs[i], ys[i]].inspect
-      puts ","
-    end
-    puts '  ],'
+# todo: merge into team.rb
+class Team
+  attr_reader :offense_paths, :defense_points
+
+  def initialize(team_name)
+    @team_name = team_name
+
+    file = File.expand_path("#{team_name}Paths.json", File.dirname(__FILE__))
+    @offense_paths = convert_offense(file)
+
+    file = File.expand_path("#{team_name}DefensePos.json", File.dirname(__FILE__))
+    @defense_points = convert_defense(file)
   end
+
+  def convert_offense(json_file)
+    junk = JSON.parse(File.read(json_file))
+    junk.map do |stuff|
+      xs = stuff["X"]
+      ys = stuff["Y"]
+      points = []
+      xs.size.times do |i|
+        points << Point.new(x: xs[i], y: ys[i])
+      end
+      points
+    end
+  end
+
+  def convert_defense(json_file)
+    text = File.read((json_file))
+    text.gsub!(/("Y".*),/, '\1')
+    p text
+    JSON.parse(text).map{|hash| Point.from_hash(hash)}
+  end
+
 end
 
-def convert_paths
-  redPaths = '[{"X":[3.75, 5.25, 9.75, 11.25, 14.5],"Y":[5.0, 4.5, 4.5, 5.0, 5.0]},{"X":[3.75, 5.25, 7.5, 14.4, 14.4, 14.5],"Y":[5.0, 4.5, 9.0, 9.0, 8.5, 5.0]},{"X":[3.75, 5.25, 7.5, 14.4, 14.4, 14.5],"Y":[5.0, 4.5, 1.0, 1.0, 1.5, 5.0]}]'
-
-  bluePaths = '[{"X":[11.25, 9.75, 5.25, 3.75, 0.5],"Y":[5.0, 4.5, 4.5, 5.0, 5.0]},{"X":[11.25, 9.75, 7.5, 0.5, 0.5],"Y":[5.0, 4.5, 9.0, 9.0, 5.0]},{"X":[11.25, 9.75, 7.5, 0.5, 0.5],"Y":[5.0, 4.5, 1.0, 1.0, 5.0]}]'
-
-  puts "red: ["
-  convert_path(redPaths)
-  puts "],"
-
-  puts "blue: ["
-  convert_path(bluePaths)
-  puts "],"
-end
-
-# convert_paths; exit
 
 Player.destroy_all
 Board.new.seed_teams

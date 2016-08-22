@@ -10,6 +10,8 @@ class Point
   end
 
   def self.from_hash(hash)
+    hash[:x] = hash.delete("X") if hash["X"]
+    hash[:y] = hash.delete("Y") if hash["Y"]
     new(**hash.symbolize_keys)
   end
 
