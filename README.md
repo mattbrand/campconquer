@@ -39,7 +39,6 @@ To update the gear database,
 
 > You may be tempted to edit the gear etc. via the admin interface. RESIST THE TEMPTATION. Do it through Google Doc / Export CSV / Git or else local demos, staging, etc. will get out of sync with production.
 
-Currently `rake db:seed` creates lots of random players and positions too... we should probably make a separate rake task for that
 
 ## API Docs
 
@@ -133,12 +132,9 @@ g.finish_game! winner: 'red'
 
 ### Seeding Players
 
-This makes a new set of 100 players with random roles / positions / paths :
+This makes a new set of 100 players with random roles / positions / paths / etc. :
 
-`rake db:seed`
-
-(Soon it should be made into a different rake task)
-
+`rake db:seed_players`
 
 ## Local development with FitBit
 
