@@ -11,7 +11,7 @@ ActiveAdmin.register Player do
     column :team
     column :created_at
     column :updated_at
-    column "FitBit User" do |player|
+    column "Fitbit User" do |player|
       if player.authenticated?
         span raw("&check;") +         player.fitbit_token_hash['user_id'], style: 'display: inline-block; width: 3em'
         auth_label = "Re-Auth"

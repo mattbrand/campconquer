@@ -9,6 +9,8 @@
 #  updated_at         :datetime         not null
 #  fitbit_token_hash  :text
 #  anti_forgery_token :string
+#  coins              :integer          default("0"), not null
+#  gems               :integer          default("0"), not null
 #
 
 require 'rails_helper'
@@ -53,7 +55,7 @@ describe Player, type: :model do
     it 'rejects all but a few attributes' do
       {body_type: 'female',
        role: 'offense',
-       path: [Point.new(x:0, y:0)]
+       path: [Point.new(x: 0, y: 0)]
       }.each_pair do |key, value|
         params = {}
         params[key] = value
@@ -126,12 +128,12 @@ describe Player, type: :model do
             },
             :body =>
               {
-                   "access_token" => "ACCESS_TOKEN",
-                     "expires_in" => 28800,
-                  "refresh_token" => "REFRESH_TOKEN",
-                          "scope" => "sleep weight social profile activity location heartrate nutrition settings",
-                     "token_type" => "Bearer",
-                        "user_id" => "FITBIT_USER_ID"
+                "access_token" => "ACCESS_TOKEN",
+                "expires_in" => 28800,
+                "refresh_token" => "REFRESH_TOKEN",
+                "scope" => "sleep weight social profile activity location heartrate nutrition settings",
+                "token_type" => "Bearer",
+                "user_id" => "FITBIT_USER_ID"
               }.to_json
           )
       end
@@ -162,5 +164,137 @@ describe Player, type: :model do
       end
     end
 
+  end
+
+  describe 'exercise - ' do
+    let!(:player) { Player.create!(name: "Alice", team: 'blue') }
+    let!(:fake_fitbit) { instance_double(Fitbit) }
+    let(:today) { Time.current.strftime('%F') }
+    let(:yesterday) { (Time.current - 1.day).strftime('%F') }
+
+    before do
+      player.instance_variable_set(:@fitbit, fake_fitbit)
+    end
+
+    describe 'redeem_steps!' do
+      context 'with one day of activity' do
+        before { player.activities.create!(date: Date.current, steps: 1000) }
+
+        it 'converts steps into coins' do
+          expect(player.coins).to eq(0)
+          player.redeem_steps!
+          player.reload
+          expect(player.coins).to eq(100)
+        end
+
+        it 'adds to existing coin amount' do
+          player.update!(coins: 9)
+          player.redeem_steps!
+          player.reload
+          expect(player.coins).to eq(109)
+        end
+
+        it 'edits activity to reflect the redeemed count' do
+          player.redeem_steps!
+          expect(player.activities.first.steps_redeemed).to eq(1000)
+        end
+      end
+
+      context 'with several days of activity' do
+        let!(:activity_yesterday) { player.activities.create!(date: Date.current - 1.day, steps: 100) }
+        let!(:activity_today) { player.activities.create!(date: Date.current, steps: 50) }
+
+        it 'converts steps into coins' do
+          expect(player.coins).to eq(0)
+          player.redeem_steps!
+          player.reload
+          expect(player.coins).to eq(15)
+        end
+
+        it 'edits activity to reflect the redeemed count' do
+          player.redeem_steps!
+          expect(activity_yesterday.reload.steps_redeemed).to eq(100)
+          expect(activity_today.reload.steps_redeemed).to eq(50)
+        end
+
+        it "keeps the remainder of steps (if we didn't have enough for one coin)" do
+          activity_yesterday.update!(steps: 101)
+          activity_today.update!(steps: 53)
+
+          player.redeem_steps!
+
+          expect(player.coins).to eq(15)
+          expect(activity_yesterday.reload.steps_redeemed).to eq(101)
+          expect(activity_today.reload.steps_redeemed).to eq(49)
+          expect(player.steps_available).to eq(4)
+
+        end
+
+        it "spreads redemptions over several days" do
+          activity_yesterday.update!(steps: 7)
+          activity_today.update!(steps: 4)
+
+          player.redeem_steps!
+
+          expect(player.coins).to eq(1)
+          expect(activity_yesterday.reload.steps_redeemed).to eq(7)
+          expect(activity_today.reload.steps_redeemed).to eq(3)
+          expect(player.steps_available).to eq(1)
+
+        end
+      end
+    end
+
+    describe 'steps_available' do
+      it 'adds up steps (one record)' do
+        player.activities.create!(date: Date.current, steps: 100)
+        expect(player.steps_available).to eq(100)
+      end
+
+      context 'several records' do
+        it 'adds up steps (several records)' do
+          player.activities.create!(date: Date.current - 1.day, steps: 100)
+          player.activities.create!(date: Date.current, steps: 50)
+
+          expect(player.steps_available).to eq(150)
+        end
+
+        it 'adds up steps and subtracts redemptions' do
+          player.activities.create!(date: Date.current - 1.day, steps: 100, steps_redeemed: 100)
+          player.activities.create!(date: Date.current, steps: 50, steps_redeemed: 25)
+
+          expect(player.steps_available).to eq(25)
+        end
+      end
+    end
+
+    describe 'pull_activity!' do
+
+      def summary(steps: 12612)
+        {"summary" => {"steps" => steps}}
+      end
+
+      it 'pulls steps from the fitbit' do
+        expect(fake_fitbit).to receive(:get_activities).with(today).and_return(summary)
+        player.pull_activity!
+        expect(player.steps_available).to eq(12612)
+      end
+
+      it "idempotently ignores steps it's already pulled" do
+        expect(fake_fitbit).to receive(:get_activities).with(today).and_return(summary, summary)
+        player.pull_activity!
+        player.pull_activity!
+        expect(player.steps_available).to eq(12612)
+      end
+
+      it "subtracts steps it's already redeemed from new steps" do
+        expect(fake_fitbit).to receive(:get_activities).with(today).and_return(summary(steps: 400), summary(steps: 600))
+        player.pull_activity!
+        expect(player.steps_available).to eq(400)
+        player.redeem_steps!
+        player.pull_activity!
+        expect(player.steps_available).to eq(200)
+      end
+    end
   end
 end

@@ -136,7 +136,7 @@ This makes a new set of 100 players with random roles / positions / paths / etc.
 
 `rake db:seed_players`
 
-## Local development with FitBit
+## Local development with Fitbit
 
 * Create an app for yourself at <https://dev.fitbit.com/apps> named e.g. "Matt's Local CampConquer"
     * Callback URL must be `http://localhost:3000/players/auth-callback`
@@ -162,7 +162,7 @@ heroku run rake db:migrate
 heroku config:set `cat .env`
 ```
 
-## FitBit Integration Is (Barely) Functional!
+## Fitbit Integration Is (Barely) Functional!
 
 * Create a player: https://campconquer-staging.herokuapp.com/admin/players/new
 * **NOTE THE ID** and use it below instead of 999

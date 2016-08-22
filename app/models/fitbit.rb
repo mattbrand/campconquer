@@ -112,7 +112,6 @@ class Fitbit
     token.to_hash
   end
 
-
   def refresh!
     @token = token.refresh! headers: headers
     @token_saver.update_token(self) if @token_saver # todo: test
@@ -161,5 +160,12 @@ class Fitbit
     self.get('/1/user/-/profile.json')
   end
 
+  def yesterday
+    (Time.current - 1.day).strftime('%F')
+  end
 
+  def get_activities(date = yesterday)
+    date = date.strftime('%F') unless date.is_a? String
+    get("/1/user/-/activities/date/#{date}.json")
+  end
 end

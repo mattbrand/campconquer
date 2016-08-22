@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160811144158) do
+ActiveRecord::Schema.define(version: 20160822204859) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -27,6 +27,21 @@ ActiveRecord::Schema.define(version: 20160811144158) do
   add_index "active_admin_comments", ["author_type", "author_id"], name: "index_active_admin_comments_on_author_type_and_author_id"
   add_index "active_admin_comments", ["namespace"], name: "index_active_admin_comments_on_namespace"
   add_index "active_admin_comments", ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id"
+
+  create_table "activities", force: :cascade do |t|
+    t.integer  "player_id"
+    t.date     "date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "steps",                  default: 0, null: false
+    t.integer  "steps_redeemed",         default: 0, null: false
+    t.integer  "very_active_minutes",    default: 0, null: false
+    t.integer  "fairly_active_minutes",  default: 0, null: false
+    t.integer  "lightly_active_minutes", default: 0, null: false
+  end
+
+  add_index "activities", ["date"], name: "index_activities_on_date"
+  add_index "activities", ["player_id"], name: "index_activities_on_player_id"
 
   create_table "games", force: :cascade do |t|
     t.datetime "created_at",                 null: false
@@ -88,10 +103,12 @@ ActiveRecord::Schema.define(version: 20160811144158) do
   create_table "players", force: :cascade do |t|
     t.string   "name"
     t.string   "team"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
     t.text     "fitbit_token_hash"
     t.string   "anti_forgery_token"
+    t.integer  "coins",              default: 0, null: false
+    t.integer  "gems",               default: 0, null: false
   end
 
   create_table "team_outcomes", force: :cascade do |t|
