@@ -46,19 +46,82 @@ class Board
   def left_side_of_base
     case @team_name
     when 'blue'
-      0
-    else
       10
+    else
+      0
     end
   end
 
-  def path
+  def team_paths
+    {
+      red: [
+        [
+          [3.75, 5.0],
+          [5.25, 4.5],
+          [9.75, 4.5],
+          [11.25, 5.0],
+          [14.5, 5.0],
+        ],
+        [
+          [3.75, 5.0],
+          [5.25, 4.5],
+          [7.5, 9.0],
+          [14.4, 9.0],
+          [14.4, 8.5],
+          [14.5, 5.0],
+        ],
+        [
+          [3.75, 5.0],
+          [5.25, 4.5],
+          [7.5, 1.0],
+          [14.4, 1.0],
+          [14.4, 1.5],
+          [14.5, 5.0],
+        ],
+      ],
+      blue: [
+        [
+          [11.25, 5.0],
+          [9.75, 4.5],
+          [5.25, 4.5],
+          [3.75, 5.0],
+          [0.5, 5.0],
+        ],
+        [
+          [11.25, 5.0],
+          [9.75, 4.5],
+          [7.5, 9.0],
+          [0.5, 9.0],
+          [0.5, 5.0],
+        ],
+        [
+          [11.25, 5.0],
+          [9.75, 4.5],
+          [7.5, 1.0],
+          [0.5, 1.0],
+          [0.5, 5.0],
+        ],
+      ],
+    }
+  end
+
+  def random_path
     # everyone starts in a base
     p = [point_in_base]
     if @role == 'offense'
       10.times { p << point_anywhere }
     end
     p
+  end
+
+  def path
+    # everyone starts in a base
+    if @role == 'defense'
+      [point_in_base]
+    else
+      paths = team_paths[@team_name.to_sym]
+      paths.sample.map{|tuple| Point.from_a(tuple)}
+    end
   end
 
   def point_in_base
@@ -78,11 +141,11 @@ class Board
 
   def seed_team
     50.times do
-      p = Player.create!(name: random_name, team: @team_name)
+      player = Player.create!(name: random_name, team: @team_name)
 
       @role = Piece::ROLES.values.sample
 
-      Piece.create!(player_id: p.id,
+      Piece.create!(player_id: player.id,
                     team: @team_name,
                     role: @role,
                     path: path,
@@ -92,10 +155,41 @@ class Board
                     body_type: Piece::BODY_TYPES.values.sample
       )
 
-      # puts p.as_json
+      ap player.as_json
     end
   end
 end
+
+def convert_path(json)
+  junk = JSON.load(json)
+  junk.each do |stuff|
+    puts '  ['
+    xs = stuff["X"]
+    ys = stuff["Y"]
+    xs.size.times do |i|
+      print "    "
+      print [xs[i], ys[i]].inspect
+      puts ","
+    end
+    puts '  ],'
+  end
+end
+
+def convert_paths
+  redPaths = '[{"X":[3.75, 5.25, 9.75, 11.25, 14.5],"Y":[5.0, 4.5, 4.5, 5.0, 5.0]},{"X":[3.75, 5.25, 7.5, 14.4, 14.4, 14.5],"Y":[5.0, 4.5, 9.0, 9.0, 8.5, 5.0]},{"X":[3.75, 5.25, 7.5, 14.4, 14.4, 14.5],"Y":[5.0, 4.5, 1.0, 1.0, 1.5, 5.0]}]'
+
+  bluePaths = '[{"X":[11.25, 9.75, 5.25, 3.75, 0.5],"Y":[5.0, 4.5, 4.5, 5.0, 5.0]},{"X":[11.25, 9.75, 7.5, 0.5, 0.5],"Y":[5.0, 4.5, 9.0, 9.0, 5.0]},{"X":[11.25, 9.75, 7.5, 0.5, 0.5],"Y":[5.0, 4.5, 1.0, 1.0, 5.0]}]'
+
+  puts "red: ["
+  convert_path(redPaths)
+  puts "],"
+
+  puts "blue: ["
+  convert_path(bluePaths)
+  puts "],"
+end
+
+convert_paths; exit
 
 Player.destroy_all
 Board.new.seed_teams
