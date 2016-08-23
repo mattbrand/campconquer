@@ -57,7 +57,7 @@ class ApplicationController < ActionController::Base
            :json => exception_as_json(e)
   end
 
-  def set_game
+  def find_game
     game_id = params[:game_id] || params[:id]
     if game_id == 'current'
       @game = Game.current || raise(ActiveRecord::RecordNotFound, "current game not found")
@@ -67,6 +67,16 @@ class ApplicationController < ActionController::Base
       @game = Game.find(game_id)
     end
   end
+
+  def find_player
+    player_id = params[:player_id] || params[:id]
+    @player = Player.find(player_id)
+
+    # TODO: move this into a background task!!!
+    @player.pull_activity! Date.current - 1.day
+    @player.pull_activity! Date.current
+  end
+
 
   def exception_as_json(e)
     {
@@ -89,11 +99,5 @@ class ApplicationController < ActionController::Base
     body = {status: 'ok', player: @player.as_json}
     render json: body, **args
   end
-
-  def set_player
-    player_id = params[:player_id] || params[:id]
-    @player = Player.find(player_id)
-  end
-
 
 end

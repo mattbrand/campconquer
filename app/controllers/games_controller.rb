@@ -1,5 +1,5 @@
 class GamesController < ApplicationController
-  before_action :set_game,
+  before_action :find_game,
                 only: [:show,
                        :edit, :update, :destroy,
                        :lock, :unlock]

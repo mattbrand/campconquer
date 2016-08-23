@@ -1,6 +1,6 @@
 class PiecesController < ApplicationController
-  before_action :set_player
-  before_action :set_piece, only: [:show, :edit, :update, :destroy]
+  before_action :find_player
+  before_action :find_piece, only: [:show, :edit, :update, :destroy]
 
   # POST /pieces
   def create
@@ -12,7 +12,7 @@ class PiecesController < ApplicationController
 
   private
 
-  def set_piece
+  def find_piece
     @piece = Piece.find(params[:id])
   end
 

@@ -1,6 +1,6 @@
 class OutcomesController < ApplicationController
-  before_action :set_game
-  before_action :set_outcome, only: [:show, :edit, :update, :destroy]
+  before_action :find_game
+  before_action :find_outcome, only: [:show, :edit, :update, :destroy]
 
   # POST /outcomes
   def create
@@ -24,7 +24,7 @@ class OutcomesController < ApplicationController
 
   private
 
-  def set_outcome
+  def find_outcome
     @outcome = Outcome.find(params[:id])
   end
 

@@ -44,6 +44,7 @@ class Player < ActiveRecord::Base
   def as_json(options=nil)
     if options.nil?
       options = {
+        except: [:fitbit_token_hash, :anti_forgery_token],
         methods: [:steps_available],
         include: [{:piece => Piece.serialization_options}],
       }
@@ -116,7 +117,6 @@ class Player < ActiveRecord::Base
 
   def pull_activity!(date = Time.current)
     summary = fitbit.get_activities(date.strftime('%F'))["summary"]
-
     activity = self.activities.find_or_create_by!(date: date)
     activity.update!(
       steps: summary["steps"].to_i,

@@ -87,10 +87,6 @@ class PlayersController < ApplicationController
   end
 
   private
-  # Use callbacks to share common setup or constraints between actions.
-  def find_player
-    @player = Player.find(params[:id])
-  end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def player_params
