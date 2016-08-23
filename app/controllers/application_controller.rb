@@ -81,8 +81,13 @@ class ApplicationController < ActionController::Base
   end
 
   def render_game(**args)
-    body = {status: 'ok'}.merge(@game.as_json)
-    render args.merge(json: body)
+    body = {status: 'ok', game: @game.as_json}
+    render json: body, **args
+  end
+
+  def render_player(**args)
+    body = {status: 'ok', player: @player.as_json}
+    render json: body, **args
   end
 
   def set_player

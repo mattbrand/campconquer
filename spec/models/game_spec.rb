@@ -211,15 +211,14 @@ describe Game, type: :model do
       ])
       game.save!
 
-      expect(game.as_json['game']['outcome']).to be
-      expect(game.as_json['game']['outcome']['winner']).to eq('red')
-
-      expect(game.as_json['game']['outcome']['team_outcomes']).to be
-      expect(game.as_json['game']['outcome']['team_outcomes'].size).to eq(2)
-      expect(game.as_json['game']['outcome']['team_outcomes'][0]['team']).to eq('blue')
-      expect(game.as_json['game']['outcome']['team_outcomes'][0]['takedowns']).to eq(2)
-      expect(game.as_json['game']['outcome']['team_outcomes'][1]['team']).to eq('red')
-      expect(game.as_json['game']['outcome']['team_outcomes'][1]['takedowns']).to eq(3)
+      expect(game.as_json).to include('outcome')
+      expect(game.as_json['outcome']['winner']).to eq('red')
+      expect(game.as_json['outcome']['team_outcomes']).to be
+      expect(game.as_json['outcome']['team_outcomes'].size).to eq(2)
+      expect(game.as_json['outcome']['team_outcomes'][0]['team']).to eq('blue')
+      expect(game.as_json['outcome']['team_outcomes'][0]['takedowns']).to eq(2)
+      expect(game.as_json['outcome']['team_outcomes'][1]['team']).to eq('red')
+      expect(game.as_json['outcome']['team_outcomes'][1]['takedowns']).to eq(3)
     end
   end
 

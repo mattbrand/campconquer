@@ -54,6 +54,14 @@ describe GamesController, type: :controller do
       get :show, {:id => game.to_param}, valid_session
       expect(assigns(:game)).to eq(game)
     end
+
+    it "renders the requested game as JSON" do
+      game = Game.current
+      get :show, {:id => game.to_param}, valid_session
+      expect_ok
+      # "JSON.parse(game.to_json" is to transform dates into ISO8601 strings
+      expect(response_json["game"]).to eq(JSON.parse(game.to_json(include: [:pieces, :outcome])))
+    end
   end
 
   describe "GET /games/current" do

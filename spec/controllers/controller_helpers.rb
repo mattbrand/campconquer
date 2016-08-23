@@ -6,7 +6,8 @@ module ControllerHelpers
   end
 
   def expect_ok
-    expect(response.body).to eq({status: 'ok'}.to_json)
+    expect(response.body).to include('"status":"ok"')
+    expect(response_json).to include({"status" => "ok"})
     expect(response.status).to be_in([200, 201, 202])
   end
 

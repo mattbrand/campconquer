@@ -38,7 +38,6 @@ class Game < ActiveRecord::Base
   def as_json(options=nil)
     if options.nil?
       options = {
-        root: true,
         include: [
           {:pieces => Piece.serialization_options},
           {:outcome => Outcome.serialization_options},

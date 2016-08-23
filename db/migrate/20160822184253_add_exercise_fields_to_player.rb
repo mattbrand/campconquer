@@ -1,3 +1,4 @@
+# really *currency* fields but w/e, it's just a migration
 class AddExerciseFieldsToPlayer < ActiveRecord::Migration
   def change
     change_table :players do |t|

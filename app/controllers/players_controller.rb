@@ -1,6 +1,13 @@
 class PlayersController < ApplicationController
-  before_action :find_player, only: [:show, :edit, :update, :destroy, :auth,
-                                     :profile, :steps, :activities]
+  before_action :find_player, only: [:show,
+                                     :edit,
+                                     :update,
+                                     :destroy,
+                                     :auth,
+                                     :redeem,
+                                     :profile,
+                                     :steps,
+                                     :activities]
 
   # GET /players
   def index
@@ -23,10 +30,7 @@ class PlayersController < ApplicationController
   def create
     @player = Player.create!(player_params)
     @player.save!
-    render :json => {
-      status: 'ok',
-      player: @player.as_json,
-    }
+    render_player
   end
 
   # PATCH/PUT /players/1
@@ -47,6 +51,15 @@ class PlayersController < ApplicationController
     player.finish_auth(params[:code]) # todo: test
     # redirect_to profile_player_path(player)
     redirect_to admin_players_path
+  end
+
+  def redeem
+    @player.redeem_steps!
+    render_player
+  end
+
+  def buy
+    raise "Not implemented"
   end
 
   # just for demo

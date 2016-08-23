@@ -152,4 +152,23 @@ describe PlayersController, type: :controller do
     end
   end
 
+  describe 'POST redeem' do
+    let!(:player) { Player.create! valid_attributes }
+
+    it 'redeems available steps' do
+      player.activities.create!(date: Date.today, steps: 100)
+      expect(player.coins).to eq(0)
+      post :redeem, {:id => player.to_param}
+
+      expect(response_json['status']).to eq('ok')
+
+      player.reload
+      expect(player.steps_available).to eq(0)
+      expect(player.coins).to eq(10)
+
+
+    end
+
+  end
+
 end

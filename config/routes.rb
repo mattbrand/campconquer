@@ -20,6 +20,11 @@ Rails.application.routes.draw do
 
     member do
       get :auth
+
+      post :buy  # should this be a nested items resource instead?
+      post :redeem  # should this be a nested currency resource instead?
+
+      # todo: remove these
       get :profile
       get :activities
       get :steps
