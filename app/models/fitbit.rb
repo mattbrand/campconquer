@@ -11,6 +11,12 @@ class Fitbit
   # 31536000 for 1 year
   EXPIRES_IN_SEC = 86400
 
+  class Unauthorized < RuntimeError
+    def initialize
+      super("No access token; you must auth")
+    end
+  end
+
   def from_env(key)
     ENV[key] || raise("You must set the environment variable #{key}")
   end
@@ -135,11 +141,6 @@ class Fitbit
     end
   end
 
-  class Unauthorized < RuntimeError
-    def initialize
-      super("No access token; you must auth")
-    end
-  end
 
   def get(path, params = {})
     # todo: test this error

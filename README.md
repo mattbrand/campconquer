@@ -13,13 +13,14 @@ Konker? I just met 'er!
 - [x] store fitbit user id
 - [ ] [upgrade to Rails 5](http://blog.bigbinary.com/2016/08/18/new-framework-defaults-in-rails-5-to-make-upgrade-easier.html)
 - [ ] de-auth a player (disconnect fitbit)
-- [ ] step/goal redemption
+- [x] step/goal redemption
 - [ ] better splash page
 - [ ] player & team history
 - [ ] paths: kill json, use csv and google doc
 - [ ] switch from RAML to Swagger? http://swagger.io/
 - [ ] make a Procfile https://devcenter.heroku.com/articles/ruby-default-web-server
 - [ ] add 'last sync time' to player info / store
+- [ ] CircleCI? 
 
 # Updating the Seed DB
 

@@ -1,10 +1,10 @@
 class PlayersController < ApplicationController
   before_action :find_player, only: [:show,
-                                     :edit,
                                      :update,
-                                     :destroy,
                                      :auth,
-                                     :claim,
+                                     :claim_steps,
+                                     :claim_moderate,
+                                     :claim_vigorous,
                                      :profile,
                                      :steps,
                                      :activities]
@@ -55,8 +55,18 @@ class PlayersController < ApplicationController
     redirect_to admin_players_path
   end
 
-  def claim
+  def claim_steps
     @player.claim_steps!
+    render_player
+  end
+
+  def claim_moderate
+    @player.claim_moderate_minutes!
+    render_player
+  end
+
+  def claim_vigorous
+    @player.claim_vigorous_minutes!
     render_player
   end
 

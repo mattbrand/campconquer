@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160824160700) do
+ActiveRecord::Schema.define(version: 20160824164118) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -33,11 +33,12 @@ ActiveRecord::Schema.define(version: 20160824160700) do
     t.date     "date"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "steps",                  default: 0, null: false
-    t.integer  "steps_claimed",          default: 0, null: false
-    t.integer  "very_active_minutes",    default: 0, null: false
-    t.integer  "fairly_active_minutes",  default: 0, null: false
-    t.integer  "lightly_active_minutes", default: 0, null: false
+    t.integer  "steps",                    default: 0,     null: false
+    t.integer  "steps_claimed",            default: 0,     null: false
+    t.integer  "vigorous_minutes",         default: 0,     null: false
+    t.integer  "moderate_minutes",         default: 0,     null: false
+    t.boolean  "moderate_minutes_claimed", default: false, null: false
+    t.boolean  "vigorous_minutes_claimed", default: false, null: false
   end
 
   add_index "activities", ["date"], name: "index_activities_on_date"

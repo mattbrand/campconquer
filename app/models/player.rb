@@ -16,6 +16,13 @@
 class Player < ActiveRecord::Base
   CANT_CHANGE_PIECE_WHEN_GAME_LOCKED = "you can't change your piece if the current game is locked"
   STEPS_PER_COIN = 10
+  GOAL_MINUTES = 30
+
+  class GoalNotMet < RuntimeError
+    def initialize(goal_type)
+      super("goal #{goal_type} not met")
+    end
+  end
 
   has_one :piece, -> { where(game_id: nil) }
   has_many :activities
@@ -45,7 +52,15 @@ class Player < ActiveRecord::Base
     if options.nil?
       options = {
         except: [:fitbit_token_hash, :anti_forgery_token],
-        methods: [:steps_available],
+        methods: [
+          :steps_available,
+          :moderate_minutes,
+          :moderate_goal_met?,
+          :moderate_minutes_claimed?,
+          :vigorous_minutes,
+          :vigorous_goal_met?,
+          :vigorous_minutes_claimed?
+        ],
         include: [{:piece => Piece.serialization_options}],
       }
     end
@@ -82,6 +97,56 @@ class Player < ActiveRecord::Base
     activities.sum('steps - steps_claimed')
   end
 
+  # todo: DRY moderate and vigorous minutes?
+
+  def moderate_minutes
+    activity_today.moderate_minutes
+  end
+
+  def moderate_goal_met?
+    moderate_minutes >= GOAL_MINUTES
+  end
+
+  def moderate_minutes_claimed?
+    activity_today.moderate_minutes_claimed?
+  end
+
+  def claim_moderate_minutes!
+    if moderate_goal_met?
+      unless activity_today.moderate_minutes_claimed?
+        activity_today.update(moderate_minutes_claimed: true)
+        self.gems += 1
+        save!
+      end
+    else
+      raise GoalNotMet, 'moderate'
+    end
+  end
+
+  def vigorous_minutes
+    activity_today.vigorous_minutes
+  end
+
+  def vigorous_goal_met?
+    vigorous_minutes >= GOAL_MINUTES
+  end
+
+  def vigorous_minutes_claimed?
+    activity_today.vigorous_minutes_claimed?
+  end
+
+  def claim_vigorous_minutes!
+    if vigorous_goal_met?
+      unless activity_today.vigorous_minutes_claimed?
+        activity_today.update(vigorous_minutes_claimed: true)
+        self.gems += 1
+        save!
+      end
+    else
+      raise GoalNotMet, 'vigorous'
+    end
+  end
+
   # methods which call Fitbit
 
   def fitbit
@@ -115,14 +180,21 @@ class Player < ActiveRecord::Base
     fitbit_token_hash
   end
 
-  def pull_activity!(date = Time.current)
+  def pull_activity!(date = Date.current)
     summary = fitbit.get_activities(date.strftime('%F'))["summary"]
-    activity = self.activities.find_or_create_by!(date: date)
-    activity.update!(
+    activity_for(date).update!(
       steps: summary["steps"].to_i,
-      very_active_minutes: summary["veryActiveMinutes"].to_i,
-      fairly_active_minutes: summary["fairlyActiveMinutes"].to_i,
-      lightly_active_minutes: summary["lightlyActiveMinutes"].to_i)
+      vigorous_minutes: summary["veryActiveMinutes"].to_i,
+      moderate_minutes: summary["fairlyActiveMinutes"].to_i,
+    )
+  end
+
+  def activity_today
+    activity_for(Date.current)
+  end
+
+  def activity_for(date)
+    self.activities.find_or_create_by!(date: date)
   end
 end
 
