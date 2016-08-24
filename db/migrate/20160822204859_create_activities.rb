@@ -14,7 +14,5 @@ class CreateActivities < ActiveRecord::Migration
     end
     add_index :activities, :player_id
     add_index :activities, :date
-
-    remove_column :players, :steps_available, :integer
   end
 end
