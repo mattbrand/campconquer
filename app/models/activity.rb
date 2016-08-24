@@ -8,7 +8,7 @@
 #  created_at             :datetime
 #  updated_at             :datetime
 #  steps                  :integer          default("0"), not null
-#  steps_redeemed         :integer          default("0"), not null
+#  steps_claimed          :integer          default("0"), not null
 #  very_active_minutes    :integer          default("0"), not null
 #  fairly_active_minutes  :integer          default("0"), not null
 #  lightly_active_minutes :integer          default("0"), not null
@@ -24,8 +24,8 @@ class Activity < ActiveRecord::Base
   validates :date, presence: true
   validates_uniqueness_of :date, scope: :player_id
 
-  def steps_unredeemed
-    steps - steps_redeemed
+  def steps_unclaimed
+    steps - steps_claimed
   end
 end
 

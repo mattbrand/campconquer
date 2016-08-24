@@ -4,7 +4,7 @@ class PlayersController < ApplicationController
                                      :update,
                                      :destroy,
                                      :auth,
-                                     :redeem,
+                                     :claim,
                                      :profile,
                                      :steps,
                                      :activities]
@@ -55,8 +55,8 @@ class PlayersController < ApplicationController
     redirect_to admin_players_path
   end
 
-  def redeem
-    @player.redeem_steps!
+  def claim
+    @player.claim_steps!
     render_player
   end
 

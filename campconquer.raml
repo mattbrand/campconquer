@@ -21,7 +21,7 @@ types:
         description: number of gems currently available to be spent on gear
       steps_available:
         type: integer
-        description: number of steps currently available to be redeemed for coins
+        description: number of steps currently available to be claimed for coins
       moderate_exercise:
         type: integer
         description: number of minutes of moderate exercise today
@@ -30,7 +30,7 @@ types:
         description: number of minutes of vigorous exercise today
       gems_available:
         type: integer
-        description: number of gems available to be redeemed [do they automatically redeem? do we split them into moderate gem and vigorous gem?]
+        description: number of gems available to be claimed [do they automatically claim? do we split them into moderate gem and vigorous gem?]
       history:
         type: PlayerHistory
 
@@ -349,7 +349,7 @@ types:
           40x:
             description: not enough currency to afford the item
 
-    /redeem:
+    /claim:
       post:
         description: transform all available steps (and gems?) into coins
 

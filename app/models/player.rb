@@ -52,7 +52,7 @@ class Player < ActiveRecord::Base
     super(options)
   end
 
-  def redeem_steps!
+  def claim_steps!
     # todo: fetch latest step count
 
     new_coins = steps_available / STEPS_PER_COIN
@@ -62,14 +62,14 @@ class Player < ActiveRecord::Base
     self.coins += new_coins
 
     # this could be more efficient
-    self.activities.order(date: :asc).where('steps != steps_redeemed').each do |activity|
-      if activity.steps_unredeemed >= steps_to_distribute
-        activity.steps_redeemed += steps_to_distribute
+    self.activities.order(date: :asc).where('steps != steps_claimed').each do |activity|
+      if activity.steps_unclaimed >= steps_to_distribute
+        activity.steps_claimed += steps_to_distribute
         activity.save!
         break
       else
-        tranche = activity.steps_unredeemed
-        activity.steps_redeemed += tranche
+        tranche = activity.steps_unclaimed
+        activity.steps_claimed += tranche
         steps_to_distribute -= tranche
         activity.save!
       end
@@ -79,7 +79,7 @@ class Player < ActiveRecord::Base
   end
 
   def steps_available
-    activities.sum('steps - steps_redeemed')
+    activities.sum('steps - steps_claimed')
   end
 
   # methods which call Fitbit
