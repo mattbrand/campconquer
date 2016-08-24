@@ -33,7 +33,7 @@ ActiveAdmin.register Player do
     inputs do
       f.semantic_errors
       f.input :name
-      f.input :team
+      f.input :team, :as => :select,      :collection => Team::NAMES.values
       # https://github.com/justinfrench/formtastic/issues/171
       f.input :fitbit_token_hash, as: :string, input_html: {readonly: true, style: 'background: #ddd'}
       f.input :anti_forgery_token, input_html: {readonly: true, style: 'background: #ddd'}
