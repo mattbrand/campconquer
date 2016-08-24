@@ -18,6 +18,7 @@ Konker? I just met 'er!
 - [ ] player & team history
 - [ ] paths: kill json, use csv and google doc
 - [ ] switch from RAML to Swagger? http://swagger.io/
+- [ ] make a Procfile https://devcenter.heroku.com/articles/ruby-default-web-server
 
 # Updating the Seed DB
 
