@@ -17,7 +17,7 @@ Konker? I just met 'er!
 - [ ] better splash page
 - [ ] player & team history
 - [ ] paths: kill json, use csv and google doc
-
+- [ ] switch from RAML to Swagger? http://swagger.io/
 
 # Updating the Seed DB
 

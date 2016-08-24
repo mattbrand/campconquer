@@ -37,6 +37,7 @@ ActiveAdmin.register Player do
       # https://github.com/justinfrench/formtastic/issues/171
       f.input :fitbit_token_hash, as: :string, input_html: {readonly: true, style: 'background: #ddd'}
       f.input :anti_forgery_token, input_html: {readonly: true, style: 'background: #ddd'}
+      f.actions
     end
   end
 
