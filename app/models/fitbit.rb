@@ -135,9 +135,15 @@ class Fitbit
     end
   end
 
+  class Unauthorized < RuntimeError
+    def initialize
+      super("No access token; you must auth")
+    end
+  end
+
   def get(path, params = {})
     # todo: test this error
-    raise "No access token; you must auth" unless token
+    raise Unauthorized unless token
 
     refreshing do
       puts "FITBIT fetching #{path} #{params}"

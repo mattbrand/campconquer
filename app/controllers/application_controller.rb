@@ -72,7 +72,7 @@ class ApplicationController < ActionController::Base
     player_id = params[:player_id] || params[:id]
     @player = Player.find(player_id)
 
-    unless Rails.env.test?
+    if @player.authenticated?
       # TODO: move this into a background task!!!
       @player.pull_activity! Date.current - 1.day
       @player.pull_activity! Date.current

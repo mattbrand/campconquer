@@ -159,6 +159,10 @@ This makes a new set of 100 players with random roles / positions / paths / etc.
 ```
 git push heroku
 heroku run rake db:migrate
+```
+
+Change Heroku config vars to match local config vars (you probably don't want to do this):
+```
 heroku config:set `cat .env`
 ```
 
