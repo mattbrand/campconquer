@@ -20,10 +20,12 @@ class PlayersController < ApplicationController
 
   # GET /players/1
   def show
-    render json: {
+    output = {
       status: 'ok',
       player: @player.as_json,
     }
+    output[:devices] = @player.fitbit.get_devices if @player.authenticated?
+    render json: output
   end
 
   # POST /players

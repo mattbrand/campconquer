@@ -174,4 +174,9 @@ class Fitbit
     date = date.strftime('%F') unless date.is_a? String
     get("/1/user/-/activities/date/#{date}.json")
   end
+
+  # https://dev.fitbit.com/docs/devices/#get-devices
+  def get_devices
+    self.get('/1/user/-/devices.json')
+  end
 end

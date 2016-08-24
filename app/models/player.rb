@@ -123,7 +123,6 @@ class Player < ActiveRecord::Base
       very_active_minutes: summary["veryActiveMinutes"].to_i,
       fairly_active_minutes: summary["fairlyActiveMinutes"].to_i,
       lightly_active_minutes: summary["lightlyActiveMinutes"].to_i)
-
   end
 end
 

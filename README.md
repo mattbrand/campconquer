@@ -19,6 +19,7 @@ Konker? I just met 'er!
 - [ ] paths: kill json, use csv and google doc
 - [ ] switch from RAML to Swagger? http://swagger.io/
 - [ ] make a Procfile https://devcenter.heroku.com/articles/ruby-default-web-server
+- [ ] add 'last sync time' to player info / store
 
 # Updating the Seed DB
 
