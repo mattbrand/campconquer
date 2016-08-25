@@ -23,6 +23,10 @@ Konker? I just met 'er!
 - [ ] CircleCI? 
 - [x] 10,000 max steps
 - [ ] rename coins to gold
+- [ ] return # of coins received in claim response (coins and gems alike)
+- [ ] season stats endpoint
+- [ ] player stats (all time)
+
 
 # Updating the Seed DB
 
