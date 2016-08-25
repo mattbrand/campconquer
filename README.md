@@ -21,6 +21,8 @@ Konker? I just met 'er!
 - [ ] make a Procfile https://devcenter.heroku.com/articles/ruby-default-web-server
 - [ ] add 'last sync time' to player info / store
 - [ ] CircleCI? 
+- [x] 10,000 max steps
+- [ ] rename coins to gold
 
 # Updating the Seed DB
 

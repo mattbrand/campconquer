@@ -16,6 +16,7 @@
 class Player < ActiveRecord::Base
   CANT_CHANGE_PIECE_WHEN_GAME_LOCKED = "you can't change your piece if the current game is locked"
   STEPS_PER_COIN = 10
+  MAXIMUM_CLAIMABLE_STEPS = 10000
   GOAL_MINUTES = 30
 
   class GoalNotMet < RuntimeError
@@ -67,12 +68,11 @@ class Player < ActiveRecord::Base
     super(options)
   end
 
-  def claim_steps!
-    # todo: fetch latest step count
 
-    new_coins = steps_available / STEPS_PER_COIN
-    remaining_steps = steps_available % STEPS_PER_COIN
-    steps_to_distribute = steps_available - remaining_steps
+  def claim_steps!
+    # todo: fetch latest step count from Fitbit now?
+
+    new_coins, steps_to_distribute = calculate_steps
 
     self.coins += new_coins
 
@@ -93,11 +93,12 @@ class Player < ActiveRecord::Base
     self.save!
   end
 
+
   def steps_available
     activities.sum('steps - steps_claimed')
   end
 
-  # todo: DRY moderate and vigorous minutes?
+  # todo: DRY moderate and vigorous minutes methods?
 
   def moderate_minutes
     activity_today.moderate_minutes
@@ -190,11 +191,28 @@ class Player < ActiveRecord::Base
   end
 
   def activity_today
-    activity_for(Date.current)
+    @activity_today ||= activity_for(Date.current)
   end
 
   def activity_for(date)
     self.activities.find_or_create_by!(date: date)
   end
+
+  protected
+
+  def calculate_steps
+    steps_available = self.steps_available
+
+    if steps_available >= MAXIMUM_CLAIMABLE_STEPS
+      new_coins = MAXIMUM_CLAIMABLE_STEPS / STEPS_PER_COIN
+      steps_to_distribute = steps_available
+    else
+      new_coins = steps_available / STEPS_PER_COIN
+      remaining_steps = steps_available % STEPS_PER_COIN
+      steps_to_distribute = steps_available - remaining_steps
+    end
+    return new_coins, steps_to_distribute
+  end
+
 end
 

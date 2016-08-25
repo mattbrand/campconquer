@@ -351,7 +351,24 @@ types:
 
     /claim_steps:
       post:
-        description: transform all available steps into coins
+        description: attempt to claim all available steps and get gold coins
+        responses:
+          200:
+            description: status and player JSON
+
+    /claim_moderate:
+      post:
+        description: attempt to claim your gem for moderate activity
+        responses:
+          200:
+            description: status and player JSON
+
+    /claim_vigorous:
+      post:
+        description: attempt to claim your gem for vigorous activity
+        responses:
+          200:
+            description: status and player JSON
 
     /piece:
       post:

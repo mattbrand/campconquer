@@ -239,12 +239,21 @@ describe Player, type: :model do
           player.claim_steps!
 
           expect(player.coins).to eq(1)
+
           expect(activity_yesterday.reload.steps_claimed).to eq(7)
           expect(activity_today.reload.steps_claimed).to eq(3)
           expect(player.steps_available).to eq(1)
 
         end
       end
+
+      it 'maxes out at 10000 steps' do
+        player.activities.create!(date: Date.current, steps: 12345)
+        player.claim_steps!
+        expect(player.coins).to eq(1000)
+        expect(player.steps_available).to eq(0)
+      end
+
     end
 
     describe 'steps_available' do
