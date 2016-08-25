@@ -24,8 +24,9 @@ ActiveAdmin.register Player do
       end
     end
     actions defaults: false do |player|
-      link_to "Edit", edit_admin_player_path(player)
+      li link_to "Edit", edit_admin_player_path(player)
       # link_to "Delete", delete_admin_player_path(player) # no route? huh?
+      li link_to "Activities",    admin_player_activities_path(player)
     end
   end
 
