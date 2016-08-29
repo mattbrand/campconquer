@@ -2,24 +2,37 @@ require 'rails_helper'
 
 describe OutcomesController, type: :controller do
 
+  let!(:bob) { Player.create! name: 'bob', team: 'blue' }
+  let!(:rhoda) { Player.create! name: 'rhoda', team: 'red' }
+
   # This should return the minimal set of attributes required to create a valid
   # Outcome. As you add validations to Outcome, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
     {
       winner: 'blue', # game[winner]=blue
-      team_outcomes: [
+      player_outcomes: [
         {
           team: 'blue',
+          player_id: bob.id,
           takedowns: 2,
           throws: 3,
           pickups: 4,
+          flag_carry_distance: 5,
+          captures: 6,
+          attack_mvp: true,
+          defend_mvp: false,
         },
         {
           team: 'red',
-          takedowns: 4,
-          throws: 5,
-          pickups: 6,
+          player_id: rhoda.id,
+          takedowns: 12,
+          throws: 13,
+          pickups: 14,
+          flag_carry_distance: 15,
+          captures: 16,
+          attack_mvp: false,
+          defend_mvp: true,
         }
       ]
     }
@@ -99,9 +112,9 @@ describe OutcomesController, type: :controller do
 
         it 'sets team outcomes too' do
           post :create, {game_id: @game.id, outcome: valid_attributes}, valid_session
-          team_outcomes = @game.reload.outcome.reload.team_outcomes
-          expect(team_outcomes).not_to be_empty
-          expect(team_outcomes.size).to eq(2)
+          player_outcomes = @game.reload.outcome.reload.player_outcomes
+          expect(player_outcomes).not_to be_empty
+          expect(player_outcomes.size).to eq(2)
         end
 
         it 'unlocks the game' do

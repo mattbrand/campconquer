@@ -7,15 +7,18 @@
 #  updated_at :datetime         not null
 #  locked     :boolean
 #  current    :boolean          default("f")
+#  season_id  :integer
 #
 # Indexes
 #
-#  index_games_on_current  (current)
+#  index_games_on_current    (current)
+#  index_games_on_season_id  (season_id)
 #
 
 class Game < ActiveRecord::Base
+  belongs_to :season
   has_many :pieces, -> { includes :player, :items }
-  has_one :outcome, -> { includes :team_outcomes }, dependent: :destroy
+  has_one :outcome, -> { includes :player_outcomes }, dependent: :destroy
 
   validates_uniqueness_of :current,
                           unless: Proc.new { |game| !game.current? },

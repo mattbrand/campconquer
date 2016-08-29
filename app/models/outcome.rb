@@ -17,8 +17,8 @@
 
 class Outcome < ActiveRecord::Base
   belongs_to :game
-  has_many :team_outcomes, dependent: :destroy
-  accepts_nested_attributes_for :team_outcomes
+  has_many :player_outcomes, dependent: :destroy
+  accepts_nested_attributes_for :player_outcomes
 
   validates :winner, inclusion: {
     in: Team::NAMES.values + ["none"],
@@ -26,12 +26,12 @@ class Outcome < ActiveRecord::Base
   }
 
   # include ActiveModel::Serialization
-  # def as_json(options=nil)
-  #   if options.nil?
-  #     options = {root: true} + self.class.serialization_options
-  #   end
-  #   super(options)
-  # end
+  def as_json(options=nil)
+    if options.nil?
+      options = self.class.serialization_options
+    end
+    super(options)
+  end
 
   # Rails doesn't recursively call as_json or serializable_hash
   # so we have to call these options explicitly from the parent's as_json
@@ -43,8 +43,17 @@ class Outcome < ActiveRecord::Base
              :updated_at,
              :moves
       ],
-      include: [{:team_outcomes => TeamOutcome.serialization_options}]
+      methods: [:team_outcomes],
+      include: [{:player_outcomes => PlayerOutcome.serialization_options},
+      :team_outcomes
+      ]
     }
+  end
+
+  def team_outcomes
+    Team::NAMES.values.map do |team_name|
+      TeamOutcome.new(team: team_name, games: [game])
+    end
   end
 
 end

@@ -14,7 +14,7 @@ class OutcomesController < ApplicationController
     end
 
     params = outcome_params
-    params[:team_outcomes_attributes] = params.delete(:team_outcomes) if params[:team_outcomes]
+    params[:player_outcomes_attributes] = params.delete(:player_outcomes) if params[:player_outcomes]
 
     @outcome = @game.finish_game!(params)
 
@@ -33,9 +33,11 @@ class OutcomesController < ApplicationController
     params.require(:outcome).permit(:winner,
                                     :match_length,
                                     :moves,
-                                    team_outcomes: [
-                                      :team, :takedowns, :throws, :pickups
-                                    ])
+                                    player_outcomes: [
+                                      :team, :player_id, :takedowns, :throws, :pickups
+                                    ],
+
+    )
   end
 
 

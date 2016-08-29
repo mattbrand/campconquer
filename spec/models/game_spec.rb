@@ -7,10 +7,12 @@
 #  updated_at :datetime         not null
 #  locked     :boolean
 #  current    :boolean          default("f")
+#  season_id  :integer
 #
 # Indexes
 #
-#  index_games_on_current  (current)
+#  index_games_on_current    (current)
+#  index_games_on_season_id  (season_id)
 #
 
 require 'rails_helper'
@@ -108,6 +110,7 @@ describe Game, type: :model do
         expect(@game).to be_locked
       end
 
+      # todo: move to a fixture factory
       def create_alice_with_piece
         alice = Player.create!(name: 'alice', team: 'blue')
         piece_attributes = {
@@ -203,22 +206,22 @@ describe Game, type: :model do
   end
 
   describe "as_json" do
-    it "includes outcome and team_outcomes" do
+    it "includes outcome and player_outcomes" do
       game = Game.current
-      game.outcome = Outcome.new(winner: 'red', team_outcomes: [
-        TeamOutcome.new(team: 'blue', takedowns: 2),
-        TeamOutcome.new(team: 'red', takedowns: 3),
+      game.outcome = Outcome.new(winner: 'red', player_outcomes: [
+        PlayerOutcome.new(team: 'blue', takedowns: 2),
+        PlayerOutcome.new(team: 'red', takedowns: 3),
       ])
       game.save!
 
       expect(game.as_json).to include('outcome')
       expect(game.as_json['outcome']['winner']).to eq('red')
-      expect(game.as_json['outcome']['team_outcomes']).to be
-      expect(game.as_json['outcome']['team_outcomes'].size).to eq(2)
-      expect(game.as_json['outcome']['team_outcomes'][0]['team']).to eq('blue')
-      expect(game.as_json['outcome']['team_outcomes'][0]['takedowns']).to eq(2)
-      expect(game.as_json['outcome']['team_outcomes'][1]['team']).to eq('red')
-      expect(game.as_json['outcome']['team_outcomes'][1]['takedowns']).to eq(3)
+      expect(game.as_json['outcome']['player_outcomes']).to be
+      expect(game.as_json['outcome']['player_outcomes'].size).to eq(2)
+      expect(game.as_json['outcome']['player_outcomes'][0]['team']).to eq('blue')
+      expect(game.as_json['outcome']['player_outcomes'][0]['takedowns']).to eq(2)
+      expect(game.as_json['outcome']['player_outcomes'][1]['team']).to eq('red')
+      expect(game.as_json['outcome']['player_outcomes'][1]['takedowns']).to eq(3)
     end
   end
 

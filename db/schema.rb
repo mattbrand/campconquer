@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160824164118) do
+ActiveRecord::Schema.define(version: 20160829182850) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -49,9 +49,11 @@ ActiveRecord::Schema.define(version: 20160824164118) do
     t.datetime "updated_at",                 null: false
     t.boolean  "locked"
     t.boolean  "current",    default: false
+    t.integer  "season_id"
   end
 
   add_index "games", ["current"], name: "index_games_on_current"
+  add_index "games", ["season_id"], name: "index_games_on_season_id"
 
   create_table "gears", force: :cascade do |t|
     t.string  "name"
@@ -101,6 +103,24 @@ ActiveRecord::Schema.define(version: 20160824164118) do
     t.string   "body_type"
   end
 
+  create_table "player_outcomes", force: :cascade do |t|
+    t.string   "team"
+    t.integer  "takedowns"
+    t.integer  "throws"
+    t.integer  "pickups"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+    t.integer  "outcome_id"
+    t.integer  "player_id"
+    t.integer  "flag_carry_distance"
+    t.integer  "captures"
+    t.integer  "attack_mvp"
+    t.integer  "defend_mvp"
+  end
+
+  add_index "player_outcomes", ["outcome_id"], name: "index_player_outcomes_on_outcome_id"
+  add_index "player_outcomes", ["player_id"], name: "index_player_outcomes_on_player_id"
+
   create_table "players", force: :cascade do |t|
     t.string   "name"
     t.string   "team"
@@ -112,16 +132,11 @@ ActiveRecord::Schema.define(version: 20160824164118) do
     t.integer  "gems",               default: 0, null: false
   end
 
-  create_table "team_outcomes", force: :cascade do |t|
-    t.string   "team"
-    t.integer  "takedowns"
-    t.integer  "throws"
-    t.integer  "pickups"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer  "outcome_id"
+  create_table "seasons", force: :cascade do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "name"
+    t.boolean  "current",    default: false, null: false
   end
-
-  add_index "team_outcomes", ["outcome_id"], name: "index_team_outcomes_on_outcome_id"
 
 end

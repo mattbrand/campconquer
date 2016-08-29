@@ -1,38 +1,71 @@
-# == Schema Information
-#
-# Table name: team_outcomes
-#
-#  id         :integer          not null, primary key
-#  team       :string
-#  takedowns  :integer
-#  throws     :integer
-#  pickups    :integer
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  outcome_id :integer
-#
-# Indexes
-#
-#  index_team_outcomes_on_outcome_id  (outcome_id)
-#
+# team:
+#   type: string
+# wins:
+#   type: integer
+#   description: number of games this team won
+# takedowns:
+#   type: integer
+#   description: count of players on *other* teams who died at this team's hand
+# throws:
+#   type: integer
+#   description: number of balloons thrown
+# pickups:
+#   type: integer
+#   description: number of times flag was picked up
+# flag_carry_distance:
+#   type: float
+#   description: number of meters this team carried the flag
 
-class TeamOutcome < ActiveRecord::Base
-  belongs_to :outcome
-  validates :team, inclusion: { in: Team::NAMES.values, message: Team::NAMES.validation_message}
+class TeamOutcome
 
-  include ActiveModel::Serialization
-  def as_json(options=nil)
-    if options.nil?
-      options = self.class.serialization_options
+  include ActiveModel::Serializers::JSON
+
+  attr_reader :team
+
+  STATS = [:wins,
+           :takedowns,
+           :throws,
+           :pickups,
+           :captures,
+           :flag_carry_distance]
+
+  attr_reader *STATS
+
+  def initialize(team:, games:)
+    @team = team
+    @wins = 0
+
+    if games
+      games.each do |game|
+        add_to_stat('wins', 1) if game.outcome.winner == team
+
+        game.outcome.player_outcomes.each do |player_outcome|
+          next unless player_outcome.team == team
+          (STATS - [:wins]).each do |stat|
+            self.add_to_stat(stat, player_outcome.send(stat))
+          end
+        end
+      end
+
     end
-    super(options)
   end
 
-  # Rails doesn't recursively call as_json or serializable_hash
-  # so we have to call these options explicitly from the parent's as_json
-  def self.serialization_options
-    {
-      only: [:team, :takedowns, :throws, :pickups],
-    }
+  def valid?
+    not @team.nil?
   end
+
+  def attributes
+    {
+      'team' => @team,
+    } + Hash[STATS.collect { |item| [item.to_s, 0] } ]
+  end
+
+  protected
+
+  def add_to_stat(stat, game_val)
+    current_val = self.send(stat) || 0
+    game_val ||=  0
+    instance_variable_set("@#{stat}", current_val + game_val)
+  end
+
 end

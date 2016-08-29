@@ -33,4 +33,12 @@ RSpec.describe Outcome, type: :model do
     outcome = Outcome.new(winner: 'none')
     expect(outcome).to be_valid
   end
+
+  it "includes team outcome" do
+    game = Game.new
+    outcome = Outcome.new(winner: 'blue', game: game)
+    game.outcome = outcome
+    # ap outcome.as_json
+    expect(outcome.as_json['team_outcomes']).to be_a(Array)
+  end
 end

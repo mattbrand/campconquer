@@ -165,12 +165,6 @@ types:
       moves:
         type: string
         description: all the moves and throws, as a huge json string blob :-(
-      attack_mvp:
-        type: integer
-        description: [calculated] player id: for winning team, the player who captured the flag; for losing team, the player that held the flag for longest distance
-      defend_mvp:
-        type: integer
-        description: [calculated] player id: the player with the most takedowns
 
   TeamOutcome:
     type: object
@@ -193,6 +187,12 @@ types:
       flag_carry_distance:
         type: float
         description: number of meters this team carried the flag
+      attack_mvp:
+        type: integer
+        description: [calculated] player id: for winning team, the player who captured the flag; for losing team, the player that held the flag for longest distance
+      defend_mvp:
+        type: integer
+        description: [calculated] player id: the player with the most takedowns
 
   PlayerOutcome:
     type: object
