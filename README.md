@@ -24,14 +24,17 @@ Konker? I just met 'er!
 - [ ] season stats endpoint
 - [ ] player stats (all time)
 - [ ] gear buy & sell
+- [ ] make "moves" upload/download/storage more efficient
 
 ## chores
 
+- [ ] state machine for game
 - [ ] [upgrade to Rails 5](http://blog.bigbinary.com/2016/08/18/new-framework-defaults-in-rails-5-to-make-upgrade-easier.html)
 - [ ] switch from RAML to Swagger? http://swagger.io/
 - [ ] make a Procfile https://devcenter.heroku.com/articles/ruby-default-web-server
 - [ ] CircleCI? 
 - [ ] rename coins to gold
+- [ ] Alex learns Unity (gratis)
 
 
 # Updating the Seed DB

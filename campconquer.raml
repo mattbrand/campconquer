@@ -156,69 +156,47 @@ types:
       winner:
         type: string
         description: team name of winner, or null if a draw
-      team_outcomes:
-        type: TeamOutcome[]
-        description: if played, all the stats for that game; team outcomes should be in alphabetical order by name when returned by server
+      player_outcomes:
+        type: PlayerOutcome[]
+        description: once played, stats for each player of this game; should be in alphabetical order by team name when returned by server
       match_length:
         type: integer
         description: duration of game in seconds
       moves:
         type: string
         description: all the moves and throws, as a huge json string blob :-(
+      attack_mvp:
+        type: integer
+        description: [calculated] player id: for winning team, the player who captured the flag; for losing team, the player that held the flag for longest distance
+      defend_mvp:
+        type: integer
+        description: [calculated] player id: the player with the most takedowns
 
   TeamOutcome:
     type: object
-    description: the results of a finished game for a particular team
+    description: the results of a finished game (or season) for a particular team
     properties:
       team:
         type: string
-      takedowns:
-        type: integer
-        description: count of players on *other* teams who died at this team's hand
-      throws:
-        type: integer
-        description: number of balloons thrown
-      pickups:
-        type: integer
-        description: number of times flag was picked up
-
-  PlayerOutcome:
-    type: object
-    description: the results of a finished game for a particular player
-    properties:
-      team:
-        type: string
-      takedowns:
-        type: integer
-        description: count of players on *other* teams who died at this player's hand
-      throws:
-        type: integer
-        description: number of balloons thrown
-      pickups:
-        type: integer
-        description: number of times flag was picked up
-
-  TeamHistory:
-    description: team stats for a whole "season" (all games played thus far)
-    properties:
-      team:
-        type: string
-      takedowns:
-        type: integer
-        description: count of players on *other* teams who died at this team's hand
-      throws:
-        type: integer
-        description: number of balloons thrown
-      pickups:
-        type: integer
-        description: number of times this team picked up the flag
       wins:
         type: integer
         description: number of games this team won
+      takedowns:
+        type: integer
+        description: count of players on *other* teams who died at this team's hand
+      throws:
+        type: integer
+        description: number of balloons thrown
+      pickups:
+        type: integer
+        description: number of times flag was picked up
+      flag_carry_distance:
+        type: float
+        description: number of meters this team carried the flag
 
-  # todo: design an endpoint that will return this data
-  PlayerHistory:
-    description: player stats for a whole "season" (all games played thus far)
+  PlayerOutcome:
+    type: object
+    description: the results of a finished game (or season) for a particular player
     properties:
       team:
         type: string
@@ -227,10 +205,22 @@ types:
         description: count of players on *other* teams who died at this player's hand
       throws:
         type: integer
-        description: number of balloons thrown
+        description: number of balloons this player threw
       pickups:
         type: integer
         description: number of times this player picked up the flag
+      flag_carry_distance:
+        type: float
+        description: number of meters this player carried the flag
+      captures:
+        type: integer
+        description: number of times this player captured the flag (max. 1 per game)
+      attack_mvp:
+        type: integer
+        description: number of times this player was the Attack MVP (max. 1 per game)
+      defend_mvp:
+        type: integer
+        description: number of times this player was the Defend MVP (max. 1 per game)
 
 /gears:
   get:
@@ -416,3 +406,11 @@ types:
       200:
         body:
           type: Path[]
+
+/season:
+  get:
+    description: get data for the current season (all games)
+  responses:
+    200:
+      body:
+        type: TeamHistory[]
