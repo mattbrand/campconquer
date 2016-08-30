@@ -43,8 +43,10 @@ class PlayerOutcome < ActiveRecord::Base
              :throws,
              :pickups,
              :captures,
+             :flag_carry_distance,
              :attack_mvp,
-             :defend_mvp],
+             :defend_mvp,
+      ],
     }
   end
 end
