@@ -25,7 +25,7 @@ class Player < ActiveRecord::Base
     end
   end
 
-  has_one :piece, -> { where(game_id: nil) }
+  has_one :piece, -> { where(game_id: nil).includes(:items) }
   has_many :activities
   serialize :fitbit_token_hash
 

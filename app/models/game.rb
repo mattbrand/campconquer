@@ -110,18 +110,25 @@ class Game < ActiveRecord::Base
       end
     end
 
+
     # tack on the gear
     # todo: move to Piece
     Item.bulk_insert do |bulk_items|
-      pieces = self.pieces.includes(:items)
+      pieces = self.pieces.includes(:items, :player)
       pieces.each do |piece|
-        original_piece = piece.player.piece # :-)
+
+        # optimization:
+        # player = piece.player  # this needs to re-query the db for the player
+        player = players.detect{|p| p.id == piece.player_id}   # this uses the players we already loaded
+
+        original_piece = player.piece # :-)
         original_piece.items.each do |original_item|
           item_attrs = original_item.attributes + {piece_id: piece.id}
           bulk_items.add(item_attrs)
         end
       end
     end
+
   end
 
 end

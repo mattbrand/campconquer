@@ -16,7 +16,9 @@ Konker? I just met 'er!
 - [ ] de-auth a player (disconnect fitbit)
 - [x] step/goal redemption
 - [ ] better splash page
+
 - [ ] player & team history
+
 - [ ] paths: kill json, use csv and google doc
 - [ ] add 'last sync time' to player info / store
 - [x] 10,000 max steps
@@ -139,14 +141,17 @@ and [Postman](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdgg
 * `rails server`
 * `open http://localhost:3000`
 
-### Making a New Game
- 
-```
-rails console
-g = Game.current
-g.lock_game!
-g.finish_game! winner: 'red'
-```
+### Console Commands
+
+| command | description |
+|---|---|
+| `rails console` | enter the console |
+| `Game.current.destroy!` | destroy the current game and all related pieces/setup |
+| `g = Game.current`      | get the current game, creating it if necessary        |
+| `g.lock_game!`          | lock the game and copy pieces from the players |
+| `g.finish_game! winner: 'red'`  | force a completion (this may break soon) |
+| `reload!`               | load changed source code (ignores initializers) |
+| `reload!; Game.current.destroy!; Game.current.lock_game!` | quick game restart |
 
 ### Seeding Players
 
