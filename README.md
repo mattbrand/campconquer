@@ -10,33 +10,23 @@ Konker? I just met 'er!
 
 - [ ] API Auth
 - [ ] User Auth for web site
-- [x] User Auth for fitbit
 - [ ] Admin Auth (Devise? we used `rails generate active_admin:install --skip-users`  )
-- [x] store fitbit user id
 - [ ] de-auth a player (disconnect fitbit)
-- [x] step/goal redemption
 - [ ] better splash page
-
-- [ ] player & team history
-
 - [ ] paths: kill json, use csv and google doc
 - [ ] add 'last sync time' to player info / store
-- [x] 10,000 max steps
+- [ ] round up remainder steps
 - [ ] return # of coins received in claim response (coins and gems alike)
-- [ ] season stats endpoint
-- [ ] player stats (all time)
+- [ ] history (stats)
+    - [ ] season stats endpoint
+    - [ ] player stats (all time)
 - [ ] gear buy & sell
 - [ ] make "moves" upload/download/storage more efficient
-
-- [ ] write script to copy player/fitbit auth info from staging to prod
 - [ ] 'control group' players (no team)
   - can see steps etc but no redemption 
 - [ ] player HTML page -- when logged in, shows activities etc 
-
 - [ ] only one goal: 60 min of combined moderate&vigorous
-
 - [ ] create a separate endpoint for game so that moves don't always get sent
-
 
 ## chores
 
