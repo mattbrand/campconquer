@@ -38,7 +38,13 @@ class PlayerOutcome < ActiveRecord::Base
   # so we have to call these options explicitly from the parent's as_json
   def self.serialization_options
     {
-      only: [:team, :takedowns, :throws, :pickups, :captures, :attack_mvp, :defend_mvp],
+      only: [:team,
+             :takedowns,
+             :throws,
+             :pickups,
+             :captures,
+             :attack_mvp,
+             :defend_mvp],
     }
   end
 end

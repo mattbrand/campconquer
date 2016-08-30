@@ -110,7 +110,7 @@ describe OutcomesController, type: :controller do
           expect(Outcome.where(id: existing_outcome.id)).to be_empty
         end
 
-        it 'sets team outcomes too' do
+        it 'sets player outcomes too' do
           post :create, {game_id: @game.id, outcome: valid_attributes}, valid_session
           player_outcomes = @game.reload.outcome.reload.player_outcomes
           expect(player_outcomes).not_to be_empty

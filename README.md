@@ -28,6 +28,14 @@ Konker? I just met 'er!
 - [ ] gear buy & sell
 - [ ] make "moves" upload/download/storage more efficient
 
+- [ ] write script to copy player/fitbit auth info from staging to prod
+- [ ] 'control group' players (no team)
+  - can see steps etc but no redemption 
+- [ ] player HTML page -- when logged in, shows activities etc 
+
+- [ ] only one goal: 60 min of combined moderate&vigorous
+
+
 ## chores
 
 - [ ] state machine for game
@@ -37,7 +45,7 @@ Konker? I just met 'er!
 - [ ] CircleCI? 
 - [ ] rename coins to gold
 - [ ] Alex learns Unity (gratis)
-
+- [ ] create prod env
 
 # Updating the Seed DB
 
@@ -152,6 +160,7 @@ and [Postman](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdgg
 | `g.finish_game! winner: 'red'`  | force a completion (this may break soon) |
 | `reload!`               | load changed source code (ignores initializers) |
 | `reload!; Game.current.destroy!; Game.current.lock_game!` | quick game restart |
+
 
 ### Seeding Players
 

@@ -159,6 +159,9 @@ types:
       player_outcomes:
         type: PlayerOutcome[]
         description: once played, stats for each player of this game; should be in alphabetical order by team name when returned by server
+      team_outcomes:
+        type: TeamOutcome[]
+        description: once played, stats for each team for this game - download only
       match_length:
         type: integer
         description: duration of game in seconds

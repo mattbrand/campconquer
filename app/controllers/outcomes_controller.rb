@@ -34,7 +34,14 @@ class OutcomesController < ApplicationController
                                     :match_length,
                                     :moves,
                                     player_outcomes: [
-                                      :team, :player_id, :takedowns, :throws, :pickups
+                                      :team,
+                                      :player_id,
+                                      :takedowns,
+                                      :throws,
+                                      :pickups,
+                                      :captures,
+                                      :attack_mvp,
+                                      :defend_mvp,
                                     ],
 
     )

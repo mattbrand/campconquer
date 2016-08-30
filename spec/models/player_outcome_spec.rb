@@ -2,18 +2,24 @@
 #
 # Table name: player_outcomes
 #
-#  id         :integer          not null, primary key
-#  player       :string
-#  takedowns  :integer
-#  throws     :integer
-#  pickups    :integer
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  outcome_id :integer
+#  id                  :integer          not null, primary key
+#  team                :string
+#  takedowns           :integer
+#  throws              :integer
+#  pickups             :integer
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  outcome_id          :integer
+#  player_id           :integer
+#  flag_carry_distance :integer
+#  captures            :integer
+#  attack_mvp          :integer
+#  defend_mvp          :integer
 #
 # Indexes
 #
 #  index_player_outcomes_on_outcome_id  (outcome_id)
+#  index_player_outcomes_on_player_id   (player_id)
 #
 
 require 'rails_helper'
