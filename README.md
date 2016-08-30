@@ -35,6 +35,8 @@ Konker? I just met 'er!
 
 - [ ] only one goal: 60 min of combined moderate&vigorous
 
+- [ ] create a separate endpoint for game so that moves don't always get sent
+
 
 ## chores
 
