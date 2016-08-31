@@ -9,6 +9,8 @@ Konker? I just met 'er!
 ## features
 
 - [x] lock copies equipped gear
+- [x] gear buy & equip
+
 - [ ] API Auth
 - [ ] User Auth for web site
 - [ ] Admin Auth (Devise? we used `rails generate active_admin:install --skip-users`  )
@@ -21,7 +23,6 @@ Konker? I just met 'er!
 - [ ] history (stats)
     - [ ] season stats endpoint
     - [ ] player stats (all time)
-- [x] gear buy & equip
 - [ ] make "moves" upload/download/storage more efficient
 - [ ] 'control group' players (no team)
   - can see steps etc but no redemption 
@@ -31,8 +32,8 @@ Konker? I just met 'er!
 - [ ] add player_id to PlayerOutcome in & out
 - [ ] validate max. one capture per game
 - [ ] check steps in the background at least 1x/day, not just when players connect
-- [ ] unequip
-
+- [ ] unequip (or we may not need unequip if i add the rule “only one of each item type can be equipped” )
+- [ ] remove `current` and `locked` db fields
 
 ## chores
 
