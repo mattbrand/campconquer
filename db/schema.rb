@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160831143108) do
+ActiveRecord::Schema.define(version: 20160831164419) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -70,7 +70,7 @@ ActiveRecord::Schema.define(version: 20160831143108) do
     t.integer "level",        default: 0, null: false
   end
 
-  create_table "items", id: false, force: :cascade do |t|
+  create_table "items", force: :cascade do |t|
     t.integer "piece_id",                 null: false
     t.integer "gear_id",                  null: false
     t.boolean "equipped", default: false, null: false

@@ -25,6 +25,24 @@ class Player < ActiveRecord::Base
     end
   end
 
+  class NotEnoughCoins < RuntimeError
+    def initialize(gear)
+      super("not enough coins to buy #{gear.name}: #{gear.gold} required")
+    end
+  end
+
+  class AlreadyOwned < RuntimeError
+    def initialize(gear)
+      super("player already owns #{gear.name}: purchase cancelled")
+    end
+  end
+
+  class NotOwned < RuntimeError
+    def initialize(gear)
+      super("player attempted to equip unowned gear #{gear.name}")
+    end
+  end
+
   has_one :piece, -> { where(game_id: nil).includes(:items) }
   has_many :activities
   serialize :fitbit_token_hash
@@ -145,6 +163,43 @@ class Player < ActiveRecord::Base
     else
       raise GoalNotMet, 'vigorous'
     end
+  end
+
+  def gear_owned
+    piece.gear_owned
+  end
+
+  def gear_equipped
+    piece.gear_equipped
+  end
+
+  def buy_gear! gear_name
+    gear = Gear.find_by_name(gear_name)
+    if gear_owned?(gear_name)
+      raise Player::AlreadyOwned, gear
+    elsif self.coins >= gear.gold
+      piece.items.create!(gear_id: gear.id, equipped: false)
+      self.coins -= gear.gold
+      self.save!
+    else
+      raise Player::NotEnoughCoins, gear
+    end
+  end
+
+  def gear_owned?(gear_name)
+    piece.gear_owned.include?(gear_name)
+  end
+
+  def gear_equipped?(gear_name)
+    piece.gear_equipped.include?(gear_name)
+  end
+
+  def equip_gear!(gear_name)
+    gear = Gear.find_by_name(gear_name)
+    item = piece.items.find_by_gear_id(gear.id)
+    raise NotOwned, gear if item.nil?
+    item.update!(equipped: true)
+    self.reload
   end
 
   # methods which call Fitbit

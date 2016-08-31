@@ -24,15 +24,18 @@ describe Game do
     create_player(player_name: 'alice' 'female', team: 'blue')
   end
 
-  def create_player(player_name:, team:, body_type: 'female', role: 'defense')
-    alice = Player.create!(name: player_name, team: team)
+  def create_player(player_name:, team: 'red',
+                    body_type: 'female',
+                    role: 'defense',
+                    coins: 100)
+    player = Player.create!(name: player_name, team: team, coins: coins)
     piece_attributes = {
       body_type: body_type,
       role: role,
       path: [[0, 0]]
     }
-    alice.set_piece(piece_attributes)
-    alice
+    player.set_piece(piece_attributes)
+    player
   end
 
   let(:galoshes) { Gear.create!(name: 'galoshes', gear_type: 'shoes') }
@@ -174,7 +177,22 @@ describe Game do
         expect(copied_piece.items).not_to include(tee_shirt)
       end
 
-      it "copies all players' pieces and items"
+      it "copies all players' pieces and items" do
+        3.times do
+          p = create_player(player_name: Faker::Name.first_name)
+          p.buy_gear!(galoshes.name)
+          p.buy_gear!(tee_shirt.name)
+          p.equip_gear!(galoshes.name)
+        end
+
+        @game.lock_game!
+
+        @game.pieces.each do |piece|
+          piece.reload
+          expect(piece.gear_equipped).to eq(['galoshes'])
+          expect(piece.gear_owned).to match_array(['galoshes', 'tee-shirt'])
+        end
+      end
 
       context 'when there is a player with no piece' do
         it 'ignores it' do

@@ -399,4 +399,61 @@ describe Player, type: :model do
       end
     end
   end
+
+  describe 'gear' do
+    let!(:player) { Player.create!(name: "alice", team: 'blue', coins: 15) }
+    let!(:galoshes) { Gear.create!(name: 'galoshes', gear_type: 'shoes', gold: 10) }
+    let!(:tee_shirt) { Gear.create!(name: 'tee-shirt', gear_type: 'shirt', gold: 20) }
+
+    before do
+      player.set_piece
+    end
+
+    describe 'buying' do
+      it 'adds the gear to inventory' do
+        expect(player.gear_owned).to be_empty
+        player.buy_gear!('galoshes')
+        expect(player.gear_owned).to eq(['galoshes'])
+      end
+      it 'subtracts coins' do
+        expect(player.reload.coins).to eq(15)
+        player.buy_gear!('galoshes')
+        expect(player.reload.coins).to eq(5)
+      end
+      it 'fails if not enough coins' do
+        expect do
+          player.buy_gear!('tee-shirt')
+        end.to raise_error(Player::NotEnoughCoins)
+        expect(player.reload.coins).to eq(15)
+      end
+      it 'does not allow buying twice' do
+        player.buy_gear!('galoshes')
+        expect do
+          player.buy_gear!('galoshes')
+        end.to raise_error(Player::AlreadyOwned)
+        expect(player.reload.coins).to eq(5)
+      end
+    end
+
+    describe 'equipping' do
+      it 'equips owned gear' do
+        player.buy_gear!('galoshes')
+        expect(player.gear_equipped).to eq([])
+        player.equip_gear!('galoshes')
+        expect(player.gear_equipped).to eq(['galoshes'])
+      end
+      it 'fails to equip unowned gear' do
+        expect do
+          player.equip_gear!('galoshes')
+        end.to raise_error(Player::NotOwned)
+      end
+      it 'equipping already equipped gear is a no-op' do
+        player.buy_gear!('galoshes')
+        player.equip_gear!('galoshes')
+        player.equip_gear!('galoshes')
+        expect(player.gear_equipped).to eq(['galoshes'])
+      end
+    end
+
+  end
 end
