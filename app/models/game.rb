@@ -8,6 +8,7 @@
 #  locked     :boolean
 #  current    :boolean          default("f")
 #  season_id  :integer
+#  state      :string           default("preparing")
 #
 # Indexes
 #
@@ -23,6 +24,24 @@ class Game < ActiveRecord::Base
   validates_uniqueness_of :current,
                           unless: Proc.new { |game| !game.current? },
                           message: 'should be true for only one game'
+
+  state_machine :state, initial: :preparing do
+
+    event :lock_game do
+      transition :preparing => :in_progress
+    end
+    before_transition :preparing => :in_progress, do: :do_lock_game
+
+    event :unlock_game do
+      transition :in_progress => :preparing
+    end
+    before_transition :in_progress => :preparing, do: :do_unlock_game
+
+    # don't call this; call finish_game!(params) instead
+    event :finish_game do
+      transition :in_progress => :completed
+    end
+  end
 
   def self.current
     current_game = where(current: true).first
@@ -54,22 +73,14 @@ class Game < ActiveRecord::Base
     self.outcome.try(:winner)
   end
 
-  # todo: test me
-  def unlock_game!
-    update!(locked: false)
+  def do_lock_game
+    update!(locked: true)
+    copy_player_pieces
   end
 
-  # todo: test me
-  def lock_game!
-    if locked?
-      # todo: use an AR exception that lets the response be not a 500
-      raise "you can't lock a game that is already locked"
-    end
-
-    update!(locked: true)
-
-    copy_player_pieces
-
+  def do_unlock_game
+    update!(locked: false)
+    pieces.destroy_all
   end
 
   # params:  :winner,
@@ -92,10 +103,10 @@ class Game < ActiveRecord::Base
     self.locked = false
     save!
     old_outcome.destroy! if old_outcome
+
+    finish_game
     outcome
   end
-
-  private
 
   def copy_player_pieces
     players = Player.all.includes(piece: :items).where('pieces.game_id IS NULL').references(:pieces, :items)

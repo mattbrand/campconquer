@@ -33,7 +33,6 @@ class GamesController < ApplicationController
   # DELETE /games/1/lock
   def unlock
     @game.unlock_game!
-    @game.pieces.destroy_all
     render json: { status: 'ok', message: "game #{@game.id} unlocked" }
   end
 

@@ -149,7 +149,14 @@ and [Postman](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdgg
 * `rails server`
 * `open http://localhost:3000`
 
-### Console Commands
+### Terminal Commands
+
+| command | description |
+|---|---|
+| `rake state_machine:draw CLASS=Game` | update the state diagram in `Game_state.png` |
+
+
+### Rails Console Commands
 
 | command | description |
 |---|---|

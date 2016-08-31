@@ -23,12 +23,15 @@ gem 'awesome_print'
 gem 'oauth2'
 gem 'bulk_insert' # https://github.com/jamis/bulk_insert
 gem 'faker' # https://github.com/stympy/faker
+gem 'state_machine' # https://github.com/pluginaweek/state_machine
 
 group :development, :test do
   gem 'sqlite3'
   gem 'byebug'   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem "rspec-rails"
   gem 'dotenv-rails' # https://github.com/bkeepers/dotenv
+  gem 'ruby-graphviz', :require => 'graphviz'
+
 end
 
 group :development do

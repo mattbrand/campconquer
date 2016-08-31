@@ -8,6 +8,7 @@
 #  locked     :boolean
 #  current    :boolean          default("f")
 #  season_id  :integer
+#  state      :string           default("preparing")
 #
 # Indexes
 #
@@ -223,7 +224,7 @@ describe Game do
         @game.lock_game!
         expect do
           @game.lock_game!
-        end.to raise_error(RuntimeError)
+        end.to raise_error(StateMachine::InvalidTransition)
       end
     end
   end
