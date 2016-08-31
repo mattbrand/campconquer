@@ -21,7 +21,7 @@ Konker? I just met 'er!
 - [ ] history (stats)
     - [ ] season stats endpoint
     - [ ] player stats (all time)
-- [ ] gear buy & sell
+- [x] gear buy & equip
 - [ ] make "moves" upload/download/storage more efficient
 - [ ] 'control group' players (no team)
   - can see steps etc but no redemption 
@@ -36,7 +36,7 @@ Konker? I just met 'er!
 
 ## chores
 
-- [ ] state machine for game
+- [x] state machine for game
 - [ ] rename coins to gold
 - [ ] create prod env
 
