@@ -330,7 +330,7 @@ types:
       post:
         description: buy a piece of gear
         queryParameters:
-          name:
+          gear[name]:
             type: string
             description: the short name of the gear to buy
           currency:
@@ -341,6 +341,19 @@ types:
             description: ok
           40x:
             description: not enough currency to afford the item
+
+    /equip:
+      post:
+        description: equip a piece of gear
+        queryParameters:
+          gear[name]:
+            type: string
+            description: the short name of the gear to equip
+        responses:
+          200:
+            description: ok
+          40x:
+            description: gear not owned
 
     /claim_steps:
       post:

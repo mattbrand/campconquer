@@ -8,7 +8,7 @@ Konker? I just met 'er!
 
 ## features
 
-- [ ] lock copies equipped gear
+- [x] lock copies equipped gear
 - [ ] API Auth
 - [ ] User Auth for web site
 - [ ] Admin Auth (Devise? we used `rails generate active_admin:install --skip-users`  )
@@ -31,6 +31,8 @@ Konker? I just met 'er!
 - [ ] add player_id to PlayerOutcome in & out
 - [ ] validate max. one capture per game
 - [ ] check steps in the background at least 1x/day, not just when players connect
+- [ ] unequip
+
 
 ## chores
 

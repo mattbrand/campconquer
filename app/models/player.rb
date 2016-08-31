@@ -14,7 +14,7 @@
 #
 
 class Player < ActiveRecord::Base
-  CANT_CHANGE_PIECE_WHEN_GAME_LOCKED = "you can't change your piece if the current game is locked"
+  CANT_CHANGE_PIECE_WHEN_GAME_LOCKED = "you can't edit your piece if the current game is locked"
   STEPS_PER_COIN = 10
   MAXIMUM_CLAIMABLE_STEPS = 10000
   GOAL_MINUTES = 30
@@ -43,6 +43,18 @@ class Player < ActiveRecord::Base
     end
   end
 
+  class GameLocked < RuntimeError
+    def initialize
+      super(Player::CANT_CHANGE_PIECE_WHEN_GAME_LOCKED)
+    end
+  end
+
+  class NoPiece < RuntimeError
+    def initialize
+      super('piece must be set up')
+    end
+  end
+
   has_one :piece, -> { where(game_id: nil).includes(:items) }
   has_many :activities
   serialize :fitbit_token_hash
@@ -53,7 +65,7 @@ class Player < ActiveRecord::Base
   def set_piece(params = {})
     if Game.current.locked?
       # todo: use an AR exception that lets the response be not a 500
-      raise Player::CANT_CHANGE_PIECE_WHEN_GAME_LOCKED
+      raise Player::GameLocked
     end
 
     params = params.pick(:body_type, :role, :path)
@@ -63,6 +75,10 @@ class Player < ActiveRecord::Base
       self.piece = Piece.create!({player_id: self.id, team: self.team} + params)
     end
     self.piece
+  end
+
+  def require_piece
+    raise NoPiece if self.piece.nil?
   end
 
   include ActiveModel::Serialization
@@ -85,7 +101,6 @@ class Player < ActiveRecord::Base
     end
     super(options)
   end
-
 
   def claim_steps!
     # todo: fetch latest step count from Fitbit now?
@@ -166,10 +181,12 @@ class Player < ActiveRecord::Base
   end
 
   def gear_owned
+    require_piece
     piece.gear_owned
   end
 
   def gear_equipped
+    require_piece
     piece.gear_equipped
   end
 
@@ -195,6 +212,8 @@ class Player < ActiveRecord::Base
   end
 
   def equip_gear!(gear_name)
+    raise Player::GameLocked if Game.current.locked? # todo: test
+
     gear = Gear.find_by_name(gear_name)
     item = piece.items.find_by_gear_id(gear.id)
     raise NotOwned, gear if item.nil?

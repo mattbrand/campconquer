@@ -94,7 +94,7 @@ describe PlayersController, type: :controller do
   describe "PUT #update" do
     context "with valid params" do
       let(:new_attributes) {
-        { team: 'red' }
+        {team: 'red'}
       }
 
       it "updates the requested player" do
@@ -202,4 +202,48 @@ describe PlayersController, type: :controller do
     end
   end
 
+  describe 'gear' do
+    let!(:player) { Player.create! valid_attributes }
+    let!(:galoshes) { Gear.create!(name: 'galoshes', gear_type: 'shoes') }
+
+    before do
+      player.set_piece
+    end
+
+    describe "POST #buy" do
+      context "with valid params" do
+        it "buys an item" do
+          post :buy, {:id => player.to_param, :gear => {:name => 'galoshes'}}, valid_session
+          expect_ok
+          expect(player.reload.gear_owned).to eq(['galoshes'])
+          expect(response_json['player']['piece']).to include({'gear_owned' => ['galoshes']})
+
+        end
+      end
+    end
+
+    describe "POST #equip" do
+      before do
+        player.buy_gear!('galoshes')
+      end
+
+      context "with valid params" do
+        it "equips an item" do
+          post :equip, {:id => player.to_param, :gear => {:name => 'galoshes'}}, valid_session
+          expect(player.reload.gear_equipped).to eq(['galoshes'])
+          expect(response_json['player']['piece']).to include({'gear_equipped' => ['galoshes']})
+        end
+      end
+
+      context "while the current game is locked" do
+        it "fails" do
+          Game.current.lock_game!
+          post :equip, {:id => player.to_param, :gear => {:name => 'galoshes'}}, valid_session
+          expect(response_json['status']).to eq('error')
+          expect(response_json['message']).to include("current game is locked")
+        end
+      end
+    end
+
+  end
 end

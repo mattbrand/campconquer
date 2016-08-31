@@ -7,7 +7,10 @@ class PlayersController < ApplicationController
                                      :claim_vigorous,
                                      :profile,
                                      :steps,
-                                     :activities]
+                                     :activities,
+                                     :buy,
+                                     :equip,
+  ]
 
   # GET /players
   def index
@@ -71,7 +74,13 @@ class PlayersController < ApplicationController
   end
 
   def buy
-    raise "Not implemented"
+    @player.buy_gear!(params['gear']['name'])
+    render_player
+  end
+
+  def equip
+    @player.equip_gear!(params['gear']['name'])
+    render_player
   end
 
   # just for demo

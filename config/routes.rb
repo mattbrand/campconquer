@@ -21,7 +21,8 @@ Rails.application.routes.draw do
     member do
       get :auth
 
-      post :buy  # should this be a nested items resource instead?
+      post :buy   # should this be a nested items resource instead?
+      post :equip # should this be a nested items resource instead?
       post :claim_steps  # should this be a nested currency resource instead?
       post :claim_moderate  # should this be a nested currency resource instead?
       post :claim_vigorous  # should this be a nested currency resource instead?

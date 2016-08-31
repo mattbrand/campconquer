@@ -79,7 +79,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-
   def exception_as_json(e)
     {
       :status => 'error',
