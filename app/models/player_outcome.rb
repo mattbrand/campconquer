@@ -11,10 +11,10 @@
 #  updated_at          :datetime         not null
 #  outcome_id          :integer
 #  player_id           :integer
-#  flag_carry_distance :integer
-#  captures            :integer
-#  attack_mvp          :integer
-#  defend_mvp          :integer
+#  flag_carry_distance :integer          not null
+#  captures            :integer          not null
+#  attack_mvp          :integer          not null
+#  defend_mvp          :integer          not null
 #
 # Indexes
 #
@@ -24,9 +24,19 @@
 
 class PlayerOutcome < ActiveRecord::Base
   belongs_to :outcome
-  validates :team, inclusion: { in: Team::NAMES.values, message: Team::NAMES.validation_message}
+  validates :team, inclusion: {in: Team::NAMES.values, message: Team::NAMES.validation_message}
+  validates :player_id, presence: true # todo: should validate that it's a real player too
+
+  before_save do
+    # defend against nulls
+    %w(takedowns throws pickups flag_carry_distance captures attack_mvp defend_mvp).each do |field|
+      self[field] ||= 0
+    end
+
+  end
 
   include ActiveModel::Serialization
+
   def as_json(options=nil)
     if options.nil?
       options = self.class.serialization_options
@@ -39,6 +49,7 @@ class PlayerOutcome < ActiveRecord::Base
   def self.serialization_options
     {
       only: [:team,
+             :player_id,
              :takedowns,
              :throws,
              :pickups,

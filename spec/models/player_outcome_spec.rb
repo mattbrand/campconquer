@@ -11,10 +11,10 @@
 #  updated_at          :datetime         not null
 #  outcome_id          :integer
 #  player_id           :integer
-#  flag_carry_distance :integer
-#  captures            :integer
-#  attack_mvp          :integer
-#  defend_mvp          :integer
+#  flag_carry_distance :integer          not null
+#  captures            :integer          not null
+#  attack_mvp          :integer          not null
+#  defend_mvp          :integer          not null
 #
 # Indexes
 #
@@ -31,7 +31,8 @@ RSpec.describe PlayerOutcome, type: :model do
   end
 
   it "validates player name" do
-    player_outcome = PlayerOutcome.new(team: 'blue')
+    NOT_A_REAL_PLAYER_ID = 0 # todo: make a real player using factories
+    player_outcome = PlayerOutcome.new(team: 'blue', player_id: NOT_A_REAL_PLAYER_ID)
     expect(player_outcome).to be_valid
   end
 end

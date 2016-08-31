@@ -8,6 +8,7 @@ Konker? I just met 'er!
 
 ## features
 
+- [ ] lock copies equipped gear
 - [ ] API Auth
 - [ ] User Auth for web site
 - [ ] Admin Auth (Devise? we used `rails generate active_admin:install --skip-users`  )
@@ -27,6 +28,9 @@ Konker? I just met 'er!
 - [ ] player HTML page -- when logged in, shows activities etc 
 - [ ] only one goal: 60 min of combined moderate&vigorous
 - [ ] create a separate endpoint for game so that moves don't always get sent
+- [ ] add player_id to PlayerOutcome in & out
+- [ ] validate max. one capture per game
+- [ ] check steps in the background at least 1x/day, not just when players connect
 
 ## chores
 

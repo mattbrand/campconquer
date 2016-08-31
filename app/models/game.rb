@@ -110,7 +110,6 @@ class Game < ActiveRecord::Base
       end
     end
 
-
     # tack on the gear
     # todo: move to Piece
     Item.bulk_insert do |bulk_items|

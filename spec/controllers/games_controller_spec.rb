@@ -181,6 +181,8 @@ describe GamesController, type: :controller do
         betsys_copied_piece = @game.pieces.find_by(player_id: @betsy.id)
         betsys_copied_piece.items.reload
 
+        pending "copy equipped items"
+
         expect(betsys_copied_piece.gear_equipped).to eq(['galoshes'])
         expect(betsys_copied_piece.gear_owned).to include('galoshes', 'tee-shirt')
 

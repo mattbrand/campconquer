@@ -144,7 +144,7 @@ describe Game, type: :model do
       let(:tee_shirt) { Gear.create!(name: 'tee-shirt', gear_type: 'shirt') }
 
       it "copies a player's items" do
-
+        pending "copy equipped items"
         alice = create_alice_with_piece
 
         alice.piece.items.create!(gear_id: tee_shirt.id, equipped: false)
@@ -207,10 +207,13 @@ describe Game, type: :model do
 
   describe "as_json" do
     it "includes outcome and player_outcomes" do
+      alice = Player.create!(name: 'alice', team: 'blue')
+      bob = Player.create!(name: 'bob', team: 'red')
+
       game = Game.current
       game.outcome = Outcome.new(winner: 'red', player_outcomes: [
-        PlayerOutcome.new(team: 'blue', takedowns: 2),
-        PlayerOutcome.new(team: 'red', takedowns: 3),
+        PlayerOutcome.new(player_id: alice.id, team: 'blue', takedowns: 2),
+        PlayerOutcome.new(player_id: bob.id, team: 'red', takedowns: 3),
       ])
       game.save!
 
