@@ -93,7 +93,6 @@ class Player < ActiveRecord::Base
     self.save!
   end
 
-
   def steps_available
     activities.sum('steps - steps_claimed')
   end

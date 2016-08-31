@@ -35,13 +35,15 @@ Konker? I just met 'er!
 ## chores
 
 - [ ] state machine for game
+- [ ] rename coins to gold
+- [ ] create prod env
+
 - [ ] [upgrade to Rails 5](http://blog.bigbinary.com/2016/08/18/new-framework-defaults-in-rails-5-to-make-upgrade-easier.html)
 - [ ] switch from RAML to Swagger? http://swagger.io/
 - [ ] make a Procfile https://devcenter.heroku.com/articles/ruby-default-web-server
 - [ ] CircleCI? 
-- [ ] rename coins to gold
 - [ ] Alex learns Unity (gratis)
-- [ ] create prod env
+- [ ] foreign key indexes for all tables
 
 # Updating the Seed DB
 

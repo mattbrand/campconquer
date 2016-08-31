@@ -17,7 +17,27 @@
 
 require 'rails_helper'
 
-describe Game, type: :model do
+describe Game do
+
+  # todo: move to a fixture factory
+  def create_alice_with_piece
+    create_player(player_name: 'alice' 'female', team: 'blue')
+  end
+
+  def create_player(player_name:, team:, body_type: 'female', role: 'defense')
+    alice = Player.create!(name: player_name, team: team)
+    piece_attributes = {
+      body_type: body_type,
+      role: role,
+      path: [[0, 0]]
+    }
+    alice.set_piece(piece_attributes)
+    alice
+  end
+
+  let(:galoshes) { Gear.create!(name: 'galoshes', gear_type: 'shoes') }
+  let(:tee_shirt) { Gear.create!(name: 'tee-shirt', gear_type: 'shirt') }
+
 
   describe "current" do
     context "when there is no game at all" do
@@ -104,22 +124,11 @@ describe Game, type: :model do
     before do
       @game = Game.current
     end
+
     context 'when the game is unlocked' do
       it 'locks it' do
         @game.lock_game!
         expect(@game).to be_locked
-      end
-
-      # todo: move to a fixture factory
-      def create_alice_with_piece
-        alice = Player.create!(name: 'alice', team: 'blue')
-        piece_attributes = {
-          body_type: 'female',
-          role: 'offense',
-          path: [[0, 0]]
-        }
-        alice.set_piece(piece_attributes)
-        return alice
       end
 
       it "copies a player's pieces" do
@@ -134,23 +143,21 @@ describe Game, type: :model do
         expect(piece.player).to eq(alice)
         expect(piece.team).to eq(alice.team)
         expect(piece.body_type).to eq('female')
-        expect(piece.role).to eq('offense')
+        expect(piece.role).to eq('defense')
         expect(piece.path).to eq([Point.new(x: 0, y: 0)])
 
         expect(alice.reload.piece).to eq(old_piece)
       end
 
-      let(:galoshes) { Gear.create!(name: 'galoshes', gear_type: 'shoes') }
-      let(:tee_shirt) { Gear.create!(name: 'tee-shirt', gear_type: 'shirt') }
 
       it "copies a player's items" do
-        pending "copy equipped items"
         alice = create_alice_with_piece
 
         alice.piece.items.create!(gear_id: tee_shirt.id, equipped: false)
         alice.piece.items.create!(gear_id: galoshes.id, equipped: true)
 
-        alice.piece.items.reload
+        alice.piece.items.reload # Rails is silly
+
         expect(alice.piece.gear_equipped).to eq(['galoshes'])
         expect(alice.piece.gear_owned).to include('galoshes', 'tee-shirt')
 
@@ -167,8 +174,7 @@ describe Game, type: :model do
         expect(copied_piece.items).not_to include(tee_shirt)
       end
 
-      it "copies all players' pieces"
-      it "copies all players' items"
+      it "copies all players' pieces and items"
 
       context 'when there is a player with no piece' do
         it 'ignores it' do
@@ -179,7 +185,6 @@ describe Game, type: :model do
           expect(@game.pieces.size).to eq(1)
           piece = @game.pieces.first
           expect(piece.player).to eq(alice)
-
         end
       end
 

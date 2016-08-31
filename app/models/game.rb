@@ -98,7 +98,7 @@ class Game < ActiveRecord::Base
   private
 
   def copy_player_pieces
-    players = Player.all.includes(piece: :items).where('pieces.game_id IS NULL').references(:pieces)
+    players = Player.all.includes(piece: :items).where('pieces.game_id IS NULL').references(:pieces, :items)
 
     Piece.bulk_insert do |bulk_pieces|
       players.each do |player|
@@ -111,23 +111,20 @@ class Game < ActiveRecord::Base
     end
 
     # tack on the gear
-    # todo: move to Piece
     Item.bulk_insert do |bulk_items|
-      pieces = self.pieces.includes(:items, :player)
-      pieces.each do |piece|
+      piece_ids = players.map do |player|
+        player.piece.try(:id)
+      end.compact
 
-        # optimization:
-        # player = piece.player  # this needs to re-query the db for the player
-        player = players.detect{|p| p.id == piece.player_id}   # this uses the players we already loaded
+      original_items = Item.where(piece_id: piece_ids).includes(:piece)
+      new_pieces = self.pieces
 
-        original_piece = player.piece # :-)
-        original_piece.items.each do |original_item|
-          item_attrs = original_item.attributes + {piece_id: piece.id}
-          bulk_items.add(item_attrs)
-        end
+      original_items.each do |original_item|
+        new_piece = new_pieces.detect{|p| p.player_id == original_item.piece.player_id}
+        item_attrs = original_item.attributes + {piece_id: new_piece.id}
+        bulk_items.add(item_attrs)
       end
     end
-
   end
 
 end
