@@ -72,6 +72,14 @@ To update the gear database,
 > You may be tempted to edit the gear etc. via the admin interface. RESIST THE TEMPTATION. Do it through Google Doc / Export CSV / Git or else local demos, staging, etc. will get out of sync with production.
 
 
+# Users
+
+We use [Devise](https://github.com/plataformatec/devise) for user auth
+  * https://github.com/plataformatec/devise#getting-started
+  * https://github.com/plataformatec/devise/wiki
+
+
+
 ## API Docs
 
 ### Atom

@@ -11,6 +11,7 @@
 #  anti_forgery_token :string
 #  coins              :integer          default("0"), not null
 #  gems               :integer          default("0"), not null
+#  user_id            :integer
 #
 
 class Player < ActiveRecord::Base
@@ -58,6 +59,7 @@ class Player < ActiveRecord::Base
   has_one :piece, -> { where(game_id: nil).includes(:items) }
   has_many :activities
   serialize :fitbit_token_hash
+  belongs_to :user
 
   validates_uniqueness_of :name
   validates :team, inclusion: {in: Team::NAMES.values, message: Team::NAMES.validation_message}

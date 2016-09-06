@@ -24,6 +24,7 @@ gem 'oauth2'
 gem 'bulk_insert' # https://github.com/jamis/bulk_insert
 gem 'faker' # https://github.com/stympy/faker
 gem 'state_machine' # https://github.com/pluginaweek/state_machine
+gem 'devise' # http://www.rubydoc.info/github/plataformatec/devise/master/frames
 
 group :development, :test do
   gem 'sqlite3'
@@ -31,7 +32,6 @@ group :development, :test do
   gem "rspec-rails"
   gem 'dotenv-rails' # https://github.com/bkeepers/dotenv
   gem 'ruby-graphviz', :require => 'graphviz'
-
 end
 
 group :development do

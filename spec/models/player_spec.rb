@@ -11,6 +11,7 @@
 #  anti_forgery_token :string
 #  coins              :integer          default("0"), not null
 #  gems               :integer          default("0"), not null
+#  user_id            :integer
 #
 
 require 'rails_helper'
