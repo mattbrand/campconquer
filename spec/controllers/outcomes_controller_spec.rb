@@ -124,15 +124,13 @@ describe OutcomesController, type: :controller do
 
         it 'marks the game as no longer current or locked' do
           post :create, {game_id: @game.id, outcome: valid_attributes}, valid_session
-          expect(@game.reload).not_to be_current
+          @game.reload
+          expect(@game).not_to be_current
+          expect(@game).not_to be_locked
+          expect(@game).to be_completed
+          expect(@game.state).to eq('completed')
         end
 
-        it 'reads & saves a move list as a raw json blob' do
-          moves = "MOVESJSON"
-          post :create, {game_id: @game.id, outcome: valid_attributes + {moves: moves}}, valid_session
-          expect_ok
-          expect(assigns(:outcome).reload.moves).to eq(moves)
-        end
       end
 
       context "with invalid params" do

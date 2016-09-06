@@ -92,7 +92,10 @@ class ApplicationController < ActionController::Base
   end
 
   def render_game(**args)
-    body = {status: 'ok', game: @game.as_json}
+    game_hash = @game.as_json
+    game_hash['moves'] = @game.moves.as_json if params[:include_moves].to_boolean
+
+    body = {status: 'ok', game: game_hash}
     render json: body, **args
   end
 

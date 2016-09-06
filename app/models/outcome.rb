@@ -8,7 +8,6 @@
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #  game_id      :integer
-#  moves        :text
 #
 # Indexes
 #
@@ -41,7 +40,6 @@ class Outcome < ActiveRecord::Base
              :match_length,
              :created_at,
              :updated_at,
-             :moves
       ],
       methods: [:team_outcomes],
       include: [{:player_outcomes => PlayerOutcome.serialization_options},

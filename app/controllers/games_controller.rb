@@ -9,7 +9,8 @@ class GamesController < ApplicationController
   # GET /games
   def index
     @games = Game.all.order(updated_at: :desc)
-    render json: {status: 'ok', games: @games.as_json(include: [:pieces, :outcome])}
+    render json: {status: 'ok',
+                  games: @games.as_json(Game.serialization_options)}
   end
 
   # GET /games/1

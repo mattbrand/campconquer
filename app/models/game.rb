@@ -9,6 +9,7 @@
 #  current    :boolean          default("f")
 #  season_id  :integer
 #  state      :string           default("preparing")
+#  moves      :text
 #
 # Indexes
 #
@@ -20,6 +21,8 @@ class Game < ActiveRecord::Base
   belongs_to :season
   has_many :pieces, -> { includes :player, :items }
   has_one :outcome, -> { includes :player_outcomes }, dependent: :destroy
+
+  serialize :moves, JSON
 
   validates_uniqueness_of :current,
                           unless: Proc.new { |game| !game.current? },
@@ -58,15 +61,18 @@ class Game < ActiveRecord::Base
   include ActiveModel::Serialization
 
   def as_json(options=nil)
-    if options.nil?
-      options = {
-        include: [
-          {:pieces => Piece.serialization_options},
-          {:outcome => Outcome.serialization_options},
-        ]
-      }
-    end
+    options ||= self.class.serialization_options
     super(options)
+  end
+
+  def self.serialization_options
+    {
+      except: :moves,
+      include: [
+        {:pieces => Piece.serialization_options},
+        {:outcome => Outcome.serialization_options},
+      ]
+    }
   end
 
   def winner
@@ -92,7 +98,13 @@ class Game < ActiveRecord::Base
 
   # todo: test me
   def finish_game! params
-    # todo: fail if the game is already completed
+    # todo: figure out how to use state_machine to check this
+    raise "can only finish in_progress games but this game is '#{state}'" if state != 'in_progress'
+
+    params = params.with_indifferent_access
+
+    moves = params.delete(:moves)
+
     outcome = Outcome.new(params)
     outcome.validate! # force a RecordInvalid exception on the outcome before saving the game
 
@@ -101,6 +113,7 @@ class Game < ActiveRecord::Base
     self.outcome = outcome # this saves it too
     self.current = false
     self.locked = false
+    self.moves = moves if moves
     save!
     old_outcome.destroy! if old_outcome
 

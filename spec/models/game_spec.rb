@@ -9,6 +9,7 @@
 #  current    :boolean          default("f")
 #  season_id  :integer
 #  state      :string           default("preparing")
+#  moves      :text
 #
 # Indexes
 #
@@ -19,6 +20,7 @@
 require 'rails_helper'
 
 describe Game do
+
 
   # todo: move to a fixture factory
   def create_alice_with_piece
@@ -42,7 +44,6 @@ describe Game do
   let(:galoshes) { Gear.create!(name: 'galoshes', gear_type: 'shoes') }
   let(:tee_shirt) { Gear.create!(name: 'tee-shirt', gear_type: 'shirt') }
 
-
   describe "current" do
     context "when there is no game at all" do
 
@@ -65,7 +66,7 @@ describe Game do
 
     context "when there is no current game" do
       before do
-        @previous_game = Game.create! current: false
+        @previous_game = Game.create! state: 'completed'
 
         # todo: better piece factory, including player etc
         @previous_game.pieces.create! team: 'blue'
@@ -81,9 +82,9 @@ describe Game do
     end
 
     context "when there is a current game" do
+      let!(:current_game) { Game.current }
       it "returns it" do
-        game = Game.current
-        expect(Game.current).to eq(game)
+        expect(Game.current).to eq(current_game)
       end
     end
 
@@ -100,6 +101,7 @@ describe Game do
 
   describe "previous" do
     it "fetches the most recent non-current game" do
+      # todo: use state, remove current flag
       game_a = Game.create! current: false
       # todo: use Rails 5 touch method
       game_a.update_columns(updated_at: Time.new(2015, 2, 16, 0, 0, 0))
@@ -112,38 +114,37 @@ describe Game do
   end
 
   describe 'winner' do
+    let!(:current_game) { Game.current }
+
     it "proxies to outcome" do
-      game = Game.current
-      game.outcome = Outcome.new(winner: 'red')
-      expect(game.winner).to eq('red')
+      current_game.outcome = Outcome.new(winner: 'red')
+      expect(current_game.winner).to eq('red')
     end
 
     it "works if there is no outcome yet" do
-      game = Game.current
-      expect(game.winner).to be_nil
+      expect(current_game.winner).to be_nil
     end
   end
 
   describe 'lock_game!' do
-    before do
-      @game = Game.current
-    end
+
+    let!(:current_game) { Game.current }
 
     context 'when the game is unlocked' do
       it 'locks it' do
-        @game.lock_game!
-        expect(@game).to be_locked
+        current_game.lock_game!
+        expect(current_game).to be_locked
       end
 
       it "copies a player's pieces" do
         alice = create_alice_with_piece
         old_piece = alice.piece
 
-        @game.lock_game!
-        expect(@game.pieces).not_to be_empty
+        current_game.lock_game!
+        expect(current_game.pieces).not_to be_empty
 
-        piece = @game.pieces.first
-        expect(piece.game).to eq(@game)
+        piece = current_game.pieces.first
+        expect(piece.game).to eq(current_game)
         expect(piece.player).to eq(alice)
         expect(piece.team).to eq(alice.team)
         expect(piece.body_type).to eq('female')
@@ -165,9 +166,9 @@ describe Game do
         expect(alice.piece.gear_equipped).to eq(['galoshes'])
         expect(alice.piece.gear_owned).to include('galoshes', 'tee-shirt')
 
-        @game.lock_game!
+        current_game.lock_game!
 
-        copied_piece = @game.pieces.find_by(player_id: alice.id)
+        copied_piece = current_game.pieces.find_by(player_id: alice.id)
         copied_piece.items.reload
 
         expect(copied_piece.gear_equipped).to eq(['galoshes'])
@@ -186,9 +187,9 @@ describe Game do
           p.equip_gear!(galoshes.name)
         end
 
-        @game.lock_game!
+        current_game.lock_game!
 
-        @game.pieces.each do |piece|
+        current_game.pieces.each do |piece|
           piece.reload
           expect(piece.gear_equipped).to eq(['galoshes'])
           expect(piece.gear_owned).to match_array(['galoshes', 'tee-shirt'])
@@ -199,31 +200,31 @@ describe Game do
         it 'ignores it' do
           alice = create_alice_with_piece
           bob = Player.create!(name: 'bob', team: 'blue')
-          @game.lock_game! # assert no raise
-          expect(@game).to be_locked
-          expect(@game.pieces.size).to eq(1)
-          piece = @game.pieces.first
+          current_game.lock_game! # assert no raise
+          expect(current_game).to be_locked
+          expect(current_game.pieces.size).to eq(1)
+          piece = current_game.pieces.first
           expect(piece.player).to eq(alice)
         end
       end
 
       it 'only copies one piece per player (not old games) (bug)' do
         alice = create_alice_with_piece
-        @game.lock_game!
-        expect(@game.pieces.count).to eq(1)
+        current_game.lock_game!
+        expect(current_game.pieces.count).to eq(1)
 
-        @game.finish_game! winner: 'red' # todo: abort_game! ?
-        @game = Game.current
-        @game.lock_game!
-        expect(@game.pieces.count).to eq(1)
+        current_game.finish_game! winner: 'red' # todo: abort_game! ?
+        current_game = Game.current
+        current_game.lock_game!
+        expect(current_game.pieces.count).to eq(1)
       end
     end
 
     context 'when the game is locked' do
       it 'fails' do
-        @game.lock_game!
+        current_game.lock_game!
         expect do
-          @game.lock_game!
+          current_game.lock_game!
         end.to raise_error(StateMachine::InvalidTransition)
       end
     end
@@ -249,6 +250,68 @@ describe Game do
       expect(game.as_json['outcome']['player_outcomes'][0]['takedowns']).to eq(2)
       expect(game.as_json['outcome']['player_outcomes'][1]['team']).to eq('red')
       expect(game.as_json['outcome']['player_outcomes'][1]['takedowns']).to eq(3)
+    end
+  end
+
+  describe 'finish_game!' do
+    let!(:current_game) { Game.current }
+
+    context 'on an unlocked game' do
+      it 'does not work on an unlocked game' do
+        expect(current_game.state).to eq('preparing')
+        expect do
+          current_game.finish_game! winner: 'red'
+        end.to raise_error("can only finish in_progress games but this game is 'preparing'")
+      end
+    end
+
+    context 'on a locked (in_progress) game' do
+      before { current_game.lock_game! }
+      let!(:bob) { Player.create! name: 'bob', team: 'blue' }
+      let!(:rhoda) { Player.create! name: 'rhoda', team: 'red' }
+
+      it 'accepts outcome params' do
+        current_game.finish_game! winner: 'blue',
+                                  player_outcomes_attributes: [# rails is weird http://stackoverflow.com/a/8719885/190135
+                                    {
+                                      team: 'blue',
+                                      player_id: bob.id,
+                                      takedowns: 2,
+                                      throws: 3,
+                                      pickups: 4,
+                                      flag_carry_distance: 5,
+                                      captures: 6,
+                                      attack_mvp: true,
+                                      defend_mvp: false,
+                                    },
+                                    {
+                                      team: 'red',
+                                      player_id: rhoda.id,
+                                      takedowns: 12,
+                                      throws: 13,
+                                      pickups: 14,
+                                      flag_carry_distance: 15,
+                                      captures: 16,
+                                      attack_mvp: false,
+                                      defend_mvp: true,
+                                    }
+                                  ]
+
+        outcome = current_game.outcome
+        expect(outcome.winner).to eq('blue')
+      end
+
+      it 'accepts a moves list' do
+        current_game.finish_game! winner: 'blue',
+          moves: "SOMEMOVESINASTRING"
+        current_game.reload
+        expect(current_game.moves).to eq("SOMEMOVESINASTRING")
+      end
+
+      it 'changes the state to "completed"' do
+        current_game.finish_game! winner: 'blue'
+        expect(current_game.state).to eq('completed')
+      end
     end
   end
 

@@ -12,7 +12,9 @@ types:
       name: string
       team:
         type: string
-        description: "enum: [blue, red]"
+        enum:
+          - blue
+          - red
       coins:
         type: integer
         description: number of coins currently available to be spent on gear
@@ -50,7 +52,9 @@ types:
       route: Point[]
       role:
         type: string
-        description: "enum: [offense, defense]"
+        enum:
+          - offense
+          - defense
       active:
         type: boolean
         description: is this path currently selectable by players?
@@ -70,6 +74,9 @@ types:
         type: Outcome
         description: |
           once game is finished, the results of that game
+      moves:
+        type: string
+        description: all the moves and throws, as a huge json string blob :-( -- not always present in output
 
   Piece:
     type: object
@@ -85,10 +92,16 @@ types:
         description: readonly - not valid during update
       body_type:
         type: string
-        description: "enum: [gender_neutral_1, gender_neutral_2, male, female]"
+        enum:
+          - gender_neutral_1
+            gender_neutral_2
+            male
+            female
       role:
         type: string
-        description: "enum: [offense, defense]"
+        enum:
+          - offense
+          - defense
       path: # todo: rename to "route"
         type: Point[]
         description: see Path
@@ -124,7 +137,13 @@ types:
         description: the short name, e.g. 'hat1', used for lookup of visual assets and identifying in lists
       gear_type:
         type: string
-        description: "enum: [head, shirt, belt, shoes, accessory, pet]"
+        enum:
+          - head
+          - shirt
+          - belt
+          - shoes
+          - accessory
+          - pet
       display_name:
         type: string
         description: human readable name
@@ -165,9 +184,6 @@ types:
       match_length:
         type: integer
         description: duration of game in seconds
-      moves:
-        type: string
-        description: all the moves and throws, as a huge json string blob :-(
 
   TeamOutcome:
     type: object
@@ -253,6 +269,12 @@ types:
       description: |
         get a single game
         client should note the id and use it in further calls
+      queryParameters:
+        include_moves:
+          type: boolean
+          description: should the response include a `moves` field?
+          required: false
+          default: false
       responses:
         200:
           body:
@@ -264,6 +286,12 @@ types:
       description: |
         get a single game
         client should note the id and use it in further calls
+      queryParameters:
+        include_moves:
+          type: boolean
+          description: should the response include a `moves` field?
+          required: false
+          default: false
       responses:
         200:
           body:
@@ -273,6 +301,12 @@ types:
     description: a single game
     get:
       description: get all the values for a single game, including nested Pieces, Outcome, etc.
+      queryParameters:
+        include_moves:
+          type: boolean
+          description: should the response include a `moves` field?
+          required: false
+          default: false
       responses:
         200:
           body:
@@ -335,7 +369,9 @@ types:
             description: the short name of the gear to buy
           currency:
             type: string
-            description: "enum: [coins, gems]"
+            enum:
+              - coins
+              - gems
         responses:
           200:
             description: ok

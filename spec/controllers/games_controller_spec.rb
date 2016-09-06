@@ -46,21 +46,55 @@ describe GamesController, type: :controller do
       get :index, {}, valid_session
       expect(assigns(:games)).to eq([game_c, game_b, game_a])
     end
+
+    it "does not include the moves" do
+      game = Game.create! valid_attributes
+      game.lock_game!
+
+      game.finish_game! winner: "blue", moves: some_moves
+
+      get :index, {}, valid_session
+      expect(response_json['games']).not_to be_empty
+      expect(response_json['games'][0]['moves']).to be_nil
+    end
+
   end
 
+  let(:some_moves) { ["SOME", "MOVES"] }
+
   describe "GET /games/{id}" do
+    let(:game) { Game.current }
+
     it "assigns the requested game as @game" do
-      game = Game.current
       get :show, {:id => game.to_param}, valid_session
       expect(assigns(:game)).to eq(game)
     end
 
     it "renders the requested game as JSON" do
-      game = Game.current
       get :show, {:id => game.to_param}, valid_session
       expect_ok
       # "JSON.parse(game.to_json" is to transform dates into ISO8601 strings
-      expect(response_json["game"]).to eq(JSON.parse(game.to_json(include: [:pieces, :outcome])))
+      expect(response_json["game"]).to eq(JSON.parse(game.to_json(include: [:pieces, :outcome], except: :moves)))
+    end
+
+    context 'when the game has moves' do
+      before do
+        game.lock_game!
+        game.finish_game! winner:"blue", moves: some_moves
+      end
+
+      it "does not include the moves by default" do
+        get :show, {:id => game.to_param}, valid_session
+        expect_ok
+        expect(response_json["game"]["moves"]).to be_nil
+      end
+
+      it "does include the moves if asked" do
+        get :show, {:id => game.to_param,
+                    :include_moves => 'true'}, valid_session
+        expect_ok
+        expect(response_json["game"]["moves"]).to eq(some_moves)
+      end
     end
   end
 
@@ -201,6 +235,7 @@ describe GamesController, type: :controller do
       it 'unlocks the game' do
         delete :unlock, {:id => @game.to_param}, valid_session
         expect(@game.reload).not_to be_locked
+        expect(@game.state).to eq('preparing')
       end
 
       it 'says ok' do
@@ -216,4 +251,5 @@ describe GamesController, type: :controller do
     end
 
   end
+
 end
