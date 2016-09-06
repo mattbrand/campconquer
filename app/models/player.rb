@@ -57,6 +57,7 @@ class Player < ActiveRecord::Base
 
   has_one :piece, -> { where(game_id: nil).includes(:items) }
   has_many :activities
+  has_many :player_outcomes
   serialize :fitbit_token_hash
 
   validates_uniqueness_of :name
@@ -77,9 +78,9 @@ class Player < ActiveRecord::Base
     self.piece
   end
 
-  def require_piece
-    raise NoPiece if self.piece.nil?
-  end
+  # def require_piece
+  #   raise NoPiece if self.piece.nil?
+  # end
 
   include ActiveModel::Serialization
 
@@ -94,7 +95,11 @@ class Player < ActiveRecord::Base
           :moderate_minutes_claimed?,
           :vigorous_minutes,
           :vigorous_goal_met?,
-          :vigorous_minutes_claimed?
+          :vigorous_minutes_claimed?,
+          :player_outcomes,
+          :gear_owned,
+          :gear_equipped,
+          :ammo,
         ],
         include: [{:piece => Piece.serialization_options}],
       }
@@ -181,13 +186,17 @@ class Player < ActiveRecord::Base
   end
 
   def gear_owned
-    require_piece
-    piece.gear_owned
+    # require_piece
+    piece.try(:gear_owned)
   end
 
   def gear_equipped
-    require_piece
-    piece.gear_equipped
+    # require_piece
+    piece.try(:gear_equipped)
+  end
+
+  def ammo
+    []
   end
 
   def buy_gear! gear_name

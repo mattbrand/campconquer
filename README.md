@@ -15,14 +15,15 @@ Konker? I just met 'er!
     - [ ] season stats endpoint
     - [ ] player stats (all time)
 - [ ] make "moves" upload/download/storage more efficient
-- [ ] create a separate endpoint for game so that moves don't always get sent
+- [x] create a separate endpoint for game so that moves don't always get sent
 - [ ] add player_id to PlayerOutcome in & out
 - [ ] paths: kill json, use csv and google doc
 
-- [ ] API Auth
-- [ ] User Auth for web site
-- [ ] Admin Auth (Devise? we used `rails generate active_admin:install --skip-users`  )
-- [ ] de-auth a player (disconnect fitbit)
+- User Authentication:
+    - [ ] API Auth
+    - [ ] User Auth for web site
+    - [ ] Admin Auth (Devise? we used `rails generate active_admin:install --skip-users`  )
+- [ ] de-auth (disconnect) a fitbit
 
 - [ ] better splash page
 - [ ] add 'last sync time' to player info / store

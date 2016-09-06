@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe PlayersController, type: :controller do
-
   # This should return the minimal set of attributes required to create a valid
   # Player. As you add validations to Player, be sure to
   # adjust the attributes here as well.

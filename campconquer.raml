@@ -33,6 +33,13 @@ types:
       gems_available:
         type: integer
         description: number of gems available to be claimed [do they automatically claim? do we split them into moderate gem and vigorous gem?]
+      gear_owned:
+        type: string[]  # should we include a full Gear object instead of just a name?
+        description: gear short name
+      gear_equipped:
+        type: string[]
+      ammo:
+        type: string[]
       history:
         type: PlayerHistory
 
