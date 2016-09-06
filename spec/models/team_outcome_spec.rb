@@ -31,22 +31,23 @@ RSpec.describe TeamOutcome, type: :model do
 
   context "given a game" do
     it "adds up stats" do
-      player_outcomes = []
-      player_outcomes << PlayerOutcome.new({team: 'blue',
-                                            takedowns: 1,
-                                            throws: 2,
-                                            pickups: 3,
-                                            flag_carry_distance: 4,
-                                            captures: 1,
-                                           }.with_indifferent_access)
+      player_outcomes = [
+        PlayerOutcome.new({team: 'blue',
+                           takedowns: 1,
+                           throws: 2,
+                           pickups: 3,
+                           flag_carry_distance: 4,
+                           captures: 1,
+                          }.with_indifferent_access),
 
-      player_outcomes << PlayerOutcome.new({team: 'red',
-                                            takedowns: 11,
-                                            throws: 12,
-                                            pickups: 13,
-                                            flag_carry_distance: 14,
-                                            captures: 0,
-                                           }.with_indifferent_access)
+        PlayerOutcome.new({team: 'red',
+                           takedowns: 11,
+                           throws: 12,
+                           pickups: 13,
+                           flag_carry_distance: 14,
+                           captures: 0,
+                          }.with_indifferent_access),
+      ]
 
       outcome = Outcome.new(
         winner: 'blue',

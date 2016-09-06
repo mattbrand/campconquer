@@ -10,7 +10,7 @@
 #
 
 class Season < ActiveRecord::Base
-  has_many :games, -> { includes :player, :items }
+  has_many :games, -> { includes(:outcome => [:player_outcomes]) }
 
   validates_uniqueness_of :current,
                           unless: Proc.new { |game| !game.current? },
@@ -28,15 +28,34 @@ class Season < ActiveRecord::Base
     where(current: false).order(updated_at: :desc).first
   end
 
+  # sum of all game outcomes per team
+  def team_outcomes
+    Team::NAMES.values.map do |team_name|
+      TeamOutcome.new(team: team_name, games: self.games)
+    end
+  end
+
+  # sum of all game outcomes per player
+  def player_outcomes
+    []
+  end
+
   include ActiveModel::Serialization
 
   def as_json(options=nil)
     if options.nil?
-      options = {
-        include: [:games],
-      }
+      options = self.class.serialization_options
     end
     super(options)
+  end
+
+  def self.serialization_options
+    {
+      include: [
+        :team_outcomes,
+        # :player_outcomes, # TODO
+      ],
+    }
   end
 
 end

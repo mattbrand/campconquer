@@ -62,6 +62,12 @@ describe Game do
         game = Game.current
         expect(game.outcome).to be_nil
       end
+
+      it "has a season" do
+        game = Game.current
+        expect(game.season).not_to be_nil
+        expect(game.season).to eq(Season.current)
+      end
     end
 
     context "when there is no current game" do
@@ -78,7 +84,6 @@ describe Game do
         expect(game).not_to be_locked
         expect(game).not_to eq(@previous_game)
       end
-
     end
 
     context "when there is a current game" do

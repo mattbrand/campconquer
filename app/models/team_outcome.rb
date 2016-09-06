@@ -17,8 +17,9 @@
 #   description: number of meters this team carried the flag
 
 class TeamOutcome
-
+  include ActiveModel::Model
   include ActiveModel::Serializers::JSON
+  include ActiveModel::Serialization
 
   attr_reader :team
 
@@ -37,16 +38,17 @@ class TeamOutcome
 
     if games
       games.each do |game|
-        add_to_stat('wins', 1) if game.outcome.winner == team
+        outcome = game.outcome
+        next unless outcome
+        add_to_stat('wins', 1) if outcome.winner == team
 
-        game.outcome.player_outcomes.each do |player_outcome|
+        outcome.player_outcomes.each do |player_outcome|
           next unless player_outcome.team == team
           (STATS - [:wins]).each do |stat|
             self.add_to_stat(stat, player_outcome.send(stat))
           end
         end
       end
-
     end
   end
 

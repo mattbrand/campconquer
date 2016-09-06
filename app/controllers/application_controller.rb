@@ -1,7 +1,10 @@
 class ApplicationController < ActionController::Base
+
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
+  # protect_from_forgery with: :exception
   protect_from_forgery with: :null_session
+  skip_before_filter  :verify_authenticity_token # todo: move to ApiController
 
   # todo: explicit unit test for error handlers
 
@@ -79,6 +82,17 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def find_season
+    season_id = params[:season_id] || params[:id]
+    if season_id == 'current'
+      @season = Season.current || raise(ActiveRecord::RecordNotFound, "current season not found")
+    elsif season_id == 'previous'
+      @season = Season.previous || raise(ActiveRecord::RecordNotFound, "previous season not found")
+    else
+      @season = Season.find(season_id)
+    end
+  end
+
   def exception_as_json(e)
     {
       :status => 'error',
@@ -101,6 +115,11 @@ class ApplicationController < ActionController::Base
 
   def render_player(**args)
     body = {status: 'ok', player: @player.as_json}
+    render json: body, **args
+  end
+
+  def render_season(**args)
+    body = {status: 'ok', season: @season.as_json}
     render json: body, **args
   end
 

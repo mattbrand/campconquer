@@ -3,6 +3,8 @@ Rails.application.routes.draw do
 
   resources :gears, only: ['index']
 
+  resources :seasons, only: ['show']
+
   resources :games, only: ['index', 'show', 'destroy'] do
 
     member do

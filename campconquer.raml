@@ -248,6 +248,22 @@ types:
         type: integer
         description: number of times this player was the Defend MVP (max. 1 per game)
 
+  Season:
+    type: object
+    properties:
+      id:
+        type: number
+      name:
+        type: string
+      current:
+        type: boolean
+      team_outcomes:
+        type: TeamOutcome[]
+        description: outcomes per team for all games this season, totalled
+      player_outcomes:
+        type: PlayerOutcome[]
+        description: outcomes per player for all games this season, totalled
+
 /gears:
   get:
     description: get all the gears
@@ -436,13 +452,13 @@ types:
         queryParameters:
           type: Piece
 
-    /history:
-      get:
-        description: this player's stats for this season
-      responses:
-        200:
-          body:
-            type: PlayerHistory
+#    /history:
+#      get:
+#        description: this player's stats for this season
+#      responses:
+#        200:
+#          body:
+#            type: PlayerHistory
 
 /history:
   get:
@@ -466,10 +482,12 @@ types:
         body:
           type: Path[]
 
-/season:
-  get:
-    description: get data for the current season (all games)
-  responses:
-    200:
-      body:
-        type: TeamHistory[]
+/seasons:
+
+  /current:
+    get:
+      description: get data for the current season (all games)
+    responses:
+      200:
+        body:
+          type: Season

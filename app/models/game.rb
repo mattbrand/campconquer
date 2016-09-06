@@ -24,9 +24,14 @@ class Game < ActiveRecord::Base
 
   serialize :moves, JSON
 
+  validates :season_id, presence: true
   validates_uniqueness_of :current,
                           unless: Proc.new { |game| !game.current? },
                           message: 'should be true for only one game'
+
+  before_validation do
+    self.season_id = Season.current.id unless (self.season_id and self.season_id > 0)
+  end
 
   state_machine :state, initial: :preparing do
 
@@ -49,7 +54,7 @@ class Game < ActiveRecord::Base
   def self.current
     current_game = where(current: true).first
     if current_game.nil?
-      current_game = Game.create! locked: false, current: true
+      current_game = Game.create! locked: false, current: true, season_id: Season.current.id
     end
     current_game
   end
