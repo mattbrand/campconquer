@@ -11,25 +11,28 @@ Konker? I just met 'er!
 - [x] lock copies equipped gear
 - [x] gear buy & equip
 
-- [ ] API Auth
-- [ ] User Auth for web site
-- [ ] Admin Auth (Devise? we used `rails generate active_admin:install --skip-users`  )
-- [ ] de-auth a player (disconnect fitbit)
-- [ ] better splash page
-- [ ] paths: kill json, use csv and google doc
-- [ ] add 'last sync time' to player info / store
-- [ ] round up remainder steps
-- [ ] return # of coins received in claim response (coins and gems alike)
 - [ ] history (stats)
     - [ ] season stats endpoint
     - [ ] player stats (all time)
 - [ ] make "moves" upload/download/storage more efficient
+- [ ] create a separate endpoint for game so that moves don't always get sent
+- [ ] add player_id to PlayerOutcome in & out
+- [ ] paths: kill json, use csv and google doc
+
+- [ ] API Auth
+- [ ] User Auth for web site
+- [ ] Admin Auth (Devise? we used `rails generate active_admin:install --skip-users`  )
+- [ ] de-auth a player (disconnect fitbit)
+
+- [ ] better splash page
+- [ ] add 'last sync time' to player info / store
+- [ ] round up remainder steps
+- [ ] return # of coins received in claim response (coins and gems alike)
 - [ ] 'control group' players (no team)
   - can see steps etc but no redemption 
 - [ ] player HTML page -- when logged in, shows activities etc 
+
 - [ ] only one goal: 60 min of combined moderate&vigorous
-- [ ] create a separate endpoint for game so that moves don't always get sent
-- [ ] add player_id to PlayerOutcome in & out
 - [ ] validate max. one capture per game
 - [ ] check steps in the background at least 1x/day, not just when players connect
 - [ ] unequip (or we may not need unequip if i add the rule “only one of each item type can be equipped” )
