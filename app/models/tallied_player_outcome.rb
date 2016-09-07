@@ -16,11 +16,11 @@
 #   type: float
 #   description: number of meters this team carried the flag
 
-class TeamOutcome < TalliedOutcome
-  attr_reader :team
+class TalliedPlayerOutcome < TalliedOutcome
+  attr_reader :player_id
 
-  def initialize(games:, team:)
-    @team = team
+  def initialize(games:, player:)
+    @player_id = player.id
     super(games: games)
   end
 
@@ -29,11 +29,11 @@ class TeamOutcome < TalliedOutcome
   end
 
   def player_outcomes
-    super.select { |o| o.team == team }
+    super.select { |o| o.player_id == player_id }
   end
 
   def attributes
-    {'team' => @team} + super
+    {'player_id' => player_id} + super
   end
 
 end

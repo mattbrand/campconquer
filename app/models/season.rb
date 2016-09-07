@@ -12,6 +12,9 @@
 class Season < ActiveRecord::Base
   has_many :games, -> { includes(:outcome => [:player_outcomes]) }
 
+  has_many :pieces, through: :games
+  has_many :players, -> { uniq }, through: :pieces
+
   validates_uniqueness_of :current,
                           unless: Proc.new { |game| !game.current? },
                           message: 'should be true for only one season'
@@ -37,7 +40,9 @@ class Season < ActiveRecord::Base
 
   # sum of all game outcomes per player
   def player_outcomes
-    []
+    players.map do |player|
+      TalliedPlayerOutcome.new(games: self.games, player: player)
+    end
   end
 
   include ActiveModel::Serialization
@@ -53,7 +58,7 @@ class Season < ActiveRecord::Base
     {
       include: [
         :team_outcomes,
-        # :player_outcomes, # TODO
+        :player_outcomes,
       ],
     }
   end

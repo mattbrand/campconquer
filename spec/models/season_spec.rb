@@ -82,6 +82,9 @@ describe Season do
         roger = Player.create!(name: 'roger', team: 'red'),
         rita = Player.create!(name: 'rita', team: 'red'),
       ]
+      players.each do |p|
+        p.set_piece
+      end
 
       games = []
 
@@ -96,21 +99,18 @@ describe Season do
 
       num_games = 3
       num_games.times do
-
-
         player_outcomes = players.map do |player|
           PlayerOutcome.new(({team: player.team,
-                             player_id: player.id,
-                             captures: player.name == 'betty' ? 1 : 0,
-                            } + player_outcome_base).with_indifferent_access)
+                              player_id: player.id,
+                              captures: player.name == 'betty' ? 1 : 0,
+          } + player_outcome_base).with_indifferent_access)
         end
 
-        outcome = Outcome.new(
-          winner: 'blue',
-          match_length: 100,
-          player_outcomes: player_outcomes
-        )
-        game = Game.create!(outcome: outcome, state: 'completed')
+        game = Game.current
+        game.lock_game!
+        game.finish_game! winner: 'blue',
+                          match_length: 100,
+                          player_outcomes: player_outcomes
         games << game
       end
 
@@ -119,23 +119,39 @@ describe Season do
 
       expect(json).to include('team_outcomes')
 
-      blue = json['team_outcomes'].find{|h| h['team'] == 'blue'}
+      blue = json['team_outcomes'].find { |h| h['team'] == 'blue' }
       expect(blue['captures']).to eq(num_games)
       expect(blue['captures']).to eq(num_games)
       expect(blue['takedowns']).to eq(num_games * player_outcome_base[:takedowns] * 2)
       expect(blue['throws']).to eq(num_games * player_outcome_base[:throws] * 2)
       expect(blue['pickups']).to eq(num_games * player_outcome_base[:pickups] * 2)
 
-      red = json['team_outcomes'].find{|h| h['team'] == 'red'}
+      red = json['team_outcomes'].find { |h| h['team'] == 'red' }
       expect(red['captures']).to eq(0)
       expect(red['captures']).to eq(0)
       expect(red['takedowns']).to eq(num_games * player_outcome_base[:takedowns] * 2)
       expect(red['throws']).to eq(num_games * player_outcome_base[:throws] * 2)
       expect(red['pickups']).to eq(num_games * player_outcome_base[:pickups] * 2)
 
-      # expect(json).to include('player_outcomes') # TODO
-      # TODO: tally outcomes per player for all games
-      # expect(json['player_outcomes'].size).to eq(4)
+      expect(json).to include('player_outcomes')
+      expect(json['player_outcomes'].size).to eq(4)
+      expect(json['player_outcomes'][0]).to eq({
+                                                 "player_id" => betty.id,
+                                                 "takedowns" => 3,
+                                                 "throws" => 6,
+                                                 "pickups" => 9,
+                                                 "captures" => 3,
+                                                 "flag_carry_distance" => 12
+                                               })
+      expect(json['player_outcomes'][1]).to eq({
+                                                 "player_id" => bob.id,
+                                                 "takedowns" => 3,
+                                                 "throws" => 6,
+                                                 "pickups" => 9,
+                                                 "captures" => 0,
+                                                 "flag_carry_distance" => 12
+                                               })
+
 
     end
   end

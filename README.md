@@ -52,6 +52,7 @@ Konker? I just met 'er!
 - [ ] CircleCI? 
 - [ ] Alex learns Unity (gratis)
 - [ ] foreign key indexes for all tables
+- [ ] New Relic
 
 # Updating the Seed DB
 
