@@ -59,12 +59,11 @@ RSpec.describe TeamOutcome, type: :model do
 
       team_outcome = TeamOutcome.new(team: 'blue', games: games)
       expect(team_outcome.as_json).to eq({team: 'blue',
-                                          wins: 1,
+                                          captures: 1,
                                           takedowns: 1,
                                           throws: 2,
                                           pickups: 3,
                                           flag_carry_distance: 4,
-                                          captures: 1,
                                          }.with_indifferent_access)
 
       team_outcome = TeamOutcome.new(team: 'red', games: games)
@@ -74,7 +73,6 @@ RSpec.describe TeamOutcome, type: :model do
                                           pickups: 13,
                                           flag_carry_distance: 14,
                                           captures: 0,
-                                          wins: 0,
                                          }.with_indifferent_access)
 
     end

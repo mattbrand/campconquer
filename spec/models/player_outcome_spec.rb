@@ -24,7 +24,7 @@
 
 require 'rails_helper'
 
-RSpec.describe PlayerOutcome, type: :model do
+describe PlayerOutcome do
   it "requires player name" do
     player_outcome = PlayerOutcome.new(team: nil)
     expect(player_outcome).not_to be_valid
@@ -35,4 +35,6 @@ RSpec.describe PlayerOutcome, type: :model do
     player_outcome = PlayerOutcome.new(team: 'blue', player_id: NOT_A_REAL_PLAYER_ID)
     expect(player_outcome).to be_valid
   end
+
+
 end

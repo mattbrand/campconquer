@@ -1,6 +1,6 @@
 # team:
 #   type: string
-# wins:
+# captures:
 #   type: integer
 #   description: number of games this team won
 # takedowns:
@@ -21,35 +21,41 @@ class TeamOutcome
   include ActiveModel::Serializers::JSON
   include ActiveModel::Serialization
 
-  attr_reader :team
+  attr_reader :team, :games
 
-  STATS = [:wins,
-           :takedowns,
-           :throws,
-           :pickups,
-           :captures,
-           :flag_carry_distance]
+  STATS = [
+    :takedowns,
+    :throws,
+    :pickups,
+    :captures,
+    :flag_carry_distance,
+  ]
 
   attr_reader *STATS
 
   def initialize(team:, games:)
     @team = team
-    @wins = 0
+    @games = games || []
 
-    if games
-      games.each do |game|
-        outcome = game.outcome
-        next unless outcome
-        add_to_stat('wins', 1) if outcome.winner == team
+    tally
+  end
 
-        outcome.player_outcomes.each do |player_outcome|
-          next unless player_outcome.team == team
-          (STATS - [:wins]).each do |stat|
-            self.add_to_stat(stat, player_outcome.send(stat))
-          end
+  def tally
+    games.each do |game|
+      outcome = game.outcome
+      next unless outcome
+
+      outcomes_for_team(game, team).each do |player_outcome|
+        STATS.each do |stat|
+          self.add_to_stat(stat, player_outcome.send(stat))
         end
       end
     end
+  end
+
+  # todo: move to Game
+  def outcomes_for_team(game, team)
+    game.outcome.player_outcomes.select { |o| o.team == team }
   end
 
   def valid?
@@ -59,14 +65,14 @@ class TeamOutcome
   def attributes
     {
       'team' => @team,
-    } + Hash[STATS.collect { |item| [item.to_s, 0] } ]
+    } + Hash[STATS.collect { |item| [item.to_s, 0] }]
   end
 
   protected
 
   def add_to_stat(stat, game_val)
     current_val = self.send(stat) || 0
-    game_val ||=  0
+    game_val ||= 0
     instance_variable_set("@#{stat}", current_val + game_val)
   end
 
