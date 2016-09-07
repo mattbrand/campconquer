@@ -2,14 +2,16 @@
 #
 # Table name: games
 #
-#  id         :integer          not null, primary key
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  locked     :boolean
-#  current    :boolean          default("f")
-#  season_id  :integer
-#  state      :string           default("preparing")
-#  moves      :text
+#  id           :integer          not null, primary key
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  locked       :boolean
+#  current      :boolean          default("f")
+#  season_id    :integer
+#  state        :string           default("preparing")
+#  moves        :text
+#  winner       :string
+#  match_length :integer
 #
 # Indexes
 #
@@ -20,7 +22,9 @@
 class Game < ActiveRecord::Base
   belongs_to :season
   has_many :pieces, -> { includes :player, :items }
-  has_one :outcome, -> { includes :player_outcomes }, dependent: :destroy
+  has_many :player_outcomes, class_name: 'Outcome', dependent: :destroy # rename to player_outcomes?
+
+  accepts_nested_attributes_for :player_outcomes
 
   serialize :moves, JSON
 
@@ -28,6 +32,11 @@ class Game < ActiveRecord::Base
   validates_uniqueness_of :current,
                           unless: Proc.new { |game| !game.current? },
                           message: 'should be true for only one game'
+
+  validates :winner, inclusion: {
+    in: Team::NAMES.values + ["none"],
+    message: Team::NAMES.validation_message + ' or "none"',
+  }, allow_nil: true
 
   before_validation do
     self.season_id = Season.current.id unless (self.season_id and self.season_id > 0)
@@ -75,13 +84,17 @@ class Game < ActiveRecord::Base
       except: :moves,
       include: [
         {:pieces => Piece.serialization_options},
-        {:outcome => Outcome.serialization_options},
-      ]
+        :team_outcomes,
+        :player_outcomes,
+      ],
+      methods: [:team_outcomes],
     }
   end
 
-  def winner
-    self.outcome.try(:winner)
+  def team_outcomes
+    Team::NAMES.values.map do |team_name|
+      TeamOutcome.new(team: team_name, games: [self])
+    end
   end
 
   def do_lock_game
@@ -94,36 +107,35 @@ class Game < ActiveRecord::Base
     pieces.destroy_all
   end
 
-  # params:  :winner,
+  # params:
+  # :winner,
   # :match_length,
-  #     :moves,
-  #     team_outcomes: [{
-  #     :team, :takedowns, :throws, :pickups
-  #                     }]
+  # :moves,
+  # outcomes: [{
+  #     :player_id, :team, :takedowns, :throws, :pickups, ...
+  # }]
 
-  # todo: test me
   def finish_game! params
     # todo: figure out how to use state_machine to check this
     raise "can only finish in_progress games but this game is '#{state}'" if state != 'in_progress'
 
     params = params.with_indifferent_access
 
+    self.winner = params.delete(:winner)
+    self.match_length = params.delete(:match_length)
+
     moves = params.delete(:moves)
+    self.update!(params)
 
-    outcome = Outcome.new(params)
-    outcome.validate! # force a RecordInvalid exception on the outcome before saving the game
-
-    # should these be in a transaction?
-    old_outcome = self.outcome
-    self.outcome = outcome # this saves it too
     self.current = false
     self.locked = false
     self.moves = moves if moves
+
     save!
-    old_outcome.destroy! if old_outcome
+
+    # old_outcome.destroy! if old_outcome
 
     finish_game
-    outcome
   end
 
   def copy_player_pieces

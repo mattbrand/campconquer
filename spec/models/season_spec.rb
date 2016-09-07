@@ -100,9 +100,9 @@ describe Season do
       num_games = 3
       num_games.times do
         player_outcomes = players.map do |player|
-          PlayerOutcome.new(({team: player.team,
-                              player_id: player.id,
-                              captures: player.name == 'betty' ? 1 : 0,
+          Outcome.new(({team: player.team,
+                        player_id: player.id,
+                        captures: player.name == 'betty' ? 1 : 0,
           } + player_outcome_base).with_indifferent_access)
         end
 

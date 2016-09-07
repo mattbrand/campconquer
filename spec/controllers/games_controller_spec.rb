@@ -74,7 +74,7 @@ describe GamesController, type: :controller do
       get :show, {:id => game.to_param}, valid_session
       expect_ok
       # "JSON.parse(game.to_json" is to transform dates into ISO8601 strings
-      expect(response_json["game"]).to eq(JSON.parse(game.to_json(include: [:pieces, :outcome], except: :moves)))
+      expect(response_json["game"]).to eq(JSON.parse(game.to_json(Game.serialization_options)))
     end
 
     context 'when the game has moves' do
@@ -251,5 +251,141 @@ describe GamesController, type: :controller do
     end
 
   end
+
+
+  describe 'finishing' do
+    let!(:bob) { Player.create! name: 'bob', team: 'blue' }
+    let!(:rhoda) { Player.create! name: 'rhoda', team: 'red' }
+
+    # This should return the minimal set of attributes required to create a valid
+    # Outcome. As you add validations to Outcome, be sure to
+    # adjust the attributes here as well.
+    let(:valid_attributes) {
+      {
+        winner: 'blue', # game[winner]=blue
+        player_outcomes: [
+          {
+            team: 'blue',
+            player_id: bob.id,
+            takedowns: 2,
+            throws: 3,
+            pickups: 4,
+            flag_carry_distance: 5,
+            captures: 6,
+            attack_mvp: true,
+            defend_mvp: false,
+          },
+          {
+            team: 'red',
+            player_id: rhoda.id,
+            takedowns: 12,
+            throws: 13,
+            pickups: 14,
+            flag_carry_distance: 15,
+            captures: 16,
+            attack_mvp: false,
+            defend_mvp: true,
+          }
+        ]
+      }
+    }
+
+    let(:invalid_attributes) {
+      {winner: 'neon'}
+    }
+
+    let(:empty_attributes) {
+      {}
+    }
+    # This should return the minimal set of values that should be in the session
+    # in order to pass any filters (e.g. authentication) defined in
+    # OutcomesController. Be sure to keep this updated too.
+    let(:valid_session) { {} }
+
+    describe "POST #update" do
+
+      before do
+        @game = Game.current
+      end
+
+      context 'when the game is not locked' do
+        it 'should fail to post an outcome' do
+          put :update, {id: @game.id} + valid_attributes, valid_session
+          expect(@game.reload.winner).to be_nil
+          expect(response.status).to eq(409) # HTTP 409: Conflict: "The request could not be completed due to a conflict with the current state of the target resource." https://httpstatuses.com/409
+          expect(response_json['status']).to eq('error')
+        end
+      end
+
+      context "when the game is locked" do
+        before do
+          @game.lock_game!
+        end
+
+        context "with valid params" do
+
+          before { bypass_rescue }
+
+          it "changes stuff" do
+            put :update, {id: @game.id} + valid_attributes, valid_session
+            expect_ok
+            ap response_json
+            @game.reload
+            expect(@game.winner).not_to be_nil
+            expect(@game.winner).to eq(valid_attributes[:winner])
+            expect(@game.state).to eq('completed')
+          end
+
+          it "renders an 'ok' message" do
+            put :update, {id: @game.id} + valid_attributes, valid_session
+            expect_ok
+          end
+
+          it 'sets player outcomes too' do
+            put :update, {id: @game.id} + valid_attributes, valid_session
+            player_outcomes = @game.reload.player_outcomes
+            expect(player_outcomes).not_to be_empty
+            expect(player_outcomes.size).to eq(2)
+          end
+
+          it 'unlocks the game' do
+            put :update, {id: @game.id} + valid_attributes, valid_session
+            expect(@game.reload).not_to be_locked
+          end
+
+          it 'marks the game as no longer current or locked' do
+            put :update, {id: @game.id} + valid_attributes, valid_session
+            @game.reload
+            expect(@game).not_to be_current
+            expect(@game).not_to be_locked
+            expect(@game).to be_completed
+            expect(@game.state).to eq('completed')
+          end
+
+        end
+
+        context "with invalid params" do
+          it "does not reset the current or locked flags" do
+            expect(@game).to be_current
+            expect(@game).to be_locked
+            put :update, {:id => @game.id} + invalid_attributes, valid_session
+            @game.reload
+            expect(@game).to be_current
+            expect(@game).to be_locked
+          end
+
+          it "renders an error body" do
+            put :update, {:id => @game.id} + invalid_attributes, valid_session
+            expect(response_json).to include({
+                                               'status' => 'error',
+                                               'message' => 'Winner must be "blue" or "red" or "none"'
+                                             })
+          end
+        end
+      end
+    end
+
+  end
+
 
 end

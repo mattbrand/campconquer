@@ -39,7 +39,7 @@ class TalliedOutcome
   end
 
   def player_outcomes
-    games.map(&:outcome).compact.map{|o| o.player_outcomes}.flatten
+    games.map{|o| o.player_outcomes}.flatten
   end
 
   def tally

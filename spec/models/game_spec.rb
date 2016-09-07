@@ -2,14 +2,16 @@
 #
 # Table name: games
 #
-#  id         :integer          not null, primary key
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  locked     :boolean
-#  current    :boolean          default("f")
-#  season_id  :integer
-#  state      :string           default("preparing")
-#  moves      :text
+#  id           :integer          not null, primary key
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  locked       :boolean
+#  current      :boolean          default("f")
+#  season_id    :integer
+#  state        :string           default("preparing")
+#  moves        :text
+#  winner       :string
+#  match_length :integer
 #
 # Indexes
 #
@@ -58,9 +60,9 @@ describe Game do
         expect(game.pieces).to be_empty
       end
 
-      it "has no outcome" do
+      it "has no winner" do
         game = Game.current
-        expect(game.outcome).to be_nil
+        expect(game.winner).to be_nil
       end
 
       it "has a season" do
@@ -115,19 +117,6 @@ describe Game do
       game_c = Game.create! current: true
 
       expect(Game.previous).to eq(game_b)
-    end
-  end
-
-  describe 'winner' do
-    let!(:current_game) { Game.current }
-
-    it "proxies to outcome" do
-      current_game.outcome = Outcome.new(winner: 'red')
-      expect(current_game.winner).to eq('red')
-    end
-
-    it "works if there is no outcome yet" do
-      expect(current_game.winner).to be_nil
     end
   end
 
@@ -236,25 +225,28 @@ describe Game do
   end
 
   describe "as_json" do
-    it "includes outcome and player_outcomes" do
+    it "includes outcome and team_outcomes" do
       alice = Player.create!(name: 'alice', team: 'blue')
       bob = Player.create!(name: 'bob', team: 'red')
 
       game = Game.current
-      game.outcome = Outcome.new(winner: 'red', player_outcomes: [
-        PlayerOutcome.new(player_id: alice.id, team: 'blue', takedowns: 2),
-        PlayerOutcome.new(player_id: bob.id, team: 'red', takedowns: 3),
-      ])
-      game.save!
+      game.lock_game!
+      game.finish_game! winner: 'red',
+                        player_outcomes_attributes: [# rails is weird
+                          {player_id: alice.id, team: 'blue', takedowns: 2},
+                          {player_id: bob.id, team: 'red', takedowns: 3},
+                        ]
 
-      expect(game.as_json).to include('outcome')
-      expect(game.as_json['outcome']['winner']).to eq('red')
-      expect(game.as_json['outcome']['player_outcomes']).to be
-      expect(game.as_json['outcome']['player_outcomes'].size).to eq(2)
-      expect(game.as_json['outcome']['player_outcomes'][0]['team']).to eq('blue')
-      expect(game.as_json['outcome']['player_outcomes'][0]['takedowns']).to eq(2)
-      expect(game.as_json['outcome']['player_outcomes'][1]['team']).to eq('red')
-      expect(game.as_json['outcome']['player_outcomes'][1]['takedowns']).to eq(3)
+      json = game.as_json
+      ap json
+      expect(json['winner']).to eq('red')
+      expect(json['team_outcomes']).to be
+      expect(json['player_outcomes']).to be
+      expect(json['player_outcomes'].size).to eq(2)
+      expect(json['player_outcomes'][0]['team']).to eq('blue')
+      expect(json['player_outcomes'][0]['takedowns']).to eq(2)
+      expect(json['player_outcomes'][1]['team']).to eq('red')
+      expect(json['player_outcomes'][1]['takedowns']).to eq(3)
     end
   end
 
@@ -302,13 +294,12 @@ describe Game do
                                     }
                                   ]
 
-        outcome = current_game.outcome
-        expect(outcome.winner).to eq('blue')
+        expect(current_game.winner).to eq('blue')
       end
 
       it 'accepts a moves list' do
         current_game.finish_game! winner: 'blue',
-          moves: "SOMEMOVESINASTRING"
+                                  moves: "SOMEMOVESINASTRING"
         current_game.reload
         expect(current_game.moves).to eq("SOMEMOVESINASTRING")
       end

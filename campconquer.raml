@@ -77,13 +77,21 @@ types:
       locked: # to-do: change to state
         type: boolean
         description: if true, game setup cannot be changed
-      outcome:
-        type: Outcome
-        description: |
-          once game is finished, the results of that game
+      winner:
+        type: string
+        description: team name of winner, or null if a draw
       moves:
         type: string
         description: all the moves and throws, as a huge json string blob :-( -- not always present in output
+      match_length:
+        type: integer
+        description: duration of game in seconds
+      player_outcomes:
+        type: Outcome[]
+        description: once played, stats for each player of this game; should be in alphabetical order by team name when returned by server
+      team_outcomes:
+        type: Outcome[]
+        description: (read-only) once played, stats for each team for this game
 
   Piece:
     type: object
@@ -176,26 +184,9 @@ types:
 
   Outcome:
     type: object
-    description: the results of a finished game
+    description: the results of a finished game (or season) for a particular player (or team)
     properties:
       created: datetime
-      winner:
-        type: string
-        description: team name of winner, or null if a draw
-      player_outcomes:
-        type: PlayerOutcome[]
-        description: once played, stats for each player of this game; should be in alphabetical order by team name when returned by server
-      team_outcomes:
-        type: TeamOutcome[]
-        description: once played, stats for each team for this game - download only
-      match_length:
-        type: integer
-        description: duration of game in seconds
-
-  TeamOutcome:
-    type: object
-    description: the results of a finished game (or season) for a particular team
-    properties:
       team:
         type: string
       captures:
@@ -215,41 +206,14 @@ types:
         description: number of meters this team carried the flag
       attack_mvp:
         type: integer
-        description: [calculated] player id: for winning team, the player who captured the flag; for losing team, the player that held the flag for longest distance
+        description: player id: for winning team, the player who captured the flag; for losing team, the player that held the flag for longest distance
       defend_mvp:
         type: integer
         description: [calculated] player id: the player with the most takedowns
 
-  PlayerOutcome:
-    type: object
-    description: the results of a finished game (or season) for a particular player
-    properties:
-      team:
-        type: string
-      takedowns:
-        type: integer
-        description: count of players on *other* teams who died at this player's hand
-      throws:
-        type: integer
-        description: number of balloons this player threw
-      pickups:
-        type: integer
-        description: number of times this player picked up the flag
-      flag_carry_distance:
-        type: float
-        description: number of meters this player carried the flag
-      captures:
-        type: integer
-        description: number of times this player captured the flag (max. 1 per game)
-      attack_mvp:
-        type: integer
-        description: number of times this player was the Attack MVP (max. 1 per game)
-      defend_mvp:
-        type: integer
-        description: number of times this player was the Defend MVP (max. 1 per game)
-
   Season:
     type: object
+    description: a series of games
     properties:
       id:
         type: number
@@ -258,10 +222,10 @@ types:
       current:
         type: boolean
       team_outcomes:
-        type: TeamOutcome[]
+        type: Outcome[]
         description: outcomes per team for all games this season, totalled
       player_outcomes:
-        type: PlayerOutcome[]
+        type: Outcome[]
         description: outcomes per player for all games this season, totalled
 
 /gears:
@@ -334,6 +298,9 @@ types:
         200:
           body:
             type: Game
+    put:
+      description: finish game
+
 
     /lock:
       post:

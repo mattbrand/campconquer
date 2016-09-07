@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160906164200) do
+ActiveRecord::Schema.define(version: 20160907164936) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -45,13 +45,15 @@ ActiveRecord::Schema.define(version: 20160906164200) do
   add_index "activities", ["player_id"], name: "index_activities_on_player_id"
 
   create_table "games", force: :cascade do |t|
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.boolean  "locked"
-    t.boolean  "current",    default: false
+    t.boolean  "current",      default: false
     t.integer  "season_id"
-    t.string   "state",      default: "preparing"
+    t.string   "state",        default: "preparing"
     t.text     "moves"
+    t.string   "winner"
+    t.integer  "match_length"
   end
 
   add_index "games", ["current"], name: "index_games_on_current"
@@ -81,14 +83,22 @@ ActiveRecord::Schema.define(version: 20160906164200) do
   add_index "items", ["piece_id", "gear_id"], name: "index_items_on_piece_id_and_gear_id"
 
   create_table "outcomes", force: :cascade do |t|
-    t.string   "winner"
-    t.integer  "match_length"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.string   "team"
+    t.integer  "takedowns"
+    t.integer  "throws"
+    t.integer  "pickups"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+    t.integer  "player_id"
+    t.integer  "flag_carry_distance", null: false
+    t.integer  "captures",            null: false
+    t.integer  "attack_mvp",          null: false
+    t.integer  "defend_mvp",          null: false
     t.integer  "game_id"
   end
 
   add_index "outcomes", ["game_id"], name: "index_outcomes_on_game_id"
+  add_index "outcomes", ["player_id"], name: "index_outcomes_on_player_id"
 
   create_table "pieces", force: :cascade do |t|
     t.string   "team"
@@ -103,24 +113,6 @@ ActiveRecord::Schema.define(version: 20160906164200) do
     t.integer  "player_id"
     t.string   "body_type"
   end
-
-  create_table "player_outcomes", force: :cascade do |t|
-    t.string   "team"
-    t.integer  "takedowns"
-    t.integer  "throws"
-    t.integer  "pickups"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
-    t.integer  "outcome_id"
-    t.integer  "player_id"
-    t.integer  "flag_carry_distance", null: false
-    t.integer  "captures",            null: false
-    t.integer  "attack_mvp",          null: false
-    t.integer  "defend_mvp",          null: false
-  end
-
-  add_index "player_outcomes", ["outcome_id"], name: "index_player_outcomes_on_outcome_id"
-  add_index "player_outcomes", ["player_id"], name: "index_player_outcomes_on_player_id"
 
   create_table "players", force: :cascade do |t|
     t.string   "name"
@@ -139,23 +131,5 @@ ActiveRecord::Schema.define(version: 20160906164200) do
     t.string   "name"
     t.boolean  "current",    default: false, null: false
   end
-
-  create_table "users", force: :cascade do |t|
-    t.string   "email",                  default: "", null: false
-    t.string   "encrypted_password",     default: "", null: false
-    t.string   "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,  null: false
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip"
-    t.string   "last_sign_in_ip"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
-  end
-
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
 
 end

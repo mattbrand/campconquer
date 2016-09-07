@@ -10,7 +10,7 @@
 #
 
 class Season < ActiveRecord::Base
-  has_many :games, -> { includes(:outcome => [:player_outcomes]) }
+  has_many :games, -> { includes(:player_outcomes) }
 
   has_many :pieces, through: :games
   has_many :players, -> { uniq }, through: :pieces
@@ -41,7 +41,7 @@ class Season < ActiveRecord::Base
   # sum of all game outcomes per player
   def player_outcomes
     players.map do |player|
-      TalliedPlayerOutcome.new(games: self.games, player: player)
+      PlayerOutcome.new(games: self.games, player: player)
     end
   end
 

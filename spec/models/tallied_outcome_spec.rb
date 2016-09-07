@@ -22,7 +22,7 @@ RSpec.describe TalliedOutcome, type: :model do
   context "given a game" do
     it "adds up stats" do
       player_outcomes = [
-        PlayerOutcome.new({team: 'blue',
+        Outcome.new({team: 'blue',
                            player_id: 100,
                            takedowns: 1,
                            throws: 2,
@@ -31,7 +31,7 @@ RSpec.describe TalliedOutcome, type: :model do
                            flag_carry_distance: 4,
                           }.with_indifferent_access),
 
-        PlayerOutcome.new({team: 'red',
+        Outcome.new({team: 'red',
                            player_id: 200,
                            takedowns: 10,
                            throws: 20,
@@ -41,12 +41,9 @@ RSpec.describe TalliedOutcome, type: :model do
                           }.with_indifferent_access),
       ]
 
-      outcome = Outcome.new(
-        winner: 'blue',
-        match_length: 100,
-        player_outcomes: player_outcomes
-      )
-      game = Game.new(outcome: outcome)
+      game = Game.new(winner: 'blue',
+              match_length: 100,
+              player_outcomes: player_outcomes)
       tallied_outcome = TalliedOutcome.new(games: [game])
 
       expect(tallied_outcome.as_json).to eq({
@@ -80,15 +77,14 @@ RSpec.describe TalliedOutcome, type: :model do
           totals[stat] += val
         end
 
-        player_outcomes << PlayerOutcome.new(stats)
+        player_outcomes << Outcome.new(stats)
       end
 
-      outcome = Outcome.new(
+      game = Game.new(
         winner: 'blue',
         match_length: 10,
         player_outcomes: player_outcomes
       )
-      game = Game.new(outcome: outcome)
 
       games << game
 

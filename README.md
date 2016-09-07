@@ -18,6 +18,7 @@ Konker? I just met 'er!
 - [x] create a separate endpoint for game so that moves don't always get sent
 - [ ] add player_id to PlayerOutcome in & out
 - [ ] paths: kill json, use csv and google doc
+- [ ] calculate attack_mvp and defend_mvp
 
 - User Authentication:
     - [ ] API Auth
@@ -42,7 +43,7 @@ Konker? I just met 'er!
 ## chores
 
 - [x] state machine for game
-- [ ] rename coins to gold
+- [ ] rename gold to coins 
 - [ ] create prod env
 - [ ] merge Outcome, TeamOutcome, and PlayerOutcome
 

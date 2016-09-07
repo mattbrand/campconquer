@@ -57,7 +57,7 @@ class Player < ActiveRecord::Base
 
   has_one :piece, -> { where(game_id: nil).includes(:items) }
   has_many :activities
-  has_many :player_outcomes
+  has_many :outcomes
   serialize :fitbit_token_hash
 
   validates_uniqueness_of :name

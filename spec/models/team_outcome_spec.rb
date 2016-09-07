@@ -1,24 +1,6 @@
-# == Schema Information
-#
-# Table name: team_outcomes
-#
-#  id         :integer          not null, primary key
-#  team       :string
-#  takedowns  :integer
-#  throws     :integer
-#  pickups    :integer
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  outcome_id :integer
-#
-# Indexes
-#
-#  index_team_outcomes_on_outcome_id  (outcome_id)
-#
-
 require 'rails_helper'
 
-RSpec.describe TeamOutcome, type: :model do
+describe TeamOutcome do
   it "requires team name" do
     team_outcome = TeamOutcome.new(team: nil, games: nil)
     expect(team_outcome).not_to be_valid
@@ -32,7 +14,7 @@ RSpec.describe TeamOutcome, type: :model do
   context "given a game" do
     it "adds up stats" do
       player_outcomes = [
-        PlayerOutcome.new({team: 'blue',
+        Outcome.new({team: 'blue',
                            takedowns: 1,
                            throws: 2,
                            pickups: 3,
@@ -40,7 +22,7 @@ RSpec.describe TeamOutcome, type: :model do
                            captures: 1,
                           }.with_indifferent_access),
 
-        PlayerOutcome.new({team: 'red',
+        Outcome.new({team: 'red',
                            takedowns: 11,
                            throws: 12,
                            pickups: 13,
@@ -49,12 +31,11 @@ RSpec.describe TeamOutcome, type: :model do
                           }.with_indifferent_access),
       ]
 
-      outcome = Outcome.new(
+      game = Game.new(
         winner: 'blue',
         match_length: 100,
         player_outcomes: player_outcomes
       )
-      game = Game.new(outcome: outcome)
       games = [game]
 
       team_outcome = TeamOutcome.new(team: 'blue', games: games)
@@ -99,15 +80,14 @@ RSpec.describe TeamOutcome, type: :model do
           totals[team_name][stat] += val
         end
 
-        player_outcomes << PlayerOutcome.new({team: team_name} + stats)
+        player_outcomes << Outcome.new({team: team_name} + stats)
       end
 
-      outcome = Outcome.new(
+      game = Game.new(
         winner: 'blue',
         match_length: 10,
         player_outcomes: player_outcomes
       )
-      game = Game.new(outcome: outcome)
 
       games << game
 

@@ -5,16 +5,13 @@ Rails.application.routes.draw do
 
   resources :seasons, only: ['show']
 
-  resources :games, only: ['index', 'show', 'destroy'] do
+  resources :games, only: ['index', 'show', 'destroy', 'update'] do
 
     member do
       post :lock
       delete :lock, action: :unlock
     end
 
-    resource :outcome, only: ['create'] do
-      # resources :team_outcomes -- not a separate route; subsumed inside Outcome
-    end
   end
 
   resources :players do

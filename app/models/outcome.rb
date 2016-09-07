@@ -2,33 +2,42 @@
 #
 # Table name: outcomes
 #
-#  id           :integer          not null, primary key
-#  winner       :string
-#  match_length :integer
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  game_id      :integer
+#  id                  :integer          not null, primary key
+#  team                :string
+#  takedowns           :integer
+#  throws              :integer
+#  pickups             :integer
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  player_id           :integer
+#  flag_carry_distance :integer          not null
+#  captures            :integer          not null
+#  attack_mvp          :integer          not null
+#  defend_mvp          :integer          not null
+#  game_id             :integer
 #
 # Indexes
 #
-#  index_outcomes_on_game_id  (game_id)
+#  index_outcomes_on_game_id    (game_id)
+#  index_outcomes_on_player_id  (player_id)
 #
 
 class Outcome < ActiveRecord::Base
   belongs_to :game
-  has_many :player_outcomes, dependent: :destroy
-  accepts_nested_attributes_for :player_outcomes
+  belongs_to :player
 
-  validates :winner, inclusion: {
-    in: Team::NAMES.values + ["none"],
-    message: Team::NAMES.validation_message + ' or "none"',
-  }
+  validates :team, inclusion: {in: Team::NAMES.values, message: Team::NAMES.validation_message}
+  validates :player_id, presence: true # todo: should validate that it's a real player too
 
-  # include ActiveModel::Serialization
-  def as_json(options=nil)
-    if options.nil?
-      options = self.class.serialization_options
+  before_save do
+    # defend against nulls
+    %w(takedowns throws pickups flag_carry_distance captures attack_mvp defend_mvp).each do |field|
+      self[field] ||= 0
     end
+  end
+
+  def as_json(options=nil)
+    options = self.class.serialization_options if options.nil?
     super(options)
   end
 
@@ -36,22 +45,18 @@ class Outcome < ActiveRecord::Base
   # so we have to call these options explicitly from the parent's as_json
   def self.serialization_options
     {
-      only: [:winner,
-             :match_length,
-             :created_at,
-             :updated_at,
+      only: [:team,
+             :player_id,
+             :takedowns,
+             :throws,
+             :pickups,
+             :captures,
+             :flag_carry_distance,
+             :attack_mvp,
+             :defend_mvp,
       ],
-      methods: [:team_outcomes],
-      include: [{:player_outcomes => PlayerOutcome.serialization_options},
-      :team_outcomes
-      ]
     }
   end
 
-  def team_outcomes
-    Team::NAMES.values.map do |team_name|
-      TeamOutcome.new(team: team_name, games: [game])
-    end
-  end
 
 end
