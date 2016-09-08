@@ -206,10 +206,10 @@ types:
         description: number of meters this team carried the flag
       attack_mvp:
         type: integer
-        description: player id: for winning team, the player who captured the flag; for losing team, the player that held the flag for longest distance
+        description: 1 = for winning team, this player captured the flag; for losing team, this player held the flag for longest distance
       defend_mvp:
         type: integer
-        description: [calculated] player id: the player with the most takedowns
+        description: 1 = this player had the most takedowns
 
   Season:
     type: object

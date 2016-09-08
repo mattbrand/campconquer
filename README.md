@@ -11,13 +11,16 @@ Konker? I just met 'er!
 - [x] lock copies equipped gear
 - [x] gear buy & equip
 
-- [ ] history (stats)
-    - [ ] season stats endpoint
-    - [ ] player stats (all time)
-- [ ] make "moves" upload/download/storage more efficient
+- [x] season stats endpoint
+- [ ] player stats (all season(s?))
+- make "moves" more efficient
+  - [ ] upload
+  - [x] download
+  - [ ] storage 
 - [x] create a separate endpoint for game so that moves don't always get sent
-- [ ] add player_id to PlayerOutcome in & out
+- [x] add player_id to PlayerOutcome in & out
 - [ ] paths: kill json, use csv and google doc
+  - needs coordination with Unity code
 - [ ] calculate attack_mvp and defend_mvp
 
 - User Authentication:
@@ -49,6 +52,7 @@ Konker? I just met 'er!
 - [ ] fixture factories
 - [ ] foreign key indexes for all tables
 - [ ] New Relic
+- [ ] add `/api` prefix and `ApiController`
 
 - [ ] [upgrade to Rails 5](http://blog.bigbinary.com/2016/08/18/new-framework-defaults-in-rails-5-to-make-upgrade-easier.html)
 - [ ] switch from RAML to Swagger? http://swagger.io/
