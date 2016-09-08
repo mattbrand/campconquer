@@ -329,7 +329,6 @@ describe GamesController, type: :controller do
           it "changes stuff" do
             put :update, {id: @game.id} + valid_attributes, valid_session
             expect_ok
-            ap response_json
             @game.reload
             expect(@game.winner).not_to be_nil
             expect(@game.winner).to eq(valid_attributes[:winner])

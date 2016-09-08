@@ -43,17 +43,18 @@ Konker? I just met 'er!
 ## chores
 
 - [x] state machine for game
-- [ ] rename gold to coins 
+- [x] rename gold to coins 
 - [ ] create prod env
-- [ ] merge Outcome, TeamOutcome, and PlayerOutcome
+- [x] merge Outcome, TeamOutcome, and PlayerOutcome
+- [ ] fixture factories
+- [ ] foreign key indexes for all tables
+- [ ] New Relic
 
 - [ ] [upgrade to Rails 5](http://blog.bigbinary.com/2016/08/18/new-framework-defaults-in-rails-5-to-make-upgrade-easier.html)
 - [ ] switch from RAML to Swagger? http://swagger.io/
 - [ ] make a Procfile https://devcenter.heroku.com/articles/ruby-default-web-server
 - [ ] CircleCI? 
 - [ ] Alex learns Unity (gratis)
-- [ ] foreign key indexes for all tables
-- [ ] New Relic
 
 # Updating the Seed DB
 

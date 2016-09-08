@@ -12,7 +12,7 @@
 #  gear_type    :string
 #  asset_name   :string
 #  icon_name    :string
-#  gold         :integer          default("0"), not null
+#  coins        :integer          default("0"), not null
 #  gems         :integer          default("0"), not null
 #  level        :integer          default("0"), not null
 #
@@ -39,7 +39,7 @@ class Gear < ActiveRecord::Base
           :health_bonus,
           :speed_bonus,
           :range_bonus,
-          :gold,
+          :coins,
           :gems,
           :level,
           :asset_name,

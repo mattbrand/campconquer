@@ -18,7 +18,7 @@ describe GearsController, type: :controller do
       gear_type: 'head',
       asset_name: nil,
       icon_name: nil,
-      gold: 0,
+      coins: 0,
       gems: 0,
       level: 0
     }

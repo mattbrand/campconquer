@@ -27,7 +27,7 @@ class Player < ActiveRecord::Base
 
   class NotEnoughCoins < RuntimeError
     def initialize(gear)
-      super("not enough coins to buy #{gear.name}: #{gear.gold} required")
+      super("not enough coins to buy #{gear.name}: #{gear.coins} required")
     end
   end
 
@@ -203,9 +203,9 @@ class Player < ActiveRecord::Base
     gear = Gear.find_by_name(gear_name)
     if gear_owned?(gear_name)
       raise Player::AlreadyOwned, gear
-    elsif self.coins >= gear.gold
+    elsif self.coins >= gear.coins
       piece.items.create!(gear_id: gear.id, equipped: false)
-      self.coins -= gear.gold
+      self.coins -= gear.coins
       self.save!
     else
       raise Player::NotEnoughCoins, gear

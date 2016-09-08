@@ -24,7 +24,7 @@ gears.each do |row|
                    health_bonus: row["Health Bonus"],
                    speed_bonus: row["Speed Bonus"],
                    range_bonus: row["Range Bonus"],
-                   gold: row['Gold'],
+                   coins: row['Gold'],
                    gems: row['Gems'],
                    level: row['Level'],
                    asset_name: row['Asset Name'],

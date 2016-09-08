@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160908135003) do
+ActiveRecord::Schema.define(version: 20160908142249) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -69,7 +69,7 @@ ActiveRecord::Schema.define(version: 20160908135003) do
     t.string  "gear_type"
     t.string  "asset_name"
     t.string  "icon_name"
-    t.integer "gold",         default: 0, null: false
+    t.integer "coins",        default: 0, null: false
     t.integer "gems",         default: 0, null: false
     t.integer "level",        default: 0, null: false
   end
