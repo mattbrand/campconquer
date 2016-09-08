@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160907164936) do
+ActiveRecord::Schema.define(version: 20160908135003) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -112,6 +112,10 @@ ActiveRecord::Schema.define(version: 20160907164936) do
     t.integer  "game_id"
     t.integer  "player_id"
     t.string   "body_type"
+    t.string   "face"
+    t.string   "hair"
+    t.string   "skin_color"
+    t.string   "hair_color"
   end
 
   create_table "players", force: :cascade do |t|

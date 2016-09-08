@@ -69,9 +69,9 @@ class Player < ActiveRecord::Base
       raise Player::GameLocked
     end
 
-    params = params.pick(:body_type, :role, :path)
+    params = params.pick(:body_type, :role, :path, :face, :hair, :skin_color, :hair_color)
     if self.piece
-      self.piece.update!(params) # todo: whitelist
+      self.piece.update!(params)
     else
       self.piece = Piece.create!({player_id: self.id, team: self.team} + params)
     end

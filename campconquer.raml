@@ -40,8 +40,8 @@ types:
         type: string[]
       ammo:
         type: string[]
-      history:
-        type: PlayerHistory
+      piece:
+        type: Piece
 
   Point:
     description: a tuple representing an x,y coordinate on the game map; values are floats
@@ -409,32 +409,18 @@ types:
           only some attributes are allowed:
           * role
           * path
-          * gear_equipped
-          * ammo # this will change once ammo costs money
           some attributes are only settable once:
           * speed
-          * health:
+          * health
           * range
+          * body_type
+          * face
+          * hair
+          * skin_color
+          * hair_color
 
         queryParameters:
           type: Piece
-
-#    /history:
-#      get:
-#        description: this player's stats for this season
-#      responses:
-#        200:
-#          body:
-#            type: PlayerHistory
-
-/history:
-  get:
-    description: team stats for this season
-  responses:
-    200:
-      body:
-        type: PlayerHistory[]
-        description: one entry per team... array or hash?
 
 /paths:
   get:
@@ -453,7 +439,7 @@ types:
 
   /current:
     get:
-      description: get data for the current season (all games)
+      description: get stats for the current season (tallied across all games)
     responses:
       200:
         body:

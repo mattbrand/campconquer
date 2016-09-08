@@ -14,6 +14,10 @@
 #  game_id    :integer
 #  player_id  :integer
 #  body_type  :string
+#  face       :string
+#  hair       :string
+#  skin_color :string
+#  hair_color :string
 #
 
 require 'rails_helper'
