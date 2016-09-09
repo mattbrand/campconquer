@@ -238,7 +238,6 @@ describe Game do
                         ]
 
       json = game.as_json
-      ap json
       expect(json['winner']).to eq('red')
       expect(json['team_outcomes']).to be
       expect(json['player_outcomes']).to be

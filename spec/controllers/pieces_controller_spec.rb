@@ -9,7 +9,11 @@ describe PiecesController, type: :controller do
     {
       body_type: 'female',
       role: 'offense',
-      path: '', # todo
+      face: 'happy',
+      hair: 'the bieber',
+      skin_color: 'pale',
+      hair_color: 'blonde',
+
     }
   }
 
@@ -45,7 +49,12 @@ describe PiecesController, type: :controller do
         expect(assigns(:piece)).to be_persisted
       end
 
-      it "sets the team" do
+      it "sets all the given attributes" do
+        post :create, {player_id: @player.id, piece: valid_attributes}, valid_session
+        expect(assigns(:piece).attributes).to include(valid_attributes.stringify_keys)
+      end
+
+      it "sets the team based on the player's team" do
         post :create, {player_id: @player.id, piece: valid_attributes}, valid_session
         expect(assigns(:piece).team).to eq(@player.team)
       end
@@ -55,7 +64,7 @@ describe PiecesController, type: :controller do
         post :create, {player_id: @player.id, piece: valid_attributes}, valid_session
         @player.reload
         expect(@player.piece).not_to be_nil
-        expect(@player.piece.team).to eq("blue")
+        expect(@player.piece).to eq(assigns(:piece))
       end
 
       it "renders an 'ok' message" do
@@ -71,6 +80,7 @@ describe PiecesController, type: :controller do
         @player.reload
         expect(@player.piece).not_to be_nil
         expect(@player.piece).to eq(existing_piece)
+
         expect(@player.piece.body_type).to eq('gender_neutral_1')
       end
 

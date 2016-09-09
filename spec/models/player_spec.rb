@@ -402,8 +402,8 @@ describe Player, type: :model do
 
   describe 'gear' do
     let!(:player) { Player.create!(name: "alice", team: 'blue', coins: 15) }
-    let!(:galoshes) { Gear.create!(name: 'galoshes', gear_type: 'shoes', gold: 10) }
-    let!(:tee_shirt) { Gear.create!(name: 'tee-shirt', gear_type: 'shirt', gold: 20) }
+    let!(:galoshes) { Gear.create!(name: 'galoshes', gear_type: 'shoes', coins: 10) }
+    let!(:tee_shirt) { Gear.create!(name: 'tee-shirt', gear_type: 'shirt', coins: 20) }
 
     before do
       player.set_piece
