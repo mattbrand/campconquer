@@ -60,6 +60,7 @@ class Season < ActiveRecord::Base
         :team_outcomes,
         :player_outcomes,
       ],
+      methods: [:team_outcomes, :player_outcomes]
     }
   end
 
