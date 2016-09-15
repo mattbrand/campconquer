@@ -271,9 +271,9 @@ describe GamesController, type: :controller do
             throws: 3,
             pickups: 4,
             flag_carry_distance: 5,
-            captures: 6,
-            attack_mvp: true,
-            defend_mvp: false,
+            captures: 1,
+            attack_mvp: 1,
+            defend_mvp: 0,
           },
           {
             team: 'red',
@@ -282,9 +282,9 @@ describe GamesController, type: :controller do
             throws: 13,
             pickups: 14,
             flag_carry_distance: 15,
-            captures: 16,
-            attack_mvp: false,
-            defend_mvp: true,
+            captures: 0,
+            attack_mvp: 0,
+            defend_mvp: 1,
           }
         ]
       }

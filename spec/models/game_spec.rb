@@ -207,7 +207,7 @@ describe Game do
         current_game.lock_game!
         expect(current_game.pieces.count).to eq(1)
 
-        current_game.finish_game! winner: 'red' # todo: abort_game! ?
+        current_game.finish_game!
         current_game = Game.current
         current_game.lock_game!
         expect(current_game.pieces.count).to eq(1)
@@ -234,7 +234,7 @@ describe Game do
       game.finish_game! winner: 'red',
                         player_outcomes_attributes: [# rails is weird
                           {player_id: alice.id, team: 'blue', takedowns: 2},
-                          {player_id: bob.id, team: 'red', takedowns: 3},
+                          {player_id: bob.id, team: 'red', takedowns: 3, captures: 1},
                         ]
 
       json = game.as_json
@@ -266,48 +266,124 @@ describe Game do
       let!(:bob) { Player.create! name: 'bob', team: 'blue' }
       let!(:rhoda) { Player.create! name: 'rhoda', team: 'red' }
 
-      it 'accepts outcome params' do
-        current_game.finish_game! winner: 'blue',
-                                  player_outcomes_attributes: [# rails is weird http://stackoverflow.com/a/8719885/190135
-                                    {
-                                      team: 'blue',
-                                      player_id: bob.id,
-                                      takedowns: 2,
-                                      throws: 3,
-                                      pickups: 4,
-                                      flag_carry_distance: 5,
-                                      captures: 6,
-                                      attack_mvp: true,
-                                      defend_mvp: false,
-                                    },
-                                    {
-                                      team: 'red',
-                                      player_id: rhoda.id,
-                                      takedowns: 12,
-                                      throws: 13,
-                                      pickups: 14,
-                                      flag_carry_distance: 15,
-                                      captures: 16,
-                                      attack_mvp: false,
-                                      defend_mvp: true,
-                                    }
-                                  ]
+      let(:player_outcomes_hashes) { [
+        {
+          team: 'blue',
+          player_id: bob.id,
+          takedowns: 2,
+          throws: 3,
+          pickups: 4,
+          flag_carry_distance: 5,
+          captures: 1,
+        },
+        {
+          team: 'red',
+          player_id: rhoda.id,
+          takedowns: 12,
+          throws: 13,
+          pickups: 14,
+          flag_carry_distance: 15,
+          captures: 0,
+        }
+      ]
+      }
 
+      it 'accepts outcome params' do
+        current_game.finish_game! player_outcomes_attributes: player_outcomes_hashes # rails is weird http://stackoverflow.com/a/8719885/190135
         expect(current_game.winner).to eq('blue')
       end
 
       it 'accepts a moves list' do
-        current_game.finish_game! winner: 'blue',
-                                  moves: "SOMEMOVESINASTRING"
+        current_game.finish_game! moves: "SOMEMOVESINASTRING"
         current_game.reload
         expect(current_game.moves).to eq("SOMEMOVESINASTRING")
       end
 
       it 'changes the state to "completed"' do
-        current_game.finish_game! winner: 'blue'
+        current_game.finish_game!
         expect(current_game.state).to eq('completed')
       end
+
+      it "calculates winner if it's not passed in" do
+        current_game.finish_game! player_outcomes_attributes: player_outcomes_hashes
+        expect(current_game.winner).to eq('blue')
+      end
+
+      it 'validates winner' do
+        expect do
+          current_game.finish_game! winner: 'red',
+                                    player_outcomes_attributes: player_outcomes_hashes
+        end.to raise_error(Game::WinnerMismatch)
+      end
+
+      context 'when no outcomes are passed' do
+        it 'trusts the winner param' do
+          current_game.finish_game! winner: 'red'
+          expect(current_game.winner).to eq('red')
+        end
+      end
+
+      it 'sets MVP on outcomes' do
+        current_game.finish_game! player_outcomes_attributes: player_outcomes_hashes
+        bob_outcome = current_game.player_outcomes.detect{|o| o.player_id == bob.id }
+        rhoda_outcome = current_game.player_outcomes.detect{|o| o.player_id == rhoda.id }
+        expect(bob_outcome.attack_mvp).to eq(1)
+        expect(bob_outcome.defend_mvp).to eq(1)
+        expect(rhoda_outcome.attack_mvp).to eq(1)
+        expect(rhoda_outcome.defend_mvp).to eq(1)
+      end
     end
+  end
+
+  describe 'calculating post-game stats' do
+
+    let!(:betty) { Player.create! team: 'blue', name: 'betty' }
+    let!(:bob) { Player.create! team: 'blue', name: 'bob' }
+    let!(:roger) { Player.create! team: 'red', name: 'roger' }
+    let!(:rebecca) { Player.create! team: 'red', name: 'rebecca' }
+
+    let(:outcomes) {
+      [
+        # blue team won
+        Outcome.new(team: 'blue', player_id: betty.id, captures: 1, takedowns: 1, flag_carry_distance: 10),
+        Outcome.new(team: 'blue', player_id: bob.id, captures: 0, takedowns: 2, flag_carry_distance: 20),
+        Outcome.new(team: 'red', player_id: roger.id, captures: 0, takedowns: 1, flag_carry_distance: 11),
+        Outcome.new(team: 'red', player_id: rebecca.id, captures: 0, takedowns: 3, flag_carry_distance: 7),
+      ]
+    }
+
+    let(:game) { Game.new(player_outcomes: outcomes) }
+    let(:mvps) { game.calculate_mvps }
+
+    it 'calculates winning team' do
+      expect(game.calculate_winner).to eq('blue')
+    end
+
+    it 'calculates attack_mvp for winning team (for winning team, this player captured the flag)' do
+      expect(mvps['blue']['attack_mvps']).to eq([betty.id])
+    end
+
+    it 'calculates defend_mvp for winning team' do
+      # this player had the most takedowns
+      expect(mvps['blue']['defend_mvps']).to eq([bob.id])
+    end
+
+    it 'calculates attack_mvp for losing team' do
+      # for losing team, this player held the flag for longest distance
+      expect(mvps['red']['attack_mvps']).to eq([roger.id])
+    end
+
+    it 'calculates defend_mvp for losing team' do
+      # this player had the most takedowns
+      expect(mvps['red']['defend_mvps']).to eq([rebecca.id])
+    end
+
+    it 'might have several mvps' do
+      billie = Player.create! team: 'blue', name: 'billie'
+      outcomes << Outcome.new(team: 'blue', player_id: billie.id, captures: 0, takedowns: 2, flag_carry_distance: 20)
+      expect(mvps['blue']['defend_mvps']).to eq([bob.id, billie.id])
+    end
+
   end
 
 end

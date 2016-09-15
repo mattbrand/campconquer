@@ -54,4 +54,5 @@ RSpec.describe Outcome, type: :model do
     outcome = Outcome.new(team: 'blue', player_id: NOT_A_REAL_PLAYER_ID)
     expect(outcome).not_to be_valid
   end
+
 end

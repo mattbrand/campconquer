@@ -58,5 +58,4 @@ class Outcome < ActiveRecord::Base
     }
   end
 
-
 end

@@ -20,6 +20,13 @@
 #
 
 class Game < ActiveRecord::Base
+
+  class WinnerMismatch < RuntimeError
+    def initialize(sent, computed)
+      super("client said #{sent.inspect} was the winner but we think it's #{computed.inspect}")
+    end
+  end
+
   belongs_to :season
   has_many :pieces, -> { includes :player, :items }
   has_many :player_outcomes, class_name: 'Outcome', dependent: :destroy # rename to player_outcomes?
@@ -115,22 +122,33 @@ class Game < ActiveRecord::Base
   #     :player_id, :team, :takedowns, :throws, :pickups, ...
   # }]
 
-  def finish_game! params
+  def finish_game! params = {}
     # todo: figure out how to use state_machine to check this
     raise "can only finish in_progress games but this game is '#{state}'" if state != 'in_progress'
 
     params = params.with_indifferent_access
 
-    self.winner = params.delete(:winner)
+
     self.match_length = params.delete(:match_length)
 
     moves = params.delete(:moves)
     self.update!(params)
 
+    set_winner(params)
+
+    mvps = calculate_mvps
+    player_outcomes.each do |outcome|
+      if mvps[outcome.team]['attack_mvps'].include? outcome.player_id
+        outcome.attack_mvp = 1
+      end
+      if mvps[outcome.team]['defend_mvps'].include? outcome.player_id
+        outcome.defend_mvp = 1
+      end
+    end
+
     self.current = false
     self.locked = false
     self.moves = moves if moves
-
     save!
 
     # old_outcome.destroy! if old_outcome
@@ -161,10 +179,73 @@ class Game < ActiveRecord::Base
       new_pieces = self.pieces
 
       original_items.each do |original_item|
-        new_piece = new_pieces.detect{|p| p.player_id == original_item.piece.player_id}
+        new_piece = new_pieces.detect { |p| p.player_id == original_item.piece.player_id }
         item_attrs = original_item.attributes + {piece_id: new_piece.id}
         bulk_items.add(item_attrs)
       end
+    end
+  end
+
+  def calculate_winner
+    capture = player_outcomes.detect { |o| o.captures == 1 }
+    if capture
+      capture.team
+    else
+      nil # or "none"?
+    end
+  end
+
+  def calculate_mvps
+    winner = calculate_winner
+    result = {}
+    Team::NAMES.values.each do |team|
+      result[team] = {}
+      result[team]['attack_mvps'] = calculate_mvps_for(team) do |outcome|
+        if team == winner
+          outcome.captures
+        else
+          outcome.flag_carry_distance
+        end
+      end
+      result[team]['defend_mvps'] = calculate_mvps_for(team) do |outcome|
+        outcome.takedowns
+      end
+    end
+    result
+  end
+
+  private
+
+  def calculate_mvps_for team
+    mvps = []
+    best = -1
+
+    player_outcomes.select { |o| o.team == team }.each do |outcome|
+
+      value = yield outcome
+
+      if value > best
+        mvps = [outcome.player_id]
+        best = value
+      elsif value == best
+        mvps << outcome.player_id
+      end
+
+    end
+
+    mvps
+  end
+
+  def set_winner(params)
+    given_winner = params.delete(:winner)
+    if (player_outcomes.nil? or player_outcomes.empty?)
+      self.winner = given_winner
+    else
+      calculated_winner = calculate_winner
+      if given_winner && (given_winner != calculated_winner)
+        raise Game::WinnerMismatch.new(given_winner, calculated_winner)
+      end
+      self.winner = calculated_winner
     end
   end
 

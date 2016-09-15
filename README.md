@@ -10,8 +10,11 @@ Konker? I just met 'er!
 
 - [x] lock copies equipped gear
 - [x] gear buy & equip
+- [ ] default gear
+  - read from "Default" column of CSV
 
 - [x] season stats endpoint
+
 - [ ] player stats (all season(s?))
 - make "moves" more efficient
   - [ ] upload
@@ -21,13 +24,17 @@ Konker? I just met 'er!
 - [x] add player_id to PlayerOutcome in & out
 - [ ] paths: kill json, use csv and google doc
   - needs coordination with Unity code
-- [ ] calculate attack_mvp and defend_mvp
+- [x] calculate attack_mvp and defend_mvp
 
 - User Authentication:
     - [ ] API Auth
     - [ ] User Auth for web site
     - [ ] Admin Auth (Devise? we used `rails generate active_admin:install --skip-users`  )
 - [ ] de-auth (disconnect) a fitbit
+
+- Avatar Creation
+
+- Stores
 
 - [ ] better splash page
 - [ ] add 'last sync time' to player info / store
@@ -48,8 +55,9 @@ Konker? I just met 'er!
 - [x] state machine for game
 - [x] rename gold to coins 
 - [ ] create prod env
-- [x] merge Outcome, TeamOutcome, and PlayerOutcome
 - [ ] fixture factories
+- [x] merge Outcome, TeamOutcome, and PlayerOutcome
+- [ ] merge Piece into Player in API
 - [ ] foreign key indexes for all tables
 - [ ] New Relic
 - [ ] add `/api` prefix and `ApiController`
