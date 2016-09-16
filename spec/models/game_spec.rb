@@ -262,9 +262,15 @@ describe Game do
     end
 
     context 'on a locked (in_progress) game' do
-      before { current_game.lock_game! }
+
       let!(:bob) { Player.create! name: 'bob', team: 'blue' }
       let!(:rhoda) { Player.create! name: 'rhoda', team: 'red' }
+
+      before do
+        bob.set_piece(role: 'offense')
+        rhoda.set_piece(role: 'defense')
+        current_game.lock_game!
+      end
 
       let(:player_outcomes_hashes) { [
         {
@@ -325,11 +331,12 @@ describe Game do
 
       it 'sets MVP on outcomes' do
         current_game.finish_game! player_outcomes_attributes: player_outcomes_hashes
-        bob_outcome = current_game.player_outcomes.detect{|o| o.player_id == bob.id }
-        rhoda_outcome = current_game.player_outcomes.detect{|o| o.player_id == rhoda.id }
+        bob_outcome = current_game.player_outcomes.detect { |o| o.player_id == bob.id }
+        rhoda_outcome = current_game.player_outcomes.detect { |o| o.player_id == rhoda.id }
         expect(bob_outcome.attack_mvp).to eq(1)
-        expect(bob_outcome.defend_mvp).to eq(1)
-        expect(rhoda_outcome.attack_mvp).to eq(1)
+        pending "only role=offense can be attack_mvp"
+        expect(bob_outcome.defend_mvp).to eq(0)
+        expect(rhoda_outcome.attack_mvp).to eq(0)
         expect(rhoda_outcome.defend_mvp).to eq(1)
       end
     end

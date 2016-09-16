@@ -78,13 +78,13 @@ describe Season do
       players = [
         betty = Player.create!(name: 'betty', team: 'blue'),
         bob = Player.create!(name: 'bob', team: 'blue'),
-
         roger = Player.create!(name: 'roger', team: 'red'),
         rita = Player.create!(name: 'rita', team: 'red'),
       ]
-      players.each do |p|
-        p.set_piece
-      end
+      betty.set_piece(role: 'offense')
+      bob.set_piece(role: 'defense')
+      roger.set_piece(role: 'offense')
+      rita.set_piece(role: 'defense')
 
       games = []
 
@@ -103,7 +103,7 @@ describe Season do
           Outcome.new(({team: player.team,
                         player_id: player.id,
                         captures: player.name == 'betty' ? 1 : 0,
-          } + player_outcome_base).with_indifferent_access)
+                      } + player_outcome_base).with_indifferent_access)
         end
 
         game = Game.current
@@ -141,7 +141,10 @@ describe Season do
                                                  "throws" => 6,
                                                  "pickups" => 9,
                                                  "captures" => 3,
-                                                 "flag_carry_distance" => 12
+                                                 "flag_carry_distance" => 12,
+                                                 "attack_mvp" => 3,
+                                                 "defend_mvp" => 3,
+                                                 # "defend_mvp" => 0, # TODO
                                                })
       expect(json['player_outcomes'][1]).to eq({
                                                  "player_id" => bob.id,
@@ -149,7 +152,9 @@ describe Season do
                                                  "throws" => 6,
                                                  "pickups" => 9,
                                                  "captures" => 0,
-                                                 "flag_carry_distance" => 12
+                                                 "flag_carry_distance" => 12,
+                                                 "attack_mvp" => 0,
+                                                 "defend_mvp" => 3,
                                                })
 
 

@@ -12,8 +12,11 @@ Konker? I just met 'er!
 - [x] gear buy & equip
 - [ ] default gear
   - read from "Default" column of CSV
-
 - [x] season stats endpoint
+
+- [ ] merge vigorous and moderate
+- [ ] steps: look back more than 2 days if needed
+- [ ] MVP: only role=offense can be attack_mvp et al 
 
 - [ ] player stats (all season(s?))
 - make "moves" more efficient

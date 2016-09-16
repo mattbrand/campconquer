@@ -36,7 +36,7 @@ class TalliedOutcome
   attr_reader *STATS
 
   def initialize(games:)
-    @games = games
+    @games = games || []
     STATS.each do |stat|
       self.set_stat(stat, 0)
     end

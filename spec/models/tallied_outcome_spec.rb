@@ -61,6 +61,8 @@ RSpec.describe TalliedOutcome, type: :model do
                                           pickups: 33,
                                           captures: 1,
                                           flag_carry_distance: 44,
+                                          attack_mvp: 0,
+                                          defend_mvp: 0,
                                          }.with_indifferent_access)
 
     end

@@ -132,7 +132,10 @@ class Game < ActiveRecord::Base
     self.match_length = params.delete(:match_length)
 
     moves = params.delete(:moves)
-    self.update!(params)
+    defaults = {
+      match_length: 0,
+    }
+    self.update!(defaults + params)
 
     set_winner(params)
 
@@ -200,14 +203,14 @@ class Game < ActiveRecord::Base
     result = {}
     Team::NAMES.values.each do |team|
       result[team] = {}
-      result[team]['attack_mvps'] = calculate_mvps_for(team) do |outcome|
+      result[team]['attack_mvps'] = calculate_mvps_for(team, 'offense') do |outcome|
         if team == winner
           outcome.captures
         else
           outcome.flag_carry_distance
         end
       end
-      result[team]['defend_mvps'] = calculate_mvps_for(team) do |outcome|
+      result[team]['defend_mvps'] = calculate_mvps_for(team, 'defense') do |outcome|
         outcome.takedowns
       end
     end
@@ -216,11 +219,14 @@ class Game < ActiveRecord::Base
 
   private
 
-  def calculate_mvps_for team
+  def calculate_mvps_for team, role
     mvps = []
     best = -1
 
-    player_outcomes.select { |o| o.team == team }.each do |outcome|
+    relevant_outcomes = player_outcomes.select { |o| o.team == team
+    # and o.role == role # TODO
+    }
+    relevant_outcomes.each do |outcome|
 
       value = yield outcome
 
