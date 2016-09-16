@@ -36,7 +36,11 @@ class TalliedOutcome
   attr_reader *STATS
 
   def initialize(games:)
-    @games = games || []
+    @games = games
+    STATS.each do |stat|
+      self.set_stat(stat, 0)
+    end
+
     tally
   end
 
@@ -61,7 +65,11 @@ class TalliedOutcome
   def add_to_stat(stat, game_val)
     current_val = self.send(stat) || 0
     game_val ||= 0
-    instance_variable_set("@#{stat}", current_val + game_val)
+    set_stat(stat, current_val + game_val)
+  end
+
+  def set_stat(stat, value)
+    instance_variable_set("@#{stat}", value)
   end
 
 end

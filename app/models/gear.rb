@@ -6,9 +6,9 @@
 #  name         :string
 #  display_name :string
 #  description  :string
-#  health_bonus :integer
-#  speed_bonus  :integer
-#  range_bonus  :integer
+#  health_bonus :integer          default("0"), not null
+#  speed_bonus  :integer          default("0"), not null
+#  range_bonus  :integer          default("0"), not null
 #  gear_type    :string
 #  asset_name   :string
 #  icon_name    :string

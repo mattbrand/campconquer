@@ -19,6 +19,15 @@
 require 'rails_helper'
 
 RSpec.describe TalliedOutcome, type: :model do
+
+  context "even an empty tally" do
+    it "has zeroes not nulls" do
+      x = TalliedOutcome.new(games: [])
+      x.as_json.each_pair do |stat, value|
+        expect(value).to eq(0)
+      end
+    end
+  end
   context "given a game" do
     it "adds up stats" do
       player_outcomes = [

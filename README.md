@@ -57,6 +57,7 @@ Konker? I just met 'er!
 - [ ] create prod env
 - [ ] fixture factories
 - [x] merge Outcome, TeamOutcome, and PlayerOutcome
+- [ ] rename *_outcomes
 - [ ] merge Piece into Player in API
 - [ ] foreign key indexes for all tables
 - [ ] New Relic

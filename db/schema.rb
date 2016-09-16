@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160908142249) do
+ActiveRecord::Schema.define(version: 20160916141529) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -53,7 +53,7 @@ ActiveRecord::Schema.define(version: 20160908142249) do
     t.string   "state",        default: "preparing"
     t.text     "moves"
     t.string   "winner"
-    t.integer  "match_length"
+    t.integer  "match_length", default: 0,           null: false
   end
 
   add_index "games", ["current"], name: "index_games_on_current"
@@ -63,9 +63,9 @@ ActiveRecord::Schema.define(version: 20160908142249) do
     t.string  "name"
     t.string  "display_name"
     t.string  "description"
-    t.integer "health_bonus"
-    t.integer "speed_bonus"
-    t.integer "range_bonus"
+    t.integer "health_bonus", default: 0, null: false
+    t.integer "speed_bonus",  default: 0, null: false
+    t.integer "range_bonus",  default: 0, null: false
     t.string  "gear_type"
     t.string  "asset_name"
     t.string  "icon_name"

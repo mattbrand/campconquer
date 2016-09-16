@@ -11,7 +11,7 @@
 #  state        :string           default("preparing")
 #  moves        :text
 #  winner       :string
-#  match_length :integer
+#  match_length :integer          default("0"), not null
 #
 # Indexes
 #
