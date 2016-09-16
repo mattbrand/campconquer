@@ -144,10 +144,12 @@ class Player < ActiveRecord::Base
   def moderate_goal_met?
     moderate_minutes >= GOAL_MINUTES
   end
+  alias_method :moderate_goal_met, :moderate_goal_met?
 
   def moderate_minutes_claimed?
     activity_today.moderate_minutes_claimed?
   end
+  alias_method :moderate_minutes_claimed, :moderate_minutes_claimed?
 
   def claim_moderate_minutes!
     if moderate_goal_met?
@@ -168,10 +170,12 @@ class Player < ActiveRecord::Base
   def vigorous_goal_met?
     vigorous_minutes >= GOAL_MINUTES
   end
+  alias_method :vigorous_goal_met, :vigorous_goal_met?
 
   def vigorous_minutes_claimed?
     activity_today.vigorous_minutes_claimed?
   end
+  alias_method :vigorous_minutes_claimed, :vigorous_minutes_claimed?
 
   def claim_vigorous_minutes!
     if vigorous_goal_met?
