@@ -1,23 +1,37 @@
-ObjectId,Type,Item Name,Description,Asset Name,Icon Name,Gold,Gems,Level,Health Bonus,Speed Bonus,Range Bonus
-hat0,HEAD,Bandana,,,,0,0,0,0,0,0
-hat1,HEAD,Headscarf,,,,0,2,0,0,0,0
-hat2,HEAD,Baseball Cap,,,,200,2,0,0,0,1
-hat3,HEAD,Beanie,,,,200,2,0,1,0,0
-shirt0,SHIRT,T-Shirt 0,,,,0,0,0,0,0,0
-shirt1,SHIRT,T-Shirt 1,,,,300,2,0,0,0,0
-shirt2,SHIRT,T-Shirt 2,,,,300,2,0,0,0,0
-belt0,BELT,Belt 0,,,,0,0,0,0,0,0
-belt1,BELT,Belt 1,,,,200,2,0,1,0,0
-belt2,BELT,Belt 2,,,,200,2,0,0,1,0
-shoes0,SHOES,Sneakers 0,,,,0,0,0,0,0,0
-shoes1,SHOES,Sneakers 1,,,,300,2,0,0,1,0
-shoes2,SHOES,Sneakers 2,,,,300,2,0,0,1,0
-accessory0,ACCESSORY,Glasses,,,,50,0,0,0,0,0
-accessory1,ACCESSORY,Sunglasses,,,,150,1,0,0,0,0
-accessory2,ACCESSORY,Bracelet,,,,150,1,0,0,0,0
-accessory3,ACCESSORY,Scarf,,,,150,1,0,0,0,0
-accessory4,ACCESSORY,Watch,,,,150,1,0,0,0,0
-pet1,PET,Wolf,,,,500,6,0,1,1,0
-pet2,PET,Rabbit,,,,500,6,0,0,1,1
-pet3,PET,Bear,,,,500,6,0,1,0,1
-pet4,PET,Fox,,,,500,6,0,1,1,0
+ObjectId,Type,Body Type,Item Name,Description,Asset Name,Icon Name,Gold,Gems,Level,Health Bonus,Speed Bonus,Range Bonus,Hair,Default
+hat_03_gn1,HEAD,GN1,Bandana,,,,0,0,0,0,0,0,,1
+hair_headscarf,HEAD,GN1,Headscarf,,,,500,1,0,1,0,0,hair_short_01_gn1,
+hat_05_gn1,HEAD,GN1,Baseball Cap Color1,,,,500,1,0,0,0,1,hair_short_01_gn1,
+hat_05_gn1,HEAD,GN1,Baseball Cap Color2,,,,1500,3,0,0,0,2,hair_short_01_gn1,
+hat_04_gn1,HEAD,GN1,Beanie Color1,,,,2500,5,0,1,0,2,hair_short_01_gn1,
+hat_04_gn1,HEAD,GN1,Beanie Color2,,,,2500,7,0,1,0,3,hair_short_01_gn1,
+hat_06_gn1,HEAD,GN1,Headband Color1,,,,6000,10,0,1,0,4,,
+hat_02_gn1,HEAD,GN1,Sun Hat,,,,7000,14,0,2,0,5,hair_short_01_gn1,
+hat_01_gn1,HEAD,GN1,Flat Brim Hat,,,,8000,18,0,2,0,6,hair_short_01_gn1,
+hat_03_gn1,HEAD,GN1,Patterned Bandana,,,,12500,30,0,3,0,7,,
+shirt0,SHIRT,,Basic T-Shirt,,,,0,0,0,1,0,0,,1
+shirt1,SHIRT,,VT Tee,,,,1000,1,0,2,0,0,,
+shirt2,SHIRT,,Geometric Tee,,,,2000,3,0,2,0,0,,
+shirt3,SHIRT,,Floral T-Shirt,,,,2500,5,0,3,0,0,,
+shirt4,SHIRT,,Dino T-Shirt,,,,4000,11,0,4,0,0,,
+shirt5,SHIRT,,Gamepad T-shirt,,,,5000,14,0,4,1,0,,
+shirt6,SHIRT,,Sporty T-Shirt,,,,7500,18,0,5,1,0,,
+shirt7,SHIRT,,Pixel T-shirt,,,,10000,24,0,6,1,0,,
+shirt8,SHIRT,,Nature T-shirt,,,,15000,30,0,8,0,0,,
+shirt9,SHIRT,,Seahorse T-Shirt,,,,20000,40,0,8,2,0,,
+shoes0,SHOES,,Basic Sneakers,,,,0,0,0,0,0,0,,1
+shoes1,SHOES,,VT Sneakers,,,,750,2,0,0,1,0,,
+shoes2,SHOES,,Geometric Sneakers,,,,2000,5,0,0,1,1,,
+shoes3,SHOES,,Floral Sneakers,,,,3500,8,0,0,2,1,,
+shoes4,SHOES,,Dino Sneakers,,,,5500,12,0,0,4,0,,
+shoes5,SHOES,,Gamepad Sneakers,,,,6000,14,0,0,4,1,,
+shoes6,SHOES,,Sporty Sneakers,,,,7000,16,0,0,5,2,,
+shoes7,SHOES,,Pixel Sneakers,,,,9000,24,0,2,5,0,,
+shoes8,SHOES,,Nature Sneakers,,,,12500,28,0,2,6,2,,
+shoes9,SHOES,,Seahorse Sneakers,,,,15000,35,0,2,8,2,,
+accessory0,ACCESSORY,,Glasses,,,,50,0,0,0,0,0,,
+accessory1,ACCESSORY,,Sunglasses,,,,150,1,0,0,0,0,,
+accessory2,ACCESSORY,,Bracelet,,,,150,1,0,0,0,0,,
+accessory3,ACCESSORY,,Scarf,,,,150,1,0,0,0,0,,
+accessory4,ACCESSORY,,Watch,,,,150,1,0,0,0,0,,
+accessory5,ACCESSORY,,Belt,,,,150,1,0,0,0,0,,
