@@ -14,7 +14,7 @@ Konker? I just met 'er!
   - read from "Default" column of CSV
 - [x] season stats endpoint
 
-- [ ] merge vigorous and moderate
+- [x] merge vigorous and moderate
 - [ ] steps: look back more than 2 days if needed
 - [ ] MVP: only role=offense can be attack_mvp et al 
 
@@ -47,7 +47,7 @@ Konker? I just met 'er!
   - can see steps etc but no redemption 
 - [ ] player HTML page -- when logged in, shows activities etc 
 
-- [ ] only one goal: 60 min of combined moderate&vigorous
+- [x] only one goal: 60 min of combined moderate&vigorous
 - [ ] validate max. one capture per game
 - [ ] check steps in the background at least 1x/day, not just when players connect
 - [ ] unequip (or we may not need unequip if i add the rule “only one of each item type can be equipped” )

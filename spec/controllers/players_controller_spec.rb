@@ -167,36 +167,19 @@ describe PlayersController, type: :controller do
     end
   end
 
-  describe 'POST claim_moderate' do
+  describe 'POST claim_active_minutes' do
     let!(:player) { Player.create! valid_attributes }
 
-    it 'claims available moderate minutes' do
-      player.activities.create!(date: Date.today, moderate_minutes: 100)
+    it 'claims available active minutes' do
+      player.activities.create!(date: Date.current, active_minutes: Player::GOAL_MINUTES + 10)
       expect(player.gems).to eq(0)
 
-      post :claim_moderate, {:id => player.to_param}
+      post :claim_active_minutes, {:id => player.to_param}
 
       expect(response_json['status']).to eq('ok')
 
       player.reload
-      expect(player.moderate_minutes_claimed?).to eq(true)
-      expect(player.gems).to eq(1)
-    end
-  end
-
-  describe 'POST claim_vigorous' do
-    let!(:player) { Player.create! valid_attributes }
-
-    it 'claims available vigorous minutes' do
-      player.activities.create!(date: Date.today, vigorous_minutes: 100)
-      expect(player.gems).to eq(0)
-
-      post :claim_vigorous, {:id => player.to_param}
-
-      expect(response_json['status']).to eq('ok')
-
-      player.reload
-      expect(player.vigorous_minutes_claimed?).to eq(true)
+      expect(player.active_minutes_claimed?).to eq(true)
       expect(player.gems).to eq(1)
     end
   end

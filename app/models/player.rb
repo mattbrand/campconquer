@@ -17,11 +17,11 @@ class Player < ActiveRecord::Base
   CANT_CHANGE_PIECE_WHEN_GAME_LOCKED = "you can't edit your piece if the current game is locked"
   STEPS_PER_COIN = 10
   MAXIMUM_CLAIMABLE_STEPS = 10000
-  GOAL_MINUTES = 30
+  GOAL_MINUTES = 60
 
   class GoalNotMet < RuntimeError
-    def initialize(goal_type)
-      super("goal #{goal_type} not met")
+    def initialize(active_minutes)
+      super("goal not met: #{active_minutes} of #{GOAL_MINUTES} achieved")
     end
   end
 
@@ -90,12 +90,9 @@ class Player < ActiveRecord::Base
         except: [:fitbit_token_hash, :anti_forgery_token],
         methods: [
           :steps_available,
-          :moderate_minutes,
-          :moderate_goal_met,
-          :moderate_minutes_claimed,
-          :vigorous_minutes,
-          :vigorous_goal_met,
-          :vigorous_minutes_claimed,
+          :active_minutes,
+          :active_goal_met,
+          :active_minutes_claimed,
           :player_outcomes,
           :gear_owned,
           :gear_equipped,
@@ -135,57 +132,29 @@ class Player < ActiveRecord::Base
     activities.sum('steps - steps_claimed')
   end
 
-  # todo: DRY moderate and vigorous minutes methods?
-
-  def moderate_minutes
-    activity_today.moderate_minutes
+  def active_minutes
+    activity_today.active_minutes
   end
 
-  def moderate_goal_met?
-    moderate_minutes >= GOAL_MINUTES
+  def active_goal_met?
+    active_minutes >= GOAL_MINUTES
   end
-  alias_method :moderate_goal_met, :moderate_goal_met?
+  alias_method :active_goal_met, :active_goal_met?
 
-  def moderate_minutes_claimed?
-    activity_today.moderate_minutes_claimed?
+  def active_minutes_claimed?
+    activity_today.active_minutes_claimed?
   end
-  alias_method :moderate_minutes_claimed, :moderate_minutes_claimed?
+  alias_method :active_minutes_claimed, :active_minutes_claimed?
 
-  def claim_moderate_minutes!
-    if moderate_goal_met?
-      unless activity_today.moderate_minutes_claimed?
-        activity_today.update(moderate_minutes_claimed: true)
+  def claim_active_minutes!
+    if active_goal_met?
+      unless activity_today.active_minutes_claimed?
+        activity_today.update!(active_minutes_claimed: true)
         self.gems += 1
         save!
       end
     else
-      raise GoalNotMet, 'moderate'
-    end
-  end
-
-  def vigorous_minutes
-    activity_today.vigorous_minutes
-  end
-
-  def vigorous_goal_met?
-    vigorous_minutes >= GOAL_MINUTES
-  end
-  alias_method :vigorous_goal_met, :vigorous_goal_met?
-
-  def vigorous_minutes_claimed?
-    activity_today.vigorous_minutes_claimed?
-  end
-  alias_method :vigorous_minutes_claimed, :vigorous_minutes_claimed?
-
-  def claim_vigorous_minutes!
-    if vigorous_goal_met?
-      unless activity_today.vigorous_minutes_claimed?
-        activity_today.update(vigorous_minutes_claimed: true)
-        self.gems += 1
-        save!
-      end
-    else
-      raise GoalNotMet, 'vigorous'
+      raise GoalNotMet, active_minutes
     end
   end
 
@@ -271,9 +240,13 @@ class Player < ActiveRecord::Base
     summary = fitbit.get_activities(date.strftime('%F'))["summary"]
     activity_for(date).update!(
       steps: summary["steps"].to_i,
-      vigorous_minutes: summary["veryActiveMinutes"].to_i,
-      moderate_minutes: summary["fairlyActiveMinutes"].to_i,
+      active_minutes: summary["veryActiveMinutes"].to_i + summary["fairlyActiveMinutes"].to_i,
     )
+  end
+
+  def reload
+    @activity_today = nil
+    super
   end
 
   def activity_today

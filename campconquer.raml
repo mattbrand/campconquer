@@ -24,15 +24,12 @@ types:
       steps_available:
         type: integer
         description: number of steps currently available to be claimed for coins
-      moderate_exercise:
+      active_minutes:
         type: integer
-        description: number of minutes of moderate exercise today
-      vigorous_exercise:
-        type: integer
-        description: number of minutes of vigorous exercise today
+        description: number of minutes of exercise today
       gems_available:
         type: integer
-        description: number of gems available to be claimed [do they automatically claim? do we split them into moderate gem and vigorous gem?]
+        description: number of gems available to be claimed
       gear_owned:
         type: string[]  # should we include a full Gear object instead of just a name?
         description: gear short name
@@ -396,16 +393,9 @@ types:
           200:
             description: status and player JSON
 
-    /claim_moderate:
+    /claim_active_minutes:
       post:
-        description: attempt to claim your gem for moderate activity
-        responses:
-          200:
-            description: status and player JSON
-
-    /claim_vigorous:
-      post:
-        description: attempt to claim your gem for vigorous activity
+        description: attempt to claim your gem for activity
         responses:
           200:
             description: status and player JSON

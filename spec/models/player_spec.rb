@@ -281,12 +281,12 @@ describe Player, type: :model do
 
     describe 'pull_activity!' do
 
-      def summary(steps: 12612, moderate: 20, vigorous: 10)
+      def summary(steps: 12612, fairly_active: 20, very_active: 10)
         {
           "summary" => {
             "steps" => steps,
-            "fairlyActiveMinutes" => moderate,
-            "veryActiveMinutes" => vigorous,
+            "fairlyActiveMinutes" => fairly_active,
+            "veryActiveMinutes" => very_active,
           }
         }
       end
@@ -316,87 +316,48 @@ describe Player, type: :model do
       it 'pulls minutes from the fitbit' do
         expect(fake_fitbit).to receive(:get_activities).with(today).and_return(summary)
         player.pull_activity!
-        expect(player.moderate_minutes).to eq(20)
-        expect(player.vigorous_minutes).to eq(10)
+        expect(player.active_minutes).to eq(30)
       end
 
     end
   end
 
-  describe 'gem goals' do
+  describe 'active minute goals' do
     let(:player) { Player.create!(name: "Joe", team: 'blue') }
 
-    context 'moderate' do
       context "when today's goal has not been reached" do
-        before { player.activities.create!(date: Date.current, moderate_minutes: 10) }
+        before { player.activities.create!(date: Date.current, active_minutes: 20) }
 
         it "is not met" do
-          expect(player.moderate_goal_met?).to be_falsey
+          expect(player.active_goal_met?).to be_falsey
         end
 
         it "is not claimable" do
-          expect { player.claim_moderate_minutes! }.to raise_error(Player::GoalNotMet)
+          expect { player.claim_active_minutes! }.to raise_error(Player::GoalNotMet)
           expect(player.gems).to eq(0)
-          expect(player.activity_today.moderate_minutes_claimed).to be_falsey
-        end
-      end
-
-      context "when today's goal has been reached" do
-        before { player.activities.create!(date: Date.current, moderate_minutes: Player::GOAL_MINUTES + 10) }
-
-        it "is met" do
-          expect(player.moderate_goal_met?).to be_truthy
-        end
-
-        it "is claimable" do
-          player.claim_moderate_minutes!
-          expect(player.gems).to eq(1)
-          expect(player.activity_today.moderate_minutes_claimed).to be_truthy
-        end
-
-        it "is only claimable once (idempotency)" do
-          player.claim_moderate_minutes!
-          player.claim_moderate_minutes!
-          expect(player.gems).to eq(1)
-        end
-      end
-    end
-
-    context 'vigorous' do
-      context "when today's goal has not been reached" do
-        before { player.activities.create!(date: Date.current, vigorous_minutes: 20) }
-
-        it "is not met" do
-          expect(player.vigorous_goal_met?).to be_falsey
-        end
-
-        it "is not claimable" do
-          expect { player.claim_vigorous_minutes! }.to raise_error(Player::GoalNotMet)
-          expect(player.gems).to eq(0)
-          expect(player.activity_today.vigorous_minutes_claimed).to be_falsey
+          expect(player.activity_today.active_minutes_claimed).to be_falsey
         end
       end
 
       context "when today's goal has been reached" do
         before { player.activities.create!(date: Date.current,
-                                           vigorous_minutes: Player::GOAL_MINUTES + 20) }
+                                           active_minutes: Player::GOAL_MINUTES + 20) }
 
         it "is met" do
-          expect(player.vigorous_goal_met?).to be_truthy
+          expect(player.active_goal_met?).to be_truthy
         end
 
         it "is claimable" do
-          player.claim_vigorous_minutes!
+          player.claim_active_minutes!
           expect(player.gems).to eq(1)
-          expect(player.activity_today.vigorous_minutes_claimed).to be_truthy
+          expect(player.activity_today.active_minutes_claimed).to be_truthy
         end
 
         it "is only claimable once (idempotency)" do
-          player.claim_vigorous_minutes!
-          player.claim_vigorous_minutes!
+          player.claim_active_minutes!
+          player.claim_active_minutes!
           expect(player.gems).to eq(1)
         end
-      end
     end
   end
 

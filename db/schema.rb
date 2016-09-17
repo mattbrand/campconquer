@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160916141529) do
+ActiveRecord::Schema.define(version: 20160917024621) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -33,12 +33,10 @@ ActiveRecord::Schema.define(version: 20160916141529) do
     t.date     "date"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "steps",                    default: 0,     null: false
-    t.integer  "steps_claimed",            default: 0,     null: false
-    t.integer  "vigorous_minutes",         default: 0,     null: false
-    t.integer  "moderate_minutes",         default: 0,     null: false
-    t.boolean  "moderate_minutes_claimed", default: false, null: false
-    t.boolean  "vigorous_minutes_claimed", default: false, null: false
+    t.integer  "steps",                  default: 0,     null: false
+    t.integer  "steps_claimed",          default: 0,     null: false
+    t.integer  "active_minutes",         default: 0,     null: false
+    t.boolean  "active_minutes_claimed", default: false, null: false
   end
 
   add_index "activities", ["date"], name: "index_activities_on_date"
@@ -117,24 +115,6 @@ ActiveRecord::Schema.define(version: 20160916141529) do
     t.string   "skin_color"
     t.string   "hair_color"
   end
-
-  create_table "player_outcomes", force: :cascade do |t|
-    t.string   "team"
-    t.integer  "takedowns"
-    t.integer  "throws"
-    t.integer  "pickups"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
-    t.integer  "outcome_id"
-    t.integer  "player_id"
-    t.integer  "flag_carry_distance", null: false
-    t.integer  "captures",            null: false
-    t.integer  "attack_mvp",          null: false
-    t.integer  "defend_mvp",          null: false
-  end
-
-  add_index "player_outcomes", ["outcome_id"], name: "index_player_outcomes_on_outcome_id"
-  add_index "player_outcomes", ["player_id"], name: "index_player_outcomes_on_player_id"
 
   create_table "players", force: :cascade do |t|
     t.string   "name"

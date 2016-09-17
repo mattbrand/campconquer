@@ -3,8 +3,7 @@ class PlayersController < ApplicationController
                                      :update,
                                      :auth,
                                      :claim_steps,
-                                     :claim_moderate,
-                                     :claim_vigorous,
+                                     :claim_active_minutes,
                                      :profile,
                                      :steps,
                                      :activities,
@@ -63,13 +62,8 @@ class PlayersController < ApplicationController
     render_player
   end
 
-  def claim_moderate
-    @player.claim_moderate_minutes!
-    render_player
-  end
-
-  def claim_vigorous
-    @player.claim_vigorous_minutes!
+  def claim_active_minutes
+    @player.claim_active_minutes!
     render_player
   end
 

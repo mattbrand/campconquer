@@ -2,17 +2,15 @@
 #
 # Table name: activities
 #
-#  id                       :integer          not null, primary key
-#  player_id                :integer
-#  date                     :date
-#  created_at               :datetime
-#  updated_at               :datetime
-#  steps                    :integer          default("0"), not null
-#  steps_claimed            :integer          default("0"), not null
-#  vigorous_minutes         :integer          default("0"), not null
-#  moderate_minutes         :integer          default("0"), not null
-#  moderate_minutes_claimed :boolean          default("f"), not null
-#  vigorous_minutes_claimed :boolean          default("f"), not null
+#  id                     :integer          not null, primary key
+#  player_id              :integer
+#  date                   :date
+#  created_at             :datetime
+#  updated_at             :datetime
+#  steps                  :integer          default("0"), not null
+#  steps_claimed          :integer          default("0"), not null
+#  active_minutes         :integer          default("0"), not null
+#  active_minutes_claimed :boolean          default("f"), not null
 #
 # Indexes
 #
