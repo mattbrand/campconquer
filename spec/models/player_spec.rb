@@ -38,6 +38,12 @@ describe Player, type: :model do
       expect(player.piece).not_to be_nil
     end
 
+    it 'has a default role' do
+      player.set_piece()
+      player.reload
+      expect(player.piece.role).to eq('defense')
+    end
+
     it 'only has one piece' do
       expect do
         player.set_piece(body_type: 'female')

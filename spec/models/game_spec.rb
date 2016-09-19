@@ -335,7 +335,6 @@ describe Game do
         bob_outcome = current_game.player_outcomes.detect { |o| o.player_id == bob.id }
         rhoda_outcome = current_game.player_outcomes.detect { |o| o.player_id == rhoda.id }
         expect(bob_outcome.attack_mvp).to eq(1)
-        pending "only role=offense can be attack_mvp"
         expect(bob_outcome.defend_mvp).to eq(0)
         expect(rhoda_outcome.attack_mvp).to eq(0)
         expect(rhoda_outcome.defend_mvp).to eq(1)
@@ -350,6 +349,13 @@ describe Game do
     let!(:roger) { Player.create! team: 'red', name: 'roger' }
     let!(:rebecca) { Player.create! team: 'red', name: 'rebecca' }
 
+    before do
+      betty.set_piece(role: 'offense')
+      bob.set_piece(role: 'defense')
+      roger.set_piece(role: 'offense')
+      rebecca.set_piece(role: 'defense')
+    end
+
     let(:outcomes) {
       [
         # blue team won
@@ -360,7 +366,17 @@ describe Game do
       ]
     }
 
-    let(:game) { Game.new(player_outcomes: outcomes) }
+    let(:pieces) {
+      [betty.piece, bob.piece, roger.piece, rebecca.piece]
+    }
+
+    let(:game) {
+      Game.new(
+        pieces: pieces,
+        player_outcomes: outcomes
+      )
+    }
+
     let(:mvps) { game.calculate_mvps }
 
     it 'calculates winning team' do
@@ -388,7 +404,9 @@ describe Game do
 
     it 'might have several mvps' do
       billie = Player.create! team: 'blue', name: 'billie'
-      outcomes << Outcome.new(team: 'blue', player_id: billie.id, captures: 0, takedowns: 2, flag_carry_distance: 20)
+      billie.set_piece role: 'defense'
+      game.pieces << billie.piece
+      game.player_outcomes << Outcome.new(team: 'blue', player_id: billie.id, captures: 0, takedowns: 2, flag_carry_distance: 20)
       expect(mvps['blue']['defend_mvps']).to eq([bob.id, billie.id])
     end
 

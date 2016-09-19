@@ -143,8 +143,7 @@ describe Season do
                                                  "captures" => 3,
                                                  "flag_carry_distance" => 12,
                                                  "attack_mvp" => 3,
-                                                 "defend_mvp" => 3,
-                                                 # "defend_mvp" => 0, # TODO
+                                                 "defend_mvp" => 0
                                                })
       expect(json['player_outcomes'][1]).to eq({
                                                  "player_id" => bob.id,

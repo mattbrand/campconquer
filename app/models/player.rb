@@ -73,7 +73,8 @@ class Player < ActiveRecord::Base
     if self.piece
       self.piece.update!(params)
     else
-      self.piece = Piece.create!({player_id: self.id, team: self.team} + params)
+      piece_defaults = {role: 'defense'}
+      self.piece = Piece.create!({player_id: self.id, team: self.team} + piece_defaults + params)
     end
     self.piece
   end
@@ -263,6 +264,10 @@ class Player < ActiveRecord::Base
 
   def activity_for(date)
     self.activities.find_or_create_by!(date: date)
+  end
+
+  def role
+    self.piece.role
   end
 
   protected

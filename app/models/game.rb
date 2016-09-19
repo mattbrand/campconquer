@@ -128,7 +128,6 @@ class Game < ActiveRecord::Base
 
     params = params.with_indifferent_access
 
-
     self.match_length = params.delete(:match_length)
 
     moves = params.delete(:moves)
@@ -223,9 +222,12 @@ class Game < ActiveRecord::Base
     mvps = []
     best = -1
 
-    relevant_outcomes = player_outcomes.select { |o| o.team == team
-    # and o.role == role # TODO
-    }
+    relevant_outcomes = player_outcomes.select do |o|
+      o.team == team and begin
+                           piece = pieces.detect{|p| p.player_id == o.player_id}
+                           piece.role == role
+      end
+    end
     relevant_outcomes.each do |outcome|
 
       value = yield outcome
