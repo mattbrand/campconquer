@@ -82,6 +82,14 @@ class Player < ActiveRecord::Base
   #   raise NoPiece if self.piece.nil?
   # end
 
+  after_create do
+    set_piece
+    Gear.where(default: true).each do |gear|
+      buy_gear! gear.name
+      equip_gear! gear.name
+    end
+  end
+
   include ActiveModel::Serialization
 
   def as_json(options=nil)

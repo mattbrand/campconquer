@@ -12,25 +12,6 @@ Gear.destroy_all
 # save as db/gear.csv
 
 f = File.expand_path("gear.csv", File.dirname(__FILE__))
-gears = CSV.read(f, headers: :first_row)
 
-gears.each do |row|
-  Gear.create!([
-                 {
-                   name: row["ObjectId"],
-                   gear_type: row["Type"].downcase,
-                   display_name: row["Item Name"],
-                   description: row["Description"],
-                   health_bonus: row["Health Bonus"],
-                   speed_bonus: row["Speed Bonus"],
-                   range_bonus: row["Range Bonus"],
-                   coins: row['Gold'],
-                   gems: row['Gems'],
-                   level: row['Level'],
-                   asset_name: row['Asset Name'],
-                   icon_name: row['Icon Name']
-                 },
-               ])
-
-end
+Gear.read_csv f
 

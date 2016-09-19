@@ -37,12 +37,6 @@ describe PiecesController, type: :controller do
   describe "POST #create" do
 
     context "with valid params" do
-      it "creates a new Piece" do
-        expect {
-          post :create, {player_id: @player.id, piece: valid_attributes}, valid_session
-        }.to change(Piece, :count).by(1)
-      end
-
       it "assigns a newly created piece as @piece" do
         post :create, {player_id: @player.id, piece: valid_attributes}, valid_session
         expect(assigns(:piece)).to be_a(Piece)
@@ -60,7 +54,6 @@ describe PiecesController, type: :controller do
       end
 
       it "sets the newly created piece on the player" do
-        expect(@player.piece).to be_nil
         post :create, {player_id: @player.id, piece: valid_attributes}, valid_session
         @player.reload
         expect(@player.piece).not_to be_nil
@@ -73,14 +66,9 @@ describe PiecesController, type: :controller do
       end
 
       it "updates an existing piece on the player" do
-        existing_piece = Piece.create!({player_id: @player.id, team: @player.team, body_type: 'female', role: 'offense'})
-
+        @player.set_piece(body_type: 'female', role: 'offense')
         post :create, {player_id: @player.id, piece: {body_type: 'gender_neutral_1'}}, valid_session
-
         @player.reload
-        expect(@player.piece).not_to be_nil
-        expect(@player.piece).to eq(existing_piece)
-
         expect(@player.piece.body_type).to eq('gender_neutral_1')
       end
 

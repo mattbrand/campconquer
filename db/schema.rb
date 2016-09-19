@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160917024621) do
+ActiveRecord::Schema.define(version: 20160919171132) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -61,15 +61,16 @@ ActiveRecord::Schema.define(version: 20160917024621) do
     t.string  "name"
     t.string  "display_name"
     t.string  "description"
-    t.integer "health_bonus", default: 0, null: false
-    t.integer "speed_bonus",  default: 0, null: false
-    t.integer "range_bonus",  default: 0, null: false
+    t.integer "health_bonus", default: 0,     null: false
+    t.integer "speed_bonus",  default: 0,     null: false
+    t.integer "range_bonus",  default: 0,     null: false
     t.string  "gear_type"
     t.string  "asset_name"
     t.string  "icon_name"
-    t.integer "coins",        default: 0, null: false
-    t.integer "gems",         default: 0, null: false
-    t.integer "level",        default: 0, null: false
+    t.integer "coins",        default: 0,     null: false
+    t.integer "gems",         default: 0,     null: false
+    t.integer "level",        default: 0,     null: false
+    t.boolean "default",      default: false, null: false
   end
 
   create_table "items", force: :cascade do |t|

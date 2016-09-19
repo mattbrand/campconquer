@@ -325,39 +325,55 @@ describe Player, type: :model do
   describe 'active minute goals' do
     let(:player) { Player.create!(name: "Joe", team: 'blue') }
 
-      context "when today's goal has not been reached" do
-        before { player.activities.create!(date: Date.current, active_minutes: 20) }
+    context "when today's goal has not been reached" do
+      before { player.activities.create!(date: Date.current, active_minutes: 20) }
 
-        it "is not met" do
-          expect(player.active_goal_met?).to be_falsey
-        end
-
-        it "is not claimable" do
-          expect { player.claim_active_minutes! }.to raise_error(Player::GoalNotMet)
-          expect(player.gems).to eq(0)
-          expect(player.activity_today.active_minutes_claimed).to be_falsey
-        end
+      it "is not met" do
+        expect(player.active_goal_met?).to be_falsey
       end
 
-      context "when today's goal has been reached" do
-        before { player.activities.create!(date: Date.current,
-                                           active_minutes: Player::GOAL_MINUTES + 20) }
+      it "is not claimable" do
+        expect { player.claim_active_minutes! }.to raise_error(Player::GoalNotMet)
+        expect(player.gems).to eq(0)
+        expect(player.activity_today.active_minutes_claimed).to be_falsey
+      end
+    end
 
-        it "is met" do
-          expect(player.active_goal_met?).to be_truthy
-        end
+    context "when today's goal has been reached" do
+      before { player.activities.create!(date: Date.current,
+                                         active_minutes: Player::GOAL_MINUTES + 20) }
 
-        it "is claimable" do
-          player.claim_active_minutes!
-          expect(player.gems).to eq(1)
-          expect(player.activity_today.active_minutes_claimed).to be_truthy
-        end
+      it "is met" do
+        expect(player.active_goal_met?).to be_truthy
+      end
 
-        it "is only claimable once (idempotency)" do
-          player.claim_active_minutes!
-          player.claim_active_minutes!
-          expect(player.gems).to eq(1)
-        end
+      it "is claimable" do
+        player.claim_active_minutes!
+        expect(player.gems).to eq(1)
+        expect(player.activity_today.active_minutes_claimed).to be_truthy
+      end
+
+      it "is only claimable once (idempotency)" do
+        player.claim_active_minutes!
+        player.claim_active_minutes!
+        expect(player.gems).to eq(1)
+      end
+    end
+  end
+
+  describe 'default gear' do
+    let!(:galoshes) { Gear.create!(name: 'galoshes', gear_type: 'shoes', coins: 10) }
+    let!(:tee_shirt) { Gear.create!(name: 'tee-shirt', gear_type: 'shirt', coins: 0) }
+
+    before do
+      tee_shirt.update!(default: true)
+      @player = Player.create!(name: "alice", team: 'blue', coins: 15)
+    end
+    it 'is owned by a new player' do
+      expect(@player.gear_owned).to eq(['tee-shirt'])
+    end
+    it 'is equipped' do
+      expect(@player.gear_equipped).to eq(['tee-shirt'])
     end
   end
 

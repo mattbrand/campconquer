@@ -194,6 +194,7 @@ describe Game do
         it 'ignores it' do
           alice = create_alice_with_piece
           bob = Player.create!(name: 'bob', team: 'blue')
+          bob.piece.destroy! # this is a little weird now that pieces are always created
           current_game.lock_game! # assert no raise
           expect(current_game).to be_locked
           expect(current_game.pieces.size).to eq(1)

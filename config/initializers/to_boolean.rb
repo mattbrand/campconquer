@@ -23,3 +23,10 @@ class FalseClass
     false
   end
 end
+
+class Numeric
+  def to_boolean
+    self == 1
+  end
+end
+
