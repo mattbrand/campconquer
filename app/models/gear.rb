@@ -29,6 +29,8 @@ class Gear < ActiveRecord::Base
     message: GEAR_TYPES.validation_message
   }, allow_nil: true
 
+  validates_uniqueness_of :name
+
   def as_json(options=nil)
     if options.nil?
       options = {

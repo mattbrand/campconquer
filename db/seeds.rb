@@ -13,5 +13,11 @@ Gear.destroy_all
 
 f = File.expand_path("gear.csv", File.dirname(__FILE__))
 
-Gear.read_csv f
+begin
+  Gear.read_csv f
+rescue ActiveRecord::RecordInvalid => invalid
+  puts "Error loading gear.csv: #{invalid.message}"
+  ap invalid.record.attributes
+  exit 1
+end
 
