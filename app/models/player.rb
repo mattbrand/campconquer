@@ -73,7 +73,7 @@ class Player < ActiveRecord::Base
     if self.piece
       self.piece.update!(params)
     else
-      piece_defaults = {role: 'defense'}
+      piece_defaults = {role: 'defense', health: 0, speed: 0, range: 0}
       self.piece = Piece.create!({player_id: self.id, team: self.team} + piece_defaults + params)
     end
     self.piece
