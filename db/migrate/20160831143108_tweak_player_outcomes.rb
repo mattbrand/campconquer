@@ -9,8 +9,5 @@ class TweakPlayerOutcomes < ActiveRecord::Migration
       change_column_default :player_outcomes, field, from: nil, to: 0
     end
 
-    add_foreign_key :player_outcomes, :outcome_id
-    add_foreign_key :player_outcomes, :player_id
-
   end
 end
