@@ -10,15 +10,16 @@ Konker? I just met 'er!
 
 - [x] lock copies equipped gear
 - [x] gear buy & equip
-- [ ] default gear
+- [x] default gear
   - read from "Default" column of CSV
 - [x] season stats endpoint
 
 - [x] merge vigorous and moderate
 - [ ] steps: look back more than 2 days if needed
-- [ ] MVP: only role=offense can be attack_mvp et al 
+- [x] MVP: only role=offense can be attack_mvp et al 
 
-- [ ] player stats (all season(s?))
+- [ ] player stats (all season(s?)) in GET player endpoint?
+
 - make "moves" more efficient
   - [ ] upload
   - [x] download
@@ -56,7 +57,8 @@ Konker? I just met 'er!
 ## chores
 
 - [x] state machine for game
-- [x] rename gold to coins 
+- [x] rename gold to coins
+- [x] seed game
 - [ ] create prod env
 - [ ] fixture factories
 - [x] merge Outcome, TeamOutcome, and PlayerOutcome

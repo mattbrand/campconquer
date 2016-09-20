@@ -114,6 +114,10 @@ class Game < ActiveRecord::Base
     pieces.destroy_all
   end
 
+  def pieces_on_team(team)
+    pieces.where(team: team)
+  end
+
   # params:
   # :winner,
   # :match_length,
@@ -127,8 +131,6 @@ class Game < ActiveRecord::Base
     raise "can only finish in_progress games but this game is '#{state}'" if state != 'in_progress'
 
     params = params.with_indifferent_access
-
-    self.match_length = params.delete(:match_length)
 
     moves = params.delete(:moves)
     defaults = {
@@ -153,9 +155,7 @@ class Game < ActiveRecord::Base
     self.moves = moves if moves
     save!
 
-    # old_outcome.destroy! if old_outcome
-
-    finish_game
+    finish_game # call the state machine
   end
 
   def copy_player_pieces

@@ -1,5 +1,6 @@
 namespace :db do
   task :seed_players => :environment do
+    Season.current.games.destroy_all
     Player.destroy_all
     Board.new.seed_teams
   end
@@ -55,14 +56,14 @@ class Board
       @role = Piece::ROLES.values.sample
 
       body_type = Piece::BODY_TYPES.values.sample
-      piece = Piece.create!(player_id: player.id,
-                    team: @team_name,
+      piece = player.set_piece(
                     role: @role,
                     path: path,
                     speed: 1 + rand(10),
                     health: 1 + rand(10),
                     range: 1 + rand(5),
-                    body_type: body_type
+                    body_type: body_type,
+                    # todo: :face, :hair, :skin_color, :hair_color
       )
 
       puts ["created player ##{player.id}", player.name.ljust(20), @team_name, piece.role, piece.body_type].join("\t")
