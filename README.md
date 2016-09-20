@@ -4,73 +4,37 @@ Konker? I just met 'er!
 
 # TODO
 
-> a partial list
 
-## features
+Features: http://sprint.ly/product/41137/dashboard/?statuses=backlog,current,complete&order=priority
 
-- [x] lock copies equipped gear
-- [x] gear buy & equip
-- [x] default gear
-  - read from "Default" column of CSV
-- [x] season stats endpoint
+- [ ] check steps in the background at least 1x/day, not just when players connect
+  - http://sprint.ly/product/41137/item/333
 
-- [x] merge vigorous and moderate
-- [x] steps: look back more than 2 days if needed
-- [x] MVP: only role=offense can be attack_mvp et al 
+- [ ] 'control group' players (no team)
+  - can see steps etc but no redemption 
 
-
-- make "moves" more efficient
-  - [ ] upload
-  - [x] download
-  - [ ] storage 
-- [x] create a separate endpoint for game so that moves don't always get sent
-- [x] add player_id to PlayerOutcome in & out
-- [ ] paths: kill json, use csv and google doc
-  - needs coordination with Unity code
-- [x] calculate attack_mvp and defend_mvp
-
-- User Authentication:
-    - [ ] API Auth
-    - [ ] User Auth for web site
-    - [ ] Admin Auth (Devise? we used `rails generate active_admin:install --skip-users`  )
-- [ ] de-auth (disconnect) a fitbit
-
-- Avatar Creation
-
-- Stores
+- [ ] player HTML page -- when logged in, shows activities etc 
+  - http://sprint.ly/product/41137/item/338
 
 - [ ] better splash page
 - [ ] add 'last sync time' to player info / store
 - [ ] round up remainder steps
 - [ ] return # of coins received in claim response (coins and gems alike)
-- [ ] 'control group' players (no team)
-  - can see steps etc but no redemption 
-- [ ] player HTML page -- when logged in, shows activities etc 
-
-- [x] only one goal: 60 min of combined moderate&vigorous
 - [ ] validate max. one capture per game
-- [ ] check steps in the background at least 1x/day, not just when players connect
 - [ ] unequip (or we may not need unequip if i add the rule “only one of each item type can be equipped” )
-
 - [ ] player stats (all season(s?)) in GET player endpoint?
 
 
 ## chores
 
-- [x] state machine for game
-- [x] rename gold to coins
-- [x] seed game
 - [ ] remove `current` and `locked` db fields
-
 - [ ] create prod env
 - [ ] fixture factories
-- [x] merge Outcome, TeamOutcome, and PlayerOutcome
-- [ ] rename *_outcomes
+- [ ] rename *_outcomes to *_results
 - [ ] merge Piece into Player in API
 - [ ] foreign key indexes for all tables
 - [ ] New Relic
 - [ ] add `/api` prefix and `ApiController`
-
 - [ ] [upgrade to Rails 5](http://blog.bigbinary.com/2016/08/18/new-framework-defaults-in-rails-5-to-make-upgrade-easier.html)
 - [ ] switch from RAML to Swagger? http://swagger.io/
 - [ ] make a Procfile https://devcenter.heroku.com/articles/ruby-default-web-server
