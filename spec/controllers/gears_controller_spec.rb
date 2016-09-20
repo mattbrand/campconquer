@@ -20,7 +20,9 @@ describe GearsController, type: :controller do
       icon_name: nil,
       coins: 0,
       gems: 0,
-      level: 0
+      level: 0,
+      owned_by_default: false,
+      equipped_by_default: false,
     }
   }
 

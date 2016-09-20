@@ -85,10 +85,16 @@ class Player < ActiveRecord::Base
 
   after_create do
     set_piece
-    Gear.where(default: true).each do |gear|
+
+    Gear.where(owned_by_default: true, equipped_by_default: false).each do |gear|
+      buy_gear! gear.name
+    end
+
+    Gear.where(equipped_by_default: true).each do |gear|
       buy_gear! gear.name
       equip_gear! gear.name
     end
+
   end
 
   include ActiveModel::Serialization

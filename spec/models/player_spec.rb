@@ -72,14 +72,14 @@ describe Player, type: :model do
       end
 
       {
-        team: 'red',
-        speed: 9,
-        health: 9,
-        range: 9,
-        created_at: 9,
-        updated_at: 9,
-        game_id: 9999,
-        player_id: 9999,
+          team: 'red',
+          speed: 9,
+          health: 9,
+          range: 9,
+          created_at: 9,
+          updated_at: 9,
+          game_id: 9999,
+          player_id: 9999,
       }.each_pair do |key, value|
         params = {}
         params[key] = value
@@ -117,33 +117,33 @@ describe Player, type: :model do
       before do
         f = Fitbit.new
         stub_request(:post, "https://api.fitbit.com/oauth2/token").
-          with(
-            :headers => {
-              'Authorization' => f.send(:authorization_header)
-            },
-            :body => {
-              "client_id" => f.client_id,
-              "client_secret" => f.client_secret,
-              "code" => "AUTH_CODE",
-              "grant_type" => "authorization_code",
-              "redirect_uri" => f.callback_url
-            },
-          ).
-          to_return(
-            :status => 200,
-            :headers => {
-              "content-type": "application/json"
-            },
-            :body =>
-              {
-                "access_token" => "ACCESS_TOKEN",
-                "expires_in" => 28800,
-                "refresh_token" => "REFRESH_TOKEN",
-                "scope" => "sleep weight social profile activity location heartrate nutrition settings",
-                "token_type" => "Bearer",
-                "user_id" => "FITBIT_USER_ID"
-              }.to_json
-          )
+            with(
+                :headers => {
+                    'Authorization' => f.send(:authorization_header)
+                },
+                :body => {
+                    "client_id" => f.client_id,
+                    "client_secret" => f.client_secret,
+                    "code" => "AUTH_CODE",
+                    "grant_type" => "authorization_code",
+                    "redirect_uri" => f.callback_url
+                },
+            ).
+            to_return(
+                :status => 200,
+                :headers => {
+                    "content-type": "application/json"
+                },
+                :body =>
+                    {
+                        "access_token" => "ACCESS_TOKEN",
+                        "expires_in" => 28800,
+                        "refresh_token" => "REFRESH_TOKEN",
+                        "scope" => "sleep weight social profile activity location heartrate nutrition settings",
+                        "token_type" => "Bearer",
+                        "user_id" => "FITBIT_USER_ID"
+                    }.to_json
+            )
       end
 
       it 'returns a URL' do
@@ -289,11 +289,11 @@ describe Player, type: :model do
 
       def summary(steps: 12612, fairly_active: 20, very_active: 10)
         {
-          "summary" => {
-            "steps" => steps,
-            "fairlyActiveMinutes" => fairly_active,
-            "veryActiveMinutes" => very_active,
-          }
+            "summary" => {
+                "steps" => steps,
+                "fairlyActiveMinutes" => fairly_active,
+                "veryActiveMinutes" => very_active,
+            }
         }
       end
 
@@ -371,15 +371,26 @@ describe Player, type: :model do
     let!(:galoshes) { Gear.create!(name: 'galoshes', gear_type: 'shoes', coins: 10) }
     let!(:tee_shirt) { Gear.create!(name: 'tee-shirt', gear_type: 'shirt', coins: 0) }
 
-    before do
-      tee_shirt.update!(default: true)
-      @player = Player.create!(name: "alice", team: 'blue', coins: 15)
+    describe 'owned' do
+      before do
+        tee_shirt.update!(owned_by_default: true)
+        @player = Player.create!(name: "alice", team: 'blue', coins: 15)
+      end
+      it 'is owned by a new player' do
+        expect(@player.gear_owned).to eq(['tee-shirt'])
+        expect(@player.gear_equipped).to eq([])
+      end
     end
-    it 'is owned by a new player' do
-      expect(@player.gear_owned).to eq(['tee-shirt'])
-    end
-    it 'is equipped' do
-      expect(@player.gear_equipped).to eq(['tee-shirt'])
+
+    describe 'equipped' do
+      before do
+        tee_shirt.update!(equipped_by_default: true)
+        @player = Player.create!(name: "alice", team: 'blue', coins: 15)
+      end
+      it 'is equipped by a new player' do
+        expect(@player.gear_owned).to eq(['tee-shirt'])
+        expect(@player.gear_equipped).to eq(['tee-shirt'])
+      end
     end
   end
 

@@ -2,20 +2,21 @@
 #
 # Table name: gears
 #
-#  id           :integer          not null, primary key
-#  name         :string
-#  display_name :string
-#  description  :string
-#  health_bonus :integer          default("0"), not null
-#  speed_bonus  :integer          default("0"), not null
-#  range_bonus  :integer          default("0"), not null
-#  gear_type    :string
-#  asset_name   :string
-#  icon_name    :string
-#  coins        :integer          default("0"), not null
-#  gems         :integer          default("0"), not null
-#  level        :integer          default("0"), not null
-#  default      :boolean          default("f"), not null
+#  id                  :integer          not null, primary key
+#  name                :string
+#  display_name        :string
+#  description         :string
+#  health_bonus        :integer          default("0"), not null
+#  speed_bonus         :integer          default("0"), not null
+#  range_bonus         :integer          default("0"), not null
+#  gear_type           :string
+#  asset_name          :string
+#  icon_name           :string
+#  coins               :integer          default("0"), not null
+#  gems                :integer          default("0"), not null
+#  level               :integer          default("0"), not null
+#  equipped_by_default :boolean          default("f"), not null
+#  owned_by_default    :boolean          default("f"), not null
 #
 
 class Gear < ActiveRecord::Base
@@ -47,6 +48,8 @@ class Gear < ActiveRecord::Base
           :level,
           :asset_name,
           :icon_name,
+          :equipped_by_default,
+          :owned_by_default,
         ],
       }
     end
@@ -60,19 +63,20 @@ class Gear < ActiveRecord::Base
     gears.each do |row|
       Gear.create!([
                      {
-                       name: row["ObjectId"],
+                       name: row["Name"],
                        gear_type: row["Type"].downcase,
-                       display_name: row["Item Name"],
+                       display_name: row["Display Name"],
                        description: row["Description"],
                        health_bonus: row["Health Bonus"],
                        speed_bonus: row["Speed Bonus"],
                        range_bonus: row["Range Bonus"],
-                       coins: row['Gold'],
+                       coins: row['Coins'],
                        gems: row['Gems'],
                        level: row['Level'],
                        asset_name: row['Asset Name'],
                        icon_name: row['Icon Name'],
-                       default: row['Default'].to_i.to_boolean,
+                       equipped_by_default: row['Equipped By Default'].to_i.to_boolean,
+                       owned_by_default: row['Owned By Default'].to_i.to_boolean,
                      },
                    ])
 
