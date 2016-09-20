@@ -1,5 +1,6 @@
 class PiecesController < ApplicationController
   before_action :find_player
+  before_action :pull_activity
   before_action :find_piece, only: [:show, :edit, :update, :destroy]
 
   # POST /pieces

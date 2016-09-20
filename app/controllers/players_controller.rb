@@ -9,15 +9,26 @@ class PlayersController < ApplicationController
                                      :activities,
                                      :buy,
                                      :equip,
-  ]
+                            ]
+  before_action :pull_activity, only: [
+                                :show,
+                                :update,
+                                :claim_steps,
+                                :claim_active_minutes,
+                                :profile,
+                                :steps,
+                                :activities,
+                                :buy,
+                                :equip,
+                              ]
 
   # GET /players
   def index
     @players = Player.all
     render json: {
-      status: 'ok',
-      players: @players.as_json,
-    }
+             status: 'ok',
+             players: @players.as_json,
+           }
   end
 
   # GET /players/1
@@ -41,9 +52,9 @@ class PlayersController < ApplicationController
   def update
     @player.update!(player_params)
     render :json => {
-      status: 'ok',
-      player: @player.as_json,
-    }
+             status: 'ok',
+             player: @player.as_json,
+           }
   end
 
   def auth

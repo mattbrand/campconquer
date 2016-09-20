@@ -74,8 +74,10 @@ class ApplicationController < ActionController::Base
   def find_player
     player_id = params[:player_id] || params[:id]
     @player = Player.find(player_id)
+  end
 
-    if @player.authenticated?
+  def pull_activity
+    if @player and @player.authenticated?
       # TODO: move this into a background task!!!
       @player.pull_activity! Date.current - 1.day
       @player.pull_activity! Date.current
