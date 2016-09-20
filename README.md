@@ -73,6 +73,7 @@ Konker? I just met 'er!
 - [ ] make a Procfile https://devcenter.heroku.com/articles/ruby-default-web-server
 - [ ] CircleCI? 
 - [ ] Alex learns Unity (gratis)
+- [ ] add Body Type, Hair fields to gear.rb to match csv
 
 # Updating the Seed DB
 
@@ -88,7 +89,7 @@ To update the gear database,
 1. `git add db; git push; git push heroku`
 1. `heroku run rake db:seed`
 
-> NEVER remove or change the short name ("ObjectId") of an item that exists inside a player's inventory or a game that has ever been played 
+> NEVER remove or change the short name ("Name") of an item that exists inside a player's inventory or a game that has ever been played
 
 (we may want to add a "disabled" flag to the spreadsheet for that scenario, or "upsert" the seeds instead of wiping them and re-inserting them)
 
