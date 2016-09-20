@@ -18,7 +18,6 @@ Konker? I just met 'er!
 - [ ] steps: look back more than 2 days if needed
 - [x] MVP: only role=offense can be attack_mvp et al 
 
-- [ ] player stats (all season(s?)) in GET player endpoint?
 
 - make "moves" more efficient
   - [ ] upload
@@ -52,13 +51,17 @@ Konker? I just met 'er!
 - [ ] validate max. one capture per game
 - [ ] check steps in the background at least 1x/day, not just when players connect
 - [ ] unequip (or we may not need unequip if i add the rule “only one of each item type can be equipped” )
-- [ ] remove `current` and `locked` db fields
+
+- [ ] player stats (all season(s?)) in GET player endpoint?
+
 
 ## chores
 
 - [x] state machine for game
 - [x] rename gold to coins
 - [x] seed game
+- [ ] remove `current` and `locked` db fields
+
 - [ ] create prod env
 - [ ] fixture factories
 - [x] merge Outcome, TeamOutcome, and PlayerOutcome
@@ -88,7 +91,8 @@ To update the gear database,
 1. `git add db; git push; git push heroku`
 1. `heroku run rake db:seed`
 
-> NEVER remove or change the short name ("ObjectId") of an item that exists inside a player's inventory or a game that has ever been played 
+> `ObjectId` must be unique and remain consistent.
+> NEVER remove or change the short name ("ObjectId") of an item that exists inside a player's inventory or a game that has ever been played.
 
 (we may want to add a "disabled" flag to the spreadsheet for that scenario, or "upsert" the seeds instead of wiping them and re-inserting them)
 
@@ -181,6 +185,8 @@ and [Postman](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdgg
 | command | description |
 |---|---|
 | `rake state_machine:draw CLASS=Game` | update the state diagram in `Game_state.png` |
+| `rake db:seed_players` | create 50 random players with random roles / positions / paths / etc. (and erases all previous players and games) |``
+| `rake db:seed_game` | create 1 random game |
 
 
 ### Rails Console Commands
@@ -192,17 +198,12 @@ and [Postman](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdgg
 | `g = Game.current`      | get the current game, creating it if necessary        |
 | `g.lock_game!`          | lock the game and copy pieces from the players |
 | `g.finish_game! winner: 'red'`  | force a completion (this may break soon) |
+| `g.unlock_game!`          | unlock the game and delete the copied pieces |
 | `reload!`               | load changed source code (ignores initializers) |
 | `reload!; Game.current.destroy!; Game.current.lock_game!` | quick game restart |
 
 
-### Seeding Players
-
-This makes a new set of 100 players with random roles / positions / paths / etc. :
-
-`rake db:seed_players`
-
-## Local development with Fitbit
+### Local development with Fitbit
 
 * Create an app for yourself at <https://dev.fitbit.com/apps> named e.g. "Matt's Local CampConquer"
     * Callback URL must be `http://localhost:3000/players/auth-callback`
