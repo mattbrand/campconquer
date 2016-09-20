@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   # protect_from_forgery with: :exception
   protect_from_forgery with: :null_session
-  skip_before_filter  :verify_authenticity_token # todo: move to ApiController
+  skip_before_filter :verify_authenticity_token # todo: move to ApiController
 
   # todo: explicit unit test for error handlers
 
@@ -78,9 +78,17 @@ class ApplicationController < ActionController::Base
 
   def pull_activity
     if @player and @player.authenticated?
-      # TODO: move this into a background task!!!
-      @player.pull_activity! Date.current - 1.day
-      @player.pull_activity! Date.current
+      bm = Benchmark.measure("Fetch activity") do
+        # TODO: move this into a background task!!!
+        @player.pull_activity! Date.current - 6.days
+        @player.pull_activity! Date.current - 5.days
+        @player.pull_activity! Date.current - 4.days
+        @player.pull_activity! Date.current - 3.days
+        @player.pull_activity! Date.current - 2.days
+        @player.pull_activity! Date.current - 1.day
+        @player.pull_activity! Date.current
+      end
+      ap bm
     end
   end
 

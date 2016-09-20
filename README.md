@@ -15,7 +15,7 @@ Konker? I just met 'er!
 - [x] season stats endpoint
 
 - [x] merge vigorous and moderate
-- [ ] steps: look back more than 2 days if needed
+- [x] steps: look back more than 2 days if needed
 - [x] MVP: only role=offense can be attack_mvp et al 
 
 
