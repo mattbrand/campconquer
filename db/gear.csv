@@ -1,40 +1,40 @@
 Name,Type,Body Type,Display Name,Description,Asset Name,Icon Name,Coins,Gems,Level,Health Bonus,Speed Bonus,Range Bonus,Hair,Owned By Default,Equipped By Default
-hat0,HEAD,FEMALE,Headscarf,,hair_headscarf_f,Icon_headscarf,0,0,0,0,0,0,hair_short_01_gn1,1,0
+hat0,HEAD,FEMALE,Headscarf,,hair_headscarf_f,Icon_headscarf,0,0,0,0,0,0,hair_short_01_f,1,0
 hat1,HEAD,GN1,Headscarf,,hair_headscarf_gn1,Icon_headscarf,0,0,0,0,0,0,hair_short_01_gn1,1,0
-hat2,HEAD,GN2,Headscarf,,hair_headscarf_gn2,Icon_headscarf,0,0,0,0,0,0,hair_short_01_gn1,1,0
-hat3,HEAD,MALE,Headscarf,,hair_headscarf_m,Icon_headscarf,0,0,0,0,0,0,hair_short_01_gn1,1,0
+hat2,HEAD,GN2,Headscarf,,hair_headscarf_gn2,Icon_headscarf,0,0,0,0,0,0,hair_short_01_gn2,1,0
+hat3,HEAD,MALE,Headscarf,,hair_headscarf_m,Icon_headscarf,0,0,0,0,0,0,hair_short_01_m,1,0
 hat4,HEAD,FEMALE,Bandana,,hat_03_f,Icon_bandana,500,1,0,1,0,0,,0,0
 hat5,HEAD,GN1,Bandana,,hat_03_gn1,Icon_bandana,500,1,0,1,0,0,,0,0
 hat6,HEAD,GN2,Bandana,,hat_03_gn2,Icon_bandana,500,1,0,1,0,0,,0,0
 hat7,HEAD,MALE,Bandana,,hat_03_m,Icon_bandana,500,1,0,1,0,0,,0,0
-hat8,HEAD,FEMALE,Light Baseball Cap,,hat_05_f,Icon_baseballcap,500,1,0,0,0,1,hair_short_01_gn1,0,0
+hat8,HEAD,FEMALE,Light Baseball Cap,,hat_05_f,Icon_baseballcap,500,1,0,0,0,1,hair_short_01_f,0,0
 hat9,HEAD,GN1,Light Baseball Cap,,hat_05_gn1,Icon_baseballcap,500,1,0,0,0,1,hair_short_01_gn1,0,0
-hat10,HEAD,GN2,Light Baseball Cap,,hat_05_gn2,Icon_baseballcap,500,1,0,0,0,1,hair_short_01_gn1,0,0
-hat11,HEAD,MALE,Light Baseball Cap,,hat_05_m,Icon_baseballcap,500,1,0,0,0,1,hair_short_01_gn1,0,0
-hat12,HEAD,FEMALE,Baseball Cap2,,hat_05_f,Icon_baseballcap,1500,3,0,0,0,2,hair_short_01_gn1,0,0
+hat10,HEAD,GN2,Light Baseball Cap,,hat_05_gn2,Icon_baseballcap,500,1,0,0,0,1,hair_short_01_gn2,0,0
+hat11,HEAD,MALE,Light Baseball Cap,,hat_05_m,Icon_baseballcap,500,1,0,0,0,1,hair_short_01_m,0,0
+hat12,HEAD,FEMALE,Baseball Cap2,,hat_05_f,Icon_baseballcap,1500,3,0,0,0,2,hair_short_01_f,0,0
 hat13,HEAD,GN1,Baseball Cap2,,hat_05_gn1,Icon_baseballcap,1500,3,0,0,0,2,hair_short_01_gn1,0,0
-hat14,HEAD,GN2,Baseball Cap2,,hat_05_gn2,Icon_baseballcap,1500,3,0,0,0,2,hair_short_01_gn1,0,0
-hat15,HEAD,MALE,Baseball Cap2,,hat_05_m,Icon_baseballcap,1500,3,0,0,0,2,hair_short_01_gn1,0,0
-hat16,HEAD,FEMALE,Green Beanie,,hat_04_f,Icon_beanie,2500,5,0,1,0,2,hair_short_01_gn1,0,0
+hat14,HEAD,GN2,Baseball Cap2,,hat_05_gn2,Icon_baseballcap,1500,3,0,0,0,2,hair_short_01_gn2,0,0
+hat15,HEAD,MALE,Baseball Cap2,,hat_05_m,Icon_baseballcap,1500,3,0,0,0,2,hair_short_01_m,0,0
+hat16,HEAD,FEMALE,Green Beanie,,hat_04_f,Icon_beanie,2500,5,0,1,0,2,hair_short_01_f,0,0
 hat17,HEAD,GN1,Green Beanie,,hat_04_gn1,Icon_beanie,2500,5,0,1,0,2,hair_short_01_gn1,0,0
-hat18,HEAD,GN2,Green Beanie,,hat_04_gn2,Icon_beanie,2500,5,0,1,0,2,hair_short_01_gn1,0,0
-hat19,HEAD,MALE,Green Beanie,,hat_04_m,Icon_beanie,2500,5,0,1,0,2,hair_short_01_gn1,0,0
-hat20,HEAD,FEMALE,Beanie Color2,,hat_04_f,Icon_beanie,2500,7,0,1,0,3,hair_short_01_gn1,0,0
+hat18,HEAD,GN2,Green Beanie,,hat_04_gn2,Icon_beanie,2500,5,0,1,0,2,hair_short_01_gn2,0,0
+hat19,HEAD,MALE,Green Beanie,,hat_04_m,Icon_beanie,2500,5,0,1,0,2,hair_short_01_m,0,0
+hat20,HEAD,FEMALE,Beanie Color2,,hat_04_f,Icon_beanie,2500,7,0,1,0,3,hair_short_01_f,0,0
 hat21,HEAD,GN1,Beanie Color2,,hat_04_gn1,Icon_beanie,2500,7,0,1,0,3,hair_short_01_gn1,0,0
-hat22,HEAD,GN2,Beanie Color2,,hat_04_gn2,Icon_beanie,2500,7,0,1,0,3,hair_short_01_gn1,0,0
-hat23,HEAD,MALE,Beanie Color2,,hat_04_m,Icon_beanie,2500,7,0,1,0,3,hair_short_01_gn1,0,0
+hat22,HEAD,GN2,Beanie Color2,,hat_04_gn2,Icon_beanie,2500,7,0,1,0,3,hair_short_01_gn2,0,0
+hat23,HEAD,MALE,Beanie Color2,,hat_04_m,Icon_beanie,2500,7,0,1,0,3,hair_short_01_m,0,0
 hat24,HEAD,FEMALE,Headband,,hat_06_f,Icon_headband,6000,10,0,1,0,4,,0,0
 hat25,HEAD,GN1,Headband,,hat_06_gn1,Icon_headband,6000,10,0,1,0,4,,0,0
 hat26,HEAD,GN2,Headband,,hat_06_gn2,Icon_headband,6000,10,0,1,0,4,,0,0
 hat27,HEAD,MALE,Headband,,hat_06_m,Icon_headband,6000,10,0,1,0,4,,0,0
-hat28,HEAD,FEMALE,Sun Hat,,hat_02_f,Icon_sunhat,7000,14,0,2,0,5,hair_short_01_gn1,0,0
+hat28,HEAD,FEMALE,Sun Hat,,hat_02_f,Icon_sunhat,7000,14,0,2,0,5,hair_short_01_f,0,0
 hat29,HEAD,GN1,Sun Hat,,hat_02_gn1,Icon_sunhat,7000,14,0,2,0,5,hair_short_01_gn1,0,0
-hat30,HEAD,GN2,Sun Hat,,hat_02_gn2,Icon_sunhat,7000,14,0,2,0,5,hair_short_01_gn1,0,0
-hat31,HEAD,MALE,Sun Hat,,hat_02_m,Icon_sunhat,7000,14,0,2,0,5,hair_short_01_gn1,0,0
-hat32,HEAD,FEMALE,Flat Brim Hat,,hat_01_f,Icon_flatbrimhat,8000,18,0,2,0,6,hair_short_01_gn1,0,0
+hat30,HEAD,GN2,Sun Hat,,hat_02_gn2,Icon_sunhat,7000,14,0,2,0,5,hair_short_01_gn2,0,0
+hat31,HEAD,MALE,Sun Hat,,hat_02_m,Icon_sunhat,7000,14,0,2,0,5,hair_short_01_m,0,0
+hat32,HEAD,FEMALE,Flat Brim Hat,,hat_01_f,Icon_flatbrimhat,8000,18,0,2,0,6,hair_short_01_f,0,0
 hat33,HEAD,GN1,Flat Brim Hat,,hat_01_gn1,Icon_flatbrimhat,8000,18,0,2,0,6,hair_short_01_gn1,0,0
-hat34,HEAD,GN2,Flat Brim Hat,,hat_01_gn2,Icon_flatbrimhat,8000,18,0,2,0,6,hair_short_01_gn1,0,0
-hat35,HEAD,MALE,Flat Brim Hat,,hat_01_m,Icon_flatbrimhat,8000,18,0,2,0,6,hair_short_01_gn1,0,0
+hat34,HEAD,GN2,Flat Brim Hat,,hat_01_gn2,Icon_flatbrimhat,8000,18,0,2,0,6,hair_short_01_gn2,0,0
+hat35,HEAD,MALE,Flat Brim Hat,,hat_01_m,Icon_flatbrimhat,8000,18,0,2,0,6,hair_short_01_m,0,0
 hat36,HEAD,FEMALE,Patterned Bandana,,hat_03_f,Icon_bandana,12500,30,0,3,0,7,,0,0
 hat37,HEAD,GN1,Patterned Bandana,,hat_03_gn1,Icon_bandana,12500,30,0,3,0,7,,0,0
 hat38,HEAD,GN2,Patterned Bandana,,hat_03_gn2,Icon_bandana,12500,30,0,3,0,7,,0,0
