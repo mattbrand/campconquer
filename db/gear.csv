@@ -1,4 +1,5 @@
 Name,Type,Body Type,Display Name,Description,Asset Name,Icon Name,Coins,Gems,Level,Health Bonus,Speed Bonus,Range Bonus,Hair,Owned By Default,Equipped By Default
+<<<<<<< HEAD
 hat0,HEAD,FEMALE,Headscarf,,hair_headscarf_f,Icon_headscarf,0,0,0,0,0,0,hair_short_01_f,1,0
 hat1,HEAD,GN1,Headscarf,,hair_headscarf_gn1,Icon_headscarf,0,0,0,0,0,0,hair_short_01_gn1,1,0
 hat2,HEAD,GN2,Headscarf,,hair_headscarf_gn2,Icon_headscarf,0,0,0,0,0,0,hair_short_01_gn2,1,0
@@ -113,3 +114,47 @@ accessory20,ACCESSORY,FEMALE,Belt,,accessory5,,150,1,0,0,0,0,,0,0
 accessory21,ACCESSORY,GN1,Belt,,accessory6,,150,1,0,0,0,0,,0,0
 accessory22,ACCESSORY,GN2,Belt,,accessory7,,150,1,0,0,0,0,,0,0
 accessory23,ACCESSORY,MALE,Belt,,accessory8,,150,1,0,0,0,0,,0,0
+=======
+hat0,HEAD,GN1,Headscarf,,hair_headscarf,,0,0,0,0,0,0,hair_short_01_gn1,1,0
+hat1,HEAD,GN1,Bandana,,hat_03_gn1,,500,1,0,1,0,0,,0,0
+hat2,HEAD,GN1,Light Baseball Cap,,hat_05_gn1,,500,1,0,0,0,1,hair_short_01_gn1,0,0
+hat3,HEAD,GN1,Baseball Cap2,,hat_05_gn1,,1500,3,0,0,0,2,hair_short_01_gn1,0,0
+hat4,HEAD,GN1,Green Beanie,,hat_04_gn1,,2500,5,0,1,0,2,hair_short_01_gn1,0,0
+hat5,HEAD,GN1,Beanie Color2,,hat_04_gn1,,2500,7,0,1,0,3,hair_short_01_gn1,0,0
+hat6,HEAD,GN1,Headband,,hat_06_gn1,,6000,10,0,1,0,4,,0,0
+hat7,HEAD,GN1,Sun Hat,,hat_02_gn1,,7000,14,0,2,0,5,hair_short_01_gn1,0,0
+hat8,HEAD,GN1,Flat Brim Hat,,hat_01_gn1,,8000,18,0,2,0,6,hair_short_01_gn1,0,0
+hat9,HEAD,GN1,Patterned Bandana,,hat_03_gn1,,12500,30,0,3,0,7,,0,0
+shirt0_f,SHIRT,FEMALE,Basic T-Shirt,,shirt0,,0,0,0,1,0,0,,1,1
+shirt0_gn1,SHIRT,GN1,Basic T-Shirt,,shirt0,,0,0,0,1,0,0,,0,0
+shirt0_gn2,SHIRT,GN2,Basic T-Shirt,,shirt0,,0,0,0,1,0,0,,0,0
+shirt0_m,SHIRT,MALE,Basic T-Shirt,,shirt0,,0,0,0,1,0,0,,0,0
+shirt1_f,SHIRT,FEMALE,Pocketed T-Shirt,,f_Pocket,,1000,1,0,2,0,0,,0,0
+shirt1_gn1,SHIRT,GN1,Pocketed T-Shirt,,gn1_Pocket,,1000,1,0,2,0,0,,0,0
+shirt1_gn2,SHIRT,GN2,Pocketed T-Shirt,,gn2_Pocket,,1000,1,0,2,0,0,,0,0
+shirt1_m,SHIRT,MALE,Pocketed T-Shirt,,m_Pocket,,1000,1,0,2,0,0,,0,0
+shirt2,SHIRT,,Geometric T-Shirt,,GeometricFox,,2000,3,0,2,0,0,,0,0
+shirt3,SHIRT,,Vermont T-Shirt,,VTdecal,,2500,5,0,3,0,0,,0,0
+shirt4,SHIRT,,Camp Conquer T-Shirt,,ccDecal,,4000,11,0,4,0,0,,0,0
+shirt5,SHIRT,,Snacking T-Shirt,,FoodDecal,,5000,14,0,4,1,0,,0,0
+shirt6,SHIRT,,Sporty T-Shirt,,shirt6,,7500,18,0,5,1,0,,0,0
+shirt7,SHIRT,,Pixel T-shirt,,shirt7,,10000,24,0,6,1,0,,0,0
+shirt8,SHIRT,,Floral T-shirt,,shirt8,,15000,30,0,8,0,0,,0,0
+shirt9,SHIRT,,Seahorse T-Shirt,,shirt9,,20000,40,0,8,2,0,,0,0
+shoes0,SHOES,,Basic Sneakers,,ShoesA,,0,0,0,0,0,0,,1,1
+shoes1,SHOES,,Sandals,,ShoesJ,,750,2,0,0,1,0,,0,0
+shoes2,SHOES,,Skate Sneakers,,ShoesB,,2000,5,0,0,1,1,,0,0
+shoes3,SHOES,,Ankle High Boots,,ShoesC,,3500,8,0,0,2,1,,0,0
+shoes4,SHOES,,Running Shoes,,ShoesD,,5500,12,0,0,4,0,,0,0
+shoes5,SHOES,,Hiking Boots,,ShoesE,,6000,14,0,0,4,1,,0,0
+shoes6,SHOES,,High-Laced Sneakers,,ShoesF,,7000,16,0,0,5,2,,0,0
+shoes7,SHOES,,Comfortable Sneakers,,ShoesG,,9000,24,0,2,5,0,,0,0
+shoes8,SHOES,,Short Boots,,ShoesH,,12500,28,0,2,6,2,,0,0
+shoes9,SHOES,,Rain Boots,,ShoesI,,15000,35,0,2,8,2,,0,0
+accessory0,ACCESSORY,,Glasses,,accessory0,,50,0,0,0,0,0,,0,0
+accessory1,ACCESSORY,,Sunglasses,,accessory1,,150,1,0,0,0,0,,0,0
+accessory2,ACCESSORY,,Bracelet,,accessory2,,150,1,0,0,0,0,,0,0
+accessory3,ACCESSORY,,Scarf,,accessory3,,150,1,0,0,0,0,,0,0
+accessory4,ACCESSORY,,Watch,,accessory4,,150,1,0,0,0,0,,0,0
+accessory5,ACCESSORY,,Belt,,accessory5,,150,1,0,0,0,0,,0,0
+>>>>>>> parent of d98db0c... updated gear list
