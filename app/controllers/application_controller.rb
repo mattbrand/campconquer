@@ -88,7 +88,7 @@ class ApplicationController < ActionController::Base
         @player.pull_activity! Date.current - 1.day
         @player.pull_activity! Date.current
       end
-      ap bm
+      puts bm
     end
   end
 

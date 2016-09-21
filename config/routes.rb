@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
 
   resources :gears, only: ['index']
-
+  resources :paths, only: ['index']
   resources :seasons, only: ['show']
 
   resources :games, only: ['index', 'show', 'destroy', 'update'] do

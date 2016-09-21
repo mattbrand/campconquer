@@ -58,9 +58,9 @@ class Gear < ActiveRecord::Base
 
   # todo: unit test
   def self.read_csv(f)
-    gears = CSV.read(f, headers: :first_row)
+    rows = CSV.read(f, headers: :first_row)
 
-    gears.each do |row|
+    rows.each do |row|
       Gear.create!([
                      {
                        name: row["Name"],

@@ -6,10 +6,7 @@
 # obsolete gear names
 Gear.destroy_all
 
-# To update the gear database, go to
-# https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ07TFsBi973VmIqgnLO6c/
-# select "File > Download As > CSV (current sheet)"
-# save as db/gear.csv
+# To update the gear database, see README.md
 
 f = File.expand_path("gear.csv", File.dirname(__FILE__))
 

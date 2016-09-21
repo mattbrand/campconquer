@@ -28,6 +28,7 @@ namespace :db do
                       match_length: rand(100) + 1,
                       player_outcomes_attributes: outcomes # rails is weird http://stackoverflow.com/a/8719885/190135
 
+    # log it
     ap({
       game_id: game.id,
       winner: game.winner,

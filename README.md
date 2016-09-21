@@ -71,11 +71,15 @@ To update the gear database,
 
 > You may be tempted to edit the gear etc. via the admin interface. RESIST THE TEMPTATION. Do it through Google Doc / Export CSV / Git or else local demos, staging, etc. will get out of sync with production.
 
-For paths, look at the "Paths" sheet
+For paths, similar to above but
 
-> INSTRUCTIONS TBD
+1. use the "Paths" sheet
+1. save as `db/paths.csv`
+1. `git add db; git push; git push heroku` to deploy
 
-I wrote a little script to convert Matt's path json into tab-delimited:
+(Path changes are file-only; there is no need to re-seed the database.)
+
+This should be obsolete soon, but I wrote a little script to convert Matt's path json into tab-delimited format for easy pasting into the gdoc. Put the various json files in `db` e.g. `db/bluePaths.json` and then...
 * run `rails r "Path.print_rows('blue', 'defense')" | pbcopy`
 * switch to the gdoc, click on a cell and hit *Cmd-V* to paste
 
