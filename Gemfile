@@ -42,6 +42,7 @@ end
 
 group :test do
   gem 'webmock'
+  gem 'files'
 end
 
 group :production do
