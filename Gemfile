@@ -42,7 +42,7 @@ end
 
 group :test do
   gem 'webmock'
-  gem 'files'
+  gem 'files' # https://github.com/alexch/files
 end
 
 group :production do

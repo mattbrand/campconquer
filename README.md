@@ -2,10 +2,18 @@
 
 Konker? I just met 'er!
 
+
+# Important Links
+
+
+Features: <http://sprint.ly/product/41137/dashboard/?statuses=backlog,current,complete&order=priority>
+
+Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ07TFsBi973VmIqgnLO6c/>
+
+
+
 # TODO
 
-
-Features: http://sprint.ly/product/41137/dashboard/?statuses=backlog,current,complete&order=priority
 
 - [ ] check steps in the background at least 1x/day, not just when players connect
   - http://sprint.ly/product/41137/item/333
@@ -63,6 +71,13 @@ To update the gear database,
 
 > You may be tempted to edit the gear etc. via the admin interface. RESIST THE TEMPTATION. Do it through Google Doc / Export CSV / Git or else local demos, staging, etc. will get out of sync with production.
 
+For paths, look at the "Paths" sheet
+
+> INSTRUCTIONS TBD
+
+I wrote a little script to convert Matt's path json into tab-delimited:
+* run `rails r "Path.print_rows('blue', 'defense')" | pbcopy`
+* switch to the gdoc, click on a cell and hit *Cmd-V* to paste
 
 ## API Docs
 
@@ -214,8 +229,6 @@ Want to see what other Fitbit info is available? Check out https://dev.fitbit.co
 
 BestHTTP: https://docs.google.com/document/d/181l8SggPrVF1qRoPMEwobN_1Fn7NXOu-VtfjE6wvokg/edit#
 
-Game Database:
-https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ07TFsBi973VmIqgnLO6c/
 
 Xamarin Studio Community Edition:
 https://www.xamarin.com/download
