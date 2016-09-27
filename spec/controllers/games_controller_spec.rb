@@ -263,6 +263,7 @@ describe GamesController, type: :controller do
     let(:valid_attributes) {
       {
         winner: 'blue', # game[winner]=blue
+	moves: 'OMGMOVES',
         player_outcomes: [
           {
             team: 'blue',
@@ -333,6 +334,7 @@ describe GamesController, type: :controller do
             expect(@game.winner).not_to be_nil
             expect(@game.winner).to eq(valid_attributes[:winner])
             expect(@game.state).to eq('completed')
+	    expect(@game.moves).to eq('OMGMOVES')
           end
 
           it "renders an 'ok' message" do
