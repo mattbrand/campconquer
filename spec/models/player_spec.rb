@@ -409,6 +409,11 @@ describe Player, type: :model do
         player.buy_gear!('galoshes')
         expect(player.gear_owned).to eq(['galoshes'])
       end
+      it 'does not automatically equip the gear' do
+        expect(player.gear_owned).to be_empty
+        player.buy_gear!('galoshes')
+        expect(player.gear_equipped).to eq([])
+      end
       it 'subtracts coins' do
         expect(player.reload.coins).to eq(15)
         player.buy_gear!('galoshes')
