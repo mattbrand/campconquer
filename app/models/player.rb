@@ -187,6 +187,14 @@ class Player < ActiveRecord::Base
     []
   end
 
+  def gear_owned?(gear_name)
+    piece.gear_owned.include?(gear_name)
+  end
+
+  def gear_equipped?(gear_name)
+    piece.gear_equipped.include?(gear_name)
+  end
+
   def buy_gear! gear_name
     gear = Gear.find_by_name(gear_name)
     if gear_owned?(gear_name)
@@ -200,12 +208,12 @@ class Player < ActiveRecord::Base
     end
   end
 
-  def gear_owned?(gear_name)
-    piece.gear_owned.include?(gear_name)
-  end
-
-  def gear_equipped?(gear_name)
-    piece.gear_equipped.include?(gear_name)
+  def drop_gear! gear_name
+    gear = Gear.find_by_name(gear_name)
+    item = piece.items.find_by_gear_id(gear.id)
+    raise NotOwned, gear if item.nil?
+    item.destroy
+    self.reload # ?
   end
 
   def equip_gear!(gear_name)

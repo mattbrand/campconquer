@@ -449,5 +449,26 @@ describe Player, type: :model do
       end
     end
 
+    describe 'dropping' do
+      it 'drops owned gear' do
+        player.buy_gear!('galoshes')
+        player.drop_gear!('galoshes')
+        expect(player.gear_owned).to eq([])
+      end
+
+      it 'unequips dropped gear' do
+        player.buy_gear!('galoshes')
+        player.equip_gear!('galoshes')
+        player.drop_gear!('galoshes')
+        expect(player.gear_equipped).to eq([])
+      end
+
+      it 'dropping unowned gear is a failure' do
+        expect do
+          player.drop_gear!('galoshes')
+        end.to raise_error(Player::NotOwned)
+      end
+    end
+
   end
 end

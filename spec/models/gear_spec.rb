@@ -26,11 +26,11 @@ describe Gear do
   include Files
 
   before do
-    f = file "foo.csv", <<-CSV
+    @f = file "foo.csv", <<-CSV
 Name,Type,Body Type,Display Name,Description,Asset Name,Icon Name,Coins,Gems,Level,Health Bonus,Speed Bonus,Range Bonus,Hair,Owned By Default,Equipped By Default
 hat0,HEAD,GN1,Headscarf,a lovely scarf,hair_headscarf,scarf_icon,1,2,3,4,5,6,hair_short_01_gn1,1,0
     CSV
-    Gear.read_csv(f)
+    Gear.read_csv(@f)
   end
 
   describe 'read_csv' do
@@ -53,6 +53,25 @@ hat0,HEAD,GN1,Headscarf,a lovely scarf,hair_headscarf,scarf_icon,1,2,3,4,5,6,hai
                              owned_by_default: true,
                              equipped_by_default: false,
                            }.with_indifferent_access)
+    end
+
+    let(:player) { Player.create!(name: "Joe", team: 'blue', coins: 10) }
+
+    it 'regenerates player/piece items' do
+      expect(player.gear_owned).to eq(['hat0'])
+      player.equip_gear! 'hat0'
+      expect(player.gear_equipped).to eq(['hat0'])
+
+      original_gear_id = Gear.find_by_name('hat0').id
+
+      Gear.read_csv(@f)
+
+      new_gear_id = Gear.find_by_name('hat0').id
+      expect(new_gear_id).not_to eq(original_gear_id)
+
+      player.reload
+      expect(player.gear_owned).to eq(['hat0'])
+      expect(player.gear_equipped).to eq(['hat0'])
     end
   end
 end

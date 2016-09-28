@@ -22,8 +22,8 @@
 class Gear < ActiveRecord::Base
 
   GEAR_TYPES = Enum.new([
-                     [:head], [:shirt], [:belt], [:shoes], [:accessory], [:pet],
-                   ])
+                          [:head], [:shirt], [:belt], [:shoes], [:accessory], [:pet],
+                        ])
 
   validates :gear_type, inclusion: {
     in: GEAR_TYPES.values,
@@ -58,6 +58,11 @@ class Gear < ActiveRecord::Base
 
   # todo: unit test
   def self.read_csv(f)
+
+    old_gear = preserve_gear_ids
+
+    Gear.delete_all
+
     rows = CSV.read(f, headers: :first_row)
 
     rows.each do |row|
@@ -80,7 +85,23 @@ class Gear < ActiveRecord::Base
                      },
                    ])
 
+      update_gear_ids(old_gear)
     end
+  end
+
+  def self.update_gear_ids(old_gear)
+    old_gear.each_pair do |old_gear_id, gear_name|
+      new_gear_id = Gear.find_by_name(gear_name)
+      Item.where(gear_id: old_gear_id).update_all(gear_id: new_gear_id)
+    end
+  end
+
+  def self.preserve_gear_ids
+    old_gear = {}
+    Gear.all.each do |g|
+      old_gear[g.id] = g.name
+    end
+    old_gear
   end
 
 end
