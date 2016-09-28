@@ -14,6 +14,13 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 
 # TODO
 
+- [ ] login
+- [ ] time to next battle
+- [ ] number of pieces per path
+- [ ] ammo: send remaining ammo when game complete
+- [ ] null out path etc. between games
+- [ ] "embodied" flag
+- [ ] only players with non-null paths etc should play
 
 - [ ] check steps in the background at least 1x/day, not just when players connect
   - http://sprint.ly/product/41137/item/333
