@@ -52,6 +52,8 @@ hat0,HEAD,GN1,Headscarf,a lovely scarf,hair_headscarf,scarf_icon,1,2,3,4,5,6,hai
                              coins: 1,
                              gems: 2,
                              level: 3,
+                             body_type: 'gender_neutral_1',
+                             hair: 'hair_short_01_gn1',
                              owned_by_default: true,
                              equipped_by_default: false,
                            }.with_indifferent_access)

@@ -32,6 +32,11 @@ class Gear < ActiveRecord::Base
     message: GEAR_TYPES.validation_message
   }, allow_nil: true
 
+  validates :body_type, inclusion: {
+    in: Piece::BODY_TYPES.values,
+    message: Piece::BODY_TYPES.validation_message
+  }, allow_nil: true
+
   validates_uniqueness_of :name
 
   def as_json(options=nil)
@@ -71,6 +76,13 @@ class Gear < ActiveRecord::Base
     rows = CSV.read(f, headers: :first_row)
 
     rows.each do |row|
+      body_type = {
+        'MALE' => 'male',
+        'FEMALE' => 'female',
+        'GN1' => 'gender_neutral_1',
+        'GN2' => 'gender_neutral_2',
+      }[row['Body Type']]
+
       Gear.create!([
                      {
                        name: row["Name"],
@@ -85,7 +97,7 @@ class Gear < ActiveRecord::Base
                        level: row['Level'],
                        asset_name: row['Asset Name'],
                        icon_name: row['Icon Name'],
-                       body_type: row['Body Type'],
+                       body_type: body_type,
                        hair: row['Hair'],
                        equipped_by_default: row['Equipped By Default'].to_i.to_boolean,
                        owned_by_default: row['Owned By Default'].to_i.to_boolean,
@@ -98,7 +110,7 @@ class Gear < ActiveRecord::Base
 
   def self.sanitize_items
     # todo: make this faster?  store gear name too?
-    bogus = Item.all.includes(:gear).select{|i| i.gear.nil?}
+    bogus = Item.all.includes(:gear).select { |i| i.gear.nil? }
     unless bogus.empty?
       puts "Found #{bogus.size} items with bogus gear; deleting"
       Item.where(id: bogus.map(&:id)).delete_all
