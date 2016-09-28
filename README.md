@@ -171,7 +171,7 @@ and [Postman](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdgg
 | `rake state_machine:draw CLASS=Game` | update the state diagram in `Game_state.png` |
 | `rake db:seed_players` | create 50 random players with random roles / positions / paths / etc. (and erases all previous players and games) |``
 | `rake db:seed_game` | create 1 random game |
-
+| `rake db:seed` | reload the Gear CSV (and migrate player items) |
 
 ### Rails Console Commands
 
@@ -185,7 +185,28 @@ and [Postman](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdgg
 | `g.unlock_game!`          | unlock the game and delete the copied pieces |
 | `reload!`               | load changed source code (ignores initializers) |
 | `reload!; Game.current.destroy!; Game.current.lock_game!` | quick game restart |
+| `p = Player.find(123)` | load a player by their id |
+| `p = Player.find_by_name('fred')` | load a player by their name |
+| `p.buy_gear! 'hat9'`   | buy gear for a player |
+| `p.equip_gear! 'hat9'` | equip gear for a player |
+| `p.drop_gear! 'hat9'`  | throw away (un-own and un-equip) gear for a player |
 
+
+####More complicated Rails Console examples:
+
+*show all player names and their owned gear*
+```
+Player.all.map{|p| [p.name, p.gear_owned]}
+
+=> [["Thatcher", ["hat1", "hat2", "hat3", "shirt0", "shirt1", "shirt2", "shirt3", "shoes0", "hat0"]],
+ ["Megan", ["hat1", "hat2", "hat3", "shirt0", "shirt1", "shirt2", "shirt3", "shoes0", "hat0"]], ...
+```
+
+*buy (but don't re-buy) the default gear for all players*
+
+```
+Player.all.each {|p| Gear.where(owned_by_default: true).each {|g| p.buy_gear! g.name unless p.gear_owned.include?(g.name)}}
+```
 
 ### Local development with Fitbit
 
