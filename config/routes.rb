@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   resources :gears, only: ['index']
   resources :paths, only: ['index']
+  resources :ammos, only: ['index']
   resources :seasons, only: ['show']
 
   resources :games, only: ['index', 'show', 'destroy', 'update'] do

@@ -18,6 +18,7 @@ class Player < ActiveRecord::Base
   STEPS_PER_COIN = 10
   MAXIMUM_CLAIMABLE_STEPS = 10000
   GOAL_MINUTES = 60
+  MAXIMUM_AMMO_SLOTS = 10
 
   class GoalNotMet < RuntimeError
     def initialize(active_minutes)
@@ -27,7 +28,22 @@ class Player < ActiveRecord::Base
 
   class NotEnoughCoins < RuntimeError
     def initialize(gear)
-      super("not enough coins to buy #{gear.name}: #{gear.coins} required")
+      name = gear.name
+      coins = if gear.respond_to? :coins
+                gear.coins
+              elsif gear.respond_to? :cost
+                gear.cost
+              else
+                "UNKNOWN"
+              end
+      super("not enough coins to buy #{name}: #{coins} required")
+    end
+  end
+
+  class NotEnoughSpace < RuntimeError
+    def initialize(thing)
+      name = thing.name
+      super("not enough space to buy #{name}")
     end
   end
 
@@ -184,7 +200,7 @@ class Player < ActiveRecord::Base
   end
 
   def ammo
-    []
+    piece.try(:ammo)
   end
 
   def gear_owned?(gear_name)
@@ -196,6 +212,8 @@ class Player < ActiveRecord::Base
   end
 
   def buy_gear! gear_name
+    raise Player::GameLocked if Game.current.locked? # todo: test
+
     gear = Gear.find_by_name(gear_name)
     if gear_owned?(gear_name)
       raise Player::AlreadyOwned, gear
@@ -209,6 +227,8 @@ class Player < ActiveRecord::Base
   end
 
   def drop_gear! gear_name
+    raise Player::GameLocked if Game.current.locked? # todo: test
+
     gear = Gear.find_by_name(gear_name)
     item = piece.items.find_by_gear_id(gear.id)
     raise NotOwned, gear if item.nil?
@@ -224,6 +244,24 @@ class Player < ActiveRecord::Base
     raise NotOwned, gear if item.nil?
     item.update!(equipped: true)
     self.reload
+  end
+
+  def buy_ammo!(ammo_name)
+    raise Player::GameLocked if Game.current.locked? # todo: test
+
+    # todo: term 'ammo' used for both singular and plural
+
+    desired_ammo = Ammo.by_name[ammo_name]
+    if ammo.size >= MAXIMUM_AMMO_SLOTS
+      raise Player::NotEnoughSpace, desired_ammo
+    elsif self.coins >= desired_ammo.cost
+      piece.add_ammo! ammo_name
+      self.coins -= desired_ammo.cost
+      self.save!
+    else
+      raise Player::NotEnoughCoins, desired_ammo
+    end
+
   end
 
   # methods which call Fitbit

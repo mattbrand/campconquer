@@ -248,6 +248,15 @@ types:
           description: |
             a list of all gear types
 
+/ammos:
+  get:
+    description: get all ammo types
+    queryParameters:
+    responses:
+      200:
+        body:
+          type: Ammo[]
+
 /games:
   description: all the games
 
@@ -362,11 +371,14 @@ types:
 
     /buy:
       post:
-        description: buy a piece of gear
+        description: buy a piece of gear or ammo (one only)
         queryParameters:
           gear[name]:
             type: string
             description: the short name of the gear to buy
+          ammo[name]:
+            type: string
+            description: the short name of the ammo to buy
           currency:
             type: string
             enum:

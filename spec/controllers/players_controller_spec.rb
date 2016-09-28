@@ -188,10 +188,6 @@ describe PlayersController, type: :controller do
     let!(:player) { Player.create! valid_attributes }
     let!(:galoshes) { Gear.create!(name: 'galoshes', gear_type: 'shoes') }
 
-    before do
-      player.set_piece
-    end
-
     describe "POST #buy" do
       context "with valid params" do
         it "buys an item" do
@@ -199,7 +195,6 @@ describe PlayersController, type: :controller do
           expect_ok
           expect(player.reload.gear_owned).to eq(['galoshes'])
           expect(response_json['player']['piece']).to include({'gear_owned' => ['galoshes']})
-
         end
       end
     end
@@ -228,4 +223,22 @@ describe PlayersController, type: :controller do
     end
 
   end
+
+  describe 'ammo' do
+    let!(:player) { Player.create! valid_attributes }
+
+    describe "POST #buy" do
+      context "with valid params" do
+        it "buys an item" do
+          player.update!(coins: 1000)
+          post :buy, {:id => player.to_param, :ammo => {:name => 'balloon'}}, valid_session
+          expect_ok
+          expect(player.reload.ammo).to eq(['balloon'])
+          expect(response_json['player']['piece']).to include({'ammo' => ['balloon']})
+          expect(player.coins).to eq(1000 - 100)
+        end
+      end
+    end
+  end
+
 end

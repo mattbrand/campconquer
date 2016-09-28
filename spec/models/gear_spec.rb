@@ -1,22 +1,22 @@
 # == Schema Information
 #
-# Table name: games
+# Table name: gears
 #
-#  id           :integer          not null, primary key
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  locked       :boolean
-#  current      :boolean          default("f")
-#  season_id    :integer
-#  state        :string           default("preparing")
-#  moves        :text
-#  winner       :string
-#  match_length :integer          default("0"), not null
-#
-# Indexes
-#
-#  index_games_on_current    (current)
-#  index_games_on_season_id  (season_id)
+#  id                  :integer          not null, primary key
+#  name                :string
+#  display_name        :string
+#  description         :string
+#  health_bonus        :integer          default("0"), not null
+#  speed_bonus         :integer          default("0"), not null
+#  range_bonus         :integer          default("0"), not null
+#  gear_type           :string
+#  asset_name          :string
+#  icon_name           :string
+#  coins               :integer          default("0"), not null
+#  gems                :integer          default("0"), not null
+#  level               :integer          default("0"), not null
+#  equipped_by_default :boolean          default("f"), not null
+#  owned_by_default    :boolean          default("f"), not null
 #
 
 require 'rails_helper'

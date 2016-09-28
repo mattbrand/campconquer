@@ -476,4 +476,72 @@ describe Player, type: :model do
     end
 
   end
+
+  describe 'ammo' do
+    let!(:player) { Player.create!(name: "alice", team: 'blue', coins: 1500) }
+
+    it 'is empty by default' do
+      expect(player.ammo).to be_empty
+    end
+
+    describe 'buying one piece of ammo' do
+      before { player.buy_ammo! 'balloon' }
+
+      it 'puts it in the player' do
+        expect(player.ammo).to eq(['balloon'])
+      end
+
+      it 'puts it in the piece' do
+        expect(player.piece.ammo).to eq(['balloon'])
+      end
+
+      it 'puts it in the json' do
+        json = player.as_json
+        expect(json['piece']['ammo']).to eq(['balloon'])
+      end
+
+      it 'costs money' do
+        expect(player.coins).to eq(1500 - 100)
+      end
+    end
+
+    describe 'buying a few pieces of ammo' do
+      before do
+        player.buy_ammo! 'balloon'
+        player.buy_ammo! 'arrow'
+        player.buy_ammo! 'bomb'
+      end
+
+      it 'puts them at the end of the ammo list' do
+        expect(player.ammo).to eq(['balloon', 'arrow', 'bomb'])
+      end
+
+      it 'costs money' do
+        expect(player.coins).to eq(1500 - (100 + 150 + 250))
+      end
+
+    end
+
+    it 'can only hold 10' do
+      10.times do
+        player.buy_ammo! 'balloon'
+      end
+
+      expect do
+        player.buy_ammo! 'balloon'
+      end.to raise_error Player::NotEnoughSpace
+
+    end
+
+    it 'fails if not enough money' do
+      player.update!(coins: 10)
+      expect do
+        player.buy_ammo! 'balloon'
+      end.to raise_error Player::NotEnoughCoins
+    end
+
+    it 'game copies ammo back after finished'
+
+  end
+
 end

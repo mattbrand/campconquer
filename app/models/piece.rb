@@ -18,6 +18,7 @@
 #  hair       :string
 #  skin_color :string
 #  hair_color :string
+#  ammo       :text
 #
 
 class Piece < ActiveRecord::Base
@@ -48,6 +49,7 @@ class Piece < ActiveRecord::Base
 
   # todo: validate that `path` is an array of Points
   serialize :path
+  serialize :ammo, JSON
 
   validates :team, inclusion: {
     in: Team::NAMES.values,
@@ -92,6 +94,17 @@ class Piece < ActiveRecord::Base
     items_equipped.map{|item| item.gear_name}
   end
 
+  def ammo
+    super || []
+  end
+
+  def add_ammo! ammo_name
+    # todo: validate
+
+    self.ammo = self.ammo + [ammo_name]
+    save!
+  end
+
   include ActiveModel::Serialization
 
   def as_json(options=nil)
@@ -117,6 +130,7 @@ class Piece < ActiveRecord::Base
              :hair,
              :skin_color,
              :hair_color,
+             :ammo,
       ],
       :methods => [:player_name, :gear_owned, :gear_equipped] # Rails is SO unencapsulated :-(
     }

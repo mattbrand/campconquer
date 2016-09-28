@@ -79,7 +79,17 @@ class PlayersController < ApplicationController
   end
 
   def buy
-    @player.buy_gear!(params['gear']['name'])
+    if params[:currency] and params[:currency] != 'coins'
+      raise NotImplementedError, "you can only buy with coins right now, not #{params[:currency]}"
+    end
+
+    if params['gear']
+      @player.buy_gear!(params['gear']['name'])
+    elsif params['ammo']
+      @player.buy_ammo!(params['ammo']['name'])
+    else
+      raise "Must specify buying either gear or ammo"
+    end
     render_player
   end
 

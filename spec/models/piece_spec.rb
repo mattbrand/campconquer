@@ -18,6 +18,7 @@
 #  hair       :string
 #  skin_color :string
 #  hair_color :string
+#  ammo       :text
 #
 
 require 'rails_helper'
