@@ -17,6 +17,8 @@
 #  level               :integer          default("0"), not null
 #  equipped_by_default :boolean          default("f"), not null
 #  owned_by_default    :boolean          default("f"), not null
+#  hair                :string
+#  body_type           :string
 #
 
 class Gear < ActiveRecord::Base
@@ -48,6 +50,8 @@ class Gear < ActiveRecord::Base
           :level,
           :asset_name,
           :icon_name,
+          :body_type,
+          :hair,
           :equipped_by_default,
           :owned_by_default,
         ],
@@ -81,6 +85,8 @@ class Gear < ActiveRecord::Base
                        level: row['Level'],
                        asset_name: row['Asset Name'],
                        icon_name: row['Icon Name'],
+                       body_type: row['Body Type'],
+                       hair: row['Hair'],
                        equipped_by_default: row['Equipped By Default'].to_i.to_boolean,
                        owned_by_default: row['Owned By Default'].to_i.to_boolean,
                      },

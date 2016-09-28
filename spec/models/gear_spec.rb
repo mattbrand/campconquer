@@ -17,6 +17,8 @@
 #  level               :integer          default("0"), not null
 #  equipped_by_default :boolean          default("f"), not null
 #  owned_by_default    :boolean          default("f"), not null
+#  hair                :string
+#  body_type           :string
 #
 
 require 'rails_helper'

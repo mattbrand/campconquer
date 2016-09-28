@@ -21,6 +21,8 @@ describe GearsController, type: :controller do
       coins: 0,
       gems: 0,
       level: 0,
+      body_type: Piece::BODY_TYPES.values.first,
+      hair: 'mohawk',
       owned_by_default: false,
       equipped_by_default: false,
     }
