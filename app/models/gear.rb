@@ -58,6 +58,7 @@ class Gear < ActiveRecord::Base
 
   # todo: unit test
   def self.read_csv(f)
+    sanitize_items
 
     old_gear = preserve_gear_ids
 
@@ -84,15 +85,17 @@ class Gear < ActiveRecord::Base
                        owned_by_default: row['Owned By Default'].to_i.to_boolean,
                      },
                    ])
-
-      update_gear_ids(old_gear)
     end
+
+    update_gear_ids(old_gear)
   end
 
-  def self.update_gear_ids(old_gear)
-    old_gear.each_pair do |old_gear_id, gear_name|
-      new_gear_id = Gear.find_by_name(gear_name)
-      Item.where(gear_id: old_gear_id).update_all(gear_id: new_gear_id)
+  def self.sanitize_items
+    # todo: make this faster?  store gear name too?
+    bogus = Item.all.includes(:gear).select{|i| i.gear.nil?}
+    unless bogus.empty?
+      puts "Found #{bogus.size} items with bogus gear; deleting"
+      Item.where(id: bogus.map(&:id)).delete_all
     end
   end
 
@@ -102,6 +105,20 @@ class Gear < ActiveRecord::Base
       old_gear[g.id] = g.name
     end
     old_gear
+  end
+
+  def self.update_gear_ids(old_gear)
+    unfound = []
+    old_gear.each_pair do |old_gear_id, gear_name|
+      new_gear = Gear.find_by_name(gear_name)
+      if new_gear.nil?
+        unfound << gear_name
+      else
+        new_gear_id = new_gear.id
+        Item.where(gear_id: old_gear_id).update_all(gear_id: new_gear_id)
+      end
+    end
+    raise "update failed for gear #{unfound.join(', ')}" if not unfound.empty?
   end
 
 end
