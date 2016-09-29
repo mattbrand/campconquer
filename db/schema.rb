@@ -121,6 +121,24 @@ ActiveRecord::Schema.define(version: 20160928202641) do
     t.text     "ammo"
   end
 
+  create_table "player_outcomes", force: :cascade do |t|
+    t.string   "team"
+    t.integer  "takedowns"
+    t.integer  "throws"
+    t.integer  "pickups"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+    t.integer  "outcome_id"
+    t.integer  "player_id"
+    t.integer  "flag_carry_distance", null: false
+    t.integer  "captures",            null: false
+    t.integer  "attack_mvp",          null: false
+    t.integer  "defend_mvp",          null: false
+  end
+
+  add_index "player_outcomes", ["outcome_id"], name: "index_player_outcomes_on_outcome_id"
+  add_index "player_outcomes", ["player_id"], name: "index_player_outcomes_on_player_id"
+
   create_table "players", force: :cascade do |t|
     t.string   "name"
     t.string   "team"
