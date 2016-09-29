@@ -37,6 +37,9 @@ types:
         type: string[]
       ammo:
         type: string[]
+      embodied:
+        type: boolean
+        description: has this player gone through setup yet?
       piece:
         type: Piece
 
@@ -353,12 +356,12 @@ types:
         team: string
 
   /{player_id}:
-    # currently this is done by admin web UI - should remove from API?
     post:
-      description: update a player - change her team or name only
+      description: update a player - change her team, name, or embodied state only
       queryParameters:
           name: string
           team: string
+          embodied: boolean
 
     get:
       description: get a single player

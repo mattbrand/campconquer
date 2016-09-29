@@ -11,6 +11,7 @@
 #  anti_forgery_token :string
 #  coins              :integer          default("0"), not null
 #  gems               :integer          default("0"), not null
+#  embodied           :boolean          default("f"), not null
 #
 
 require 'rails_helper'
@@ -27,6 +28,13 @@ describe Player, type: :model do
     Player.create!(name: "Joe", team: 'blue')
     player = Player.new(name: "Joe", team: 'red')
     expect(player).not_to be_valid
+  end
+
+  describe 'json' do
+    it 'includes embodied' do
+      p = Player.create!(name: "Joe", team: 'blue', embodied: true)
+      expect(p.as_json).to include({embodied: true}.stringify_keys)
+    end
   end
 
   describe 'set_piece' do

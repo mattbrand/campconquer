@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160928202641) do
+ActiveRecord::Schema.define(version: 20160929182045) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -124,12 +124,13 @@ ActiveRecord::Schema.define(version: 20160928202641) do
   create_table "players", force: :cascade do |t|
     t.string   "name"
     t.string   "team"
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.text     "fitbit_token_hash"
     t.string   "anti_forgery_token"
-    t.integer  "coins",              default: 0, null: false
-    t.integer  "gems",               default: 0, null: false
+    t.integer  "coins",              default: 0,     null: false
+    t.integer  "gems",               default: 0,     null: false
+    t.boolean  "embodied",           default: false, null: false
   end
 
   create_table "seasons", force: :cascade do |t|

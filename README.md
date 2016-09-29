@@ -19,7 +19,7 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 - [ ] number of pieces per path
 - [ ] ammo: send remaining ammo when game complete
 - [ ] null out path etc. between games
-- [ ] "embodied" flag
+- [x] "embodied" flag
 - [ ] only players with non-null paths etc should play
 
 - [ ] check steps in the background at least 1x/day, not just when players connect
@@ -55,7 +55,8 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 - [ ] make a Procfile https://devcenter.heroku.com/articles/ruby-default-web-server
 - [ ] CircleCI? 
 - [ ] Alex learns Unity (gratis)
-- [ ] add Body Type, Hair fields to gear.rb to match csv
+- [x] add Body Type, Hair fields to gear.rb to match csv
+- [ ] kill gear table
 
 # Updating the Seed DB
 

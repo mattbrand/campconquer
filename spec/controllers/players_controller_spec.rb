@@ -90,17 +90,26 @@ describe PlayersController, type: :controller do
     end
   end
 
+  # PUT /players/1
   describe "PUT #update" do
     context "with valid params" do
       let(:new_attributes) {
-        {team: 'red'}
+        {
+          team: 'red',
+          embodied: true,
+        }
       }
 
       it "updates the requested player" do
         player = Player.create! valid_attributes
+
+        expect(player.team).to eq('blue')
+        expect(player.embodied).to be false
+
         put :update, {:id => player.to_param, :player => new_attributes}, valid_session
         player.reload
         expect(player.team).to eq('red')
+        expect(player.embodied).to be true
       end
 
       it "renders the requested player as json" do
