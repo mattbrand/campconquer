@@ -24,6 +24,7 @@ gem 'oauth2'
 gem 'bulk_insert' # https://github.com/jamis/bulk_insert
 gem 'faker' # https://github.com/stympy/faker
 gem 'state_machine' # https://github.com/pluginaweek/state_machine
+gem 'chronic' # https://github.com/mojombo/chronic
 
 group :development, :test do
   gem 'sqlite3'
@@ -44,7 +45,6 @@ group :test do
   gem 'webmock'
   gem 'files' # https://github.com/alexch/files
   gem 'timecop' # https://github.com/travisjeffery/timecop
-  gem 'chronic' # https://github.com/mojombo/chronic
 end
 
 group :production do
