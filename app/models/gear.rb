@@ -76,12 +76,7 @@ class Gear < ActiveRecord::Base
     rows = CSV.read(f, headers: :first_row)
 
     rows.each do |row|
-      body_type = {
-        'MALE' => 'male',
-        'FEMALE' => 'female',
-        'GN1' => 'gender_neutral_1',
-        'GN2' => 'gender_neutral_2',
-      }[row['Body Type']]
+      body_type = row['Body Type'].try(:downcase)
 
       Gear.create!([
                      {
