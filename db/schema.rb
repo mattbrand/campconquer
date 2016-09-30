@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160929185748) do
+ActiveRecord::Schema.define(version: 20160930182451) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -43,15 +43,16 @@ ActiveRecord::Schema.define(version: 20160929185748) do
   add_index "activities", ["player_id"], name: "index_activities_on_player_id"
 
   create_table "games", force: :cascade do |t|
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
     t.boolean  "locked"
-    t.boolean  "current",      default: false
+    t.boolean  "current",         default: false
     t.integer  "season_id"
-    t.string   "state",        default: "preparing"
+    t.string   "state",           default: "preparing"
     t.text     "moves"
     t.string   "winner"
-    t.integer  "match_length", default: 0,           null: false
+    t.integer  "match_length",    default: 0,           null: false
+    t.datetime "scheduled_start"
   end
 
   add_index "games", ["current"], name: "index_games_on_current"

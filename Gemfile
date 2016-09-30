@@ -43,6 +43,8 @@ end
 group :test do
   gem 'webmock'
   gem 'files' # https://github.com/alexch/files
+  gem 'timecop' # https://github.com/travisjeffery/timecop
+  gem 'chronic' # https://github.com/mojombo/chronic
 end
 
 group :production do

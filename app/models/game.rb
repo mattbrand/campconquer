@@ -2,16 +2,17 @@
 #
 # Table name: games
 #
-#  id           :integer          not null, primary key
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  locked       :boolean
-#  current      :boolean          default("f")
-#  season_id    :integer
-#  state        :string           default("preparing")
-#  moves        :text
-#  winner       :string
-#  match_length :integer          default("0"), not null
+#  id              :integer          not null, primary key
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  locked          :boolean
+#  current         :boolean          default("f")
+#  season_id       :integer
+#  state           :string           default("preparing")
+#  moves           :text
+#  winner          :string
+#  match_length    :integer          default("0"), not null
+  #  scheduled_start :datetime
 #
 # Indexes
 #
@@ -24,6 +25,18 @@ class Game < ActiveRecord::Base
   class WinnerMismatch < RuntimeError
     def initialize(sent, computed)
       super("client said #{sent.inspect} was the winner but we think it's #{computed.inspect}")
+    end
+  end
+
+  def self.next_game_time
+    now = Time.current
+    Chronic.time_class = Time.zone
+    if now.hour < 11
+      Chronic.parse('11 am')
+    elsif now.hour < 16
+      Chronic.parse('4 pm')
+    else
+      Chronic.parse('tomorrow 11 am')
     end
   end
 
@@ -70,7 +83,10 @@ class Game < ActiveRecord::Base
   def self.current
     current_game = where(current: true).first
     if current_game.nil?
-      current_game = Game.create! locked: false, current: true, season_id: Season.current.id
+      current_game = Game.create! locked: false,
+                                  current: true,
+                                  season_id: Season.current.id,
+                                  scheduled_start: Game.next_game_time
     end
     current_game
   end

@@ -2,16 +2,17 @@
 #
 # Table name: games
 #
-#  id           :integer          not null, primary key
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  locked       :boolean
-#  current      :boolean          default("f")
-#  season_id    :integer
-#  state        :string           default("preparing")
-#  moves        :text
-#  winner       :string
-#  match_length :integer          default("0"), not null
+#  id              :integer          not null, primary key
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  locked          :boolean
+#  current         :boolean          default("f")
+#  season_id       :integer
+#  state           :string           default("preparing")
+#  moves           :text
+#  winner          :string
+#  match_length    :integer          default("0"), not null
+#  scheduled_start :datetime
 #
 # Indexes
 #
@@ -86,6 +87,13 @@ describe Game do
         expect(game).not_to be_locked
         expect(game).not_to eq(@previous_game)
       end
+
+      it "sets its start time" do
+        someday = Time.local(2008, 6, 1, 11, 0, 0)
+        expect(Game).to receive(:next_game_time).and_return(someday)
+        game = Game.current
+        expect(game.scheduled_start).to eq(someday)
+      end
     end
 
     context "when there is a current game" do
@@ -117,6 +125,44 @@ describe Game do
       game_c = Game.create! current: true
 
       expect(Game.previous).to eq(game_b)
+    end
+  end
+
+  describe 'scheduled start time' do
+    def check_time(current_time, expected_next_time)
+      Timecop.freeze(current_time) do
+        expect(Game.next_game_time).to eq(expected_next_time)
+      end
+    end
+
+    it "at midnight, forwards to 11" do
+      check_time(Time.local(2008, 1, 1, 0, 0, 0), Time.local(2008, 1, 1, 11, 0, 0))
+      check_time(Time.local(2008, 6, 1, 0, 0, 0), Time.local(2008, 6, 1, 11, 0, 0))
+      check_time(Time.local(2008, 11, 1, 0, 0, 0), Time.local(2008, 11, 1, 11, 0, 0))
+    end
+
+    it "before 11, forwards to 11" do
+      check_time(Time.local(2008, 1, 1, 10, 59, 0), Time.local(2008, 1, 1, 11, 0, 0))
+      check_time(Time.local(2008, 6, 1, 10, 59, 0), Time.local(2008, 6, 1, 11, 0, 0))
+      check_time(Time.local(2008, 11, 1, 10, 59, 0), Time.local(2008, 11, 1, 11, 0, 0))
+    end
+
+    it "at 11, forwards to 4" do
+      check_time(Time.local(2008, 1, 1, 11, 0, 0), Time.local(2008, 1, 1, 16, 0, 0))
+      check_time(Time.local(2008, 6, 1, 11, 0, 0), Time.local(2008, 6, 1, 16, 0, 0))
+      check_time(Time.local(2008, 11, 1, 11, 0, 0), Time.local(2008, 11, 1, 16, 0, 0))
+    end
+
+    it "at 4, forwards to 11 the next day" do
+      check_time(Time.local(2008, 1, 1, 16, 0, 0), Time.local(2008, 1, 2, 11, 0, 0))
+      check_time(Time.local(2008, 6, 1, 16, 0, 0), Time.local(2008, 6, 2, 11, 0, 0))
+      check_time(Time.local(2008, 11, 1, 16, 0, 0), Time.local(2008, 11, 2, 11, 0, 0))
+    end
+
+    it "after 4, forwards to 11 the next day" do
+      check_time(Time.local(2008, 1, 1, 16, 1, 0), Time.local(2008, 1, 2, 11, 0, 0))
+      check_time(Time.local(2008, 6, 1, 16, 1, 0), Time.local(2008, 6, 2, 11, 0, 0))
+      check_time(Time.local(2008, 11, 1, 16, 1, 0), Time.local(2008, 11, 2, 11, 0, 0))
     end
   end
 
@@ -240,6 +286,8 @@ describe Game do
 
       json = game.as_json
       expect(json['winner']).to eq('red')
+      expect(json['scheduled_start']).to be
+      expect(json['scheduled_start']).to eq(Game.next_game_time.iso8601) # this may fail if run precisely at 11:00 or 16:00
       expect(json['team_outcomes']).to be
       expect(json['player_outcomes']).to be
       expect(json['player_outcomes'].size).to eq(2)

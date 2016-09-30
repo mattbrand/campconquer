@@ -14,11 +14,25 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 
 # TODO
 
-- [ ] login
-- [ ] time to next battle
-- [ ] number of pieces per path
+- [ ] login 
+  - [ ] MVP: one password, sent in the clear :-O
+
 - [ ] ammo: send remaining ammo when game complete
+
 - [ ] null out path etc. between games
+
+- [x] time of next battle
+  - 11 am and 4 pm for our testing
+
+- [ ] "game state":
+    - has this player watched the last battle? if so, 
+    - has this player set a path etc? if so, "prepared", 
+    - else "prepare"
+      - time to next battle (or "time of")
+      - send down all available paths + 
+        count of players who have chosen each path
+      - basically add "count" to /paths as /game/xxx[game][paths]
+
 - [x] "embodied" flag
 - [ ] only players with non-null paths etc should play
 
