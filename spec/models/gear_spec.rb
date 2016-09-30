@@ -30,7 +30,7 @@ describe Gear do
   before do
     @f = file "foo.csv", <<-CSV
 Name,Type,Body Type,Display Name,Description,Asset Name,Icon Name,Coins,Gems,Level,Health Bonus,Speed Bonus,Range Bonus,Hair,Owned By Default,Equipped By Default
-hat0,HEAD,GN1,Headscarf,a lovely scarf,hair_headscarf,scarf_icon,1,2,3,4,5,6,hair_short_01_gn1,1,0
+hat0,HEAD,GENDER_NEUTRAL_1,Headscarf,a lovely scarf,hair_headscarf,scarf_icon,1,2,3,4,5,6,hair_short_01_gn1,1,0
     CSV
     Gear.read_csv(@f)
   end
