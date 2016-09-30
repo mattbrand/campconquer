@@ -1,6 +1,6 @@
 ActiveAdmin.register Player do
 
-  permit_params :name, :team
+  permit_params :name, :team, :coins, :gems, :embodied
   filter :name
   filter :team, as: :select
 
@@ -9,6 +9,9 @@ ActiveAdmin.register Player do
     column :id
     column :name
     column :team
+    column :coins
+    column :gems
+    column :embodied
     column :created_at
     column :updated_at
     column "Fitbit User" do |player|
@@ -38,6 +41,9 @@ ActiveAdmin.register Player do
       # https://github.com/justinfrench/formtastic/issues/171
       f.input :fitbit_token_hash, as: :string, input_html: {readonly: true, style: 'background: #ddd'}
       f.input :anti_forgery_token, input_html: {readonly: true, style: 'background: #ddd'}
+      f.input :coins
+      f.input :gems
+      f.input :embodied, as: :boolean
       f.actions
     end
   end
