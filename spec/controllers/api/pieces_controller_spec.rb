@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe PiecesController, type: :controller do
+describe API::PiecesController, type: :controller do
 
   # This should return the minimal set of attributes required to create a valid
   # Piece. As you add validations to Piece, be sure to

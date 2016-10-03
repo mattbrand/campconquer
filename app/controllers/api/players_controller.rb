@@ -1,4 +1,5 @@
-class PlayersController < ApplicationController
+module API
+  class PlayersController < APIController
   before_action :find_player, only: [:show,
                                      :update,
                                      :auth,
@@ -128,4 +129,5 @@ class PlayersController < ApplicationController
   def player_params
     params.require(:player).permit(:name, :team, :embodied)
   end
+end
 end

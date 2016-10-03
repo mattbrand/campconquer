@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe GamesController, type: :controller do
+describe API::GamesController, type: :controller do
 
   # This should return the minimal set of attributes required to create a valid
   # Game. As you add validations to Game, be sure to
