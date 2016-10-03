@@ -24,7 +24,7 @@ class Ammo
   attr_reader :name, :cost
 
   # sadly and uncharacteristically un-DRY for Ruby
-  def initialize name: , cost:, range_bonus: , damage: , splash_damage: , splash_radius:
+  def initialize(name:, cost:, range_bonus:, damage:, splash_damage:, splash_radius:)
     @name, @cost, @range_bonus, @damage, @splash_damage, @splash_radius =
       name, cost, range_bonus, damage, splash_damage, splash_radius
   end

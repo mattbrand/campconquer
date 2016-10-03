@@ -47,6 +47,7 @@ describe Game do
   let(:galoshes) { Gear.create!(name: 'galoshes', gear_type: 'shoes') }
   let(:tee_shirt) { Gear.create!(name: 'tee-shirt', gear_type: 'shirt') }
 
+
   describe "current" do
     context "when there is no game at all" do
 

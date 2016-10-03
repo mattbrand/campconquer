@@ -1,21 +1,21 @@
 require 'rails_helper'
 
-describe PiecesController, type: :controller do
+describe API::PiecesController, type: :controller do
 
   # This should return the minimal set of attributes required to create a valid
   # Piece. As you add validations to Piece, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
     {
-      body_type: 'female',
-      role: 'offense',
-      face: 'happy',
-      hair: 'the bieber',
-      skin_color: 'pale',
-      hair_color: 'blonde',
-      health: 1,
-      speed: 2,
-      range: 3,
+        body_type: 'female',
+        role: 'offense',
+        face: 'happy',
+        hair: 'the bieber',
+        skin_color: 'pale',
+        hair_color: 'blonde',
+        health: 1,
+        speed: 2,
+        range: 3,
     }
   }
 
@@ -85,8 +85,8 @@ describe PiecesController, type: :controller do
                          :piece => valid_attributes}, valid_session
           expect(response).not_to be_ok
           expect(response_json).to include({
-                                             'status' => 'error',
-                                             'message' => Player::CANT_CHANGE_PIECE_WHEN_GAME_LOCKED
+                                               'status' => 'error',
+                                               'message' => Player::CANT_CHANGE_PIECE_WHEN_GAME_LOCKED
                                            })
         end
       end
@@ -102,11 +102,11 @@ describe PiecesController, type: :controller do
                        :piece => invalid_attributes}, valid_session
         expect(response).not_to be_ok
         expect(response_json).to include(
-                                   {
-                                     'status' => 'error',
-                                     'message' =>
-                                       'Role must be "offense" or "defense"'
-                                   })
+                                     {
+                                         'status' => 'error',
+                                         'message' =>
+                                             'Role must be "offense" or "defense"'
+                                     })
       end
     end
 
@@ -117,9 +117,9 @@ describe PiecesController, type: :controller do
 
       it "accepts path as a json string" do
         for json_string in [
-          '{"Points":[{"X":11.25,"Y":5.0},{"X":9.75,"Y":4.5},{"X":7.5,"Y":9.0},{"X":0.5,"Y":9.0},{"X":0.5,"Y":5.0}]}',
-          '[{"X":11.25,"Y":5.0},{"X":9.75,"Y":4.5},{"X":7.5,"Y":9.0},{"X":0.5,"Y":9.0},{"X":0.5,"Y":5.0}]',
-          '[{"x":11.25,"y":5.0},{"x":9.75,"y":4.5},{"x":7.5,"y":9.0},{"x":0.5,"y":9.0},{"x":0.5,"y":5.0}]',
+            '{"Points":[{"X":11.25,"Y":5.0},{"X":9.75,"Y":4.5},{"X":7.5,"Y":9.0},{"X":0.5,"Y":9.0},{"X":0.5,"Y":5.0}]}',
+            '[{"X":11.25,"Y":5.0},{"X":9.75,"Y":4.5},{"X":7.5,"Y":9.0},{"X":0.5,"Y":9.0},{"X":0.5,"Y":5.0}]',
+            '[{"x":11.25,"y":5.0},{"x":9.75,"y":4.5},{"x":7.5,"y":9.0},{"x":0.5,"y":9.0},{"x":0.5,"y":5.0}]',
         ]
 
           post :create, {:player_id => @player.id,
@@ -130,13 +130,13 @@ describe PiecesController, type: :controller do
 
           @player.reload
           expect(@player.piece.path).to eq(
-                                          [
-                                            Point.new(x: 11.25, y: 5.0),
-                                            Point.new(x: 9.75, y: 4.5),
-                                            Point.new(x: 7.5, y: 9.0),
-                                            Point.new(x: 0.5, y: 9.0),
-                                            Point.new(x: 0.5, y: 5.0)
-                                          ]
+                                            [
+                                                Point.new(x: 11.25, y: 5.0),
+                                                Point.new(x: 9.75, y: 4.5),
+                                                Point.new(x: 7.5, y: 9.0),
+                                                Point.new(x: 0.5, y: 9.0),
+                                                Point.new(x: 0.5, y: 5.0)
+                                            ]
                                         )
 
         end

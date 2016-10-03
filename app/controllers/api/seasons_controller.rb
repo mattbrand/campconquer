@@ -1,4 +1,4 @@
-class SeasonsController < ApplicationController
+class SeasonsController < APIController
   before_action :find_season
 
   # GET /seasons/1
