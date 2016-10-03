@@ -77,7 +77,6 @@ class Piece < ActiveRecord::Base
       decoded = JSON.parse(value)
       if decoded.is_a? Hash and decoded["Points"]
         decoded = decoded["Points"]
-        ap decoded
         self.path = decoded
       end
     else
