@@ -53,6 +53,7 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 - [ ] unequip (or we may not need unequip if i add the rule “only one of each item type can be equipped” )
 - [ ] player stats (all season(s?)) in GET player endpoint?
 
+- [ ] load fitbit data as far back as needed
 
 ## chores
 
@@ -63,7 +64,7 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 - [ ] merge Piece into Player in API
 - [ ] foreign key indexes for all tables
 - [ ] New Relic
-- [ ] add `/api` prefix and `ApiController`
+- [-] add `/api` prefix and `ApiController` -- now on `api-namespace` branch
 - [ ] [upgrade to Rails 5](http://blog.bigbinary.com/2016/08/18/new-framework-defaults-in-rails-5-to-make-upgrade-easier.html)
 - [ ] switch from RAML to Swagger? http://swagger.io/
 - [ ] make a Procfile https://devcenter.heroku.com/articles/ruby-default-web-server
