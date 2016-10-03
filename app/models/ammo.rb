@@ -5,9 +5,9 @@ class Ammo
 
   def self.all
     [
-      Ammo.new(name: 'balloon', cost: 100, range_bonus: 0, damage: 1, splash_damage: 0, splash_radius: 0),
-      Ammo.new(name: 'arrow', cost: 150, range_bonus: 30, damage: 1, splash_damage: 0, splash_radius: 0),
-      Ammo.new(name: 'bomb', cost: 250, range_bonus: 0, damage: 3, splash_damage: 1, splash_radius: 0.25),
+      Ammo.new(name: 'balloon', cost: 25, range_bonus: 0, damage: 1, splash_damage: 0, splash_radius: 0),
+      Ammo.new(name: 'arrow', cost: 50, range_bonus: 30, damage: 1, splash_damage: 0, splash_radius: 0),
+      Ammo.new(name: 'bomb', cost: 100, range_bonus: 0, damage: 3, splash_damage: 1, splash_radius: 0.25),
     ]
   end
 

@@ -244,7 +244,7 @@ describe PlayersController, type: :controller do
           expect_ok
           expect(player.reload.ammo).to eq(['balloon'])
           expect(response_json['player']['piece']).to include({'ammo' => ['balloon']})
-          expect(player.coins).to eq(1000 - 100)
+          expect(player.coins).to eq(1000 - 25)
         end
       end
     end

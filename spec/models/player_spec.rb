@@ -506,7 +506,7 @@ describe Player, type: :model do
       end
 
       it 'costs money' do
-        expect(player.coins).to eq(1500 - 100)
+        expect(player.coins).to eq(1500 - 25)
       end
     end
 
@@ -522,7 +522,7 @@ describe Player, type: :model do
       end
 
       it 'costs money' do
-        expect(player.coins).to eq(1500 - (100 + 150 + 250))
+        expect(player.coins).to eq(1500 - (25 + 50 + 100))
       end
 
     end
