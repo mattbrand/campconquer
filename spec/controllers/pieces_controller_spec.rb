@@ -109,6 +109,34 @@ describe PiecesController, type: :controller do
                                    })
       end
     end
+
+    context 'with path' do
+      before do
+        @game = Game.current
+      end
+
+      it "accepts path as a json string" do
+        json_string = '{"Points":[{"X":11.25,"Y":5.0},{"X":9.75,"Y":4.5},{"X":7.5,"Y":9.0},{"X":0.5,"Y":9.0},{"X":0.5,"Y":5.0}]}'
+
+        post :create, {:player_id => @player.id,
+                       :piece => {:path => json_string}}, valid_session
+
+        # expect(response).to be_ok
+        @player.reload
+        expect(@player.piece.path).to eq(
+                                        [
+                                          Point.new(x: 11.25, y: 5.0),
+                                          Point.new(x: 9.75, y: 4.5),
+                                          Point.new(x: 7.5, y: 9.0),
+                                          Point.new(x: 0.5, y: 9.0),
+                                          Point.new(x: 0.5, y: 5.0)
+                                        ]
+
+
+                                      )
+
+      end
+    end
   end
 
 end
