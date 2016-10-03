@@ -135,35 +135,38 @@ describe Game do
       end
     end
 
+    winter_month = 1
+    summer_month = 8
+
+    def local_time(year: 2008, month: 1, day: 1, hour: 0, minute: 0, second: 0)
+      Time.zone.local(year, month, day, hour, minute, second)
+    end
+
     it "at midnight, forwards to 11" do
-      check_time(Time.zone.local(2008, 1, 1, 0, 0, 0), Time.zone.local(2008, 1, 1, 11, 0, 0))
-      check_time(Time.zone.local(2008, 6, 1, 0, 0, 0), Time.zone.local(2008, 6, 1, 11, 0, 0))
-      check_time(Time.zone.local(2008, 11, 1, 0, 0, 0), Time.zone.local(2008, 11, 1, 11, 0, 0))
+      check_time(local_time(month: winter_month, hour: 0), local_time(month: winter_month, hour: 11))
+      check_time(local_time(month: summer_month, hour: 0), local_time(month: summer_month, hour: 11))
     end
 
     it "before 11, forwards to 11" do
-      check_time(Time.zone.local(2008, 1, 1, 10, 59, 0), Time.zone.local(2008, 1, 1, 11, 0, 0))
-      check_time(Time.zone.local(2008, 6, 1, 10, 59, 0), Time.zone.local(2008, 6, 1, 11, 0, 0))
-      check_time(Time.zone.local(2008, 11, 1, 10, 59, 0), Time.zone.local(2008, 11, 1, 11, 0, 0))
+      check_time(local_time(month: winter_month, hour: 10, minute: 59), local_time(month: winter_month, hour: 11))
+      check_time(local_time(month: summer_month, hour: 10, minute: 59), local_time(month: summer_month, hour: 11))
     end
 
     it "at 11, forwards to 4" do
-      check_time(Time.zone.local(2008, 1, 1, 11, 0, 0), Time.zone.local(2008, 1, 1, 16, 0, 0))
-      check_time(Time.zone.local(2008, 6, 1, 11, 0, 0), Time.zone.local(2008, 6, 1, 16, 0, 0))
-      check_time(Time.zone.local(2008, 11, 1, 11, 0, 0), Time.zone.local(2008, 11, 1, 16, 0, 0))
+      check_time(local_time(month: winter_month, hour: 11), local_time(month: winter_month, hour: 16))
+      check_time(local_time(month: summer_month, hour: 11), local_time(month: summer_month, hour: 16))
     end
 
     it "at 4, forwards to 11 the next day" do
-      check_time(Time.zone.local(2008, 1, 1, 16, 0, 0), Time.zone.local(2008, 1, 2, 11, 0, 0))
-      check_time(Time.zone.local(2008, 6, 1, 16, 0, 0), Time.zone.local(2008, 6, 2, 11, 0, 0))
-      check_time(Time.zone.local(2008, 11, 1, 16, 0, 0), Time.zone.local(2008, 11, 2, 11, 0, 0))
+      check_time(local_time(month: winter_month, hour: 16), local_time(month: winter_month, day: 2, hour: 11))
+      check_time(local_time(month: summer_month, hour: 16), local_time(month: summer_month, day: 2, hour: 11))
     end
 
     it "after 4, forwards to 11 the next day" do
-      check_time(Time.zone.local(2008, 1, 1, 16, 1, 0), Time.zone.local(2008, 1, 2, 11, 0, 0))
-      check_time(Time.zone.local(2008, 6, 1, 16, 1, 0), Time.zone.local(2008, 6, 2, 11, 0, 0))
-      check_time(Time.zone.local(2008, 11, 1, 16, 1, 0), Time.zone.local(2008, 11, 2, 11, 0, 0))
+      check_time(local_time(month: winter_month, hour: 16, minute: 1), local_time(month: winter_month, day: 2, hour: 11))
+      check_time(local_time(month: summer_month, hour: 16, minute: 1), local_time(month: summer_month, day: 2, hour: 11))
     end
+
   end
 
   describe 'lock_game!' do
