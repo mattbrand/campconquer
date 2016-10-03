@@ -86,7 +86,7 @@ class Player < ActiveRecord::Base
       raise Player::GameLocked
     end
 
-    params = params.pick(:body_type, :role, :path, :face, :hair, :skin_color, :hair_color)
+    params = params.pick(:body_type, :role, :path, :face, :hair, :skin_color, :hair_color, :health, :speed, :range)
     if self.piece
       self.piece.update!(params)
     else

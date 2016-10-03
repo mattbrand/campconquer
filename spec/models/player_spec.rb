@@ -81,9 +81,6 @@ describe Player, type: :model do
 
       {
           team: 'red',
-          speed: 9,
-          health: 9,
-          range: 9,
           created_at: 9,
           updated_at: 9,
           game_id: 9999,

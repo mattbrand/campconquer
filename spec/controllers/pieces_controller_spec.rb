@@ -13,7 +13,9 @@ describe PiecesController, type: :controller do
       hair: 'the bieber',
       skin_color: 'pale',
       hair_color: 'blonde',
-
+      health: 1,
+      speed: 2,
+      range: 3,
     }
   }
 

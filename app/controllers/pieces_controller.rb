@@ -27,6 +27,9 @@ class PiecesController < ApplicationController
       :hair,
       :skin_color,
       :hair_color,
+      :health,
+      :speed,
+      :range,
     )
   end
 end

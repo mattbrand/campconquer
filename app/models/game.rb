@@ -12,6 +12,14 @@
 #  moves           :text
 #  winner          :string
 #  match_length    :integer          default("0"), not null
+#  scheduled_start :datetime
+#
+# Indexes
+#
+#  index_games_on_current    (current)
+#  index_games_on_season_id  (season_id)
+#
+
   #  scheduled_start :datetime
 #
 # Indexes
