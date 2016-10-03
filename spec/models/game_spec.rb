@@ -89,7 +89,7 @@ describe Game do
       end
 
       it "sets its start time" do
-        someday = Time.local(2008, 6, 1, 11, 0, 0)
+        someday = Time.zone.local(2008, 6, 1, 11, 0, 0)
         expect(Game).to receive(:next_game_time).and_return(someday)
         game = Game.current
         expect(game.scheduled_start).to eq(someday)
@@ -136,33 +136,33 @@ describe Game do
     end
 
     it "at midnight, forwards to 11" do
-      check_time(Time.local(2008, 1, 1, 0, 0, 0), Time.local(2008, 1, 1, 11, 0, 0))
-      check_time(Time.local(2008, 6, 1, 0, 0, 0), Time.local(2008, 6, 1, 11, 0, 0))
-      check_time(Time.local(2008, 11, 1, 0, 0, 0), Time.local(2008, 11, 1, 11, 0, 0))
+      check_time(Time.zone.local(2008, 1, 1, 0, 0, 0), Time.zone.local(2008, 1, 1, 11, 0, 0))
+      check_time(Time.zone.local(2008, 6, 1, 0, 0, 0), Time.zone.local(2008, 6, 1, 11, 0, 0))
+      check_time(Time.zone.local(2008, 11, 1, 0, 0, 0), Time.zone.local(2008, 11, 1, 11, 0, 0))
     end
 
     it "before 11, forwards to 11" do
-      check_time(Time.local(2008, 1, 1, 10, 59, 0), Time.local(2008, 1, 1, 11, 0, 0))
-      check_time(Time.local(2008, 6, 1, 10, 59, 0), Time.local(2008, 6, 1, 11, 0, 0))
-      check_time(Time.local(2008, 11, 1, 10, 59, 0), Time.local(2008, 11, 1, 11, 0, 0))
+      check_time(Time.zone.local(2008, 1, 1, 10, 59, 0), Time.zone.local(2008, 1, 1, 11, 0, 0))
+      check_time(Time.zone.local(2008, 6, 1, 10, 59, 0), Time.zone.local(2008, 6, 1, 11, 0, 0))
+      check_time(Time.zone.local(2008, 11, 1, 10, 59, 0), Time.zone.local(2008, 11, 1, 11, 0, 0))
     end
 
     it "at 11, forwards to 4" do
-      check_time(Time.local(2008, 1, 1, 11, 0, 0), Time.local(2008, 1, 1, 16, 0, 0))
-      check_time(Time.local(2008, 6, 1, 11, 0, 0), Time.local(2008, 6, 1, 16, 0, 0))
-      check_time(Time.local(2008, 11, 1, 11, 0, 0), Time.local(2008, 11, 1, 16, 0, 0))
+      check_time(Time.zone.local(2008, 1, 1, 11, 0, 0), Time.zone.local(2008, 1, 1, 16, 0, 0))
+      check_time(Time.zone.local(2008, 6, 1, 11, 0, 0), Time.zone.local(2008, 6, 1, 16, 0, 0))
+      check_time(Time.zone.local(2008, 11, 1, 11, 0, 0), Time.zone.local(2008, 11, 1, 16, 0, 0))
     end
 
     it "at 4, forwards to 11 the next day" do
-      check_time(Time.local(2008, 1, 1, 16, 0, 0), Time.local(2008, 1, 2, 11, 0, 0))
-      check_time(Time.local(2008, 6, 1, 16, 0, 0), Time.local(2008, 6, 2, 11, 0, 0))
-      check_time(Time.local(2008, 11, 1, 16, 0, 0), Time.local(2008, 11, 2, 11, 0, 0))
+      check_time(Time.zone.local(2008, 1, 1, 16, 0, 0), Time.zone.local(2008, 1, 2, 11, 0, 0))
+      check_time(Time.zone.local(2008, 6, 1, 16, 0, 0), Time.zone.local(2008, 6, 2, 11, 0, 0))
+      check_time(Time.zone.local(2008, 11, 1, 16, 0, 0), Time.zone.local(2008, 11, 2, 11, 0, 0))
     end
 
     it "after 4, forwards to 11 the next day" do
-      check_time(Time.local(2008, 1, 1, 16, 1, 0), Time.local(2008, 1, 2, 11, 0, 0))
-      check_time(Time.local(2008, 6, 1, 16, 1, 0), Time.local(2008, 6, 2, 11, 0, 0))
-      check_time(Time.local(2008, 11, 1, 16, 1, 0), Time.local(2008, 11, 2, 11, 0, 0))
+      check_time(Time.zone.local(2008, 1, 1, 16, 1, 0), Time.zone.local(2008, 1, 2, 11, 0, 0))
+      check_time(Time.zone.local(2008, 6, 1, 16, 1, 0), Time.zone.local(2008, 6, 2, 11, 0, 0))
+      check_time(Time.zone.local(2008, 11, 1, 16, 1, 0), Time.zone.local(2008, 11, 2, 11, 0, 0))
     end
   end
 
