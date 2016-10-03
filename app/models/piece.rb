@@ -73,6 +73,13 @@ class Piece < ActiveRecord::Base
   def path=(value)
     if value.blank?
       super(nil)
+    elsif value.is_a? String
+      decoded = JSON.parse(value)
+      if decoded.is_a? Hash and decoded["Points"]
+        decoded = decoded["Points"]
+        ap decoded
+        self.path = decoded
+      end
     else
       super(value.map do |p|
         if p.is_a? Point
