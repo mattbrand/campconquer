@@ -9,6 +9,10 @@ default: &default
   pool: 5
   timeout: 5000
 
+production:
+  url:  <%= ENV["DATABASE_URL"] %>
+  pool: <%= ENV["DB_POOL"] || ENV['RAILS_MAX_THREADS'] || 5 %>
+
 development:
   <<: *default
   database: db/development.sqlite3

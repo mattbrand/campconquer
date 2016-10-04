@@ -26,6 +26,9 @@ gem 'faker' # https://github.com/stympy/faker
 gem 'state_machine' # https://github.com/pluginaweek/state_machine
 gem 'chronic' # https://github.com/mojombo/chronic
 
+gem 'puma'
+gem 'rack-timeout'
+
 group :development, :test do
   gem 'sqlite3'
   gem 'byebug'   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
