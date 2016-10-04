@@ -189,7 +189,7 @@ class Game < ActiveRecord::Base
       players.each do |player|
         original_piece = player.piece
         if original_piece
-          piece_attrs = original_piece.attributes + {game_id: self.id}
+          piece_attrs = original_piece.attributes_before_type_cast + {game_id: self.id}
           bulk_pieces.add(piece_attrs)
         end
       end

@@ -525,6 +525,12 @@ describe Player, type: :model do
         expect(player.coins).to eq(1500 - (25 + 50 + 100))
       end
 
+      it 'bugfix: gets serialized correctly after locking/copying' do
+        game = Game.current
+        game.lock_game!
+        game.as_json # was giving "JSON::ParserError" since ammo field became YAML during bulk copy
+      end
+
     end
 
     it 'can only hold 10' do
