@@ -55,3 +55,29 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
 end
+
+
+# todo: move to a fixture factory or something
+
+def create_alice_with_piece
+  create_player(player_name: 'alice', body_type: 'female', team: 'blue')
+end
+
+def create_bob_with_piece
+  create_player(player_name: 'bob', body_type: 'male', team: 'blue')
+end
+
+def create_player(player_name:,
+                  team: 'red',
+                  body_type: 'female',
+                  role: 'defense',
+                  coins: 100)
+  player = Player.create!(name: player_name, team: team, coins: coins)
+  piece_attributes = {
+    body_type: body_type,
+    role: role,
+    path: [[0, 0]]
+  }
+  player.set_piece(piece_attributes)
+  player
+end

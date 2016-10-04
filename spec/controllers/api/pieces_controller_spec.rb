@@ -33,7 +33,7 @@ describe API::PiecesController, type: :controller do
   let(:valid_session) { {} }
 
   before do
-    @player = Player.create!(name: 'Abby', team: 'blue')
+    @player = create_player(player_name: 'Abby', team: 'blue')
   end
 
   describe "POST #create" do

@@ -155,10 +155,10 @@ describe API::GamesController, type: :controller do
 
     describe 'POST /games/1/lock' do
       before do
-        @betsy = Player.create!(name: 'Betsy', team: 'blue')
+        @betsy = create_player(player_name: 'Betsy', team: 'blue')
         @betsys_piece = @betsy.set_piece(body_type: 'female', role: 'offense')
 
-        @randy = Player.create!(name: 'Randy', team: 'red')
+        @randy = create_player(player_name: 'Randy', team: 'red')
         @randys_piece = @randy.set_piece(body_type: 'male', role: 'defense')
 
       end
@@ -226,7 +226,7 @@ describe API::GamesController, type: :controller do
 
     describe 'DELETE /games/1/lock' do
       before do
-        @betsy = Player.create!(name: 'Betsy', team: 'blue')
+        @betsy = create_player(player_name: 'Betsy', team: 'blue')
         @betsys_piece = @betsy.set_piece(body_type: 'female', role: 'offense')
 
         @game.lock_game!

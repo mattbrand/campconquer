@@ -24,26 +24,6 @@ require 'rails_helper'
 
 describe Game do
 
-
-  # todo: move to a fixture factory
-  def create_alice_with_piece
-    create_player(player_name: 'alice' 'female', team: 'blue')
-  end
-
-  def create_player(player_name:, team: 'red',
-                    body_type: 'female',
-                    role: 'defense',
-                    coins: 100)
-    player = Player.create!(name: player_name, team: team, coins: coins)
-    piece_attributes = {
-      body_type: body_type,
-      role: role,
-      path: [[0, 0]]
-    }
-    player.set_piece(piece_attributes)
-    player
-  end
-
   let(:galoshes) { Gear.create!(name: 'galoshes', gear_type: 'shoes') }
   let(:tee_shirt) { Gear.create!(name: 'tee-shirt', gear_type: 'shirt') }
 
@@ -198,7 +178,6 @@ describe Game do
         expect(alice.reload.piece).to eq(old_piece)
       end
 
-
       it "copies a player's items" do
         alice = create_alice_with_piece
 
@@ -243,7 +222,7 @@ describe Game do
       context 'when there is a player with no piece' do
         it 'ignores it' do
           alice = create_alice_with_piece
-          bob = Player.create!(name: 'bob', team: 'blue')
+          bob = create_player(player_name: 'bob', team: 'blue')
           bob.piece.destroy! # this is a little weird now that pieces are always created
           current_game.lock_game! # assert no raise
           expect(current_game).to be_locked
@@ -253,13 +232,26 @@ describe Game do
         end
       end
 
+      context 'when there is a player with no path' do
+        it 'ignores it' do
+          alice = create_alice_with_piece
+          alice.piece.update!(path: nil) # just making sure
+          current_game.lock_game! # assert no raise
+          expect(current_game).to be_locked
+          expect(current_game.pieces.size).to eq(0)
+        end
+      end
+
       it 'only copies one piece per player (not old games) (bug)' do
         alice = create_alice_with_piece
+        alice.set_piece(path: [[0,0]] )
         current_game.lock_game!
         expect(current_game.pieces.count).to eq(1)
 
         current_game.finish_game!
+
         current_game = Game.current
+        alice.set_piece(path: [[0,0]] )
         current_game.lock_game!
         expect(current_game.pieces.count).to eq(1)
       end
@@ -277,8 +269,8 @@ describe Game do
 
   describe "as_json" do
     it "includes outcome and team_outcomes" do
-      alice = Player.create!(name: 'alice', team: 'blue')
-      bob = Player.create!(name: 'bob', team: 'red')
+      alice = create_player(player_name: 'alice', team: 'blue')
+      bob = create_player(player_name: 'bob', team: 'red')
 
       game = Game.current
       game.lock_game!
@@ -316,12 +308,12 @@ describe Game do
 
     context 'on a locked (in_progress) game' do
 
-      let!(:bob) { Player.create! name: 'bob', team: 'blue' }
-      let!(:rhoda) { Player.create! name: 'rhoda', team: 'red' }
+      let!(:bob) { create_player player_name: 'bob', team: 'blue' }
+      let!(:rhoda) { create_player player_name: 'rhoda', team: 'red' }
 
       before do
-        bob.set_piece(role: 'offense')
-        rhoda.set_piece(role: 'defense')
+        bob.set_piece(role: 'offense', path: '[{"x": 1}, {"y": 2}]')
+        rhoda.set_piece(role: 'defense', path: '[{"x": 3}, {"y": 4}]')
         current_game.lock_game!
       end
 
@@ -390,6 +382,12 @@ describe Game do
         expect(bob_outcome.defend_mvp).to eq(0)
         expect(rhoda_outcome.attack_mvp).to eq(0)
         expect(rhoda_outcome.defend_mvp).to eq(1)
+      end
+
+      it 'nulls out path on all players' do
+        current_game.finish_game!
+        expect(bob.piece.reload.path).to be_nil
+        expect(rhoda.piece.reload.path).to be_nil
       end
     end
   end

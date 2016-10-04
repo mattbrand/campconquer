@@ -16,10 +16,13 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 
 - [ ] login 
   - [ ] MVP: one password, sent in the clear :-O
+  
+  
 
 - [ ] ammo: send remaining ammo when game complete
 
-- [ ] null out path etc. between games
+- [x] null out path etc. between games
+- [x] only players with non-null paths etc should play
 
 - [x] time of next battle
   - 11 am and 4 pm for our testing
@@ -34,7 +37,6 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
       - basically add "count" to /paths as /game/xxx[game][paths]
 
 - [x] "embodied" flag
-- [ ] only players with non-null paths etc should play
 
 - [ ] check steps in the background at least 1x/day, not just when players connect
   - http://sprint.ly/product/41137/item/333
@@ -142,7 +144,7 @@ Then go back to this dir and run:
 ```
 -->
 
-### sample request
+### sample request with multiple nested values
 
 ```
 outcome[winner]:red

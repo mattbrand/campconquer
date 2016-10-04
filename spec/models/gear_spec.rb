@@ -59,7 +59,7 @@ hat0,HEAD,GENDER_NEUTRAL_1,Headscarf,a lovely scarf,hair_headscarf,scarf_icon,1,
                            }.with_indifferent_access)
     end
 
-    let(:player) { Player.create!(name: "Joe", team: 'blue', coins: 10) }
+    let(:player) { create_player(player_name: "Joe", team: 'blue', coins: 10) }
 
     it 'regenerates player/piece items' do
       expect(player.gear_owned).to eq(['hat0'])

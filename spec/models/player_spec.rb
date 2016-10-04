@@ -379,7 +379,7 @@ describe Player, type: :model do
     describe 'owned' do
       before do
         tee_shirt.update!(owned_by_default: true)
-        @player = Player.create!(name: "alice", team: 'blue', coins: 15)
+        @player = create_player(player_name: "alice", team: 'blue', coins: 15)
       end
       it 'is owned by a new player' do
         expect(@player.gear_owned).to eq(['tee-shirt'])
@@ -390,7 +390,7 @@ describe Player, type: :model do
     describe 'equipped' do
       before do
         tee_shirt.update!(equipped_by_default: true)
-        @player = Player.create!(name: "alice", team: 'blue', coins: 15)
+        @player = create_player(player_name: "alice", team: 'blue', coins: 15)
       end
       it 'is equipped by a new player' do
         expect(@player.gear_owned).to eq(['tee-shirt'])
@@ -400,7 +400,7 @@ describe Player, type: :model do
   end
 
   describe 'gear' do
-    let!(:player) { Player.create!(name: "alice", team: 'blue', coins: 15) }
+    let!(:player) { create_player(player_name: "alice", team: 'blue', coins: 15) }
     let!(:galoshes) { Gear.create!(name: 'galoshes', gear_type: 'shoes', coins: 10) }
     let!(:tee_shirt) { Gear.create!(name: 'tee-shirt', gear_type: 'shirt', coins: 20) }
 
@@ -483,7 +483,7 @@ describe Player, type: :model do
   end
 
   describe 'ammo' do
-    let!(:player) { Player.create!(name: "alice", team: 'blue', coins: 1500) }
+    let!(:player) { create_player(player_name: "alice", team: 'blue', coins: 1500) }
 
     it 'is empty by default' do
       expect(player.ammo).to be_empty

@@ -76,15 +76,11 @@ describe Season do
   describe "as_json" do
     it "includes team_outcomes and player_outcomes" do
       players = [
-        betty = Player.create!(name: 'betty', team: 'blue'),
-        bob = Player.create!(name: 'bob', team: 'blue'),
-        roger = Player.create!(name: 'roger', team: 'red'),
-        rita = Player.create!(name: 'rita', team: 'red'),
+        betty = create_player(player_name: 'betty', team: 'blue'),
+        bob = create_player(player_name: 'bob', team: 'blue'),
+        roger = create_player(player_name: 'roger', team: 'red'),
+        rita = create_player(player_name: 'rita', team: 'red'),
       ]
-      betty.set_piece(role: 'offense')
-      bob.set_piece(role: 'defense')
-      roger.set_piece(role: 'offense')
-      rita.set_piece(role: 'defense')
 
       games = []
 
@@ -107,6 +103,12 @@ describe Season do
         end
 
         game = Game.current
+
+        betty.set_piece(role: 'offense', path: [[0,0]])
+        bob.set_piece(role: 'defense', path: [[0,0]])
+        roger.set_piece(role: 'offense', path: [[0,0]])
+        rita.set_piece(role: 'defense', path: [[0,0]])
+
         game.lock_game!
         game.finish_game! winner: 'blue',
                           match_length: 100,

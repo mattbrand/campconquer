@@ -88,7 +88,7 @@ class Player < ActiveRecord::Base
 
     params = params.pick(:body_type, :role, :path, :face, :hair, :skin_color, :hair_color, :health, :speed, :range)
     if self.piece
-      self.piece.update!(params)
+      self.piece.reload.update!(params)
     else
       piece_defaults = {role: 'defense', health: 0, speed: 0, range: 0}
       self.piece = Piece.create!({player_id: self.id, team: self.team} + piece_defaults + params)

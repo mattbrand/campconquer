@@ -20,7 +20,7 @@
 #  index_games_on_season_id  (season_id)
 #
 
-  #  scheduled_start :datetime
+#  scheduled_start :datetime
 #
 # Indexes
 #
@@ -50,6 +50,8 @@ class Game < ActiveRecord::Base
 
   belongs_to :season
   has_many :pieces, -> { includes :player, :items }
+  has_many :players, through: :pieces
+
   has_many :player_outcomes, class_name: 'Outcome', dependent: :destroy # rename to player_outcomes?
 
   accepts_nested_attributes_for :player_outcomes
@@ -180,10 +182,15 @@ class Game < ActiveRecord::Base
     save!
 
     finish_game # call the state machine
+
+    null_out_paths
   end
 
   def copy_player_pieces
-    players = Player.all.includes(piece: :items).where('pieces.game_id IS NULL').references(:pieces, :items)
+    players = Player.all.includes(piece: :items).
+      where('pieces.game_id IS NULL').
+      where('pieces.path IS NOT NULL').
+      references(:pieces, :items)
 
     Piece.bulk_insert do |bulk_pieces|
       players.each do |player|
@@ -248,8 +255,9 @@ class Game < ActiveRecord::Base
 
     relevant_outcomes = player_outcomes.select do |o|
       o.team == team and begin
-                           piece = pieces.detect{|p| p.player_id == o.player_id}
-                           piece.role == role
+        player_id = o.player_id
+        piece = pieces.detect { |p| p.player_id == player_id }
+        piece.role == role if piece
       end
     end
     relevant_outcomes.each do |outcome|
@@ -280,5 +288,16 @@ class Game < ActiveRecord::Base
       self.winner = calculated_winner
     end
   end
+
+  def null_out_paths
+    player_ids = self.players.map(&:id)
+    Piece.where(game_id: nil).where(player_id: player_ids).update_all(path: nil)
+
+    # slower:
+    # self.players.each do |player|
+    #   player.set_piece(path: nil)
+    # end
+  end
+
 
 end
