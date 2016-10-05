@@ -400,9 +400,9 @@ describe Player, type: :model do
   end
 
   describe 'gear' do
-    let!(:player) { create_player(player_name: "alice", team: 'blue', coins: 15) }
-    let!(:galoshes) { Gear.create!(name: 'galoshes', gear_type: 'shoes', coins: 10) }
-    let!(:tee_shirt) { Gear.create!(name: 'tee-shirt', gear_type: 'shirt', coins: 20) }
+    let!(:player) { create_player(player_name: "alice", team: 'blue', coins: 15, gems: 1) }
+    let!(:galoshes) { Gear.create!(name: 'galoshes', gear_type: 'shoes', coins: 10, gems: 1) }
+    let!(:tee_shirt) { Gear.create!(name: 'tee-shirt', gear_type: 'shirt', coins: 20, gems: 1) }
 
     before do
       player.set_piece
@@ -414,22 +414,40 @@ describe Player, type: :model do
         player.buy_gear!('galoshes')
         expect(player.gear_owned).to eq(['galoshes'])
       end
+
       it 'does not automatically equip the gear' do
         expect(player.gear_owned).to be_empty
         player.buy_gear!('galoshes')
         expect(player.gear_equipped).to eq([])
       end
+
       it 'subtracts coins' do
         expect(player.reload.coins).to eq(15)
         player.buy_gear!('galoshes')
         expect(player.reload.coins).to eq(5)
       end
+
       it 'fails if not enough coins' do
         expect do
           player.buy_gear!('tee-shirt')
-        end.to raise_error(Player::NotEnoughCoins)
+        end.to raise_error(Player::NotEnoughMoney)
         expect(player.reload.coins).to eq(15)
       end
+
+      it 'subtracts gems' do
+        expect(player.reload.gems).to eq(1)
+        player.buy_gear!('galoshes')
+        expect(player.reload.gems).to eq(0)
+      end
+
+      it 'fails if not enough gems' do
+        player.update!(gems: 0)
+        expect do
+          player.buy_gear!('galoshes')
+        end.to raise_error(Player::NotEnoughMoney)
+        expect(player.reload.gems).to eq(0)
+      end
+
       it 'does not allow buying twice' do
         player.buy_gear!('galoshes')
         expect do
@@ -548,7 +566,7 @@ describe Player, type: :model do
       player.update!(coins: 10)
       expect do
         player.buy_ammo! 'balloon'
-      end.to raise_error Player::NotEnoughCoins
+      end.to raise_error Player::NotEnoughMoney
     end
 
     it 'game copies ammo back after finished'

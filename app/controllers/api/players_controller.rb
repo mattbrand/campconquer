@@ -80,10 +80,6 @@ module API
   end
 
   def buy
-    if params[:currency] and params[:currency] != 'coins'
-      raise NotImplementedError, "you can only buy with coins right now, not #{params[:currency]}"
-    end
-
     if params['gear']
       @player.buy_gear!(params['gear']['name'])
     elsif params['ammo']

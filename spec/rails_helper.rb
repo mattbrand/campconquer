@@ -71,8 +71,9 @@ def create_player(player_name:,
                   team: 'red',
                   body_type: 'female',
                   role: 'defense',
-                  coins: 100)
-  player = Player.create!(name: player_name, team: team, coins: coins)
+                  coins: 100,
+                  gems: 0)
+  player = Player.create!(name: player_name, team: team, coins: coins, gems: gems)
   piece_attributes = {
     body_type: body_type,
     role: role,

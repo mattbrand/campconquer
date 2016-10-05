@@ -27,7 +27,7 @@ class Player < ActiveRecord::Base
     end
   end
 
-  class NotEnoughCoins < RuntimeError
+  class NotEnoughMoney < RuntimeError
     def initialize(gear)
       name = gear.name
       coins = if gear.respond_to? :coins
@@ -37,7 +37,14 @@ class Player < ActiveRecord::Base
               else
                 "UNKNOWN"
               end
-      super("not enough coins to buy #{name}: #{coins} required")
+      gems = if gear.respond_to? :gems
+               gear.gems
+             else
+               0
+             end
+      super("not enough money to buy #{name}: " +
+              "#{coins} #{"coin".pluralize(coins)} and " +
+              "#{gems} #{"gem".pluralize(gems)} required")
     end
   end
 
@@ -171,11 +178,13 @@ class Player < ActiveRecord::Base
   def active_goal_met?
     active_minutes >= GOAL_MINUTES
   end
+
   alias_method :active_goal_met, :active_goal_met?
 
   def active_minutes_claimed?
     activity_today.active_minutes_claimed?
   end
+
   alias_method :active_minutes_claimed, :active_minutes_claimed?
 
   def claim_active_minutes!
@@ -218,12 +227,13 @@ class Player < ActiveRecord::Base
     gear = Gear.find_by_name(gear_name)
     if gear_owned?(gear_name)
       raise Player::AlreadyOwned, gear
-    elsif self.coins >= gear.coins
+    elsif self.coins >= gear.coins and self.gems >= gear.gems
       piece.items.create!(gear_id: gear.id, equipped: false)
       self.coins -= gear.coins
+      self.gems -= gear.gems
       self.save!
     else
-      raise Player::NotEnoughCoins, gear
+      raise Player::NotEnoughMoney, gear
     end
   end
 
@@ -260,7 +270,7 @@ class Player < ActiveRecord::Base
       self.coins -= desired_ammo.cost
       self.save!
     else
-      raise Player::NotEnoughCoins, desired_ammo
+      raise Player::NotEnoughMoney, desired_ammo
     end
 
   end

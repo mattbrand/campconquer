@@ -194,8 +194,8 @@ describe API::PlayersController, type: :controller do
   end
 
   describe 'gear' do
-    let!(:player) { Player.create! valid_attributes }
-    let!(:galoshes) { Gear.create!(name: 'galoshes', gear_type: 'shoes') }
+    let!(:player) { Player.create! valid_attributes + {coins: 10} }
+    let!(:galoshes) { Gear.create!(name: 'galoshes', gear_type: 'shoes', coins: 1, gems: 0) }
 
     describe "POST #buy" do
       context "with valid params" do
