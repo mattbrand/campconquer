@@ -184,7 +184,7 @@ and [Postman](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdgg
 * `rake db:migrate`
 * `rake db:seed` (if `seeds.rb` or its data files have changed)
 * `rake spec`
-* `rails server`
+* `rails server` or `heroku local`
 * `open http://localhost:3000`
 
 ### Terminal Commands
