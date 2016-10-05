@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161003150052) do
+ActiveRecord::Schema.define(version: 20161004204731) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -75,6 +75,7 @@ ActiveRecord::Schema.define(version: 20161003150052) do
     t.boolean "owned_by_default",    default: false, null: false
     t.string  "hair"
     t.string  "body_type"
+    t.boolean "color_decal",         default: false, null: false
   end
 
   create_table "items", force: :cascade do |t|

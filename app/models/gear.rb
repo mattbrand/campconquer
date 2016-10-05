@@ -19,6 +19,7 @@
 #  owned_by_default    :boolean          default("f"), not null
 #  hair                :string
 #  body_type           :string
+#  color_decal         :boolean          default("f"), not null
 #
 
 class Gear < ActiveRecord::Base
@@ -59,6 +60,7 @@ class Gear < ActiveRecord::Base
           :hair,
           :equipped_by_default,
           :owned_by_default,
+          :color_decal,
         ],
       }
     end
@@ -96,6 +98,7 @@ class Gear < ActiveRecord::Base
                        hair: row['Hair'],
                        equipped_by_default: row['Equipped By Default'].to_i.to_boolean,
                        owned_by_default: row['Owned By Default'].to_i.to_boolean,
+                       color_decal: row['Color Decal'].to_i.to_boolean,
                      },
                    ])
     end

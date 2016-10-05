@@ -19,6 +19,7 @@
 #  owned_by_default    :boolean          default("f"), not null
 #  hair                :string
 #  body_type           :string
+#  color_decal         :boolean          default("f"), not null
 #
 
 require 'rails_helper'
