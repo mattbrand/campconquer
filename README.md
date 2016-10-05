@@ -11,13 +11,12 @@ Features: <http://sprint.ly/product/41137/dashboard/?statuses=backlog,current,co
 Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ07TFsBi973VmIqgnLO6c/>
 
 
-
 # TODO
 
-- [ ] login 
+- [ ] login
   - [ ] MVP: one password, sent in the clear :-O
   
-  
+- [ ] buy gear: AND not OR
 
 - [ ] ammo: send remaining ammo when game complete
 
@@ -31,15 +30,16 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
     - has this player watched the last battle? if so, 
     - has this player set a path etc? if so, "prepared", 
     - else "prepare"
-      - time to next battle (or "time of")
+      - [x] time to next battle (or "time of")
       - send down all available paths + 
         count of players who have chosen each path
-      - basically add "count" to /paths as /game/xxx[game][paths]
+      - [ ] basically add "count" to /paths as /game/xxx[game][paths]
 
 - [x] "embodied" flag
 
 - [ ] check steps in the background at least 1x/day, not just when players connect
   - http://sprint.ly/product/41137/item/333
+- [ ] load fitbit data as far back as needed and no further
 
 - [ ] 'control group' players (no team)
   - can see steps etc but no redemption 
@@ -55,10 +55,9 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 - [ ] unequip (or we may not need unequip if i add the rule “only one of each item type can be equipped” )
 - [ ] player stats (all season(s?)) in GET player endpoint?
 
-- [ ] load fitbit data as far back as needed
 
 ## chores
-
+- [-] puma
 - [ ] remove `current` and `locked` db fields
 - [ ] create prod env
 - [ ] fixture factories
@@ -66,7 +65,7 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 - [ ] merge Piece into Player in API
 - [ ] foreign key indexes for all tables
 - [ ] New Relic
-- [-] add `/api` prefix and `ApiController` -- now on `api-namespace` branch
+- [x] add `/api` prefix and `ApiController` -- now on `api-namespace` branch
 - [ ] [upgrade to Rails 5](http://blog.bigbinary.com/2016/08/18/new-framework-defaults-in-rails-5-to-make-upgrade-easier.html)
 - [ ] switch from RAML to Swagger? http://swagger.io/
 - [ ] make a Procfile https://devcenter.heroku.com/articles/ruby-default-web-server
