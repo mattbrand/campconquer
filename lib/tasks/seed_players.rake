@@ -50,7 +50,7 @@ class Board
   end
 
   def seed_team
-    50.times do
+    10.times do
       player = Player.create!(name: random_name, team: @team_name)
 
       @role = Piece::ROLES.values.sample
@@ -64,6 +64,7 @@ class Board
                     range: 1 + rand(5),
                     body_type: body_type,
                     # todo: :face, :hair, :skin_color, :hair_color
+                    ammo: ["balloon", "balloon", "balloon"]
       )
 
       puts ["created player ##{player.id}", player.name.ljust(20), @team_name, piece.role, piece.body_type].join("\t")

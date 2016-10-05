@@ -62,20 +62,20 @@ module API
     private
 
     def game_params
-      params.permit(:winner,
-                    :match_length,
-                    :moves,
-                    player_outcomes: [
-                      :team,
-                      :player_id,
-                      :takedowns,
-                      :throws,
-                      :pickups,
-                      :captures,
-                      :flag_carry_distance,
-                      :attack_mvp,
-                      :defend_mvp,
-                    ],
+      params.require(:game).permit(:winner,
+                                   :match_length,
+                                   :moves,
+                                   player_outcomes: [
+                                     :team,
+                                     :player_id,
+                                     :takedowns,
+                                     :throws,
+                                     :pickups,
+                                     :captures,
+                                     :flag_carry_distance,
+                                     :attack_mvp,
+                                     :defend_mvp,
+                                   ],
 
       )
     end

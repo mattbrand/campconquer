@@ -80,7 +80,7 @@ describe API::GamesController, type: :controller do
     context 'when the game has moves' do
       before do
         game.lock_game!
-        game.finish_game! winner:"blue", moves: some_moves
+        game.finish_game! winner: "blue", moves: some_moves
       end
 
       it "does not include the moves by default" do
@@ -263,7 +263,7 @@ describe API::GamesController, type: :controller do
     let(:valid_attributes) {
       {
         winner: 'blue', # game[winner]=blue
-	moves: 'OMGMOVES',
+        moves: 'OMGMOVES',
         player_outcomes: [
           {
             team: 'blue',
@@ -311,7 +311,7 @@ describe API::GamesController, type: :controller do
 
       context 'when the game is not locked' do
         it 'should fail to post an outcome' do
-          put :update, {id: @game.id} + valid_attributes, valid_session
+          put :update, {id: @game.id} + {game: valid_attributes}, valid_session
           expect(@game.reload.winner).to be_nil
           expect(response.status).to eq(409) # HTTP 409: Conflict: "The request could not be completed due to a conflict with the current state of the target resource." https://httpstatuses.com/409
           expect(response_json['status']).to eq('error')
@@ -327,35 +327,34 @@ describe API::GamesController, type: :controller do
 
           before { bypass_rescue }
 
+          before do
+            put :update, {id: @game.id} + {game: valid_attributes}, valid_session
+          end
+
           it "changes stuff" do
-            put :update, {id: @game.id} + valid_attributes, valid_session
             expect_ok
             @game.reload
             expect(@game.winner).not_to be_nil
             expect(@game.winner).to eq(valid_attributes[:winner])
             expect(@game.state).to eq('completed')
-	    expect(@game.moves).to eq('OMGMOVES')
+            expect(@game.moves).to eq('OMGMOVES')
           end
 
           it "renders an 'ok' message" do
-            put :update, {id: @game.id} + valid_attributes, valid_session
             expect_ok
           end
 
           it 'sets player outcomes too' do
-            put :update, {id: @game.id} + valid_attributes, valid_session
             player_outcomes = @game.reload.player_outcomes
             expect(player_outcomes).not_to be_empty
             expect(player_outcomes.size).to eq(2)
           end
 
           it 'unlocks the game' do
-            put :update, {id: @game.id} + valid_attributes, valid_session
             expect(@game.reload).not_to be_locked
           end
 
           it 'marks the game as no longer current or locked' do
-            put :update, {id: @game.id} + valid_attributes, valid_session
             @game.reload
             expect(@game).not_to be_current
             expect(@game).not_to be_locked
@@ -366,17 +365,18 @@ describe API::GamesController, type: :controller do
         end
 
         context "with invalid params" do
+
           it "does not reset the current or locked flags" do
             expect(@game).to be_current
             expect(@game).to be_locked
-            put :update, {:id => @game.id} + invalid_attributes, valid_session
+            put :update, {:id => @game.id} + {game: invalid_attributes}, valid_session
             @game.reload
             expect(@game).to be_current
             expect(@game).to be_locked
           end
 
           it "renders an error body" do
-            put :update, {:id => @game.id} + invalid_attributes, valid_session
+            put :update, {:id => @game.id} + {game: invalid_attributes}, valid_session
             expect(response_json).to include({
                                                'status' => 'error',
                                                'message' => 'Winner must be "blue" or "red" or "none"'

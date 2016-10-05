@@ -157,7 +157,6 @@ class Game < ActiveRecord::Base
     raise "can only finish in_progress games but this game is '#{state}'" if state != 'in_progress'
 
     params = params.with_indifferent_access
-
     moves = params.delete(:moves)
     defaults = {
       match_length: 0,
