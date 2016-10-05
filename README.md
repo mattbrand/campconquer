@@ -15,10 +15,9 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 
 - [ ] login
   - [ ] MVP: one password, sent in the clear :-O
-  
 - [ ] buy gear: AND not OR
-
 - [ ] ammo: send remaining ammo when game complete
+- [ ] bug: moves not working
 
 - [x] null out path etc. between games
 - [x] only players with non-null paths etc should play

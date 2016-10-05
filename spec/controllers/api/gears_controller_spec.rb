@@ -23,6 +23,7 @@ describe API::GearsController, type: :controller do
       level: 0,
       body_type: Piece::BODY_TYPES.values.first,
       hair: 'mohawk',
+      color_decal: true,
       owned_by_default: false,
       equipped_by_default: false,
     }
