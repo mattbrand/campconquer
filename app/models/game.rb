@@ -153,7 +153,14 @@ class Game < ActiveRecord::Base
   def paths
     all_paths = Path.all
 
-    ready_players.each do |player|
+    # todo: test using ready_players vs self.players based on state
+    players = if self.preparing?
+                ready_players
+              else
+                self.players
+              end
+
+    players.each do |player|
       path_points = player.piece.path # # todo: resolve "path" vs "points" ambiguity
       seeking_path = Path.new(team: player.team, role: player.role, points: path_points)
       found_path = all_paths.detect { |p| p == seeking_path }

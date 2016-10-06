@@ -25,14 +25,14 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 - [x] time of next battle
   - 11 am and 4 pm for our testing
 
-- [ ] "game state":
+- [x] "game state":
     - has this player watched the last battle? if so, 
     - has this player set a path etc? if so, "prepared", 
     - else "prepare"
       - [x] time to next battle (or "time of")
       - send down all available paths + 
         count of players who have chosen each path
-      - [ ] basically add "count" to /paths as /game/xxx[game][paths]
+      - [x] basically add "count" to /paths as /game/xxx[game][paths]
 
 - [x] "embodied" flag
 
@@ -72,6 +72,7 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 - [ ] Alex learns Unity (gratis)
 - [x] add Body Type, Hair fields to gear.rb to match csv
 - [ ] kill gear table
+- [ ] new player controller for web/auth
 
 # Updating the Seed DB
 
