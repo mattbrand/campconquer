@@ -153,18 +153,23 @@ class Game < ActiveRecord::Base
   def paths
     all_paths = Path.all
 
-    # todo: test using ready_players vs self.players based on state
-    players = if self.preparing?
-                ready_players
+    # todo: test using ready_players' pieces vs self.pieces based on state
+    pieces = if self.preparing?
+                ready_players.map(&:piece)
               else
-                self.players
+                self.pieces
               end
 
-    players.each do |player|
-      path_points = player.piece.path # # todo: resolve "path" vs "points" ambiguity
-      seeking_path = Path.new(team: player.team, role: player.role, points: path_points)
+    pieces.each do |piece|
+      path_points = piece.path # # todo: resolve "path" vs "points" ambiguity
+      seeking_path = Path.new(team: piece.team, role: piece.role, points: path_points)
+
       found_path = all_paths.detect { |p| p == seeking_path }
-      found_path.try(:increment_count)
+      if found_path
+      found_path.increment_count
+      else
+        logger.warn("couldn't match path #{seeking_path.to_json}")
+      end
     end
 
     all_paths #.as_json # serialization is weird
