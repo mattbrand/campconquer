@@ -27,6 +27,10 @@ class Point
     {x: @x, y: @y}
   end
 
+  def serializable_hash
+    to_hash
+  end
+
   def ==(other)
     other.is_a? Point and
       other.x == self.x and

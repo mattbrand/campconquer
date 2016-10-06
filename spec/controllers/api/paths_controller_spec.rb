@@ -18,16 +18,8 @@ describe API::PathsController, type: :controller do
       expect(response_json).to include({'status' => 'ok'})
       expect(response_json).to include('paths')
 
-      # this happens to be the first row of hardcoded paths.csv;
-      # may need to change some day after a re-export
-      some_path = {
-        team: 'blue',
-        role: 'defense',
-        points: [
-          {x: 12.0, y: 2.5}
-        ]
-      }
-      expect(response_json['paths']).to include(some_path.deep_stringify_keys)
+      some_path = Path.all.first
+      expect(response_json['paths']).to include(some_path.as_json.deep_stringify_keys)
     end
 
   end

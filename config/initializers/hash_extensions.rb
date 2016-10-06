@@ -10,4 +10,9 @@ class Hash
 
   alias << merge!
 
+  # rails serialization is SO WEIRD
+  def serializable_hash(options=nil)
+    self.stringify_keys
+  end
+
 end

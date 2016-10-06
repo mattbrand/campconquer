@@ -70,6 +70,8 @@ class Piece < ActiveRecord::Base
     self.player.try(:name)
   end
 
+  # todo: save as Path object, not merely an array of Points
+
   def path=(value)
     if value.blank?
       super(nil)

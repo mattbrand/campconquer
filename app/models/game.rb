@@ -116,11 +116,17 @@ class Game < ActiveRecord::Base
     {
       except: :moves,
       include: [
-        {:pieces => Piece.serialization_options},
+        {
+          :pieces => Piece.serialization_options,
+        },
         :team_outcomes,
         :player_outcomes,
+        :paths,
       ],
-      methods: [:team_outcomes],
+      methods: [
+        :team_outcomes,
+        :paths,
+      ],
     }
   end
 
@@ -142,6 +148,19 @@ class Game < ActiveRecord::Base
 
   def pieces_on_team(team)
     pieces.where(team: team)
+  end
+
+  def paths
+    all_paths = Path.all
+
+    ready_players.each do |player|
+      path_points = player.piece.path # # todo: resolve "path" vs "points" ambiguity
+      seeking_path = Path.new(team: player.team, role: player.role, points: path_points)
+      found_path = all_paths.detect { |p| p == seeking_path }
+      found_path.try(:increment_count)
+    end
+
+    all_paths #.as_json # serialization is weird
   end
 
   # params:
@@ -186,10 +205,7 @@ class Game < ActiveRecord::Base
   end
 
   def copy_player_pieces
-    players = Player.all.includes(piece: :items).
-      where('pieces.game_id IS NULL').
-      where('pieces.path IS NOT NULL').
-      references(:pieces, :items)
+    players = ready_players
 
     Piece.bulk_insert do |bulk_pieces|
       players.each do |player|
@@ -216,6 +232,13 @@ class Game < ActiveRecord::Base
         bulk_items.add(item_attrs)
       end
     end
+  end
+
+  def ready_players
+    Player.all.includes(piece: :items).
+      where('pieces.game_id IS NULL').
+      where('pieces.path IS NOT NULL').
+      references(:pieces, :items)
   end
 
   def calculate_winner

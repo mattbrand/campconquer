@@ -244,14 +244,14 @@ describe Game do
 
       it 'only copies one piece per player (not old games) (bug)' do
         alice = create_alice_with_piece
-        alice.set_piece(path: [[0,0]] )
+        alice.set_piece(path: [[0, 0]])
         current_game.lock_game!
         expect(current_game.pieces.count).to eq(1)
 
         current_game.finish_game!
 
         current_game = Game.current
-        alice.set_piece(path: [[0,0]] )
+        alice.set_piece(path: [[0, 0]])
         current_game.lock_game!
         expect(current_game.pieces.count).to eq(1)
       end
@@ -291,6 +291,56 @@ describe Game do
       expect(json['player_outcomes'][0]['takedowns']).to eq(2)
       expect(json['player_outcomes'][1]['team']).to eq('red')
       expect(json['player_outcomes'][1]['takedowns']).to eq(3)
+    end
+
+    it "includes paths" do
+      game = Game.current
+      json = game.as_json
+      expect(json).to include('paths')
+      expect(json['paths']).to eq(Path.all.as_json)
+    end
+
+    it "includes path counts" do
+
+    end
+  end
+
+  describe 'paths' do
+
+    let(:red_offense_path) { Path.where(team: 'red', role: 'offense').first }
+    let(:red_defense_path) { Path.where(team: 'red', role: 'offense').first }
+    let(:blue_offense_path) { Path.where(team: 'blue', role: 'defense').first }
+    let(:blue_defense_path) { Path.where(team: 'blue', role: 'defense').first }
+
+    let(:some_paths) { [
+            red_offense_path ,
+            red_defense_path ,
+            blue_offense_path,
+            blue_defense_path,
+          ]
+    }
+
+    before do
+      some_paths.each do |p|
+        expect(p).not_to be_nil
+      end
+    end
+
+    it 'includes all known paths' do
+      game = Game.current
+      game_paths = game.paths
+      Path.all.each do |path|
+        expect(game_paths).to include(path)
+      end
+    end
+
+    it 'includes counts' do
+      alice = create_alice_with_piece
+      alice.set_piece(path: blue_defense_path.points) # todo: resolve "path" vs "points" ambiguity
+      game = Game.current
+      game_paths = game.paths
+      game_path = game_paths.detect{|p| p == blue_defense_path}
+      expect(game_path.count).to eq(1)
     end
   end
 

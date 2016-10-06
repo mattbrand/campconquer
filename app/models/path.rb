@@ -16,7 +16,7 @@ class Path
       points = point_cells.map do |cell|
         Point.from_a(cell.split(',').map(&:to_f))
       end.compact
-      Path.new(team, role, points)
+      Path.new(team: team, role: role, points: points)
     end
     paths
   end
@@ -31,12 +31,21 @@ class Path
     end
   end
 
-  attr_reader :team, :role, :points
+  attr_reader :team, :role, :points, :count, :active
 
-  def initialize(team, role, points)
+  def initialize(team:, role:, points:, count: 0, active: true)
     @team = team
     @role = role
     @points = points
+    @count = count
+    @active = active
+  end
+
+  def ==(other)
+    other.is_a? Path and
+      other.team == self.team and
+      other.role == self.role and
+      other.points == self.points
   end
 
   # for export to gdoc sheet
@@ -44,18 +53,23 @@ class Path
     [@team, @role] + @points.map { |p| p.to_a.join(',') }
   end
 
-  def serializable_hash
+  def serializable_hash(options=nil)
     {
       team: @team,
       role: @role,
-      active: true,
-      points: @points,
-    }
+      count: @count,
+      active: @active,
+      points: @points.map(&:as_json),
+    }.deep_stringify_keys
   end
 
   def point
     raise "can't get a single point from an offense path" if @role == 'offense'
     @points.first
+  end
+
+  def increment_count
+    @count += 1
   end
 
 end
