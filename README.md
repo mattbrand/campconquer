@@ -15,27 +15,10 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 
 - [ ] login
   - [ ] MVP: one password, sent in the clear :-O
-- [x] buy gear: AND not OR
 - [ ] ammo: send remaining ammo when game complete
-- [x] bug: moves not working
-
-- [x] null out path etc. between games
-- [x] only players with non-null paths etc should play
-
-- [x] time of next battle
-  - 11 am and 4 pm for our testing
-
-- [x] "game state":
-    - has this player watched the last battle? if so, 
-    - has this player set a path etc? if so, "prepared", 
-    - else "prepare"
-      - [x] time to next battle (or "time of")
-      - send down all available paths + 
-        count of players who have chosen each path
-      - [x] basically add "count" to /paths as /game/xxx[game][paths]
-
-- [x] "embodied" flag
-
+- [ ] use https on Heroku and in game URLs
+- [ ] bug: CORS https://www.dropbox.com/s/4p383kc3v6ch223/Screenshot%202016-10-07%2013.09.40.png?dl=0
+- [ ] bug: 'none' vs 'nil' on tie games
 - [ ] check steps in the background at least 1x/day, not just when players connect
   - http://sprint.ly/product/41137/item/333
 - [ ] load fitbit data as far back as needed and no further
@@ -64,13 +47,11 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 - [ ] merge Piece into Player in API
 - [ ] foreign key indexes for all tables
 - [ ] New Relic
-- [x] add `/api` prefix and `ApiController` -- now on `api-namespace` branch
 - [ ] [upgrade to Rails 5](http://blog.bigbinary.com/2016/08/18/new-framework-defaults-in-rails-5-to-make-upgrade-easier.html)
 - [ ] switch from RAML to Swagger? http://swagger.io/
 - [ ] make a Procfile https://devcenter.heroku.com/articles/ruby-default-web-server
 - [ ] CircleCI? 
 - [ ] Alex learns Unity (gratis)
-- [x] add Body Type, Hair fields to gear.rb to match csv
 - [ ] kill gear table
 - [ ] new player controller for web/auth
 
