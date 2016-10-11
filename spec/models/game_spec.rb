@@ -313,11 +313,11 @@ describe Game do
     let(:blue_defense_path) { Path.where(team: 'blue', role: 'defense').first }
 
     let(:some_paths) { [
-            red_offense_path ,
-            red_defense_path ,
-            blue_offense_path,
-            blue_defense_path,
-          ]
+      red_offense_path,
+      red_defense_path,
+      blue_offense_path,
+      blue_defense_path,
+    ]
     }
 
     before do
@@ -339,7 +339,7 @@ describe Game do
       alice.set_piece(path: blue_defense_path.points) # todo: resolve "path" vs "points" ambiguity
       game = Game.current
       game_paths = game.paths
-      game_path = game_paths.detect{|p| p == blue_defense_path}
+      game_path = game_paths.detect { |p| p == blue_defense_path }
       expect(game_path.count).to eq(1)
     end
   end
@@ -417,6 +417,17 @@ describe Game do
         end.to raise_error(Game::WinnerMismatch)
       end
 
+      describe 'when there is no winner' do
+        before do
+          player_outcomes_hashes.first[:captures] = 0
+        end
+        it 'converts "none" into "nil" winner' do
+            current_game.finish_game! winner: 'none',
+                                      player_outcomes_attributes: player_outcomes_hashes
+          expect(current_game.winner).to eq(nil)
+        end
+      end
+
       context 'when no outcomes are passed' do
         it 'trusts the winner param' do
           current_game.finish_game! winner: 'red'
@@ -481,6 +492,11 @@ describe Game do
 
     it 'calculates winning team' do
       expect(game.calculate_winner).to eq('blue')
+    end
+
+    it 'calculates a draw as nil team' do
+      outcomes.first.captures = 0
+      expect(game.calculate_winner).to eq(nil)
     end
 
     it 'calculates attack_mvp for winning team (for winning team, this player captured the flag)' do

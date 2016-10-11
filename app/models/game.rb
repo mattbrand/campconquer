@@ -258,7 +258,7 @@ class Game < ActiveRecord::Base
     if capture
       capture.team
     else
-      nil # or "none"?
+      nil
     end
   end
 
@@ -312,6 +312,7 @@ class Game < ActiveRecord::Base
 
   def set_winner(params)
     given_winner = params.delete(:winner)
+    given_winner = nil if given_winner == 'none'
     if (player_outcomes.nil? or player_outcomes.empty?)
       self.winner = given_winner
     else
