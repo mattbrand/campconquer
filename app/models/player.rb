@@ -294,9 +294,9 @@ class Player < ActiveRecord::Base
 
   # todo: test
   def update_token(fitbit)
-    # puts "update_token called: #{fitbit.token_hash}"
-    self.fitbit_token_hash = fitbit.token_hash
-    save!
+    old_refresh_token = self.fitbit_token_hash.try(:get, 'refresh_token')
+    logger.info "update_token called: #{fitbit.token_hash}"
+    self.update!(fitbit_token_hash: fitbit.token_hash)
     @fitbit = nil
   end
 

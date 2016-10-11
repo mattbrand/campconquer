@@ -12,8 +12,8 @@ class Fitbit
   EXPIRES_IN_SEC = 86400
 
   class Unauthorized < RuntimeError
-    def initialize
-      super("No access token; you must auth")
+    def initialize(message: "Fitbit authorization failed. Please contact your game moderator.")
+      super(message)
     end
   end
 
@@ -76,6 +76,7 @@ class Fitbit
   # see https://dev.fitbit.com/docs/oauth2/#scope
   def scope
     'activity heartrate location nutrition profile settings sleep social weight'
+    # 'activity settings'  # todo: reduce scope?
   end
 
   public
@@ -157,6 +158,10 @@ class Fitbit
       # if response.ok?
       JSON.parse(response.body)
     end
+
+  rescue OAuth2::Error => e
+    Rails.logger.error $!
+    raise Unauthorized.new
   end
 
   def headers

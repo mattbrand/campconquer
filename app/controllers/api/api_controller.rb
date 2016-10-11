@@ -105,14 +105,22 @@ module API
 
     def exception_as_json(e)
       {
-        :status => 'error',
-        :message => e.message, # suitable for display to user, more or less
-        :exception => {
-          :class => e.class.name,
-          :message => e.message,
-          :trace => e.backtrace # todo: turn this off in production? or is security through obscurity an illusion?
-        }
+        'status' => 'error',
+        'message' => e.message, # suitable for display to user, more or less
+        'exception' => exception_as_hash(e)
       }
+    end
+
+    def exception_as_hash(e)
+      hash = {
+        'class' => e.class.name,
+        'message' => e.message,
+        'trace' => e.backtrace # todo: turn this off in production? or is security through obscurity an illusion?
+      }
+      if e.cause
+        hash['cause'] = exception_as_hash(e.cause)
+      end
+      hash
     end
 
     def render_game(**args)
