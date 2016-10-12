@@ -59,10 +59,10 @@ shirt16,SHIRT,FEMALE,Camp Conquer T-Shirt,,f_ccDecal,Icon_ccDecal,4000,11,0,4,0,
 shirt17,SHIRT,GENDER_NEUTRAL_1,Camp Conquer T-Shirt,,gn1_ccDecal,Icon_ccDecal,4000,11,0,4,0,0,,0,0,1
 shirt18,SHIRT,GENDER_NEUTRAL_2,Camp Conquer T-Shirt,,gn2_ccDecal,Icon_ccDecal,4000,11,0,4,0,0,,0,0,1
 shirt19,SHIRT,MALE,Camp Conquer T-Shirt,,m_ccDecal,Icon_ccDecal,4000,11,0,4,0,0,,0,0,1
-shirt20,SHIRT,FEMALE,Snacking T-Shirt,,f_FoodDecal,Icon_FoodDecal,5000,14,0,4,1,0,,0,0,0
-shirt21,SHIRT,GENDER_NEUTRAL_1,Snacking T-Shirt,,gn1_FoodDecal,Icon_FoodDecal,5000,14,0,4,1,0,,0,0,0
-shirt22,SHIRT,GENDER_NEUTRAL_2,Snacking T-Shirt,,gn2_FoodDecal,Icon_FoodDecal,5000,14,0,4,1,0,,0,0,0
-shirt23,SHIRT,MALE,Snacking T-Shirt,,m_FoodDecal,Icon_FoodDecal,5000,14,0,4,1,0,,0,0,0
+shirt20,SHIRT,FEMALE,Snacking T-Shirt,,fFoodDecal,Icon_FoodDecal,5000,14,0,4,1,0,,0,0,0
+shirt21,SHIRT,GENDER_NEUTRAL_1,Snacking T-Shirt,,gn1FoodDecal,Icon_FoodDecal,5000,14,0,4,1,0,,0,0,0
+shirt22,SHIRT,GENDER_NEUTRAL_2,Snacking T-Shirt,,gn2FoodDecal,Icon_FoodDecal,5000,14,0,4,1,0,,0,0,0
+shirt23,SHIRT,MALE,Snacking T-Shirt,,mFoodDecal,Icon_FoodDecal,5000,14,0,4,1,0,,0,0,0
 shirt24,SHIRT,FEMALE,Metal T-Shirt,,fMetalDecal,Icon_MetalDecal,7500,18,0,5,1,0,,0,0,0
 shirt25,SHIRT,GENDER_NEUTRAL_1,Metal T-Shirt,,gn1MetalDecal,Icon_MetalDecal,7500,18,0,5,1,0,,0,0,0
 shirt26,SHIRT,GENDER_NEUTRAL_2,Metal T-Shirt,,gn2MetalDecal,Icon_MetalDecal,7500,18,0,5,1,0,,0,0,0
@@ -71,10 +71,10 @@ shirt28,SHIRT,FEMALE,Nope T-Shirt,,fNopeDecal,Icon_NopeDecal,10000,24,0,6,1,0,,0
 shirt29,SHIRT,GENDER_NEUTRAL_1,Nope T-Shirt,,gn1NopeDecal,Icon_NopeDecal,10000,24,0,6,1,0,,0,0,0
 shirt30,SHIRT,GENDER_NEUTRAL_2,Nope T-Shirt,,gn2NopeDecal,Icon_NopeDecal,10000,24,0,6,1,0,,0,0,0
 shirt31,SHIRT,MALE,Nope T-Shirt,,mNopeDecal,Icon_NopeDecal,10000,24,0,6,1,0,,0,0,0
-shirt32,SHIRT,FEMALE,Floral T-shirt,,fFloralDecal,Icon_FloralDecal,15000,30,0,8,0,0,,0,0,0
-shirt33,SHIRT,GENDER_NEUTRAL_1,Floral T-shirt,,gn1FloralDecal,Icon_FloralDecal,15000,30,0,8,0,0,,0,0,0
-shirt34,SHIRT,GENDER_NEUTRAL_2,Floral T-shirt,,gn2FloralDecal,Icon_FloralDecal,15000,30,0,8,0,0,,0,0,0
-shirt35,SHIRT,MALE,Floral T-shirt,,mFloralDecal,Icon_FloralDecal,15000,30,0,8,0,0,,0,0,0
+shirt32,SHIRT,FEMALE,Floral T-shirt,,fFloralDecal,Icon_FloralDecal,15000,30,0,8,0,0,,0,0,1
+shirt33,SHIRT,GENDER_NEUTRAL_1,Floral T-shirt,,gn1FloralDecal,Icon_FloralDecal,15000,30,0,8,0,0,,0,0,1
+shirt34,SHIRT,GENDER_NEUTRAL_2,Floral T-shirt,,gn2FloralDecal,Icon_FloralDecal,15000,30,0,8,0,0,,0,0,1
+shirt35,SHIRT,MALE,Floral T-shirt,,mFloralDecal,Icon_FloralDecal,15000,30,0,8,0,0,,0,0,1
 shirt36,SHIRT,FEMALE,Seahorse T-Shirt,,AllGenders_BasicDecal_Small,,20000,40,0,8,2,0,,0,0,0
 shirt37,SHIRT,GENDER_NEUTRAL_1,Seahorse T-Shirt,,AllGenders_BasicDecal_Small,,20000,40,0,8,2,0,,0,0,0
 shirt38,SHIRT,GENDER_NEUTRAL_2,Seahorse T-Shirt,,AllGenders_BasicDecal_Small,,20000,40,0,8,2,0,,0,0,0
