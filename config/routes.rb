@@ -3,7 +3,6 @@ Rails.application.routes.draw do
 
   namespace :api do
     resources :gears, only: ['index']
-    resources :paths, only: ['index']
     resources :ammos, only: ['index']
     resources :seasons, only: ['show']
 
