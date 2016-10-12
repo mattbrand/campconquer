@@ -257,6 +257,9 @@ describe API::GamesController, type: :controller do
     let!(:bob) { Player.create! name: 'bob', team: 'blue' }
     let!(:rhoda) { Player.create! name: 'rhoda', team: 'red' }
 
+    let(:bobs_leftover_ammo) { ['balloon'] }
+    let(:rhodas_leftover_ammo) { ['arrow', 'bomb'] }
+
     # This should return the minimal set of attributes required to create a valid
     # Outcome. As you add validations to Outcome, be sure to
     # adjust the attributes here as well.
@@ -275,6 +278,7 @@ describe API::GamesController, type: :controller do
             captures: 1,
             attack_mvp: 1,
             defend_mvp: 0,
+            ammo: bobs_leftover_ammo,
           },
           {
             team: 'red',
@@ -286,6 +290,7 @@ describe API::GamesController, type: :controller do
             captures: 0,
             attack_mvp: 0,
             defend_mvp: 1,
+            ammo: rhodas_leftover_ammo,
           }
         ]
       }
@@ -360,6 +365,11 @@ describe API::GamesController, type: :controller do
             expect(@game).not_to be_locked
             expect(@game).to be_completed
             expect(@game.state).to eq('completed')
+          end
+
+          it 'passes leftover ammo back to the player' do
+            expect(bob.reload.piece.ammo).to eq(bobs_leftover_ammo)
+            expect(rhoda.reload.piece.ammo).to eq(rhodas_leftover_ammo)
           end
 
         end

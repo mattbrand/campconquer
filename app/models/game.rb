@@ -179,7 +179,7 @@ class Game < ActiveRecord::Base
   # :winner,
   # :match_length,
   # :moves,
-  # outcomes: [{
+  # player_outcomes: [{
   #     :player_id, :team, :takedowns, :throws, :pickups, ...
   # }]
 
@@ -192,6 +192,17 @@ class Game < ActiveRecord::Base
     defaults = {
       match_length: 0,
     }
+
+    # Rails is SO WEIRD
+    params[:player_outcomes_attributes] ||= []
+
+    leftover_ammo = {}
+    params[:player_outcomes_attributes].each do |outcome|
+      if (ammo = outcome.delete(:ammo))
+        leftover_ammo[outcome[:player_id]] = ammo
+      end
+    end
+
     self.update!(defaults + params)
 
     set_winner(params)
@@ -214,6 +225,7 @@ class Game < ActiveRecord::Base
     finish_game # call the state machine
 
     null_out_paths
+    restore_leftover_ammo(leftover_ammo)
   end
 
   def copy_player_pieces
@@ -248,6 +260,7 @@ class Game < ActiveRecord::Base
 
   def ready_players
     Player.all.includes(piece: :items).
+      # where(embodied: true).
       where('pieces.game_id IS NULL').
       where('pieces.path IS NOT NULL').
       references(:pieces, :items)
@@ -290,7 +303,7 @@ class Game < ActiveRecord::Base
     relevant_outcomes = player_outcomes.select do |o|
       o.team == team and begin
         player_id = o.player_id
-        piece = pieces.detect { |p| p.player_id == player_id }
+        piece = player_from_pieces(player_id)
         piece.role == role if piece
       end
     end
@@ -308,6 +321,10 @@ class Game < ActiveRecord::Base
     end
 
     mvps
+  end
+
+  def player_from_pieces(player_id)
+    piece = pieces.detect { |p| p.player_id == player_id }
   end
 
   def set_winner(params)
@@ -334,5 +351,11 @@ class Game < ActiveRecord::Base
     # end
   end
 
+  def restore_leftover_ammo(leftover_ammo)
+    leftover_ammo.each_pair do |player_id, ammo|
+      puts "Restoring #{ammo} to player #{player_id}"
+      Player.find(player_id).set_piece(ammo: ammo)
+    end
+  end
 
 end

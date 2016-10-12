@@ -569,8 +569,6 @@ describe Player, type: :model do
       end.to raise_error Player::NotEnoughMoney
     end
 
-    it 'game copies ammo back after finished'
-
   end
 
 end

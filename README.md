@@ -213,6 +213,14 @@ Player.all.map{|p| [p.name, p.gear_owned]}
 Player.all.each {|p| Gear.where(owned_by_default: true).each {|g| p.buy_gear! g.name unless p.gear_owned.include?(g.name)}}
 ```
 
+
+*set a random path on a player `p`*
+
+```
+ path = path: Path.where(team: 'red', role: 'offense').sample
+ player.piece.update!(path.points)
+```
+
 ### Local development with Fitbit
 
 * Create an app for yourself at <https://dev.fitbit.com/apps> named e.g. "Matt's Local CampConquer"

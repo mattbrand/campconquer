@@ -207,7 +207,7 @@ types:
         description: number of times this team captured the flag (i.e. games this team won)
       takedowns:
         type: integer
-        description: count of players on *other* teams who died at this team's hand
+        description: count of players on *other* teams who died at this team's (or player's) hand
       throws:
         type: integer
         description: number of balloons thrown
@@ -323,7 +323,6 @@ types:
     put:
       description: finish game
 
-
     /lock:
       post:
         description: lock the given game; copies all players' pieces into this game
@@ -331,12 +330,22 @@ types:
         description: unlock the current game, cancelling the current game and allowing players to update their setup again
 
     /outcome:
-      post:
+      put:
         description: |
           referee posts the results of the given game
           * the game is now considered played and a new current game is created
         queryParameters:
-          outcome: Outcome
+          winner: string
+          match_length: integer
+          moves: text
+          player_outcomes[][team]: string
+          player_outcomes[][player_id]: integer
+          player_outcomes[][takedowns]: integer
+          player_outcomes[][throws]: integer
+          player_outcomes[][pickups]: integer
+          player_outcomes[][captures]: integer
+          player_outcomes[][flag_carry_distance]: integer
+          player_outcomes[][ammo]: string
 
 /players:
 
@@ -439,19 +448,6 @@ types:
 
         queryParameters:
           type: Piece
-
-/paths:
-  get:
-    description: get all paths selectable (or not) by player during setup
-    queryParameters:
-      active:
-        type: boolean
-        required: false
-        description: if present, only return the active paths
-    responses:
-      200:
-        body:
-          type: Path[]
 
 /seasons:
 
