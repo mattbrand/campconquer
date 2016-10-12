@@ -248,6 +248,7 @@ class Game < ActiveRecord::Base
 
   def ready_players
     Player.all.includes(piece: :items).
+      # where(embodied: true).
       where('pieces.game_id IS NULL').
       where('pieces.path IS NOT NULL').
       references(:pieces, :items)

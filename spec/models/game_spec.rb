@@ -301,7 +301,12 @@ describe Game do
     end
 
     it "includes path counts" do
-
+      pending "set up a player with a path"
+      game = Game.current
+      json = game.as_json
+      expect(json).to include('paths')
+      counts = json['paths'].map { |p| p['count'] }
+      expect(counts).to include(1)
     end
   end
 
@@ -422,8 +427,8 @@ describe Game do
           player_outcomes_hashes.first[:captures] = 0
         end
         it 'converts "none" into "nil" winner' do
-            current_game.finish_game! winner: 'none',
-                                      player_outcomes_attributes: player_outcomes_hashes
+          current_game.finish_game! winner: 'none',
+                                    player_outcomes_attributes: player_outcomes_hashes
           expect(current_game.winner).to eq(nil)
         end
       end

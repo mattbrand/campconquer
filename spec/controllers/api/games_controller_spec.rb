@@ -275,6 +275,7 @@ describe API::GamesController, type: :controller do
             captures: 1,
             attack_mvp: 1,
             defend_mvp: 0,
+            ammo: ['balloon']
           },
           {
             team: 'red',
@@ -286,6 +287,7 @@ describe API::GamesController, type: :controller do
             captures: 0,
             attack_mvp: 0,
             defend_mvp: 1,
+            ammo: ['arrow', 'bomb']
           }
         ]
       }

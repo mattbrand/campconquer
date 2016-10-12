@@ -73,8 +73,9 @@ module API
                                      :pickups,
                                      :captures,
                                      :flag_carry_distance,
-                                     :attack_mvp,
-                                     :defend_mvp,
+                                     :attack_mvp,  # todo: remove
+                                     :defend_mvp,  # todo: remove
+                                     {ammo: []}
                                    ],
 
       )
