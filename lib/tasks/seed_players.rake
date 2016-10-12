@@ -25,15 +25,6 @@ class Board
     name
   end
 
-  def path
-    # everyone starts in a base
-    if @role == 'defense'
-      [team.defense_points.sample]
-    else
-      team.offense_paths.sample
-    end
-  end
-
   def point_in_base
     Point.new(x: left_side_of_base + rand(5), y: 1 + rand(8))
   end
@@ -53,19 +44,28 @@ class Board
     10.times do
       player = Player.create!(name: random_name, team: @team_name)
 
-      @role = Piece::ROLES.values.sample
+      role = Piece::ROLES.values.sample
+      path_points = Path.where(team: @team_name, role: role).sample.points
 
       body_type = Piece::BODY_TYPES.values.sample
+      speed = rand(10)
+      health = rand([0, 10 - speed].max)
+      range = 10 - speed - health
+
       piece = player.set_piece(
-                    role: @role,
-                    path: path,
-                    speed: 1 + rand(10),
-                    health: 1 + rand(10),
-                    range: 1 + rand(5),
+                    role: role,
+                    path: path_points,
+                    speed: speed,
+                    health: health,
+                    range: range,
                     body_type: body_type,
-                    # todo: :face, :hair, :skin_color, :hair_color
-                    ammo: ["balloon", "balloon", "balloon"]
+                    face: "face_01_f",
+                    hair: "hair_short_02_f",
+                    skin_color: "EFD8CC",
+                    hair_color: "2968c2",
+                    ammo: ["balloon", "arrow", "balloon"]
       )
+      player.update(embodied: true)
 
       puts ["created player ##{player.id}", player.name.ljust(20), @team_name, piece.role, piece.body_type].join("\t")
     end
