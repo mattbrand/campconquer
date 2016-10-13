@@ -36,6 +36,9 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :sessions, only: ['create']
+
+
     match "*path", :to => "api#route_not_found", :via => :all
 
   end

@@ -7,8 +7,6 @@ module API
                                      :lock,
                                      :unlock]
 
-    skip_before_action :verify_authenticity_token # todo: put back in when we have auth?
-
     # GET /games
     def index
       @games = Game.all.order(updated_at: :desc)

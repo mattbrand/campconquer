@@ -316,7 +316,6 @@ class Game < ActiveRecord::Base
       elsif value == best
         mvps << outcome.player_id
       end
-
     end
 
     mvps

@@ -18,11 +18,6 @@ describe API::PlayersController, type: :controller do
     }
   }
 
-  # This should return the minimal set of values that should be in the session
-  # in order to pass any filters (e.g. authentication) defined in
-  # PlayersController. Be sure to keep this updated too.
-  let(:valid_session) { {} }
-
   describe "GET #index" do
     it "assigns all players as @players" do
       player = Player.create! valid_attributes
@@ -155,7 +150,7 @@ describe API::PlayersController, type: :controller do
       expect(Player).to receive(:find_by_anti_forgery_token).with("CALLBACK_STATE") { player }
       expect(player).to receive(:finish_auth).with("CALLBACK_CODE")
       bypass_rescue
-      get :auth_callback, {:state => "CALLBACK_STATE", :code => "CALLBACK_CODE"}
+      get :auth_callback, {:state => "CALLBACK_STATE", :code => "CALLBACK_CODE"}, valid_session
       expect(response).to redirect_to(admin_players_path)
     end
   end
@@ -166,8 +161,9 @@ describe API::PlayersController, type: :controller do
     it 'claims available steps' do
       player.activities.create!(date: Date.today, steps: 100)
       expect(player.coins).to eq(0)
-      post :claim_steps, {:id => player.to_param}
+      post :claim_steps, {:id => player.to_param}, valid_session
 
+      expect_ok
       expect(response_json['status']).to eq('ok')
 
       player.reload
@@ -183,7 +179,7 @@ describe API::PlayersController, type: :controller do
       player.activities.create!(date: Date.current, active_minutes: Player::GOAL_MINUTES + 10)
       expect(player.gems).to eq(0)
 
-      post :claim_active_minutes, {:id => player.to_param}
+      post :claim_active_minutes, {:id => player.to_param}, valid_session
 
       expect(response_json['status']).to eq('ok')
 

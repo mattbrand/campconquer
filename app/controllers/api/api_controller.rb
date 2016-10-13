@@ -1,6 +1,10 @@
 module API
   class APIController < ActionController::Base
 
+    # homegrown auth, see SessionsController
+
+    before_action :check_session
+
     # Prevent CSRF attacks by raising an exception.
     # For APIs, you may want to use :null_session instead.
     # protect_from_forgery with: :exception
@@ -25,7 +29,35 @@ module API
              }
     end
 
+    def good_session_token? token
+      token == API::SessionsController::GOOD_SESSION_TOKEN
+    end
+
+    def check_session
+      token = params[:token] || session[:token]
+
+      # see https://www.loggly.com/blog/http-status-code-diagram/
+      if token.nil?
+        render status: :unauthorized, # in HTTP, "401 Unauthorized" means unauthenticated :-/
+               json: {
+                 status: "error",
+                 message: "This is a protected endpoint and you are unauthenticated - please pass in a good token",
+               }
+      elsif !good_session_token? token
+        render status: :unauthorized, # in HTTP, "401 unauthorized" means unauthenticated :-/
+               json: {
+                 status: "error",
+                 message: "This is a protected endpoint and your token is invalid",
+               }
+      else
+        # todo: check authorization
+        # in HTTP, "403 Forbidden" means unauthorized :-/
+      end
+    end
+
     protected
+
+    # errors
 
     def record_not_found(e)
       render :status => :not_found,
@@ -59,6 +91,29 @@ module API
       render :status => :internal_server_error,
              :json => exception_as_json(e)
     end
+
+    def exception_as_json(e)
+      {
+        'status' => 'error',
+        'message' => e.message, # suitable for display to user, more or less
+        'exception' => exception_as_hash(e)
+      }
+    end
+
+    def exception_as_hash(e)
+      hash = {
+        'class' => e.class.name,
+        'message' => e.message,
+        'trace' => e.backtrace # todo: turn this off in production? or is security through obscurity an illusion?
+      }
+      if e.cause
+        hash['cause'] = exception_as_hash(e.cause)
+      end
+      hash
+    end
+
+
+    # finding
 
     def find_game
       game_id = params[:game_id] || params[:id]
@@ -103,25 +158,7 @@ module API
       end
     end
 
-    def exception_as_json(e)
-      {
-        'status' => 'error',
-        'message' => e.message, # suitable for display to user, more or less
-        'exception' => exception_as_hash(e)
-      }
-    end
-
-    def exception_as_hash(e)
-      hash = {
-        'class' => e.class.name,
-        'message' => e.message,
-        'trace' => e.backtrace # todo: turn this off in production? or is security through obscurity an illusion?
-      }
-      if e.cause
-        hash['cause'] = exception_as_hash(e.cause)
-      end
-      hash
-    end
+    # rendering
 
     def render_game(**args)
       game_hash = @game.as_json
@@ -129,6 +166,11 @@ module API
 
       body = {status: 'ok', game: game_hash}
       render json: body, **args
+    end
+
+    def render_ok(response, render_args: {})
+      body = {status: 'ok'} + response
+      render json: body, **render_args
     end
 
     def render_player(**args)

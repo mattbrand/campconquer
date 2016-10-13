@@ -17,11 +17,6 @@ describe API::GamesController, type: :controller do
     {}
   }
 
-  # This should return the minimal set of values that should be in the session
-  # in order to pass any filters (e.g. authentication) defined in
-  # GamesController. Be sure to keep this updated too.
-  let(:valid_session) { {} }
-
   before do
     request.accept = "application/json"
   end
@@ -303,10 +298,6 @@ describe API::GamesController, type: :controller do
     let(:empty_attributes) {
       {}
     }
-    # This should return the minimal set of values that should be in the session
-    # in order to pass any filters (e.g. authentication) defined in
-    # OutcomesController. Be sure to keep this updated too.
-    let(:valid_session) { {} }
 
     describe "POST #update" do
 

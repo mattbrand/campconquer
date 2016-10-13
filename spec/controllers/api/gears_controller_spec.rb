@@ -2,10 +2,6 @@ require 'rails_helper'
 
 describe API::GearsController, type: :controller do
 
-  # This should return the minimal set of values that should be in the session
-  # in order to pass any filters (e.g. authentication) defined in
-  # GamesController. Be sure to keep this updated too.
-  let(:valid_session) { {} }
 
   let(:trucker_cap_attrs) {
     {

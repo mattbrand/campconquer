@@ -3,8 +3,9 @@ describe 'making a request to an unrecognised path' do
 # before { host! 'api.example.com' }
 
   context 'api' do
+    include ControllerHelpers
     it 'returns 404 and json' do
-      get '/api/nowhere'
+      get '/api/nowhere', valid_session
       expect(response.status).to eq(404)
       expect(JSON.parse(response.body)).to include(
                                              {'message' =>
