@@ -12,13 +12,11 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 
 
 # TODO
-
+- [ ] prizes
 - [ ] login
   - [ ] MVP: one password, sent in the clear :-O
-- [ ] ammo: send remaining ammo when game complete
 - [ ] use https on Heroku and in game URLs
 - [ ] bug: CORS https://www.dropbox.com/s/4p383kc3v6ch223/Screenshot%202016-10-07%2013.09.40.png?dl=0
-- [ ] bug: 'none' vs 'nil' on tie games
 - [ ] check steps in the background at least 1x/day, not just when players connect
   - http://sprint.ly/product/41137/item/333
 - [ ] load fitbit data as far back as needed and no further
@@ -29,7 +27,6 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 - [ ] player HTML page -- when logged in, shows activities etc 
   - http://sprint.ly/product/41137/item/338
 
-- [ ] better splash page
 - [ ] add 'last sync time' to player info / store
 - [ ] round up remainder steps
 - [ ] return # of coins received in claim response (coins and gems alike)
