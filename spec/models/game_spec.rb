@@ -367,8 +367,8 @@ describe Game do
       let!(:rhoda) { create_player player_name: 'rhoda', team: 'red' }
 
       before do
-        bob.set_piece(role: 'offense', path: '[{"x": 1}, {"y": 2}]')
-        rhoda.set_piece(role: 'defense', path: '[{"x": 3}, {"y": 4}]')
+        bob.set_piece(role: 'offense', path: '[{"x": 1}, {"y": 2}]', ammo: ['balloon'])
+        rhoda.set_piece(role: 'defense', path: '[{"x": 3}, {"y": 4}]', ammo: ['balloon'])
         current_game.lock_game!
       end
 
@@ -381,6 +381,7 @@ describe Game do
           pickups: 4,
           flag_carry_distance: 5,
           captures: 1,
+          ammo: ['balloon'],
         },
         {
           team: 'red',
@@ -437,6 +438,16 @@ describe Game do
         it 'trusts the winner param' do
           current_game.finish_game! winner: 'red'
           expect(current_game.winner).to eq('red')
+        end
+      end
+
+      context 'ammo' do
+        before { current_game.finish_game! player_outcomes_attributes: player_outcomes_hashes }
+        it 'restores leftover ammo to the player' do
+          expect(bob.reload.ammo).to eq(['balloon'])
+        end
+        it 'when no ammo is passed, assumes none is left over' do
+          expect(rhoda.reload.ammo).to eq([])
         end
       end
 

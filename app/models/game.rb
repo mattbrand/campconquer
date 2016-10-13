@@ -198,9 +198,8 @@ class Game < ActiveRecord::Base
 
     leftover_ammo = {}
     params[:player_outcomes_attributes].each do |outcome|
-      if (ammo = outcome.delete(:ammo))
-        leftover_ammo[outcome[:player_id]] = ammo
-      end
+      ammo = outcome.delete(:ammo) || []
+      leftover_ammo[outcome[:player_id]] = ammo
     end
 
     self.update!(defaults + params)
@@ -353,7 +352,6 @@ class Game < ActiveRecord::Base
 
   def restore_leftover_ammo(leftover_ammo)
     leftover_ammo.each_pair do |player_id, ammo|
-      puts "Restoring #{ammo} to player #{player_id}"
       Player.find(player_id).set_piece(ammo: ammo)
     end
   end
