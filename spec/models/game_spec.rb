@@ -467,14 +467,19 @@ describe Game do
         expect(rhoda.piece.reload.path).to be_nil
       end
 
-      context "prizes" do
-        it "winning team, every player gets 1 gem"
-        it "tying teams, players get nothing"
-        it "all MVPs get one gem each"
+      it 'awards prizes' do
+        expect(current_game).to receive(:award_prizes!)
+        current_game.finish_game!
+      end
+
+      it 'awards mvp prizes' do
+        expect(current_game).to receive(:award_prizes!)
+        current_game.finish_game!
       end
 
     end
   end
+
 
   describe 'calculating post-game stats' do
 
@@ -567,6 +572,53 @@ describe Game do
         expect(mvps['red']['defend_mvps']).to eq([])
       end
 
+    end
+
+    context "awarding prizes" do
+      # temporarily make these private methodstestable
+      before do
+        class Game
+          public :award_prizes!, :award_mvp_prizes!
+        end
+      end
+      after do
+        class Game
+          private :award_prizes!, :award_mvp_prizes!
+        end
+      end
+
+      it "when red wins, every red player gets 1 gem" do
+        game.award_prizes! winner: 'red'
+        expect(betty.reload.gems).to eq(0)
+        expect(bob.reload.gems).to eq(0)
+        expect(roger.reload.gems).to eq(1)
+        expect(rebecca.reload.gems).to eq(1)
+      end
+
+      it "when blue wins, every blue player gets 1 gem" do
+        game.award_prizes! winner: 'blue'
+        expect(betty.reload.gems).to eq(1)
+        expect(bob.reload.gems).to eq(1)
+        expect(roger.reload.gems).to eq(0)
+        expect(rebecca.reload.gems).to eq(0)
+      end
+
+      it "tying teams, players get nothing" do
+        game.award_prizes! winner: nil
+        expect(betty.reload.gems).to eq(0)
+        expect(bob.reload.gems).to eq(0)
+        expect(roger.reload.gems).to eq(0)
+        expect(rebecca.reload.gems).to eq(0)
+      end
+
+      it "all MVPs get one gem each" do
+        # in this setup, every player is an mvp... should test more cases
+        game.award_mvp_prizes!
+        expect(betty.reload.gems).to eq(1)
+        expect(bob.reload.gems).to eq(1)
+        expect(roger.reload.gems).to eq(1)
+        expect(rebecca.reload.gems).to eq(1)
+      end
     end
 
   end

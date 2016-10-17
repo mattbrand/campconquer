@@ -191,12 +191,16 @@ class Player < ActiveRecord::Base
     if active_goal_met?
       unless activity_today.active_minutes_claimed?
         activity_today.update!(active_minutes_claimed: true)
-        self.gems += 1
-        save!
+        increment_gems!
       end
     else
       raise GoalNotMet, active_minutes
     end
+  end
+
+  def increment_gems!
+    self.gems += 1
+    save!
   end
 
   def gear_owned

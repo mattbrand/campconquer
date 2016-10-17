@@ -225,6 +225,8 @@ class Game < ActiveRecord::Base
 
     null_out_paths
     restore_leftover_ammo(leftover_ammo)
+    award_prizes!
+    award_mvp_prizes!
   end
 
   def copy_player_pieces
@@ -352,6 +354,25 @@ class Game < ActiveRecord::Base
   def restore_leftover_ammo(leftover_ammo)
     leftover_ammo.each_pair do |player_id, ammo|
       Player.find(player_id).set_piece(ammo: ammo)
+    end
+  end
+
+  def award_prizes! winner: self.winner
+    player_outcomes.each do |outcome|
+      if outcome.team == winner
+        outcome.player.increment_gems!
+      end
+    end
+  end
+
+  def award_mvp_prizes!
+    mvps = calculate_mvps
+    mvps.each_pair do |team, team_mvps|
+      team_mvps.each_pair do |mvp_type, players|
+        players.each do |player_id|
+          Player.find(player_id).increment_gems!
+        end
+      end
     end
   end
 
