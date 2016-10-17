@@ -37,6 +37,7 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 
 ## chores
 - [-] puma
+- [ ] seed_players should use avatar.csv to determine gear asset
 - [ ] remove `current` and `locked` db fields
 - [ ] create prod env
 - [ ] fixture factories
