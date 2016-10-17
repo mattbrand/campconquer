@@ -13,10 +13,11 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 
 # TODO
 - [ ] prizes
+    - winning team, every player gets 1 gem
+    - tying teams, players get nothing
+    - all MVPs get one gem each
 - [ ] login
   - [ ] MVP: one password, sent in the clear :-O
-- [ ] use https on Heroku and in game URLs
-- [ ] bug: CORS https://www.dropbox.com/s/4p383kc3v6ch223/Screenshot%202016-10-07%2013.09.40.png?dl=0
 - [ ] check steps in the background at least 1x/day, not just when players connect
   - http://sprint.ly/product/41137/item/333
 - [ ] load fitbit data as far back as needed and no further
@@ -36,7 +37,6 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 
 
 ## chores
-- [-] puma
 - [ ] seed_players should use avatar.csv to determine gear asset
 - [ ] remove `current` and `locked` db fields
 - [ ] create prod env
