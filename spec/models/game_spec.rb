@@ -466,6 +466,13 @@ describe Game do
         expect(bob.piece.reload.path).to be_nil
         expect(rhoda.piece.reload.path).to be_nil
       end
+
+      context "prizes" do
+        it "winning team, every player gets 1 gem"
+        it "tying teams, players get nothing"
+        it "all MVPs get one gem each"
+      end
+
     end
   end
 
@@ -540,6 +547,26 @@ describe Game do
       game.pieces << billie.piece
       game.player_outcomes << Outcome.new(team: 'blue', player_id: billie.id, captures: 0, takedowns: 2, flag_carry_distance: 20)
       expect(mvps['blue']['defend_mvps']).to eq([bob.id, billie.id])
+    end
+
+    context 'when there were no relevant events' do
+
+      let(:outcomes) {
+        [
+          Outcome.new(team: 'blue', player_id: betty.id, captures: 0, takedowns: 0, flag_carry_distance: 0),
+          Outcome.new(team: 'blue', player_id: bob.id, captures: 0, takedowns: 0, flag_carry_distance: 0),
+          Outcome.new(team: 'red', player_id: roger.id, captures: 0, takedowns: 0, flag_carry_distance: 0),
+          Outcome.new(team: 'red', player_id: rebecca.id, captures: 0, takedowns: 0, flag_carry_distance: 0),
+        ]
+      }
+
+      it "doesn't set any MVP" do
+        expect(mvps['blue']['attack_mvps']).to eq([])
+        expect(mvps['blue']['defend_mvps']).to eq([])
+        expect(mvps['red']['attack_mvps']).to eq([])
+        expect(mvps['red']['defend_mvps']).to eq([])
+      end
+
     end
 
   end

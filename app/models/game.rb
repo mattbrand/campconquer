@@ -297,7 +297,7 @@ class Game < ActiveRecord::Base
 
   def calculate_mvps_for team, role
     mvps = []
-    best = -1
+    best = 0
 
     relevant_outcomes = player_outcomes.select do |o|
       o.team == team and begin
@@ -307,10 +307,10 @@ class Game < ActiveRecord::Base
       end
     end
     relevant_outcomes.each do |outcome|
-
       value = yield outcome
-
-      if value > best
+      if value == 0
+        # abort! 0 doesn't count
+      elsif value > best
         mvps = [outcome.player_id]
         best = value
       elsif value == best
