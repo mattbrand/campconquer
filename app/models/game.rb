@@ -121,14 +121,17 @@ class Game < ActiveRecord::Base
         },
         :team_outcomes,
         :player_outcomes,
+        :mvps,
         :paths,
       ],
       methods: [
-        :team_outcomes,
+          :mvps,
+          :team_outcomes,
         :paths,
       ],
     }
   end
+
 
   def team_outcomes
     Team::NAMES.values.map do |team_name|
@@ -294,6 +297,8 @@ class Game < ActiveRecord::Base
     end
     result
   end
+
+  alias_method :mvps, :calculate_mvps
 
   private
 
