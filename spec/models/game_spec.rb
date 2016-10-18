@@ -546,12 +546,17 @@ describe Game do
       expect(mvps['red']['defend_mvps']).to eq([rebecca.id])
     end
 
-    it 'might have several mvps' do
+    it 'might have several mvps -- but in that case choose a random one' do
       billie = Player.create! team: 'blue', name: 'billie'
       billie.set_piece role: 'defense'
       game.pieces << billie.piece
       game.player_outcomes << Outcome.new(team: 'blue', player_id: billie.id, captures: 0, takedowns: 2, flag_carry_distance: 20)
-      expect(mvps['blue']['defend_mvps']).to eq([bob.id, billie.id])
+
+      # expect(mvps['blue']['defend_mvps']).to eq([bob.id, billie.id])
+
+      all_mvps = mvps['blue']['defend_mvps']
+      expect(all_mvps.size).to eq(1)
+      expect([bob.id, billie.id]).to include(all_mvps.first)
     end
 
     context 'when there were no relevant events' do

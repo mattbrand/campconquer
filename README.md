@@ -12,31 +12,41 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 
 
 # TODO
-- [ ] prizes
-    - winning team, every player gets 1 gem
-    - tying teams, players get nothing
-    - all MVPs get one gem each
-- [ ] login
-  - [ ] MVP: one password, sent in the clear :-O
-- [ ] check steps in the background at least 1x/day, not just when players connect
-  - http://sprint.ly/product/41137/item/333
-- [ ] load fitbit data as far back as needed and no further
 
-- [ ] 'control group' players (no team)
-  - can see steps etc but no redemption 
+- [ ] max one mvp per slot (team x role), randomly chosen
+
+- [ ] login
+  - [x] one password, sent in the clear :-O
+  - [ ] actual passwords for API and Web
+  
+- [ ] load fitbit data as far back as needed and no further
 
 - [ ] player HTML page -- when logged in, shows activities etc 
   - http://sprint.ly/product/41137/item/338
 
-- [ ] add 'last sync time' to player info / store
+- [ ] 'control group' players (no team)
+  - can see steps etc but no redemption 
+  - need UI (Web only, for moderator? or for players too?)
+
+## low priority features
+
+- [ ] check steps in the background at least 1x/day, not just when players connect
+  - http://sprint.ly/product/41137/item/333
+  - need an extra "worker" process in heroku, $$$
+
 - [ ] round up remainder steps
+
 - [ ] return # of coins received in claim response (coins and gems alike)
+
 - [ ] validate max. one capture per game
+
 - [ ] unequip (or we may not need unequip if i add the rule “only one of each item type can be equipped” )
-- [ ] player stats (all season(s?)) in GET player endpoint?
+
+- [ ] player stats across all seasons in GET player endpoint
 
 
 ## chores
+
 - [ ] seed_players should use avatar.csv to determine gear asset
 - [ ] remove `current` and `locked` db fields
 - [ ] create prod env

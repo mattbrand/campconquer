@@ -320,6 +320,11 @@ class Game < ActiveRecord::Base
       end
     end
 
+    # only one max
+    if mvps.size > 1
+      mvps = [mvps.sample]
+    end
+
     mvps
   end
 
