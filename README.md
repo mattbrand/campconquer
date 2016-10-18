@@ -13,11 +13,13 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 
 # TODO
 
+- [x] un-protect fitbit callback endpoint
+
 - [ ] login
   - [x] one password, sent in the clear :-O
   - [ ] actual passwords for API and Web
   
-- [ ] load fitbit data as far back as needed and no further
+- [x] load fitbit data as far back as needed and no further
 
 - [ ] player HTML page -- when logged in, shows activities etc 
   - http://sprint.ly/product/41137/item/338

@@ -15,20 +15,21 @@ describe TeamOutcome do
     it "adds up stats" do
       player_outcomes = [
         Outcome.new({team: 'blue',
-                           takedowns: 1,
-                           throws: 2,
-                           pickups: 3,
-                           flag_carry_distance: 4,
-                           captures: 1,
-                          }.with_indifferent_access),
+                     takedowns: 1,
+                     throws: 2,
+                     pickups: 3,
+                     flag_carry_distance: 4,
+                     captures: 1,
+
+                    }.with_indifferent_access),
 
         Outcome.new({team: 'red',
-                           takedowns: 11,
-                           throws: 12,
-                           pickups: 13,
-                           flag_carry_distance: 14,
-                           captures: 0,
-                          }.with_indifferent_access),
+                     takedowns: 11,
+                     throws: 12,
+                     pickups: 13,
+                     flag_carry_distance: 14,
+                     captures: 0,
+                    }.with_indifferent_access),
       ]
 
       game = Game.new(
@@ -45,6 +46,8 @@ describe TeamOutcome do
                                           throws: 2,
                                           pickups: 3,
                                           flag_carry_distance: 4,
+                                          attack_mvps: [],
+                                          defend_mvps: [],
                                          }.with_indifferent_access)
 
       team_outcome = TeamOutcome.new(team: 'red', games: games)
@@ -54,6 +57,8 @@ describe TeamOutcome do
                                           pickups: 13,
                                           flag_carry_distance: 14,
                                           captures: 0,
+                                          attack_mvps: [],
+                                          defend_mvps: [],
                                          }.with_indifferent_access)
 
     end

@@ -121,17 +121,14 @@ class Game < ActiveRecord::Base
         },
         :team_outcomes,
         :player_outcomes,
-        :mvps,
         :paths,
       ],
       methods: [
-          :mvps,
-          :team_outcomes,
+        :team_outcomes,
         :paths,
       ],
     }
   end
-
 
   def team_outcomes
     Team::NAMES.values.map do |team_name|

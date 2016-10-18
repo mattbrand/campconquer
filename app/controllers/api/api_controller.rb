@@ -133,7 +133,7 @@ module API
 
     def pull_activity
       if @player and @player.authenticated?
-        @player.pull_recent_activity
+        @player.pull_recent_activity!
       end
     end
 

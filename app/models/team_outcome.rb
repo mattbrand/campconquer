@@ -17,7 +17,7 @@
 #   description: number of meters this team carried the flag
 
 class TeamOutcome < TalliedOutcome
-  attr_reader :team
+  attr_reader :team, :attack_mvps, :defend_mvps
 
   def initialize(games:, team:)
     @team = team
@@ -32,8 +32,21 @@ class TeamOutcome < TalliedOutcome
     super.select { |o| o.team == team }
   end
 
+  # todo: test MVP merge
   def attributes
-    {'team' => @team} + super
+    {
+      'team' => @team,
+      'attack_mvps' => [],
+      'defend_mvps' => [],
+    } + super
+  end
+
+  def attack_mvps
+    games.first.mvps[@team]['attack_mvps']
+  end
+
+  def defend_mvps
+    games.first.mvps[@team]['defend_mvps']
   end
 
 end

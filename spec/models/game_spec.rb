@@ -268,11 +268,17 @@ describe Game do
   end
 
   describe "as_json" do
-    it "includes outcome and team_outcomes" do
-      alice = create_player(player_name: 'alice', team: 'blue')
-      bob = create_player(player_name: 'bob', team: 'red')
 
-      game = Game.current
+    let!(:alice) { create_player(player_name: 'alice', team: 'blue') }
+    let!(:bob) { create_player(player_name: 'bob', team: 'red') }
+
+    let!(:alices_path) { Path.where(team: alice.team, role: alice.role).sample }
+
+    let(:game) { Game.current }
+
+    before do
+      alice.set_piece(path: alices_path.points)
+
       game.lock_game!
       game.finish_game! winner: 'red',
                         player_outcomes_attributes: [# rails is weird
@@ -280,6 +286,9 @@ describe Game do
                           {player_id: bob.id, team: 'red', takedowns: 3, captures: 1},
                         ]
 
+    end
+
+    it "includes outcome and team_outcomes" do
       json = game.as_json
       expect(json['winner']).to eq('red')
       expect(json['scheduled_start']).to be
@@ -293,20 +302,38 @@ describe Game do
       expect(json['player_outcomes'][1]['takedowns']).to eq(3)
     end
 
+    def strip_key!(hash, key)
+      hash.each_pair { |_, val| hash[key] = nil }
+      hash
+    end
+
     it "includes paths" do
-      game = Game.current
       json = game.as_json
       expect(json).to include('paths')
-      expect(json['paths']).to eq(Path.all.as_json)
+      json_paths = json['paths']
+      json_paths.map{|p| strip_key!(p, 'count')}
+      Path.all.each do |path|
+        json = path.as_json
+        json['count'] = nil
+        expect(json_paths).to include(json)
+      end
     end
 
     it "includes path counts" do
-      pending "set up a player with a path"
-      game = Game.current
       json = game.as_json
       expect(json).to include('paths')
       counts = json['paths'].map { |p| p['count'] }
       expect(counts).to include(1)
+    end
+
+    it "includes mvps under their teams" do
+      game_mvps = game.mvps
+      json = game.as_json
+      Team::NAMES.values.each do |team_name|
+        team_json = json['team_outcomes'].detect{|h| h['team'] == team_name}
+        expect(team_json['attack_mvps']).to eq(game_mvps[team_name]['attack_mvps'])
+        expect(team_json['defend_mvps']).to eq(game_mvps[team_name]['defend_mvps'])
+      end
     end
   end
 

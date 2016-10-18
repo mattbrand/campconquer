@@ -1,5 +1,7 @@
-module API
-  class PlayersController < APIController
+class API::PlayersController < ::API::APIController
+
+  skip_before_action :check_session, only: :auth_callback
+
   before_action :find_player, only: [:show,
                                      :update,
                                      :auth,
@@ -11,6 +13,7 @@ module API
                                      :buy,
                                      :equip,
                             ]
+
   before_action :pull_activity, only: [
                                 :show,
                                 :update,
@@ -62,6 +65,7 @@ module API
     redirect_to @player.begin_auth # todo: test
   end
 
+    # note: this does not require login auth since it's called via redirect from fitbit.com
   def auth_callback
     player = Player.find_by_anti_forgery_token(params[:state])
     player.finish_auth(params[:code]) # todo: test
@@ -125,5 +129,4 @@ module API
   def player_params
     params.require(:player).permit(:name, :team, :embodied)
   end
-end
 end
