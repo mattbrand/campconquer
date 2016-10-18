@@ -52,7 +52,7 @@ class Game < ActiveRecord::Base
   has_many :pieces, -> { includes :player, :items }
   has_many :players, through: :pieces
 
-  has_many :player_outcomes, class_name: 'Outcome', dependent: :destroy # rename to player_outcomes?
+  has_many :player_outcomes, class_name: 'Outcome', dependent: :destroy
 
   accepts_nested_attributes_for :player_outcomes
 
@@ -205,16 +205,6 @@ class Game < ActiveRecord::Base
     self.update!(defaults + params)
 
     set_winner(params)
-
-    mvps = calculate_mvps
-    player_outcomes.each do |outcome|
-      if mvps[outcome.team]['attack_mvps'].include? outcome.player_id
-        outcome.attack_mvp = 1
-      end
-      if mvps[outcome.team]['defend_mvps'].include? outcome.player_id
-        outcome.defend_mvp = 1
-      end
-    end
 
     self.current = false
     self.locked = false

@@ -133,17 +133,7 @@ module API
 
     def pull_activity
       if @player and @player.authenticated?
-        bm = Benchmark.measure("Fetch activity") do
-          # TODO: move this into a background task!!!
-          @player.pull_activity! Date.current - 6.days
-          @player.pull_activity! Date.current - 5.days
-          @player.pull_activity! Date.current - 4.days
-          @player.pull_activity! Date.current - 3.days
-          @player.pull_activity! Date.current - 2.days
-          @player.pull_activity! Date.current - 1.day
-          @player.pull_activity! Date.current
-        end
-        puts bm
+        @player.pull_recent_activity
       end
     end
 

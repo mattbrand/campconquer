@@ -13,8 +13,6 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 
 # TODO
 
-- [ ] max one mvp per slot (team x role), randomly chosen
-
 - [ ] login
   - [x] one password, sent in the clear :-O
   - [ ] actual passwords for API and Web

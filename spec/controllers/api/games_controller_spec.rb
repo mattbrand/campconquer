@@ -271,8 +271,6 @@ describe API::GamesController, type: :controller do
             pickups: 4,
             flag_carry_distance: 5,
             captures: 1,
-            attack_mvp: 1,
-            defend_mvp: 0,
             ammo: bobs_leftover_ammo,
           },
           {
@@ -283,8 +281,6 @@ describe API::GamesController, type: :controller do
             pickups: 14,
             flag_carry_distance: 15,
             captures: 0,
-            attack_mvp: 0,
-            defend_mvp: 1,
             ammo: rhodas_leftover_ammo,
           }
         ]

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161004204731) do
+ActiveRecord::Schema.define(version: 20161018155651) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -96,8 +96,6 @@ ActiveRecord::Schema.define(version: 20161004204731) do
     t.integer  "player_id"
     t.integer  "flag_carry_distance", null: false
     t.integer  "captures",            null: false
-    t.integer  "attack_mvp",          null: false
-    t.integer  "defend_mvp",          null: false
     t.integer  "game_id"
   end
 

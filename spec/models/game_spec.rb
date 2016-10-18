@@ -451,16 +451,6 @@ describe Game do
         end
       end
 
-      it 'sets MVP on outcomes' do
-        current_game.finish_game! player_outcomes_attributes: player_outcomes_hashes
-        bob_outcome = current_game.player_outcomes.detect { |o| o.player_id == bob.id }
-        rhoda_outcome = current_game.player_outcomes.detect { |o| o.player_id == rhoda.id }
-        expect(bob_outcome.attack_mvp).to eq(1)
-        expect(bob_outcome.defend_mvp).to eq(0)
-        expect(rhoda_outcome.attack_mvp).to eq(0)
-        expect(rhoda_outcome.defend_mvp).to eq(1)
-      end
-
       it 'nulls out path on all players' do
         current_game.finish_game!
         expect(bob.piece.reload.path).to be_nil
@@ -527,21 +517,21 @@ describe Game do
       expect(game.calculate_winner).to eq(nil)
     end
 
-    it 'calculates attack_mvp for winning team (for winning team, this player captured the flag)' do
+    it 'calculates attack_mvps for winning team (for winning team, this player captured the flag)' do
       expect(mvps['blue']['attack_mvps']).to eq([betty.id])
     end
 
-    it 'calculates defend_mvp for winning team' do
+    it 'calculates defend_mvps for winning team' do
       # this player had the most takedowns
       expect(mvps['blue']['defend_mvps']).to eq([bob.id])
     end
 
-    it 'calculates attack_mvp for losing team' do
+    it 'calculates attack_mvps for losing team' do
       # for losing team, this player held the flag for longest distance
       expect(mvps['red']['attack_mvps']).to eq([roger.id])
     end
 
-    it 'calculates defend_mvp for losing team' do
+    it 'calculates defend_mvps for losing team' do
       # this player had the most takedowns
       expect(mvps['red']['defend_mvps']).to eq([rebecca.id])
     end

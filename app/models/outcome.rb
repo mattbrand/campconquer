@@ -12,8 +12,6 @@
 #  player_id           :integer
 #  flag_carry_distance :integer          not null
 #  captures            :integer          not null
-#  attack_mvp          :integer          not null
-#  defend_mvp          :integer          not null
 #  game_id             :integer
 #
 # Indexes
@@ -31,7 +29,7 @@ class Outcome < ActiveRecord::Base
 
   before_save do
     # defend against nulls
-    %w(takedowns throws pickups flag_carry_distance captures attack_mvp defend_mvp).each do |field|
+    %w(takedowns throws pickups flag_carry_distance captures).each do |field|
       self[field] ||= 0
     end
   end
@@ -52,8 +50,6 @@ class Outcome < ActiveRecord::Base
              :pickups,
              :captures,
              :flag_carry_distance,
-             :attack_mvp,
-             :defend_mvp,
       ],
     }
   end

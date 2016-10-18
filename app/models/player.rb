@@ -320,6 +320,36 @@ class Player < ActiveRecord::Base
     )
   end
 
+  # todo: test
+  # TODO: move this into a background task
+  def pull_recent_activity
+    bm = Benchmark.measure("Fetch activity") do
+      # always fetch today
+      @player.pull_activity! Date.current
+
+      days_ago = 1
+      while days_ago < 7 # only look back a week max
+        date = Date.current - days_ago.days
+        known = activity_for(date)
+
+        fetched = pull_activity!(date)
+        # abort if no different from what we thought
+        if (known == fetched) and (known.steps != 0)
+          break
+        end
+        days_ago -= 1
+      end
+
+      @player.pull_activity! Date.current - 6.days
+      @player.pull_activity! Date.current - 5.days
+      @player.pull_activity! Date.current - 4.days
+      @player.pull_activity! Date.current - 3.days
+      @player.pull_activity! Date.current - 2.days
+      @player.pull_activity! Date.current - 1.day
+    end
+    puts bm
+  end
+
   def reload
     @activity_today = nil
     super

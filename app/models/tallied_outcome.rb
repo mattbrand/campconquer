@@ -29,8 +29,6 @@ class TalliedOutcome
     :pickups,
     :captures,
     :flag_carry_distance,
-    :attack_mvp,
-    :defend_mvp,
   ]
 
   attr_reader *STATS

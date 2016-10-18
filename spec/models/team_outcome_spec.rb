@@ -45,8 +45,6 @@ describe TeamOutcome do
                                           throws: 2,
                                           pickups: 3,
                                           flag_carry_distance: 4,
-                                          attack_mvp: 0,
-                                          defend_mvp: 0,
                                          }.with_indifferent_access)
 
       team_outcome = TeamOutcome.new(team: 'red', games: games)
@@ -56,8 +54,6 @@ describe TeamOutcome do
                                           pickups: 13,
                                           flag_carry_distance: 14,
                                           captures: 0,
-                                          attack_mvp: 0,
-                                          defend_mvp: 0,
                                          }.with_indifferent_access)
 
     end

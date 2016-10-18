@@ -12,8 +12,6 @@
 #  player_id           :integer
 #  flag_carry_distance :integer          not null
 #  captures            :integer          not null
-#  attack_mvp          :integer          not null
-#  defend_mvp          :integer          not null
 #  game_id             :integer
 #
 # Indexes

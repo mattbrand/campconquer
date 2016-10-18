@@ -330,6 +330,10 @@ describe Player, type: :model do
         expect(player.active_minutes).to eq(30)
       end
 
+      describe 'pull_recent_activity!' do
+        it "works"
+      end
+
     end
   end
 
