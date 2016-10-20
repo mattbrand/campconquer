@@ -1,6 +1,6 @@
 class API::PlayersController < ::API::APIController
 
-  skip_before_action :check_session, only: :auth_callback
+  skip_before_action :check_session, only: [:auth_callback, :auth]
 
   before_action :find_player, only: [:show,
                                      :update,
