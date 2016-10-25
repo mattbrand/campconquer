@@ -13,6 +13,7 @@
 #  winner          :string
 #  match_length    :integer          default("0"), not null
 #  scheduled_start :datetime
+#  mvps            :text
 #
 # Indexes
 #
@@ -311,7 +312,7 @@ describe Game do
       json = game.as_json
       expect(json).to include('paths')
       json_paths = json['paths']
-      json_paths.map{|p| strip_key!(p, 'count')}
+      json_paths.map { |p| strip_key!(p, 'count') }
       Path.all.each do |path|
         json = path.as_json
         json['count'] = nil
@@ -330,7 +331,7 @@ describe Game do
       game_mvps = game.mvps
       json = game.as_json
       Team::NAMES.values.each do |team_name|
-        team_json = json['team_outcomes'].detect{|h| h['team'] == team_name}
+        team_json = json['team_outcomes'].detect { |h| h['team'] == team_name }
         expect(team_json['attack_mvps']).to eq(game_mvps[team_name]['attack_mvps'])
         expect(team_json['defend_mvps']).to eq(game_mvps[team_name]['defend_mvps'])
       end
@@ -533,7 +534,7 @@ describe Game do
       )
     }
 
-    let(:mvps) { game.calculate_mvps }
+    let(:mvps) { game.send(:calculate_mvps) }
 
     it 'calculates winning team' do
       expect(game.calculate_winner).to eq('blue')
@@ -563,17 +564,28 @@ describe Game do
       expect(mvps['red']['defend_mvps']).to eq([rebecca.id])
     end
 
-    it 'might have several mvps -- but in that case choose a random one' do
-      billie = Player.create! team: 'blue', name: 'billie'
-      billie.set_piece role: 'defense'
-      game.pieces << billie.piece
-      game.player_outcomes << Outcome.new(team: 'blue', player_id: billie.id, captures: 0, takedowns: 2, flag_carry_distance: 20)
+    context 'when there are several potential mvps' do
+      let(:billie) { Player.create! team: 'blue', name: 'billie' }
+      before do
+        billie.set_piece role: 'defense'
+        game.pieces << billie.piece
+        game.player_outcomes << Outcome.new(team: 'blue', player_id: billie.id, captures: 0, takedowns: 2, flag_carry_distance: 20)
+      end
 
-      # expect(mvps['blue']['defend_mvps']).to eq([bob.id, billie.id])
+      it 'chooses a random one' do
+        # expect(mvps['blue']['defend_mvps']).to eq([bob.id, billie.id])
+        all_mvps = mvps['blue']['defend_mvps']
+        expect(all_mvps.size).to eq(1)
+        expect([bob.id, billie.id]).to include(all_mvps.first)
+      end
 
-      all_mvps = mvps['blue']['defend_mvps']
-      expect(all_mvps.size).to eq(1)
-      expect([bob.id, billie.id]).to include(all_mvps.first)
+      it 'remembers mvps on reload' do
+        chosen_mvps = game.mvps
+        game.save!
+        10.times do
+          expect(game.reload.mvps).to eq(chosen_mvps)
+        end
+      end
     end
 
     context 'when there were no relevant events' do

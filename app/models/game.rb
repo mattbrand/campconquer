@@ -13,6 +13,7 @@
 #  winner          :string
 #  match_length    :integer          default("0"), not null
 #  scheduled_start :datetime
+#  mvps            :text
 #
 # Indexes
 #
@@ -57,6 +58,7 @@ class Game < ActiveRecord::Base
   accepts_nested_attributes_for :player_outcomes
 
   serialize :moves, JSON
+  serialize :mvps, JSON
 
   validates :season_id, presence: true
   validates_uniqueness_of :current,
@@ -215,6 +217,7 @@ class Game < ActiveRecord::Base
 
     null_out_paths
     restore_leftover_ammo(leftover_ammo)
+    calculate_mvps
     award_prizes!
     award_mvp_prizes!
   end
@@ -266,6 +269,12 @@ class Game < ActiveRecord::Base
     end
   end
 
+  def mvps
+    super or (self['mvps'] = calculate_mvps)
+  end
+
+  private
+
   def calculate_mvps
     winner = calculate_winner
     result = {}
@@ -284,10 +293,6 @@ class Game < ActiveRecord::Base
     end
     result
   end
-
-  alias_method :mvps, :calculate_mvps
-
-  private
 
   def calculate_mvps_for team, role
     mvps = []
@@ -363,8 +368,7 @@ class Game < ActiveRecord::Base
   end
 
   def award_mvp_prizes!
-    mvps = calculate_mvps
-    mvps.each_pair do |team, team_mvps|
+    self.mvps.each_pair do |team, team_mvps|
       team_mvps.each_pair do |mvp_type, players|
         players.each do |player_id|
           Player.find(player_id).increment_gems!
