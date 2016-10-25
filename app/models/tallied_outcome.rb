@@ -63,11 +63,21 @@ class TalliedOutcome
   def add_to_stat(stat, game_val)
     current_val = self.send(stat) || 0
     game_val ||= 0
-    set_stat(stat, current_val + game_val)
+    new_val = current_val + game_val
+    set_stat(stat, new_val)
   end
 
   def set_stat(stat, value)
+    check_max(stat, value)
     instance_variable_set("@#{stat}", value)
+  end
+
+  def check_max(stat, new_val)
+    if (@max && @max[stat] && new_val > @max[stat])
+      message = "exceeded maximum value for #{stat}"
+      Rails.logger.error(player_outcomes.as_json)
+      raise message
+    end
   end
 
 end

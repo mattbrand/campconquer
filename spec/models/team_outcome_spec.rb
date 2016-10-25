@@ -12,33 +12,33 @@ describe TeamOutcome do
   end
 
   context "given a game" do
+
+    let(:player_outcomes) { [
+      Outcome.new({team: 'blue',
+                   takedowns: 1,
+                   throws: 2,
+                   pickups: 3,
+                   flag_carry_distance: 4,
+                   captures: 1,
+                  }.with_indifferent_access),
+
+      Outcome.new({team: 'red',
+                   takedowns: 11,
+                   throws: 12,
+                   pickups: 13,
+                   flag_carry_distance: 14,
+                   captures: 0,
+                  }.with_indifferent_access),
+    ] }
+
+    let(:game) { Game.new(winner: 'blue',
+                          match_length: 100,
+                          player_outcomes: player_outcomes
+    ) }
+
+    let(:games) { [game] }
+
     it "adds up stats" do
-      player_outcomes = [
-        Outcome.new({team: 'blue',
-                     takedowns: 1,
-                     throws: 2,
-                     pickups: 3,
-                     flag_carry_distance: 4,
-                     captures: 1,
-
-                    }.with_indifferent_access),
-
-        Outcome.new({team: 'red',
-                     takedowns: 11,
-                     throws: 12,
-                     pickups: 13,
-                     flag_carry_distance: 14,
-                     captures: 0,
-                    }.with_indifferent_access),
-      ]
-
-      game = Game.new(
-        winner: 'blue',
-        match_length: 100,
-        player_outcomes: player_outcomes
-      )
-      games = [game]
-
       team_outcome = TeamOutcome.new(team: 'blue', games: games)
       expect(team_outcome.as_json).to eq({team: 'blue',
                                           captures: 1,
@@ -62,6 +62,22 @@ describe TeamOutcome do
                                          }.with_indifferent_access)
 
     end
+
+    it "optionally freaks out if given more than one capture per game" do
+      cheater = Outcome.new({team: 'blue',
+                             takedowns: 0,
+                             throws: 0,
+                             pickups: 0,
+                             flag_carry_distance: 0,
+                             captures: 1,
+                            }.with_indifferent_access)
+      player_outcomes << cheater
+      expect do
+        team_outcome = TeamOutcome.new(team: 'blue', games: games, max: {captures: 1})
+        ap team_outcome.as_json
+      end.to raise_error(RuntimeError, "exceeded maximum value for captures")
+    end
+
   end
 
   context "given a bunch of games with outcomes" do

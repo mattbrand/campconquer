@@ -19,8 +19,9 @@
 class TeamOutcome < TalliedOutcome
   attr_reader :team, :attack_mvps, :defend_mvps
 
-  def initialize(games:, team:)
+  def initialize(games:, team:, max:{})
     @team = team
+    @max = max
     super(games: games)
   end
 

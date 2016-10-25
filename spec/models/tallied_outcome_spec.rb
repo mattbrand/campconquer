@@ -28,6 +28,7 @@ RSpec.describe TalliedOutcome, type: :model do
       end
     end
   end
+
   context "given a game" do
     it "adds up stats" do
       player_outcomes = [
@@ -101,4 +102,5 @@ RSpec.describe TalliedOutcome, type: :model do
       expect(tallied_outcome.as_json).to include(totals)
     end
   end
+
 end
