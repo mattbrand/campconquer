@@ -12,6 +12,13 @@
 #  coins              :integer          default("0"), not null
 #  gems               :integer          default("0"), not null
 #  embodied           :boolean          default("f"), not null
+#  session_token      :string
+#  encrypted_password :string
+#  salt               :string
+#
+# Indexes
+#
+#  index_players_on_session_token  (session_token)
 #
 
 class Player < ActiveRecord::Base
@@ -315,7 +322,7 @@ class Player < ActiveRecord::Base
   def pull_activity!(date = Date.current)
     summary = fitbit.get_activities(date.strftime('%F'))["summary"]
     attrs = {steps: summary["steps"].to_i,
-            active_minutes: summary["veryActiveMinutes"].to_i + summary["fairlyActiveMinutes"].to_i, }
+             active_minutes: summary["veryActiveMinutes"].to_i + summary["fairlyActiveMinutes"].to_i, }
     Rails.logger.info(attrs)
     activity = activity_for(date)
     activity.update!(attrs)
@@ -361,7 +368,62 @@ class Player < ActiveRecord::Base
     self.piece.role
   end
 
-  protected
+  # LOGIN STUFF
+
+  attr_accessor :password
+  validates :password,
+            unless: ->(p) { p.encrypted_password }, :length => {:within => 6..40}
+
+  #   #class method that authenticates a user, used to create a session cookie
+  #   def self.authenticate(email, submitted_password)
+  #     user = find_by_email(email)
+  #     return nil if user.nil?
+  #     return user if user.has_password?(submitted_password)
+  #   end
+  #
+  #   #used to authenticate a signed user from a signed cookie
+  #   def self.authenticate_with_salt(id, cookie_salt)
+  #     user = find_by_id(id)
+  #     return nil if user.nil?
+  #     return user if user.salt == cookie_salt
+  #   end
+
+  before_save :encrypt_password
+
+  def has_password?(submitted_password)
+    encrypted_password == encrypt(submitted_password)
+  end
+
+  def start_session
+    token = SecureRandom.hex(32)
+    self.session_token = token
+    save!
+    token
+  end
+
+  def self.for_session(session_token)
+    # todo: session timeout?
+    find_by_session_token(session_token)
+  end
+
+  private
+
+  def encrypt_password
+    self.salt ||= SecureRandom.hex(64)
+    self.encrypted_password = encrypt(password) if password.present?
+  end
+
+  def encrypt(string)
+    sha2_hash("#{salt}--#{string}")
+  end
+
+  def sha2_hash(string)
+    Digest::SHA2.hexdigest(string)
+  end
+
+  ## END LOGIN STUFF
+
+  private
 
   def calculate_steps
     steps_available = self.steps_available

@@ -3,14 +3,12 @@ require 'rails_helper'
 module API
   describe APIController, type: :controller do
 
-    let(:alice) {
-      Player.create! name: 'alice', team: 'red'
-    }
+    let(:alice) { create_player player_name: 'alice', team: 'red' }
 
     context 'given no token' do
       it 'allows "create session"' do
         @controller = SessionsController.new
-        get :create
+        get :create, name: alice.name, password: 'password'
         expect_ok
       end
 
@@ -25,11 +23,15 @@ module API
     end
 
     context 'given an invalid token' do
+
       it 'allows "create session"' do
         @controller = SessionsController.new
-        get :create, token: 'BOGUS'
+        get :create, token: 'BOGUS', name: alice.name, password: 'password'
         expect_ok
+        expect(response_json["token"]).not_to eq('BOGUS')
+
       end
+
       it 'denies most other calls' do
         @controller = PlayersController.new
         get :show, id: alice.id, token: 'BOGUS'

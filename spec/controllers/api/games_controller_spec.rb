@@ -249,8 +249,8 @@ describe API::GamesController, type: :controller do
 
 
   describe 'finishing' do
-    let!(:bob) { Player.create! name: 'bob', team: 'blue' }
-    let!(:rhoda) { Player.create! name: 'rhoda', team: 'red' }
+    let!(:bob) { create_player player_name: 'bob', team: 'blue' }
+    let!(:rhoda) { create_player player_name: 'rhoda', team: 'red' }
 
     let(:bobs_leftover_ammo) { ['balloon'] }
     let(:rhodas_leftover_ammo) { ['arrow', 'bomb'] }

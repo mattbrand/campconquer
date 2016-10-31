@@ -7,6 +7,7 @@ describe API::PlayersController, type: :controller do
   let(:valid_attributes) {
     {
       name: 'Alice',
+      password: 'password',
       team: 'blue'
     }
   }
@@ -30,7 +31,7 @@ describe API::PlayersController, type: :controller do
       get :index, {}, valid_session
       expect(response_json['status']).to eq('ok')
       expect(response_json['players'].size).to eq(1)
-      expect(response_json['players'].first).to include(valid_attributes.stringify_keys)
+      expect(response_json['players'].first).to include({'name' => valid_attributes[:name]})
       expect(response_json['players'].first).to include({'id' => player.id})
     end
   end
@@ -40,7 +41,7 @@ describe API::PlayersController, type: :controller do
       player = Player.create! valid_attributes
       get :show, {:id => player.to_param}, valid_session
       expect(response_json['status']).to eq('ok')
-      expect(response_json['player']).to include(valid_attributes.stringify_keys)
+      expect(response_json['player']).to include({'name' => valid_attributes[:name]})
       expect(response_json['player']).to include({'id' => player.id})
     end
 
@@ -54,7 +55,9 @@ describe API::PlayersController, type: :controller do
   end
 
   describe "POST #create" do
+
     context "with valid params" do
+
       it "creates a new Player" do
         expect {
           post :create, {:player => valid_attributes}, valid_session
@@ -71,7 +74,7 @@ describe API::PlayersController, type: :controller do
         post :create, {:player => valid_attributes}, valid_session
         player = Player.last
         expect(response_json['status']).to eq('ok')
-        expect(response_json['player']).to include(valid_attributes.stringify_keys)
+        expect(response_json['player']).to include({'name' => valid_attributes[:name]})
         expect(response_json['player']).to include({'id' => player.id})
       end
     end

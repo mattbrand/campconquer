@@ -42,7 +42,7 @@ class Board
 
   def seed_team
     10.times do
-      player = Player.create!(name: random_name, team: @team_name)
+      player = Player.create!(name: random_name, password: 'password', team: @team_name)
 
       role = Piece::ROLES.values.sample
       path_points = Path.where(team: @team_name, role: role).sample.points

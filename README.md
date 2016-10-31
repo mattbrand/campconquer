@@ -17,8 +17,9 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 
 - [ ] login
   - [x] one password, sent in the clear :-O
-  - [ ] actual passwords for API and Web
-  
+  - [x] actual passwords for API
+  - [ ] actual passwords for Web
+
 - [x] load fitbit data as far back as needed and no further
 
 - [ ] player HTML page -- when logged in, shows activities etc 
@@ -44,6 +45,7 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 
 - [ ] player stats across all seasons in GET player endpoint
 
+- [ ] admin user who is not a player
 
 ## chores
 - [ ] `deploy.sh` script which does `git push heroku` and `heroku run rake db:migrate`
@@ -52,6 +54,7 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 - [ ] create prod env
 - [ ] fixture factories
 - [ ] rename *_outcomes to *_results
+    tally? count? detail? history? result? lowdown? ledger? statement? reckoning? register? chronicle? balance? progress? evaluation? transcript?
 - [ ] merge Piece into Player in API
 - [ ] foreign key indexes for all tables
 - [ ] New Relic
@@ -62,6 +65,8 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 - [ ] Alex learns Unity (gratis)
 - [ ] kill gear table
 - [ ] new player controller for web/auth
+simulate session creation in tests instead of GOOD_SESSION_TOKEN backdoor
+
 
 # Updating the Seed DB
 

@@ -30,7 +30,12 @@ module API
     end
 
     def good_session_token? token
-      token == API::SessionsController::GOOD_SESSION_TOKEN
+      # todo: simulate session creation in tests instead of this gory backdoor
+      if !token.nil? && token == SessionsController::GOOD_SESSION_TOKEN
+        true
+      else
+        !!Player.for_session(token)
+      end
     end
 
     def check_session
