@@ -6,8 +6,8 @@ module API
     skip_before_action :check_session
 
     def create
-      player = Player.find_by_name(params[:name])
-      if !player.nil? && player.has_password?(params[:password])
+      player = Player.find_by_name(params[:name]) || Player.find(params[:name])
+      if player && player.has_password?(params[:password])
         token = player.start_session
         render_ok(token: token)
       else

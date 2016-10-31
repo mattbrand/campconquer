@@ -34,4 +34,16 @@ describe API::SessionsController, type: :controller do
     end
   end
 
+  context 'given a valid user id and password' do
+
+    it 'returns a session token' do
+      get :create, name: alice.id, password: good_password
+      expect_ok
+      token = response_json['token']
+      expect(token).to be
+      expect(alice.reload.session_token).to eq(token)
+    end
+
+
+  end
 end
