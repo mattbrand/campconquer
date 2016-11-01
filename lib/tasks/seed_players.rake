@@ -3,6 +3,7 @@ namespace :db do
     Season.current.games.destroy_all
     Player.destroy_all
     Player.create!(name: 'mod', password: 'xyzzy', team: 'red', admin: true, gamemaster: true)
+    puts "Created mod"
     Board.new.seed_teams
   end
 end

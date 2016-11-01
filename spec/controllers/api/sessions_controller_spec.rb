@@ -8,6 +8,12 @@ describe API::SessionsController, type: :controller do
 
   context 'given a valid username and password' do
 
+    it 'returns a player id' do
+      get :create, name: 'alice', password: good_password
+      expect_ok
+      expect(response_json['player_id']).to eq(alice.id)
+    end
+
     it 'returns a session token' do
       get :create, name: 'alice', password: good_password
       expect_ok

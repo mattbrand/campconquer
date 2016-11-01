@@ -9,7 +9,7 @@ module API
       player = Player.find_by_name(params[:name]) || Player.find(params[:name])
       if player && player.has_password?(params[:password])
         session[:token] = player.start_session
-        render_ok(token: session[:token])
+        render_ok(token: session[:token], player_id: player.id)
       else
         render status: :unauthorized, # in HTTP, "401 Unauthorized" means unauthenticated :-/
                json: {
