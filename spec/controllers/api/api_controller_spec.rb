@@ -4,6 +4,7 @@ module API
   describe APIController, type: :controller do
 
     let(:alice) { create_player player_name: 'alice', team: 'red' }
+    before { start_session(alice) }
 
     context 'given no token' do
       it 'allows "create session"' do
@@ -57,20 +58,93 @@ module API
 
     context 'given a valid token as a param' do
 
-      it "allows most calls" do
+      it "allows most GET calls" do
         good_token = SessionsController::GOOD_SESSION_TOKEN
         @controller = PlayersController.new
         get :show, id: alice.id, token: good_token
         expect_ok
       end
-
-      it "allows players to change their own stuff"
-
-      it "disallows players to change other players' stuff"
-      # expect(response.status).to eq(403) # in HTTP, "403 Forbidden" means unauthorized
-
-      it "allows admins to change anyone's own stuff"
     end
 
+    context 'roles' do
+      let!(:alice) { create_alice_with_piece }
+      let!(:bob) { create_bob_with_piece }
+      let!(:galoshes) { Gear.create!(name: 'galoshes', gear_type: 'shoes', coins: 1, gems: 0) }
+
+      context 'a player' do
+        before { @controller = PlayersController.new }
+        let!(:token) { alice.start_session }
+
+        it "can see their own stuff" do
+          get :show, id: alice.id, token: token
+          expect_ok
+        end
+
+        it "can see others' stuff" do
+          get :show, id: bob.id, token: token
+          expect_ok
+        end
+
+        it "can change their own stuff" do
+          post :buy, id: alice.id, token: token, gear: {name: 'galoshes'}
+          expect_ok
+          expect(alice.reload.gear_owned).to include('galoshes')
+        end
+
+        it "can't change others' stuff" do
+          post :buy, id: bob.id, token: token, gear: {name: 'galoshes'}
+          expect(response.status).to eq(403) # in HTTP, "403 Forbidden" means unauthorized
+          expect(bob.reload.gear_owned).not_to include('galoshes')
+        end
+      end
+
+      context 'an admin' do
+        before { @controller = PlayersController.new }
+        before { alice.update(admin: true) }
+        let!(:token) { alice.start_session }
+
+        it "can see their own stuff" do
+          get :show, id: alice.id, token: token
+          expect_ok
+        end
+
+        it "can see others' stuff" do
+          get :show, id: bob.id, token: token
+          expect_ok
+        end
+
+        it "can change their own stuff" do
+          post :buy, id: alice.id, token: token, gear: {name: 'galoshes'}
+          expect_ok
+          expect(alice.reload.gear_owned).to include('galoshes')
+        end
+
+        it "can't change others' stuff" do
+          post :buy, id: bob.id, token: token, gear: {name: 'galoshes'}
+          expect_ok
+          expect(bob.reload.gear_owned).to include('galoshes')
+        end
+      end
+
+      context 'game locking -- ' do
+        before { @controller = GamesController.new }
+        before { alice.update(gamemaster: true) }
+
+        it "a gamemaster can lock a game" do
+          token = alice.start_session
+          post :lock, id: Game.current.id, token: token
+          expect_ok
+          expect(Game.current).to be_locked
+        end
+
+        it "a normal player can't lock a game" do
+          token = bob.start_session
+          post :lock, id: Game.current.id, token: token
+          expect(response.status).to eq(403) # in HTTP, "403 Forbidden" means unauthorized
+          expect(Game.current).not_to be_locked
+        end
+      end
+
+    end
   end
 end

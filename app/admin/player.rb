@@ -1,6 +1,14 @@
 ActiveAdmin.register Player do
 
-  permit_params :name, :team, :coins, :gems, :embodied
+  permit_params :name,
+                :password,
+                :team,
+                :coins,
+                :gems,
+                :embodied,
+                :gamemaster,
+                :admin
+
   filter :name
   filter :team, as: :select
 
@@ -12,11 +20,20 @@ ActiveAdmin.register Player do
     column :coins
     column :gems
     column :embodied
+    column :gamemaster
+    column :admin
     column :created_at
     column :updated_at
+    column :password do |player|
+      if player.encrypted_password
+        span raw("&check;")
+      else
+        span "-", style: 'display: inline-block; width: 3em'
+      end
+    end
     column "Fitbit User" do |player|
       if player.authenticated?
-        span raw("&check;") +         player.fitbit_token_hash['user_id'], style: 'display: inline-block; width: 3em'
+        span raw("&check;") + player.fitbit_token_hash['user_id'], style: 'display: inline-block; width: 3em'
         auth_label = "Re-Auth"
       else
         span "-", style: 'display: inline-block; width: 3em'
@@ -37,13 +54,17 @@ ActiveAdmin.register Player do
     inputs do
       f.semantic_errors
       f.input :name
-      f.input :team, :as => :select,      :collection => Team::NAMES.values
+      f.input :password
+      f.input :team, :as => :select, :collection => Team::NAMES.values
       # https://github.com/justinfrench/formtastic/issues/171
       f.input :fitbit_token_hash, as: :string, input_html: {readonly: true, style: 'background: #ddd'}
       f.input :anti_forgery_token, input_html: {readonly: true, style: 'background: #ddd'}
+      f.input :encrypted_password, input_html: {readonly: true, style: 'background: #ddd'}
       f.input :coins
       f.input :gems
       f.input :embodied, as: :boolean
+      f.input :gamemaster, as: :boolean
+      f.input :admin, as: :boolean
       f.actions
     end
   end

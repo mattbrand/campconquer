@@ -4,6 +4,7 @@ describe 'making a request to an unrecognised path' do
 
   context 'api' do
     include ControllerHelpers
+    before { start_session(create_player(player_name: 'edward')) }
     it 'returns 404 and json' do
       get '/api/nowhere', valid_session
       expect(response.status).to eq(404)

@@ -92,6 +92,10 @@ class Game < ActiveRecord::Base
     end
   end
 
+  def self.has_current?
+    !where(current: true).empty?
+  end
+
   def self.current
     current_game = where(current: true).first
     if current_game.nil?

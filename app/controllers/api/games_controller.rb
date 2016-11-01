@@ -1,11 +1,12 @@
 module API
   class GamesController < APIController
     before_action :find_game, only: [:show,
-                                     :edit,
                                      :update,
                                      :destroy,
                                      :lock,
                                      :unlock]
+
+    before_action ->{ require_role(:gamemaster) }, except: [:index, :show]
 
     # GET /games
     def index

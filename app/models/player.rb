@@ -15,6 +15,8 @@
 #  session_token      :string
 #  encrypted_password :string
 #  salt               :string
+#  gamemaster         :boolean
+#  admin              :boolean
 #
 # Indexes
 #
@@ -95,7 +97,7 @@ class Player < ActiveRecord::Base
   validates :team, inclusion: {in: Team::NAMES.values, message: Team::NAMES.validation_message}
 
   def set_piece(params = {})
-    if Game.current.locked?
+    if Game.has_current? and Game.current.locked?
       # todo: use an AR exception that lets the response be not a 500
       raise Player::GameLocked
     end
@@ -232,10 +234,17 @@ class Player < ActiveRecord::Base
     piece.gear_equipped.include?(gear_name)
   end
 
+  def gear_named(gear_name)
+    gear = Gear.find_by_name(gear_name)
+    raise "Can't find gear '#{gear_name}''" if gear.nil?
+    gear
+  end
+
   def buy_gear! gear_name
     raise Player::GameLocked if Game.current.locked? # todo: test
 
-    gear = Gear.find_by_name(gear_name)
+    gear = gear_named(gear_name)
+
     if gear_owned?(gear_name)
       raise Player::AlreadyOwned, gear
     elsif self.coins >= gear.coins and self.gems >= gear.gems
@@ -251,7 +260,7 @@ class Player < ActiveRecord::Base
   def drop_gear! gear_name
     raise Player::GameLocked if Game.current.locked? # todo: test
 
-    gear = Gear.find_by_name(gear_name)
+    gear = gear_named(gear_name)
     item = piece.items.find_by_gear_id(gear.id)
     raise NotOwned, gear if item.nil?
     item.destroy
@@ -261,7 +270,7 @@ class Player < ActiveRecord::Base
   def equip_gear!(gear_name)
     raise Player::GameLocked if Game.current.locked? # todo: test
 
-    gear = Gear.find_by_name(gear_name)
+    gear = gear_named(gear_name)
     item = piece.items.find_by_gear_id(gear.id)
     raise NotOwned, gear if item.nil?
     item.update!(equipped: true)
@@ -372,7 +381,10 @@ class Player < ActiveRecord::Base
 
   attr_accessor :password
   validates :password,
-            unless: ->(p) { p.encrypted_password }, :length => {:within => 6..40}
+            unless: ->(p) { p.encrypted_password },
+            :length => {:within => 6..40},
+            :allow_nil => true,
+            :allow_blank => true
 
   #   #class method that authenticates a user, used to create a session cookie
   #   def self.authenticate(email, submitted_password)

@@ -28,46 +28,45 @@ describe API::PiecesController, type: :controller do
   }
 
 
-  before do
-    @player = create_player(player_name: 'Abby', team: 'blue')
-  end
+  let!(:abby) { create_player(player_name: 'Abby', team: 'blue') }
+  before { start_session(abby) }
 
   describe "POST #create" do
 
     context "with valid params" do
       it "assigns a newly created piece as @piece" do
-        post :create, {player_id: @player.id, piece: valid_attributes}, valid_session
+        post :create, {player_id: abby.id, piece: valid_attributes}, valid_session
         expect(assigns(:piece)).to be_a(Piece)
         expect(assigns(:piece)).to be_persisted
       end
 
       it "sets all the given attributes" do
-        post :create, {player_id: @player.id, piece: valid_attributes}, valid_session
+        post :create, {player_id: abby.id, piece: valid_attributes}, valid_session
         expect(assigns(:piece).attributes).to include(valid_attributes.stringify_keys)
       end
 
       it "sets the team based on the player's team" do
-        post :create, {player_id: @player.id, piece: valid_attributes}, valid_session
-        expect(assigns(:piece).team).to eq(@player.team)
+        post :create, {player_id: abby.id, piece: valid_attributes}, valid_session
+        expect(assigns(:piece).team).to eq(abby.team)
       end
 
       it "sets the newly created piece on the player" do
-        post :create, {player_id: @player.id, piece: valid_attributes}, valid_session
-        @player.reload
-        expect(@player.piece).not_to be_nil
-        expect(@player.piece).to eq(assigns(:piece))
+        post :create, {player_id: abby.id, piece: valid_attributes}, valid_session
+        abby.reload
+        expect(abby.piece).not_to be_nil
+        expect(abby.piece).to eq(assigns(:piece))
       end
 
       it "renders an 'ok' message" do
-        post :create, {player_id: @player.id, piece: valid_attributes}, valid_session
+        post :create, {player_id: abby.id, piece: valid_attributes}, valid_session
         expect(response.body).to eq({status: 'ok'}.to_json)
       end
 
       it "updates an existing piece on the player" do
-        @player.set_piece(body_type: 'female', role: 'offense')
-        post :create, {player_id: @player.id, piece: {body_type: 'gender_neutral_1'}}, valid_session
-        @player.reload
-        expect(@player.piece.body_type).to eq('gender_neutral_1')
+        abby.set_piece(body_type: 'female', role: 'offense')
+        post :create, {player_id: abby.id, piece: {body_type: 'gender_neutral_1'}}, valid_session
+        abby.reload
+        expect(abby.piece.body_type).to eq('gender_neutral_1')
       end
 
       context "while the current game is locked" do
@@ -77,7 +76,7 @@ describe API::PiecesController, type: :controller do
         end
 
         it "prevents updating the player's piece" do
-          post :create, {:player_id => @player.id,
+          post :create, {:player_id => abby.id,
                          :piece => valid_attributes}, valid_session
           expect(response).not_to be_ok
           expect(response_json).to include({
@@ -94,7 +93,7 @@ describe API::PiecesController, type: :controller do
       end
 
       it "renders an error body" do
-        post :create, {:player_id => @player.id,
+        post :create, {:player_id => abby.id,
                        :piece => invalid_attributes}, valid_session
         expect(response).not_to be_ok
         expect(response_json).to include(
@@ -118,14 +117,14 @@ describe API::PiecesController, type: :controller do
             '[{"x":11.25,"y":5.0},{"x":9.75,"y":4.5},{"x":7.5,"y":9.0},{"x":0.5,"y":9.0},{"x":0.5,"y":5.0}]',
         ]
 
-          post :create, {:player_id => @player.id,
+          post :create, {:player_id => abby.id,
                          :piece => {:path => json_string}}, valid_session
 
           expect(response.status).to eq(201)
           expect(response.body).to eq({status: 'ok'}.to_json)
 
-          @player.reload
-          expect(@player.piece.path).to eq(
+          abby.reload
+          expect(abby.piece.path).to eq(
                                             [
                                                 Point.new(x: 11.25, y: 5.0),
                                                 Point.new(x: 9.75, y: 4.5),

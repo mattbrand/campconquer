@@ -17,12 +17,16 @@ describe API::GamesController, type: :controller do
     {}
   }
 
+  let!(:gamemaster) { create_gamemaster }
+  before { start_session(gamemaster) }
+
   before do
     request.accept = "application/json"
   end
 
   describe "GET /games" do
     it "assigns all games as @games" do
+      expect(Game.count).to eq(0)
       game = Game.create! valid_attributes
       get :index, {}, valid_session
       expect(assigns(:games)).to eq([game])
@@ -32,7 +36,7 @@ describe API::GamesController, type: :controller do
       game_a = Game.create! current: false
       game_a.update_columns(updated_at: Time.new(2008, 1, 1, 0, 0, 0))
 
-      game_c = Game.create! current: true
+      game_c = Game.create! current: false
       game_c.update_columns(updated_at: Time.new(2010, 1, 1, 0, 0, 0))
 
       game_b = Game.create! current: false

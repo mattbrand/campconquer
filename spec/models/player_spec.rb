@@ -15,6 +15,8 @@
 #  session_token      :string
 #  encrypted_password :string
 #  salt               :string
+#  gamemaster         :boolean
+#  admin              :boolean
 #
 # Indexes
 #
@@ -589,9 +591,9 @@ describe Player, type: :model do
 
   context "login" do
     context "on player creation" do
-      it 'needs a password' do
+      it 'needs a valid password' do
         expect do
-          create_player(player_name: "alice", password: nil)
+          create_player(player_name: "alice", password: 'xyz')
         end.to raise_error(ActiveRecord::RecordInvalid)
       end
 

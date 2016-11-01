@@ -59,6 +59,15 @@ end
 
 # todo: move to a fixture factory or something
 
+def create_gamemaster(player_name: 'gertie gamemaster',
+                  password: 'password')
+  Player.create!(name: player_name,
+                 password: password,
+                 team: 'red',
+                 embodied: false,
+                 gamemaster: true)
+end
+
 def create_alice_with_piece
   create_player(player_name: 'alice', body_type: 'female', team: 'blue')
 end
