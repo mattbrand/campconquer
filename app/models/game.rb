@@ -217,7 +217,7 @@ class Game < ActiveRecord::Base
 
     null_out_paths
     restore_leftover_ammo(leftover_ammo)
-    calculate_mvps
+    update!(mvps: calculate_mvps)
     award_prizes!
     award_mvp_prizes!
   end
@@ -269,10 +269,6 @@ class Game < ActiveRecord::Base
     end
   end
 
-  def mvps
-    super or (self['mvps'] = calculate_mvps)
-  end
-
   private
 
   def calculate_mvps
@@ -319,6 +315,7 @@ class Game < ActiveRecord::Base
 
     # only one max
     if mvps.size > 1
+      puts "Choosing one from #{mvps.inspect}"
       mvps = [mvps.sample]
     end
 

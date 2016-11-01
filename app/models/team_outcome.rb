@@ -19,7 +19,7 @@
 class TeamOutcome < TalliedOutcome
   attr_reader :team, :attack_mvps, :defend_mvps
 
-  def initialize(games:, team:, max:{})
+  def initialize(games:, team:, max: {})
     @team = team
     @max = max
     super(games: games)
@@ -43,11 +43,18 @@ class TeamOutcome < TalliedOutcome
   end
 
   def attack_mvps
-    games.first.mvps[@team]['attack_mvps']
+    fetch_mvps('attack_mvps')
   end
 
   def defend_mvps
-    games.first.mvps[@team]['defend_mvps']
+    fetch_mvps('defend_mvps')
+  end
+
+  private
+
+  def fetch_mvps(role_key)
+    mvps = games.first.try(:mvps)
+    mvps ? mvps.fetch(@team, {}).fetch(role_key, []) : []
   end
 
 end
