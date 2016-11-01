@@ -382,7 +382,7 @@ class Player < ActiveRecord::Base
   attr_accessor :password
   validates :password,
             unless: ->(p) { p.encrypted_password },
-            :length => {:within => 6..40},
+            :length => {:within => 5..40},
             :allow_nil => true,
             :allow_blank => true
 

@@ -19,7 +19,7 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
   - [x] one password, sent in the clear :-O
   - [x] actual passwords for API
   - [x] login with id or name
-  - [ ] admin create password function
+  - [x] admin create password function
   - [ ] actual passwords for Web
 
 - [x] load fitbit data as far back as needed and no further
@@ -47,7 +47,11 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 
 - [ ] player stats across all seasons in GET player endpoint
 
-- [ ] admin user who is not a player
+- [x] admin user who is not a player
+
+- [ ] set session token inside WebGL HTML; skip login in client
+
+- [ ] expire session token after X days
 
 ## chores
 - [ ] `deploy.sh` script which does `git push heroku` and `heroku run rake db:migrate`
