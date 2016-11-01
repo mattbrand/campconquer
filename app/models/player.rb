@@ -127,7 +127,6 @@ class Player < ActiveRecord::Base
       buy_gear! gear.name
       equip_gear! gear.name
     end
-
   end
 
   include ActiveModel::Serialization
@@ -135,7 +134,12 @@ class Player < ActiveRecord::Base
   def as_json(options=nil)
     if options.nil?
       options = {
-        except: [:fitbit_token_hash, :anti_forgery_token],
+        except: [
+          :fitbit_token_hash,
+          :anti_forgery_token,
+          :encrypted_password,
+          :salt,
+        ],
         methods: [
           :steps_available,
           :active_minutes,
@@ -386,24 +390,14 @@ class Player < ActiveRecord::Base
             :allow_nil => true,
             :allow_blank => true
 
-  #   #class method that authenticates a user, used to create a session cookie
-  #   def self.authenticate(email, submitted_password)
-  #     user = find_by_email(email)
-  #     return nil if user.nil?
-  #     return user if user.has_password?(submitted_password)
-  #   end
-  #
-  #   #used to authenticate a signed user from a signed cookie
-  #   def self.authenticate_with_salt(id, cookie_salt)
-  #     user = find_by_id(id)
-  #     return nil if user.nil?
-  #     return user if user.salt == cookie_salt
-  #   end
-
   before_save :encrypt_password
 
   def has_password?(submitted_password)
     encrypted_password == encrypt(submitted_password)
+  end
+
+  def password_set?
+    !!encrypted_password
   end
 
   def start_session

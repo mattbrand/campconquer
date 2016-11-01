@@ -20,7 +20,7 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
   - [x] actual passwords for API
   - [x] login with id or name
   - [x] admin create password function
-  - [ ] actual passwords for Web
+  - [ ] login w/ password and roles for Web
 
 - [x] load fitbit data as far back as needed and no further
 

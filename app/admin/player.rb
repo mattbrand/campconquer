@@ -1,4 +1,5 @@
 ActiveAdmin.register Player do
+  # see https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md
 
   permit_params :name,
                 :password,
@@ -19,18 +20,14 @@ ActiveAdmin.register Player do
     column :team
     column :coins
     column :gems
+    column :password_set? do |p|
+      status_tag p.password_set?
+    end
     column :embodied
     column :gamemaster
     column :admin
     column :created_at
     column :updated_at
-    column :password do |player|
-      if player.encrypted_password
-        span raw("&check;")
-      else
-        span "-", style: 'display: inline-block; width: 3em'
-      end
-    end
     column "Fitbit User" do |player|
       if player.authenticated?
         span raw("&check;") + player.fitbit_token_hash['user_id'], style: 'display: inline-block; width: 3em'
@@ -51,15 +48,17 @@ ActiveAdmin.register Player do
   end
 
   form do |f|
+    readonly = {readonly: true, style: 'background: #ddd'}
     inputs do
       f.semantic_errors
       f.input :name
+      f.input :password_set?, as: :string, input_html: readonly
       f.input :password
       f.input :team, :as => :select, :collection => Team::NAMES.values
       # https://github.com/justinfrench/formtastic/issues/171
-      f.input :fitbit_token_hash, as: :string, input_html: {readonly: true, style: 'background: #ddd'}
-      f.input :anti_forgery_token, input_html: {readonly: true, style: 'background: #ddd'}
-      f.input :encrypted_password, input_html: {readonly: true, style: 'background: #ddd'}
+      f.input :fitbit_token_hash, as: :string, input_html: readonly
+      f.input :anti_forgery_token, input_html: readonly
+      f.input :session_token, input_html: readonly
       f.input :coins
       f.input :gems
       f.input :embodied, as: :boolean

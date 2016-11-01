@@ -7,7 +7,6 @@ describe API::SessionsController, type: :controller do
   let!(:alice) { create_player(player_name: 'alice', password: good_password) }
 
   context 'given a valid username and password' do
-
     it 'returns a player id' do
       get :create, name: 'alice', password: good_password
       expect_ok
@@ -33,6 +32,17 @@ describe API::SessionsController, type: :controller do
   context 'given a valid username and bogus password' do
     it 'fails to start a session' do
       get :create, name: 'alice', password: bad_password
+      expect(response.body).to include('"status":"error"')
+      expect(response_json).to include({"status" => "error"})
+      expect(response_json["message"].downcase).to include("bad")
+      expect(response.status).to eq(401)
+    end
+  end
+
+  context 'given a user with no password' do
+    it 'fails to start a session' do
+      alice.update(password: nil)
+      get :create, name: 'alice', password: nil
       expect(response.body).to include('"status":"error"')
       expect(response_json).to include({"status" => "error"})
       expect(response_json["message"].downcase).to include("bad")
