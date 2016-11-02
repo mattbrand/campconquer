@@ -4,6 +4,9 @@ module API
     before_action :pull_activity
     before_action :find_piece, only: [:show, :edit, :update, :destroy]
 
+    before_action -> { require_player(@player) }
+
+
     # POST /pieces
     def create
       begin

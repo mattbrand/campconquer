@@ -24,7 +24,7 @@ require 'rails_helper'
 
 RSpec.describe Outcome, type: :model do
 
-  let!(:player) { Player.create! name: 'alice', team: 'red' }
+  let!(:player) { create_player player_name: 'alice', team: 'red' }
 
   it "requires a team" do
     outcome = Outcome.new(player_id: player.id, team: nil)

@@ -12,33 +12,47 @@
 #  coins              :integer          default("0"), not null
 #  gems               :integer          default("0"), not null
 #  embodied           :boolean          default("f"), not null
+#  session_token      :string
+#  encrypted_password :string
+#  salt               :string
+#  gamemaster         :boolean
+#  admin              :boolean
+#
+# Indexes
+#
+#  index_players_on_session_token  (session_token)
 #
 
 require 'rails_helper'
 
 describe Player, type: :model do
   it "validates team name" do
-    player = Player.new(name: "Joe", team: 'blue')
+    player = Player.new(name: "Joe", password: "password", team: 'blue')
     expect(player).to be_valid
-    player = Player.new(name: "Joe", team: 'mystic')
+    player = Player.new(name: "Joe", password: "password", team: 'mystic')
     expect(player).not_to be_valid
   end
 
   it "validates player name uniqueness" do
-    Player.create!(name: "Joe", team: 'blue')
-    player = Player.new(name: "Joe", team: 'red')
+    create_player(player_name: "Joe", password: "password", team: 'blue')
+    player = Player.new(name: "Joe", password: "password", team: 'red')
     expect(player).not_to be_valid
   end
 
   describe 'json' do
-    it 'includes embodied' do
-      p = Player.create!(name: "Joe", team: 'blue', embodied: true)
+    it 'includes embodied (true)' do
+      p = create_player(player_name: "Joe", password: "password", team: 'blue', embodied: true)
       expect(p.as_json).to include({embodied: true}.stringify_keys)
+    end
+
+    it 'includes embodied (false)' do
+      p = create_player(player_name: "Joe", password: "password", team: 'blue', embodied: false)
+      expect(p.as_json).to include({embodied: false}.stringify_keys)
     end
   end
 
   describe 'set_piece' do
-    let(:player) { Player.create!(name: "Joe", team: 'blue') }
+    let(:player) { create_player(player_name: "Joe", password: "password", team: 'blue') }
 
     it 'saves the piece' do
       player.set_piece()
@@ -80,11 +94,11 @@ describe Player, type: :model do
       end
 
       {
-          team: 'red',
-          created_at: 9,
-          updated_at: 9,
-          game_id: 9999,
-          player_id: 9999,
+        team: 'red',
+        created_at: 9,
+        updated_at: 9,
+        game_id: 9999,
+        player_id: 9999,
       }.each_pair do |key, value|
         params = {}
         params[key] = value
@@ -96,7 +110,7 @@ describe Player, type: :model do
   end
 
   context "fitbit" do
-    let(:player) { Player.create!(name: "Joe", team: 'blue') }
+    let(:player) { create_player(player_name: "Joe", password: "password", team: 'blue') }
 
     it "saves & restores a fitbit token hash" do
       hash = {bogus: true}
@@ -122,33 +136,33 @@ describe Player, type: :model do
       before do
         f = Fitbit.new
         stub_request(:post, "https://api.fitbit.com/oauth2/token").
-            with(
-                :headers => {
-                    'Authorization' => f.send(:authorization_header)
-                },
-                :body => {
-                    "client_id" => f.client_id,
-                    "client_secret" => f.client_secret,
-                    "code" => "AUTH_CODE",
-                    "grant_type" => "authorization_code",
-                    "redirect_uri" => f.callback_url
-                },
-            ).
-            to_return(
-                :status => 200,
-                :headers => {
-                    "content-type": "application/json"
-                },
-                :body =>
-                    {
-                        "access_token" => "ACCESS_TOKEN",
-                        "expires_in" => 28800,
-                        "refresh_token" => "REFRESH_TOKEN",
-                        "scope" => "sleep weight social profile activity location heartrate nutrition settings",
-                        "token_type" => "Bearer",
-                        "user_id" => "FITBIT_USER_ID"
-                    }.to_json
-            )
+          with(
+            :headers => {
+              'Authorization' => f.send(:authorization_header)
+            },
+            :body => {
+              "client_id" => f.client_id,
+              "client_secret" => f.client_secret,
+              "code" => "AUTH_CODE",
+              "grant_type" => "authorization_code",
+              "redirect_uri" => f.callback_url
+            },
+          ).
+          to_return(
+            :status => 200,
+            :headers => {
+              "content-type": "application/json"
+            },
+            :body =>
+              {
+                "access_token" => "ACCESS_TOKEN",
+                "expires_in" => 28800,
+                "refresh_token" => "REFRESH_TOKEN",
+                "scope" => "sleep weight social profile activity location heartrate nutrition settings",
+                "token_type" => "Bearer",
+                "user_id" => "FITBIT_USER_ID"
+              }.to_json
+          )
       end
 
       it 'returns a URL' do
@@ -180,7 +194,7 @@ describe Player, type: :model do
   end
 
   describe 'exercise - ' do
-    let!(:player) { Player.create!(name: "Alice", team: 'blue') }
+    let!(:player) { create_player(player_name: "Alice", password: "password", team: 'blue', coins: 0, gems: 0) }
     let!(:fake_fitbit) { instance_double(Fitbit) }
     let(:today) { Time.current.strftime('%F') }
     let(:yesterday) { (Time.current - 1.day).strftime('%F') }
@@ -294,11 +308,11 @@ describe Player, type: :model do
 
       def summary(steps: 12612, fairly_active: 20, very_active: 10)
         {
-            "summary" => {
-                "steps" => steps,
-                "fairlyActiveMinutes" => fairly_active,
-                "veryActiveMinutes" => very_active,
-            }
+          "summary" => {
+            "steps" => steps,
+            "fairlyActiveMinutes" => fairly_active,
+            "veryActiveMinutes" => very_active,
+          }
         }
       end
 
@@ -338,7 +352,7 @@ describe Player, type: :model do
   end
 
   describe 'active minute goals' do
-    let(:player) { Player.create!(name: "Joe", team: 'blue') }
+    let(:player) { create_player(player_name: "Joe", password: "password", team: 'blue') }
 
     context "when today's goal has not been reached" do
       before { player.activities.create!(date: Date.current, active_minutes: 20) }
@@ -383,7 +397,7 @@ describe Player, type: :model do
     describe 'owned' do
       before do
         tee_shirt.update!(owned_by_default: true)
-        @player = create_player(player_name: "alice", team: 'blue', coins: 15)
+        @player = create_player(player_name: "alice", password: "password", team: 'blue', coins: 15)
       end
       it 'is owned by a new player' do
         expect(@player.gear_owned).to eq(['tee-shirt'])
@@ -575,4 +589,46 @@ describe Player, type: :model do
 
   end
 
+  context "login" do
+    context "on player creation" do
+      it 'needs a valid password' do
+        expect do
+          create_player(player_name: "alice", password: 'xyz')
+        end.to raise_error(ActiveRecord::RecordInvalid)
+      end
+
+      let(:good_password) { 'mydoghasfleas' }
+
+      it 'stores the password' do
+        player = create_player(player_name: "alice", password: good_password)
+        expect(player.has_password?(good_password)).to be_truthy
+        expect(player.reload.has_password?(good_password)).to be_truthy
+      end
+
+      it 'stores the password encrypted and salted' do
+        player = create_player(player_name: "alice", password: good_password)
+        player.reload
+        expect(player.encrypted_password).not_to be_blank
+        expect(player.salt).not_to be_blank
+      end
+    end
+  end
+
+  context "after creation" do
+    let(:good_password) { 'mydoghasfleas' }
+    let!(:alice) { create_player(player_name: 'alice', password: good_password) }
+
+    it "can create a session token" do
+      token = alice.start_session
+      expect(token).to be
+      alice.reload
+      expect(token).to eq(alice.session_token)
+    end
+
+    it "can be found via a session token" do
+      token = alice.start_session
+      player = Player.for_session(token)
+      expect(player).to eq(alice)
+    end
+  end
 end

@@ -2,9 +2,9 @@ require 'rails_helper'
 
 describe API::AmmosController, type: :controller do
 
-  before do
-    request.accept = "application/json"
-  end
+  let!(:gamemaster) { create_gamemaster }
+  before { start_session(gamemaster) }
+  before { request.accept = "application/json" }
 
   describe "GET /ammos" do
     it "returns all ammos as json" do

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161025161846) do
+ActiveRecord::Schema.define(version: 20161101145722) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -132,7 +132,14 @@ ActiveRecord::Schema.define(version: 20161025161846) do
     t.integer  "coins",              default: 0,     null: false
     t.integer  "gems",               default: 0,     null: false
     t.boolean  "embodied",           default: false, null: false
+    t.string   "session_token"
+    t.string   "encrypted_password"
+    t.string   "salt"
+    t.boolean  "gamemaster"
+    t.boolean  "admin"
   end
+
+  add_index "players", ["session_token"], name: "index_players_on_session_token"
 
   create_table "seasons", force: :cascade do |t|
     t.datetime "created_at"

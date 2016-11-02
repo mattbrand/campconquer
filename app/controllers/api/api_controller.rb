@@ -3,7 +3,7 @@ module API
 
     # homegrown auth, see SessionsController
 
-    before_action :check_session
+    before_action :require_session_token
 
     # Prevent CSRF attacks by raising an exception.
     # For APIs, you may want to use :null_session instead.
@@ -21,6 +21,7 @@ module API
     rescue_from ActionController::RoutingError, :with => :route_not_found
 
     public
+
     def route_not_found
       render :status => :not_found,
              :json => {
@@ -30,11 +31,24 @@ module API
     end
 
     def good_session_token? token
-      token == API::SessionsController::GOOD_SESSION_TOKEN
+      # todo: simulate session creation in tests instead of this gory backdoor
+      if !token.nil? && token == SessionsController::GOOD_SESSION_TOKEN
+        true
+      else
+        !!Player.for_session(token)
+      end
     end
 
-    def check_session
-      token = params[:token] || session[:token]
+    def current_session_token
+      params[:token] || session[:token]
+    end
+
+    def current_player
+      Player.for_session(current_session_token)
+    end
+
+    def require_session_token
+      token = current_session_token
 
       # see https://www.loggly.com/blog/http-status-code-diagram/
       if token.nil?
@@ -49,9 +63,18 @@ module API
                  status: "error",
                  message: "This is a protected endpoint and your token is invalid",
                }
-      else
-        # todo: check authorization
-        # in HTTP, "403 Forbidden" means unauthorized :-/
+      end
+    end
+
+    def require_role(required_role)
+      unless current_player.send("#{required_role}?")
+        forbidden("role '#{required_role}' required")
+      end
+    end
+
+    def require_player(required_player)
+      if current_player != required_player and !current_player.admin?
+        forbidden("player #{required_player.name.inspect} or admin required")
       end
     end
 
@@ -92,6 +115,14 @@ module API
              :json => exception_as_json(e)
     end
 
+    def forbidden(why)
+      render status: :forbidden, # in HTTP, "403 Forbidden" means unauthorized :-/
+             json: {
+               status: "error",
+               message: "This is a protected endpoint and you are unauthorized (#{why})",
+             }
+    end
+
     def exception_as_json(e)
       {
         'status' => 'error',
@@ -111,7 +142,6 @@ module API
       end
       hash
     end
-
 
     # finding
 

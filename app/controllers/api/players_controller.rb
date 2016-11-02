@@ -1,38 +1,29 @@
 class API::PlayersController < ::API::APIController
 
-  skip_before_action :check_session, only: [:auth_callback, :auth]
+  skip_before_action :require_session_token, only: [:auth_callback, :auth]
 
-  before_action :find_player, only: [:show,
-                                     :update,
-                                     :auth,
-                                     :claim_steps,
-                                     :claim_active_minutes,
-                                     :profile,
-                                     :steps,
-                                     :activities,
-                                     :buy,
-                                     :equip,
-                            ]
+  before_action :find_player, except: [:index, :auth_callback]
 
-  before_action :pull_activity, only: [
-                                :show,
-                                :update,
-                                :claim_steps,
-                                :claim_active_minutes,
-                                :profile,
-                                :steps,
-                                :activities,
-                                :buy,
-                                :equip,
-                              ]
+  before_action -> { require_player(@player) }, except: [:index, :show, :auth_callback]
+
+  before_action :pull_activity, only: [:show,
+                                       :update,
+                                       :claim_steps,
+                                       :claim_active_minutes,
+                                       :profile,
+                                       :steps,
+                                       :activities,
+                                       :buy,
+                                       :equip,
+  ]
 
   # GET /players
   def index
     @players = Player.all
     render json: {
-             status: 'ok',
-             players: @players.as_json,
-           }
+      status: 'ok',
+      players: @players.as_json,
+    }
   end
 
   # GET /players/1
@@ -45,27 +36,20 @@ class API::PlayersController < ::API::APIController
     render json: output
   end
 
-  # POST /players
-  def create
-    @player = Player.create!(player_params)
-    @player.save!
-    render_player
-  end
-
   # PATCH/PUT /players/1
   def update
     @player.update!(player_params)
     render :json => {
-             status: 'ok',
-             player: @player.as_json,
-           }
+      status: 'ok',
+      player: @player.as_json,
+    }
   end
 
   def auth
     redirect_to @player.begin_auth # todo: test
   end
 
-    # note: this does not require login auth since it's called via redirect from fitbit.com
+  # note: this does not require login auth since it's called via redirect from fitbit.com
   def auth_callback
     player = Player.find_by_anti_forgery_token(params[:state])
     player.finish_auth(params[:code]) # todo: test
@@ -83,7 +67,10 @@ class API::PlayersController < ::API::APIController
     render_player
   end
 
+
   def buy
+    # require_player(@player) || return # todo: do this with a before_action
+
     if params['gear']
       @player.buy_gear!(params['gear']['name'])
     elsif params['ammo']
@@ -127,6 +114,6 @@ class API::PlayersController < ::API::APIController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def player_params
-    params.require(:player).permit(:name, :team, :embodied)
+    params.require(:player).permit(:name, :password, :team, :embodied)
   end
 end

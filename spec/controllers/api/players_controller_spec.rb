@@ -7,6 +7,7 @@ describe API::PlayersController, type: :controller do
   let(:valid_attributes) {
     {
       name: 'Alice',
+      password: 'password',
       team: 'blue'
     }
   }
@@ -18,70 +19,42 @@ describe API::PlayersController, type: :controller do
     }
   }
 
+  def player
+    @current_player
+  end
+
+  before { start_session(Player.create! valid_attributes) }
+
   describe "GET #index" do
+
     it "assigns all players as @players" do
-      player = Player.create! valid_attributes
       get :index, {}, valid_session
-      expect(assigns(:players)).to eq([player])
+      expect(assigns(:players)).to eq([@current_player])
     end
 
     it "renders all players as response_json" do
-      player = Player.create! valid_attributes
       get :index, {}, valid_session
       expect(response_json['status']).to eq('ok')
       expect(response_json['players'].size).to eq(1)
-      expect(response_json['players'].first).to include(valid_attributes.stringify_keys)
+      expect(response_json['players'].first).to include({'name' => valid_attributes[:name]})
       expect(response_json['players'].first).to include({'id' => player.id})
     end
   end
 
   describe "GET #show" do
+
     it "renders the requested player as json" do
-      player = Player.create! valid_attributes
       get :show, {:id => player.to_param}, valid_session
       expect(response_json['status']).to eq('ok')
-      expect(response_json['player']).to include(valid_attributes.stringify_keys)
+      expect(response_json['player']).to include({'name' => valid_attributes[:name]})
       expect(response_json['player']).to include({'id' => player.id})
     end
 
     it "includes the piece" do
-      player = Player.create! valid_attributes
       player.set_piece(role: 'offense')
       get :show, {:id => player.to_param}, valid_session
       expect(response_json['status']).to eq('ok')
       expect(response_json['player']['piece']).to include({'role' => 'offense'})
-    end
-  end
-
-  describe "POST #create" do
-    context "with valid params" do
-      it "creates a new Player" do
-        expect {
-          post :create, {:player => valid_attributes}, valid_session
-        }.to change(Player, :count).by(1)
-      end
-
-      it "assigns a newly created player as @player" do
-        post :create, {:player => valid_attributes}, valid_session
-        expect(assigns(:player)).to be_a(Player)
-        expect(assigns(:player)).to be_persisted
-      end
-
-      it "renders the created player" do
-        post :create, {:player => valid_attributes}, valid_session
-        player = Player.last
-        expect(response_json['status']).to eq('ok')
-        expect(response_json['player']).to include(valid_attributes.stringify_keys)
-        expect(response_json['player']).to include({'id' => player.id})
-      end
-    end
-
-    context "with invalid params" do
-      it "renders an error template" do
-        post :create, {:player => invalid_attributes}, valid_session
-        expect(response_json['status']).to eq('error')
-        expect(response_json['message']).to include("Team must be \"blue\" or \"red\"")
-      end
     end
   end
 
@@ -96,8 +69,6 @@ describe API::PlayersController, type: :controller do
       }
 
       it "updates the requested player" do
-        player = Player.create! valid_attributes
-
         expect(player.team).to eq('blue')
         expect(player.embodied).to be false
 
@@ -108,7 +79,6 @@ describe API::PlayersController, type: :controller do
       end
 
       it "renders the requested player as json" do
-        player = Player.create! valid_attributes
         put :update, {:id => player.to_param, :player => new_attributes}, valid_session
         expect(response_json['status']).to eq('ok')
         expect(response_json['player']).to include(new_attributes.stringify_keys)
@@ -119,13 +89,11 @@ describe API::PlayersController, type: :controller do
 
     context "with invalid params" do
       it "does not update the player" do
-        player = Player.create! valid_attributes
         put :update, {:id => player.to_param, :player => invalid_attributes}, valid_session
         expect(player.reload.team).to eq('blue')
       end
 
       it "renders error json" do
-        player = Player.create! valid_attributes
         put :update, {:id => player.to_param, :player => invalid_attributes}, valid_session
         expect(response_json['status']).to eq('error')
         expect(response_json['message']).to include("Team must be \"blue\" or \"red\"")
@@ -135,7 +103,6 @@ describe API::PlayersController, type: :controller do
 
   describe 'GET #auth' do
     it "redirects to the player's auth URL" do
-      player = Player.create! valid_attributes
       expect(Player).to receive(:find).with(player.to_param) { player }
       expect(player).to receive(:begin_auth) { "FITBIT.COM" }
       bypass_rescue
@@ -146,18 +113,16 @@ describe API::PlayersController, type: :controller do
 
   describe 'GET #auth-callback' do
     it "finds the player corresponding to the given auth token, finishes auth, and redirects to the admin players list" do
-      player = Player.create! valid_attributes + {anti_forgery_token: "CALLBACK_STATE"}
+      player.update({anti_forgery_token: "CALLBACK_STATE"})
       expect(Player).to receive(:find_by_anti_forgery_token).with("CALLBACK_STATE") { player }
       expect(player).to receive(:finish_auth).with("CALLBACK_CODE")
       bypass_rescue
-      get :auth_callback, {:state => "CALLBACK_STATE", :code => "CALLBACK_CODE"}, valid_session
+      get :auth_callback, {:state => "CALLBACK_STATE", :code => "CALLBACK_CODE"}
       expect(response).to redirect_to(admin_players_path)
     end
   end
 
   describe 'POST claim_steps' do
-    let!(:player) { Player.create! valid_attributes }
-
     it 'claims available steps' do
       player.activities.create!(date: Date.today, steps: 100)
       expect(player.coins).to eq(0)
@@ -173,8 +138,6 @@ describe API::PlayersController, type: :controller do
   end
 
   describe 'POST claim_active_minutes' do
-    let!(:player) { Player.create! valid_attributes }
-
     it 'claims available active minutes' do
       player.activities.create!(date: Date.current, active_minutes: Player::GOAL_MINUTES + 10)
       expect(player.gems).to eq(0)
@@ -190,24 +153,31 @@ describe API::PlayersController, type: :controller do
   end
 
   describe 'gear' do
-    let!(:player) { Player.create! valid_attributes + {coins: 10} }
+    before { player.update(coins: 1000) }
     let!(:galoshes) { Gear.create!(name: 'galoshes', gear_type: 'shoes', coins: 1, gems: 0) }
 
     describe "POST #buy" do
       context "with valid params" do
-        it "buys an item" do
+        it "buys a gear item" do
           post :buy, {:id => player.to_param, :gear => {:name => 'galoshes'}}, valid_session
           expect_ok
           expect(player.reload.gear_owned).to eq(['galoshes'])
           expect(response_json['player']['piece']).to include({'gear_owned' => ['galoshes']})
         end
+
+        it "buys an ammo item" do
+          player.update!(coins: 1000)
+          post :buy, {:id => player.to_param, :ammo => {:name => 'balloon'}}, valid_session
+          expect_ok
+          expect(player.reload.ammo).to eq(['balloon'])
+          expect(response_json['player']['piece']).to include({'ammo' => ['balloon']})
+          expect(player.coins).to eq(1000 - 25)
+        end
       end
     end
 
     describe "POST #equip" do
-      before do
-        player.buy_gear!('galoshes')
-      end
+      before { player.buy_gear!('galoshes') }
 
       context "with valid params" do
         it "equips an item" do
@@ -227,23 +197,6 @@ describe API::PlayersController, type: :controller do
       end
     end
 
-  end
-
-  describe 'ammo' do
-    let!(:player) { Player.create! valid_attributes }
-
-    describe "POST #buy" do
-      context "with valid params" do
-        it "buys an item" do
-          player.update!(coins: 1000)
-          post :buy, {:id => player.to_param, :ammo => {:name => 'balloon'}}, valid_session
-          expect_ok
-          expect(player.reload.ammo).to eq(['balloon'])
-          expect(response_json['player']['piece']).to include({'ammo' => ['balloon']})
-          expect(player.coins).to eq(1000 - 25)
-        end
-      end
-    end
   end
 
 end

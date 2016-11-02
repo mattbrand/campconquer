@@ -14,8 +14,13 @@ module ControllerHelpers
     raise e
   end
 
+  def start_session(player)
+    @session_token = player.start_session
+    @current_player = player
+  end
+
   def valid_session
-    {token: API::SessionsController::GOOD_SESSION_TOKEN}
+    {token: @session_token}
   end
 
 end

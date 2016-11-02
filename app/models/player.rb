@@ -12,6 +12,15 @@
 #  coins              :integer          default("0"), not null
 #  gems               :integer          default("0"), not null
 #  embodied           :boolean          default("f"), not null
+#  session_token      :string
+#  encrypted_password :string
+#  salt               :string
+#  gamemaster         :boolean
+#  admin              :boolean
+#
+# Indexes
+#
+#  index_players_on_session_token  (session_token)
 #
 
 class Player < ActiveRecord::Base
@@ -88,7 +97,7 @@ class Player < ActiveRecord::Base
   validates :team, inclusion: {in: Team::NAMES.values, message: Team::NAMES.validation_message}
 
   def set_piece(params = {})
-    if Game.current.locked?
+    if Game.has_current? and Game.current.locked?
       # todo: use an AR exception that lets the response be not a 500
       raise Player::GameLocked
     end
@@ -118,7 +127,6 @@ class Player < ActiveRecord::Base
       buy_gear! gear.name
       equip_gear! gear.name
     end
-
   end
 
   include ActiveModel::Serialization
@@ -126,7 +134,12 @@ class Player < ActiveRecord::Base
   def as_json(options=nil)
     if options.nil?
       options = {
-        except: [:fitbit_token_hash, :anti_forgery_token],
+        except: [
+          :fitbit_token_hash,
+          :anti_forgery_token,
+          :encrypted_password,
+          :salt,
+        ],
         methods: [
           :steps_available,
           :active_minutes,
@@ -225,10 +238,17 @@ class Player < ActiveRecord::Base
     piece.gear_equipped.include?(gear_name)
   end
 
+  def gear_named(gear_name)
+    gear = Gear.find_by_name(gear_name)
+    raise "Can't find gear '#{gear_name}''" if gear.nil?
+    gear
+  end
+
   def buy_gear! gear_name
     raise Player::GameLocked if Game.current.locked? # todo: test
 
-    gear = Gear.find_by_name(gear_name)
+    gear = gear_named(gear_name)
+
     if gear_owned?(gear_name)
       raise Player::AlreadyOwned, gear
     elsif self.coins >= gear.coins and self.gems >= gear.gems
@@ -244,7 +264,7 @@ class Player < ActiveRecord::Base
   def drop_gear! gear_name
     raise Player::GameLocked if Game.current.locked? # todo: test
 
-    gear = Gear.find_by_name(gear_name)
+    gear = gear_named(gear_name)
     item = piece.items.find_by_gear_id(gear.id)
     raise NotOwned, gear if item.nil?
     item.destroy
@@ -254,7 +274,7 @@ class Player < ActiveRecord::Base
   def equip_gear!(gear_name)
     raise Player::GameLocked if Game.current.locked? # todo: test
 
-    gear = Gear.find_by_name(gear_name)
+    gear = gear_named(gear_name)
     item = piece.items.find_by_gear_id(gear.id)
     raise NotOwned, gear if item.nil?
     item.update!(equipped: true)
@@ -315,7 +335,7 @@ class Player < ActiveRecord::Base
   def pull_activity!(date = Date.current)
     summary = fitbit.get_activities(date.strftime('%F'))["summary"]
     attrs = {steps: summary["steps"].to_i,
-            active_minutes: summary["veryActiveMinutes"].to_i + summary["fairlyActiveMinutes"].to_i, }
+             active_minutes: summary["veryActiveMinutes"].to_i + summary["fairlyActiveMinutes"].to_i, }
     Rails.logger.info(attrs)
     activity = activity_for(date)
     activity.update!(attrs)
@@ -361,7 +381,55 @@ class Player < ActiveRecord::Base
     self.piece.role
   end
 
-  protected
+  # LOGIN STUFF
+
+  attr_accessor :password
+  validates :password,
+            unless: ->(p) { p.encrypted_password },
+            :length => {:within => 5..40},
+            :allow_nil => true,
+            :allow_blank => true
+
+  before_save :encrypt_password
+
+  def has_password?(submitted_password)
+    encrypted_password == encrypt(submitted_password)
+  end
+
+  def password_set?
+    !!encrypted_password
+  end
+
+  def start_session
+    token = SecureRandom.hex(32)
+    self.session_token = token
+    save!
+    token
+  end
+
+  def self.for_session(session_token)
+    # todo: session timeout?
+    find_by_session_token(session_token)
+  end
+
+  private
+
+  def encrypt_password
+    self.salt ||= SecureRandom.hex(64)
+    self.encrypted_password = encrypt(password) if password.present?
+  end
+
+  def encrypt(string)
+    sha2_hash("#{salt}--#{string}")
+  end
+
+  def sha2_hash(string)
+    Digest::SHA2.hexdigest(string)
+  end
+
+  ## END LOGIN STUFF
+
+  private
 
   def calculate_steps
     steps_available = self.steps_available

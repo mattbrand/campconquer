@@ -2,6 +2,8 @@ namespace :db do
   task :seed_players => :environment do
     Season.current.games.destroy_all
     Player.destroy_all
+    Player.create!(name: 'mod', password: 'xyzzy', team: 'red', admin: true, gamemaster: true)
+    puts "Created mod"
     Board.new.seed_teams
   end
 end
@@ -42,7 +44,7 @@ class Board
 
   def seed_team
     10.times do
-      player = Player.create!(name: random_name, team: @team_name)
+      player = Player.create!(name: random_name, password: 'password', team: @team_name)
 
       role = Piece::ROLES.values.sample
       path_points = Path.where(team: @team_name, role: role).sample.points

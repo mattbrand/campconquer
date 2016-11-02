@@ -25,6 +25,9 @@ describe API::GearsController, type: :controller do
     }
   }
 
+  let!(:alice) { create_alice_with_piece }
+  before { start_session(alice) }
+
   before do
     request.accept = "application/json"
   end

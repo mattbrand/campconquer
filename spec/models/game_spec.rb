@@ -507,10 +507,10 @@ describe Game do
 
   describe 'calculating post-game stats' do
 
-    let!(:betty) { Player.create! team: 'blue', name: 'betty' }
-    let!(:bob) { Player.create! team: 'blue', name: 'bob' }
-    let!(:roger) { Player.create! team: 'red', name: 'roger' }
-    let!(:rebecca) { Player.create! team: 'red', name: 'rebecca' }
+    let!(:betty) { create_player team: 'blue', player_name: 'betty' }
+    let!(:bob) { create_player team: 'blue', player_name: 'bob' }
+    let!(:roger) { create_player team: 'red', player_name: 'roger' }
+    let!(:rebecca) { create_player team: 'red', player_name: 'rebecca' }
 
     before do
       betty.set_piece(role: 'offense')
