@@ -204,11 +204,17 @@ describe Game do
       end
 
       it "copies all players' pieces and items" do
+        names = []
+        10.times do
+          names << Faker::Name.first_name
+        end
+        names.uniq!
+
         3.times do
-          p = create_player(player_name: Faker::Name.first_name)
-          p.buy_gear!(galoshes.name)
-          p.buy_gear!(tee_shirt.name)
-          p.equip_gear!(galoshes.name)
+          player = create_player(player_name: names.pop)
+          player.buy_gear!(galoshes.name)
+          player.buy_gear!(tee_shirt.name)
+          player.equip_gear!(galoshes.name)
         end
 
         current_game.lock_game!
@@ -534,7 +540,7 @@ describe Game do
       )
     }
 
-    let(:mvps) { game.send(:calculate_mvps) }
+    let(:mvps) { game.mvps }
 
     it 'calculates winning team' do
       expect(game.calculate_winner).to eq('blue')
@@ -545,32 +551,46 @@ describe Game do
       expect(game.calculate_winner).to eq(nil)
     end
 
-    it 'calculates attack_mvps for winning team (for winning team, this player captured the flag)' do
-      expect(mvps['blue']['attack_mvps']).to eq([betty.id])
-    end
+    before { game.lock_game! }
 
-    it 'calculates defend_mvps for winning team' do
-      # this player had the most takedowns
-      expect(mvps['blue']['defend_mvps']).to eq([bob.id])
-    end
+    describe 'MVPs' do
+      before { game.finish_game! }
 
-    it 'calculates attack_mvps for losing team' do
-      # for losing team, this player held the flag for longest distance
-      expect(mvps['red']['attack_mvps']).to eq([roger.id])
-    end
+      it 'calculates attack_mvps for winning team (for winning team, this player captured the flag)' do
+        expect(mvps['blue']['attack_mvps']).to eq([betty.id])
+      end
 
-    it 'calculates defend_mvps for losing team' do
-      # this player had the most takedowns
-      expect(mvps['red']['defend_mvps']).to eq([rebecca.id])
+      it 'calculates defend_mvps for winning team' do
+        # this player had the most takedowns
+        expect(mvps['blue']['defend_mvps']).to eq([bob.id])
+      end
+
+      it 'calculates attack_mvps for losing team' do
+        # for losing team, this player held the flag for longest distance
+        expect(mvps['red']['attack_mvps']).to eq([roger.id])
+      end
+
+      it 'calculates defend_mvps for losing team' do
+        # this player had the most takedowns
+        expect(mvps['red']['defend_mvps']).to eq([rebecca.id])
+      end
     end
 
     context 'when there are several potential mvps' do
-      let(:billie) { create_player player_name:'billie', team: 'blue' }
-      before do
-        billie.set_piece role: 'defense'
-        game.pieces << billie.piece
-        game.player_outcomes << Outcome.new(team: 'blue', player_id: billie.id, captures: 0, takedowns: 2, flag_carry_distance: 20)
-      end
+      let(:billie) { create_player player_name: 'billie', team: 'blue', role: 'defense' }
+
+      let(:outcomes) {
+        [
+          # blue team won
+          Outcome.new(team: 'blue', player_id: betty.id, captures: 1, takedowns: 1, flag_carry_distance: 10),
+          Outcome.new(team: 'blue', player_id: bob.id, captures: 0, takedowns: 2, flag_carry_distance: 20),
+          Outcome.new(team: 'blue', player_id: billie.id, captures: 0, takedowns: 2, flag_carry_distance: 20),
+          Outcome.new(team: 'red', player_id: roger.id, captures: 0, takedowns: 1, flag_carry_distance: 11),
+          Outcome.new(team: 'red', player_id: rebecca.id, captures: 0, takedowns: 3, flag_carry_distance: 7),
+        ]
+      }
+
+      before { game.finish_game! }
 
       it 'chooses a random one' do
         # expect(mvps['blue']['defend_mvps']).to eq([bob.id, billie.id])
@@ -582,8 +602,9 @@ describe Game do
       it 'remembers mvps on reload' do
         chosen_mvps = game.mvps
         game.save!
-        10.times do
-          expect(game.reload.mvps).to eq(chosen_mvps)
+        20.times do
+          reloaded_mvps = game.reload.mvps
+          expect(reloaded_mvps).to eq(chosen_mvps)
         end
       end
     end
@@ -598,6 +619,7 @@ describe Game do
           Outcome.new(team: 'red', player_id: rebecca.id, captures: 0, takedowns: 0, flag_carry_distance: 0),
         ]
       }
+      before { game.finish_game! }
 
       it "doesn't set any MVP" do
         expect(mvps['blue']['attack_mvps']).to eq([])
@@ -621,7 +643,7 @@ describe Game do
         end
       end
 
-      it "when red wins, every red player gets 1 gem" do
+      it "every player on the winning team gets 1 gem" do
         game.award_prizes! winner: 'red'
         expect(betty.reload.gems).to eq(0)
         expect(bob.reload.gems).to eq(0)
@@ -647,14 +669,14 @@ describe Game do
 
       it "all MVPs get one gem each" do
         # in this setup, every player is an mvp... should test more cases
-        game.award_mvp_prizes!
-        expect(betty.reload.gems).to eq(1)
-        expect(bob.reload.gems).to eq(1)
+        game.finish_game!
+
+        expect(betty.reload.gems).to eq(2)
+        expect(bob.reload.gems).to eq(2)
         expect(roger.reload.gems).to eq(1)
         expect(rebecca.reload.gems).to eq(1)
       end
     end
 
   end
-
 end

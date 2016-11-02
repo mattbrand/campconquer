@@ -21,6 +21,7 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
   - [x] login with id or name
   - [x] admin create password function
   - [ ] login w/ password and roles for Web
+  - [x] mod role, seed mod player
 
 - [x] load fitbit data as far back as needed and no further
 
@@ -54,7 +55,7 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 - [ ] expire session token after X days
 
 ## chores
-- [ ] `deploy.sh` script which does `git push heroku` and `heroku run rake db:migrate`
+- [x] `deploy.sh` script which does `git push heroku` and `heroku run rake db:migrate`
 - [ ] seed_players should use avatar.csv to determine gear asset
 - [ ] remove `current` and `locked` db fields
 - [ ] create prod env
@@ -99,7 +100,7 @@ For paths, similar to above but
 
 1. use the "Paths" sheet
 1. save as `db/paths.csv`
-1. `git add db; git push; git push heroku` to deploy
+1. `git add db; git push; ./deploy.sh` to deploy
 
 (Path changes are file-only; there is no need to re-seed the database.)
 
@@ -261,8 +262,7 @@ Player.all.each {|p| Gear.where(owned_by_default: true).each {|g| p.buy_gear! g.
 ## Deploy to Heroku
 
 ```
-git push heroku
-heroku run rake db:migrate
+./deploy.sh
 ```
 
 Change Heroku config vars to match local config vars (you probably don't want to do this):
