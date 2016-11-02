@@ -215,6 +215,7 @@ and [Postman](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdgg
 | `p.buy_gear! 'hat9'`   | buy gear for a player |
 | `p.equip_gear! 'hat9'` | equip gear for a player |
 | `p.drop_gear! 'hat9'`  | throw away (un-own and un-equip) gear for a player |
+| `p.update!(password: '123456')` | sets player's password |
 
 
 ####More complicated Rails Console examples:
