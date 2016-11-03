@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 app="campconquer-staging" # todo: command-line parameter to switch btw staging and prod
 
