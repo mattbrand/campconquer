@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
 
-  resources :sessions
   ActiveAdmin.routes(self)
 
   namespace :api do
@@ -44,8 +43,13 @@ Rails.application.routes.draw do
 
   end # api
 
+  resources :sessions, only: ['create']
+
   get "/login", to: "sessions#new", as: 'login'
   delete "/logout", to: "sessions#destroy", as: 'logout'
+
+  root to: "statics#index"
+  get "/game", to: "statics#game", as: "game"
 
   # todo: web 404 page
   # match "*path", :to => "application#route_not_found", :via => :all

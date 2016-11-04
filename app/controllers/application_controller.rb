@@ -67,6 +67,7 @@ class ApplicationController < ActionController::Base
   def current_player
     @current_player ||= find_player_from_session
   end
+  helper_method :current_player
 
   # for active_admin
   def authenticate_admin_user!
