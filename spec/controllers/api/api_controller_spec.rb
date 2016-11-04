@@ -30,7 +30,6 @@ module API
         get :create, token: 'BOGUS', name: alice.name, password: 'password'
         expect_ok
         expect(response_json["token"]).not_to eq('BOGUS')
-
       end
 
       it 'denies most other calls' do
@@ -48,7 +47,7 @@ module API
 
     context 'given a valid token in the session' do
       it "allows most calls" do
-        good_token = SessionsController::GOOD_SESSION_TOKEN
+        start_session(alice)
         @controller = PlayersController.new
         get :show, {id: alice.id}, valid_session
         expect_ok
@@ -57,11 +56,10 @@ module API
     end
 
     context 'given a valid token as a param' do
-
       it "allows most GET calls" do
-        good_token = SessionsController::GOOD_SESSION_TOKEN
+        start_session(alice)
         @controller = PlayersController.new
-        get :show, id: alice.id, token: good_token
+        get :show, id: alice.id, token: @session_token
         expect_ok
       end
     end

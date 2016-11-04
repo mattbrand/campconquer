@@ -1,8 +1,7 @@
 module API
-  class APIController < ActionController::Base
+  class APIController < ApplicationController
 
     # homegrown auth, see SessionsController
-
     before_action :require_session_token
 
     # Prevent CSRF attacks by raising an exception.
@@ -23,64 +22,22 @@ module API
     public
 
     def route_not_found
-      render :status => :not_found,
-             :json => {
-               'status' => 'error',
-               'message' => "path '#{params[:path]}' not found"
-             }
+      render_error status: :not_found,
+                   message: "path '#{params[:path]}' not found"
     end
 
-    def good_session_token? token
-      # todo: simulate session creation in tests instead of this gory backdoor
-      if !token.nil? && token == SessionsController::GOOD_SESSION_TOKEN
-        true
-      else
-        !!Player.for_session(token)
-      end
-    end
-
-    def current_session_token
-      params[:token] || session[:token]
-    end
-
-    def current_player
-      Player.for_session(current_session_token)
-    end
-
-    def require_session_token
-      token = current_session_token
-
-      # see https://www.loggly.com/blog/http-status-code-diagram/
-      if token.nil?
-        render status: :unauthorized, # in HTTP, "401 Unauthorized" means unauthenticated :-/
-               json: {
-                 status: "error",
-                 message: "This is a protected endpoint and you are unauthenticated - please pass in a good token",
-               }
-      elsif !good_session_token? token
-        render status: :unauthorized, # in HTTP, "401 unauthorized" means unauthenticated :-/
-               json: {
-                 status: "error",
-                 message: "This is a protected endpoint and your token is invalid",
-               }
-      end
-    end
-
-    def require_role(required_role)
-      unless current_player.send("#{required_role}?")
-        forbidden("role '#{required_role}' required")
-      end
-    end
-
-    def require_player(required_player)
-      if current_player != required_player and !current_player.admin?
-        forbidden("player #{required_player.name.inspect} or admin required")
-      end
-    end
 
     protected
 
     # errors
+
+    def render_error (status: :internal_server_error, message:)
+      render status: status,
+             json: {
+               status: "error",
+               message: message,
+             }
+    end
 
     def record_not_found(e)
       render :status => :not_found,
@@ -113,14 +70,6 @@ module API
     def server_error(e)
       render :status => :internal_server_error,
              :json => exception_as_json(e)
-    end
-
-    def forbidden(why)
-      render status: :forbidden, # in HTTP, "403 Forbidden" means unauthorized :-/
-             json: {
-               status: "error",
-               message: "This is a protected endpoint and you are unauthorized (#{why})",
-             }
     end
 
     def exception_as_json(e)

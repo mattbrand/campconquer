@@ -15,13 +15,16 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 
 - [x] un-protect fitbit callback endpoint
 
-- [ ] login
+- [ ] API login
   - [x] one password, sent in the clear :-O
   - [x] actual passwords for API
   - [x] login with id or name
   - [x] admin create password function
-  - [ ] login w/ password and roles for Web
   - [x] mod role, seed mod player
+
+- [ ] Web login
+ - [ ] allow mutiple sessions
+ - [ ] expire sessions
 
 - [x] load fitbit data as far back as needed and no further
 

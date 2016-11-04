@@ -1,8 +1,5 @@
 module API
   class SessionsController < APIController
-    # todo: simulate session creation in tests instead of this gory backdoor
-    GOOD_SESSION_TOKEN = Rails.env.test? ? "GOOD-#{SecureRandom.hex(10)}" : nil
-
     skip_before_action :require_session_token
 
     def create

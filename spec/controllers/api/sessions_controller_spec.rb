@@ -24,8 +24,8 @@ describe API::SessionsController, type: :controller do
     it 'returns a session token that can be used to get past the session check' do
       get :create, name: 'alice', password: 'password'
       token = response_json['token']
-      expect(controller.good_session_token?(token)).to eq(true)
-      expect(controller.good_session_token?("NOT A GOOD TOKEN")).to eq(false)
+      expect(controller.send(:good_session_token?, token)).to eq(true)
+      expect(controller.send(:good_session_token?, "NOT A GOOD TOKEN")).to eq(false)
     end
   end
 
@@ -70,7 +70,7 @@ describe API::SessionsController, type: :controller do
     end
 
     it 'fetches a current player (user?)' do
-      expect(subject.current_player).to eq(alice)
+      expect(subject.send(:current_player)).to eq(alice)
     end
   end
 end

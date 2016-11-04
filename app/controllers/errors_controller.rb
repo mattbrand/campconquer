@@ -1,4 +1,4 @@
-class ErrorsController < ApplicationController
+class ErrorsController < WebController
   def not_found
     respond_to do |format|
       format.html { render status: 404 }
