@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161101145722) do
+ActiveRecord::Schema.define(version: 20161104161007) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -147,5 +147,15 @@ ActiveRecord::Schema.define(version: 20161101145722) do
     t.string   "name"
     t.boolean  "current",    default: false, null: false
   end
+
+  create_table "sessions", force: :cascade do |t|
+    t.integer  "player_id"
+    t.string   "token"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "sessions", ["player_id"], name: "index_sessions_on_player_id"
+  add_index "sessions", ["token"], name: "index_sessions_on_token"
 
 end

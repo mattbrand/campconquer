@@ -29,6 +29,21 @@ module API
 
     protected
 
+    # login and roles (see also ApplicationController)
+
+    def good_session_token? token
+      !!Player.for_session(token)
+    end
+
+    def current_session_token
+      params[:token] || session[:token]
+    end
+
+    def current_player
+      Player.for_session(current_session_token)
+    end
+
+
     # errors
 
     def render_error (status: :internal_server_error, message:)

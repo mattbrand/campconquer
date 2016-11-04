@@ -631,4 +631,21 @@ describe Player, type: :model do
       expect(player).to eq(alice)
     end
   end
+
+  context "if a player has no password" do
+    let!(:alice) { create_player(player_name: 'alice', password: nil) }
+
+    it "has no encrypted password" do
+      expect(alice.encrypted_password).to be_nil
+    end
+
+    it "is not equivalent to having a nil password" do
+      expect(alice.has_password?(nil)).to be_falsey
+    end
+
+    it "is not equivalent to having a blank password" do
+      expect(alice.has_password?('')).to be_falsey
+    end
+  end
+
 end

@@ -1,20 +1,9 @@
 class ApplicationController < ActionController::Base
+  protect_from_forgery with: :exception
 
-protected
+  protected
 
   # login and roles
-
-  def good_session_token? token
-    !!Player.for_session(token)
-  end
-
-  def current_session_token
-    params[:token] || session[:token]
-  end
-
-  def current_player
-    Player.for_session(current_session_token)
-  end
 
   def require_session_token
     token = current_session_token
@@ -44,6 +33,47 @@ protected
   def forbidden(why)
     render_error status: :forbidden, # in HTTP, "403 Forbidden" means unauthorized :-/
                  message: "This is a protected endpoint and you are unauthorized (#{why})"
+  end
+
+  # for web login
+  # (I wanted these to go in WebController but I don't see a way to make ActiveAdmin
+  # extend WebController instead of ApplicationController)
+
+  SESSION_KEY = :current_player_session_id
+
+  def find_player_from_session
+    if session[SESSION_KEY]
+      session_object = Session.where(id: session[SESSION_KEY]).includes(:player).first
+      if session_object
+        session_object.player
+      end
+    end
+  end
+
+  def create_session(player)
+    @session = Session.create!(player_id: player.id)
+    destroy_session
+    session[SESSION_KEY] = @session.id
+    @session
+  end
+
+  def destroy_session
+    if session[SESSION_KEY]
+      Session.destroy(session[SESSION_KEY])
+      session[SESSION_KEY] = nil
+    end
+  end
+
+  def current_player
+    @current_player ||= find_player_from_session
+  end
+
+  # for active_admin
+  def authenticate_admin_user!
+    unless current_player && current_player.admin?
+      flash[:alert] = "Only admins can access that page."
+      redirect_to login_path
+    end
   end
 
 end
