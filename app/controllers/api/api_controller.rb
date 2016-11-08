@@ -107,41 +107,6 @@ module API
       hash
     end
 
-    # finding
-
-    def find_game
-      game_id = params[:game_id] || params[:id]
-      if game_id == 'current'
-        @game = Game.current || raise(ActiveRecord::RecordNotFound, "current game not found")
-      elsif game_id == 'previous'
-        @game = Game.previous || raise(ActiveRecord::RecordNotFound, "previous game not found")
-      else
-        @game = Game.find(game_id)
-      end
-    end
-
-    def find_player
-      player_id = params[:player_id] || params[:id]
-      @player = Player.find(player_id)
-    end
-
-    def pull_activity
-      if @player and @player.authenticated?
-        @player.pull_recent_activity!
-      end
-    end
-
-    def find_season
-      season_id = params[:season_id] || params[:id]
-      if season_id == 'current'
-        @season = Season.current || raise(ActiveRecord::RecordNotFound, "current season not found")
-      elsif season_id == 'previous'
-        @season = Season.previous || raise(ActiveRecord::RecordNotFound, "previous season not found")
-      else
-        @season = Season.find(season_id)
-      end
-    end
-
     # rendering
 
     def render_game(**args)

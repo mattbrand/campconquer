@@ -101,27 +101,6 @@ describe API::PlayersController, type: :controller do
     end
   end
 
-  describe 'GET #auth' do
-    it "redirects to the player's auth URL" do
-      expect(Player).to receive(:find).with(player.to_param) { player }
-      expect(player).to receive(:begin_auth) { "FITBIT.COM" }
-      bypass_rescue
-      get :auth, {:id => player.to_param}, valid_session
-      expect(response).to redirect_to("FITBIT.COM")
-    end
-  end
-
-  describe 'GET #auth-callback' do
-    it "finds the player corresponding to the given auth token, finishes auth, and redirects to the admin players list" do
-      player.update({anti_forgery_token: "CALLBACK_STATE"})
-      expect(Player).to receive(:find_by_anti_forgery_token).with("CALLBACK_STATE") { player }
-      expect(player).to receive(:finish_auth).with("CALLBACK_CODE")
-      bypass_rescue
-      get :auth_callback, {:state => "CALLBACK_STATE", :code => "CALLBACK_CODE"}
-      expect(response).to redirect_to(admin_players_path)
-    end
-  end
-
   describe 'POST claim_steps' do
     it 'claims available steps' do
       player.activities.create!(date: Date.today, steps: 100)

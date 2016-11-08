@@ -37,7 +37,7 @@ ActiveAdmin.register Player do
         auth_label = "Auth"
       end
       div do
-        link_to auth_label, auth_api_player_path(player)  # todo: split out a web player controller and use auth_player_path
+        link_to auth_label, auth_player_path(player) + "?token=#{params[:token]}"  # todo: split out a web player controller and use auth_player_path
       end
     end
     actions defaults: false do |player|

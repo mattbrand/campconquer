@@ -68,6 +68,15 @@ def create_gamemaster(player_name: 'gertie gamemaster',
                  gamemaster: true)
 end
 
+def create_admin(player_name: 'annie admin',
+                  password: 'password')
+  Player.create!(name: player_name,
+                 password: password,
+                 team: 'red',
+                 embodied: false,
+                 admin: true)
+end
+
 def create_alice_with_piece
   create_player(player_name: 'alice', body_type: 'female', team: 'blue')
 end

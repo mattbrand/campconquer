@@ -19,21 +19,12 @@ Rails.application.routes.draw do
       resource :piece, only: ['create', 'update']
 
       member do
-        get :auth
 
         post :buy
         post :equip
         post :claim_steps
         post :claim_active_minutes
 
-        # todo: remove these
-        get :profile
-        get :activities
-        get :steps
-      end
-
-      collection do
-        get :'auth-callback'
       end
     end
 
@@ -44,6 +35,24 @@ Rails.application.routes.draw do
   end # api
 
   resources :sessions, only: ['create']
+
+  resources :players do
+
+    collection do
+      get :'auth-callback'
+    end
+
+    member do
+      get :auth
+
+      # todo: remove these
+      get :profile
+      get :activities
+      get :steps
+    end
+
+  end
+
 
   get "/login", to: "sessions#new", as: 'login'
   delete "/logout", to: "sessions#destroy", as: 'logout'
