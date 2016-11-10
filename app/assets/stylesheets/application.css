@@ -72,3 +72,19 @@ nav li > a:visited {
   color: black;
 }
 
+
+div.error {
+    border: 2px solid red;
+}
+
+div.alert {
+    border: 2px solid orange;
+}
+
+div.alert, div.error {
+    margin: 10px 0;
+    padding: 1em;
+    font-size: 16pt;
+    color: #730E15;
+    display: inline-block;
+}

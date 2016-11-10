@@ -306,21 +306,20 @@ class Player < ActiveRecord::Base
   end
 
   def begin_auth
-    anti_forgery_token = rand(100000).to_s # todo: better encryption
+    anti_forgery_token = SecureRandom.hex(16)
     update!(anti_forgery_token: anti_forgery_token)
     fitbit.authorization_url(state: anti_forgery_token)
   end
 
   def finish_auth(code)
-    self.anti_forgery_token = nil
+    # self.anti_forgery_token = nil
     fitbit.code = code # note: this should callback to update_token
   end
 
   # todo: test
   def update_token(fitbit)
-    old_refresh_token = self.fitbit_token_hash.try(:get, 'refresh_token')
-    logger.info "update_token called: #{fitbit.token_hash}"
-    self.update!(fitbit_token_hash: fitbit.token_hash)
+    logger.info "updating fitbit token for player #{self.id}: #{fitbit.token_hash.inspect}"
+    self.update!(anti_forgery_token: nil, fitbit_token_hash: fitbit.token_hash)
     @fitbit = nil
   end
 

@@ -180,6 +180,7 @@ describe Player, type: :model do
         url = player.begin_auth
         player.finish_auth('AUTH_CODE')
         expect(player.anti_forgery_token).not_to be
+        expect(player.reload.anti_forgery_token).to be_nil
       end
 
       it 'sets a fitbit token on itself' do
