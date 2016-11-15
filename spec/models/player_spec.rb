@@ -15,8 +15,8 @@
 #  session_token      :string
 #  encrypted_password :string
 #  salt               :string
-#  gamemaster         :boolean
-#  admin              :boolean
+#  gamemaster         :boolean          default("f"), not null
+#  admin              :boolean          default("f"), not null
 #
 # Indexes
 #
