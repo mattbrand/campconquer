@@ -414,6 +414,23 @@ types:
             description: ok
           40x:
             description: gear not owned
+          40x:
+            description: game locked
+
+    /unequip:
+      post:
+        description: unequip (remove) a piece of gear
+        queryParameters:
+          gear[name]:
+            type: string
+            description: the short name of the gear to unequip
+        responses:
+          200:
+            description: ok
+          40x:
+            description: gear not owned
+          40x:
+            description: game locked
 
     /claim_steps:
       post:

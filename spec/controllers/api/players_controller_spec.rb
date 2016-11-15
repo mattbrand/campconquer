@@ -176,6 +176,30 @@ describe API::PlayersController, type: :controller do
       end
     end
 
+    describe "POST #unequip" do  # should be "DELETE equip"? meh
+      before do
+        player.buy_gear!('galoshes')
+        player.equip_gear!('galoshes')
+      end
+
+      context "with valid params" do
+        it "unequips an item" do
+          post :unequip, {:id => player.to_param, :gear => {:name => 'galoshes'}}, valid_session
+          expect(player.reload.gear_equipped).to eq([])
+          expect(response_json['player']['piece']).to include({'gear_equipped' => []})
+        end
+      end
+
+      context "while the current game is locked" do
+        it "fails" do
+          Game.current.lock_game!
+          post :unequip, {:id => player.to_param, :gear => {:name => 'galoshes'}}, valid_session
+          expect(response_json['status']).to eq('error')
+          expect(response_json['message']).to include("current game is locked")
+        end
+      end
+    end
+
   end
 
 end

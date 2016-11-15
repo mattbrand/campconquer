@@ -483,16 +483,57 @@ describe Player, type: :model do
         player.equip_gear!('galoshes')
         expect(player.gear_equipped).to eq(['galoshes'])
       end
+
       it 'fails to equip unowned gear' do
         expect do
           player.equip_gear!('galoshes')
         end.to raise_error(Player::NotOwned)
       end
+
       it 'equipping already equipped gear is a no-op' do
         player.buy_gear!('galoshes')
         player.equip_gear!('galoshes')
         player.equip_gear!('galoshes')
         expect(player.gear_equipped).to eq(['galoshes'])
+      end
+
+      it 'equipping gear of a certain type un-equips other gear of the same type' do
+        player.update!(gems: 10, coins: 100)
+        slippers = Gear.create!(name: 'slippers', gear_type: 'shoes', coins: 10, gems: 1)
+
+        player.buy_gear!('galoshes')
+        player.buy_gear!('slippers')
+
+        player.equip_gear!('galoshes')
+        player.equip_gear!('slippers')
+        expect(player.gear_equipped).to eq(['slippers'])
+      end
+    end
+
+    describe 'unequipping' do
+      it 'unequips an equipped piece of gear' do
+        player.buy_gear!('galoshes')
+        player.equip_gear!('galoshes')
+        expect(player.gear_equipped).to eq(['galoshes'])
+        player.unequip_gear!('galoshes')
+        expect(player.gear_equipped).to eq([])
+      end
+
+      it 'ignores a not equipped piece of gear' do
+        player.update!(gems: 10, coins: 100)
+
+        player.buy_gear!('tee-shirt')
+        player.buy_gear!('galoshes')
+        player.equip_gear!('galoshes')
+
+        player.unequip_gear!('tee-shirt')
+        expect(player.gear_equipped).to eq(['galoshes'])
+      end
+
+      it 'fails to equip unowned gear' do
+        expect do
+          player.unequip_gear!('galoshes')
+        end.to raise_error(Player::NotOwned)
       end
     end
 

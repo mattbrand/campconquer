@@ -52,8 +52,8 @@ class Player < ActiveRecord::Base
                0
              end
       super("not enough money to buy #{name}: " +
-              "#{coins} #{"coin".pluralize(coins)} and " +
-              "#{gems} #{"gem".pluralize(gems)} required")
+                "#{coins} #{"coin".pluralize(coins)} and " +
+                "#{gems} #{"gem".pluralize(gems)} required")
     end
   end
 
@@ -134,23 +134,23 @@ class Player < ActiveRecord::Base
   def as_json(options=nil)
     if options.nil?
       options = {
-        except: [
-          :fitbit_token_hash,
-          :anti_forgery_token,
-          :encrypted_password,
-          :salt,
-        ],
-        methods: [
-          :steps_available,
-          :active_minutes,
-          :active_goal_met,
-          :active_minutes_claimed,
-          :player_outcomes,
-          :gear_owned,
-          :gear_equipped,
-          :ammo,
-        ],
-        include: [{:piece => Piece.serialization_options}],
+          except: [
+              :fitbit_token_hash,
+              :anti_forgery_token,
+              :encrypted_password,
+              :salt,
+          ],
+          methods: [
+              :steps_available,
+              :active_minutes,
+              :active_goal_met,
+              :active_minutes_claimed,
+              :player_outcomes,
+              :gear_owned,
+              :gear_equipped,
+              :ammo,
+          ],
+          include: [{:piece => Piece.serialization_options}],
       }
     end
     super(options)
@@ -240,7 +240,7 @@ class Player < ActiveRecord::Base
 
   def gear_named(gear_name)
     gear = Gear.find_by_name(gear_name)
-    raise "Can't find gear '#{gear_name}''" if gear.nil?
+    raise "No gear named '#{gear_name}''" if gear.nil?
     gear
   end
 
@@ -277,7 +277,21 @@ class Player < ActiveRecord::Base
     gear = gear_named(gear_name)
     item = piece.items.find_by_gear_id(gear.id)
     raise NotOwned, gear if item.nil?
+    return if item.equipped?
+
+    unequip_gear_of_type(item.gear.gear_type)
     item.update!(equipped: true)
+
+    self.reload
+  end
+
+  def unequip_gear!(gear_name)
+    raise Player::GameLocked if Game.current.locked? # todo: test
+
+    gear = gear_named(gear_name)
+    item = piece.items.find_by_gear_id(gear.id)
+    raise NotOwned, gear if item.nil?
+    item.update!(equipped: false)
     self.reload
   end
 
@@ -442,6 +456,14 @@ class Player < ActiveRecord::Base
       steps_to_distribute = steps_available - remaining_steps
     end
     return new_coins, steps_to_distribute
+  end
+
+  def unequip_gear_of_type(gear_type)
+    piece.items_equipped.each do |equipped_item|
+      if equipped_item.gear.gear_type == gear_type
+        equipped_item.update!(equipped: false)
+      end
+    end
   end
 
 end

@@ -8,11 +8,6 @@ class API::PlayersController < ::API::APIController
                                        :update,
                                        :claim_steps,
                                        :claim_active_minutes,
-                                       :profile,
-                                       :steps,
-                                       :activities,
-                                       :buy,
-                                       :equip,
   ]
 
   # GET /players
@@ -72,7 +67,10 @@ class API::PlayersController < ::API::APIController
     render_player
   end
 
-
+  def unequip
+    @player.unequip_gear!(params['gear']['name'])
+    render_player
+  end
 
   private
 
