@@ -2,21 +2,22 @@
 #
 # Table name: players
 #
-#  id                 :integer          not null, primary key
-#  name               :string
-#  team               :string
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#  fitbit_token_hash  :text
-#  anti_forgery_token :string
-#  coins              :integer          default("0"), not null
-#  gems               :integer          default("0"), not null
-#  embodied           :boolean          default("f"), not null
-#  session_token      :string
-#  encrypted_password :string
-#  salt               :string
-#  gamemaster         :boolean          default("f"), not null
-#  admin              :boolean          default("f"), not null
+#  id                   :integer          not null, primary key
+#  name                 :string
+#  team                 :string
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  fitbit_token_hash    :text
+#  anti_forgery_token   :string
+#  coins                :integer          default("0"), not null
+#  gems                 :integer          default("0"), not null
+#  embodied             :boolean          default("f"), not null
+#  session_token        :string
+#  encrypted_password   :string
+#  salt                 :string
+#  gamemaster           :boolean          default("f"), not null
+#  admin                :boolean          default("f"), not null
+#  activities_synced_at :datetime
 #
 # Indexes
 #
@@ -352,10 +353,15 @@ class Player < ActiveRecord::Base
     Rails.logger.info(attrs)
     activity = activity_for(date)
     activity.update!(attrs)
+    self.update!(activities_synced_at: DateTime.current)
     activity
   end
 
-  # todo: test
+  # this algorithm assumes that step counts only ever go up,
+  # and that if a day has a count of 0,
+  # we can't tell if the user has not synced for that day,
+  # or if they did sync but didn't exercise that day
+  # See player_activities_spec.rb for more details.
   # TODO: move this into a background task
   def pull_recent_activity!
     bm = Benchmark.measure("Fetch activity") do
@@ -369,7 +375,9 @@ class Player < ActiveRecord::Base
         fetched = pull_activity!(date)
 
         # abort if no different from what we thought
-        break if (known == fetched) and (known.steps != 0 and known.active_minutes != 0)
+        break if (known.steps == fetched.steps) and
+            (known.active_minutes == fetched.active_minutes) and
+            (known.steps != 0 and known.active_minutes != 0)
 
         days_ago += 1
       end

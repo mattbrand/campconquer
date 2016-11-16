@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161115224643) do
+ActiveRecord::Schema.define(version: 20161116171535) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -125,18 +125,19 @@ ActiveRecord::Schema.define(version: 20161115224643) do
   create_table "players", force: :cascade do |t|
     t.string   "name"
     t.string   "team"
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
     t.text     "fitbit_token_hash"
     t.string   "anti_forgery_token"
-    t.integer  "coins",              default: 0,     null: false
-    t.integer  "gems",               default: 0,     null: false
-    t.boolean  "embodied",           default: false, null: false
+    t.integer  "coins",                default: 0,     null: false
+    t.integer  "gems",                 default: 0,     null: false
+    t.boolean  "embodied",             default: false, null: false
     t.string   "session_token"
     t.string   "encrypted_password"
     t.string   "salt"
-    t.boolean  "gamemaster",         default: false, null: false
-    t.boolean  "admin",              default: false, null: false
+    t.boolean  "gamemaster",           default: false, null: false
+    t.boolean  "admin",                default: false, null: false
+    t.datetime "activities_synced_at"
   end
 
   add_index "players", ["session_token"], name: "index_players_on_session_token"
