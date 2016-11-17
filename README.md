@@ -15,14 +15,14 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 
 - [x] un-protect fitbit callback endpoint
 
-- [ ] API login
+- [x] API login
   - [x] one password, sent in the clear :-O
   - [x] actual passwords for API
   - [x] login with id or name
   - [x] admin create password function
   - [x] mod role, seed mod player
 
-- [ ] Web login
+- [x] Web login
  - [ ] allow mutiple sessions
  - [ ] expire sessions
 
@@ -37,9 +37,7 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 
 ## low priority features
 
-- [ ] check steps in the background at least 1x/day, not just when players connect
-  - http://sprint.ly/product/41137/item/333
-  - need an extra "worker" process in heroku, $$$
+- [x] check steps in the background at least 1x/day, not just when players connect
 
 - [ ] round up remainder steps
 
@@ -47,7 +45,7 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 
 - [ ] validate max. one capture per game
 
-- [ ] unequip (or we may not need unequip if i add the rule “only one of each item type can be equipped” )
+- [x] unequip (or we may not need unequip if i add the rule “only one of each item type can be equipped” )
 
 - [ ] player stats across all seasons in GET player endpoint
 
@@ -67,16 +65,20 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
     tally? count? detail? history? result? lowdown? ledger? statement? reckoning? register? chronicle? balance? progress? evaluation? transcript?
 - [ ] merge Piece into Player in API
 - [ ] foreign key indexes for all tables
-- [ ] New Relic
 - [ ] [upgrade to Rails 5](http://blog.bigbinary.com/2016/08/18/new-framework-defaults-in-rails-5-to-make-upgrade-easier.html)
 - [ ] switch from RAML to Swagger? http://swagger.io/
 - [ ] make a Procfile https://devcenter.heroku.com/articles/ruby-default-web-server
 - [ ] CircleCI? 
 - [ ] Alex learns Unity (gratis)
 - [ ] kill gear table
-- [ ] new player controller for web/auth
-simulate session creation in tests instead of GOOD_SESSION_TOKEN backdoor
+- [x] new player controller for web/auth
+- [x] simulate session creation in tests instead of GOOD_SESSION_TOKEN backdoor
 
+- [ ] heroku addons
+    - [x] New Relic
+    - [x] Scout
+    - [ ] Papertrail
+    - [ ] Honeybadger or Airbrake
 
 # Updating the Seed DB
 
@@ -288,14 +290,10 @@ every night at 5:30 UTC (12:30 or 1:30 Eastern)
 see <https://devcenter.heroku.com/articles/scheduler>
 
 
-## Fitbit Integration Is (Barely) Functional!
+## Fitbit Integration Is Functional!
 
 * Create a player: https://campconquer-staging.herokuapp.com/admin/players/new
-* **NOTE THE ID** and use it below instead of 999
-* Authenticate that player: https://campconquer-staging.herokuapp.com/players/999/auth
-* See your profile: https://campconquer-staging.herokuapp.com/players/999/profile
-* See your steps for the past 3 months: https://campconquer-staging.herokuapp.com/players/999/steps
-* See your activities from yesterday: https://campconquer-staging.herokuapp.com/players/999/activities
+* Click "Auth" and follow the Fitbit auth flow
 
 Want to see what other Fitbit info is available? Check out https://dev.fitbit.com/docs/activity/ for docs
 
