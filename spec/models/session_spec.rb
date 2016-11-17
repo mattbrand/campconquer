@@ -17,5 +17,8 @@
 require 'rails_helper'
 
 RSpec.describe Session, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it 'sets name as an instance var, to repopulate the form in case of error' do
+    s = Session.new(name: "Agent Smith", token: 'WHATEVERMAN')
+    expect(s.name).to eq("Agent Smith")
+  end
 end

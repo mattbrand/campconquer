@@ -7,6 +7,10 @@ describe Player, type: :model do
     let(:today) { Time.current.strftime('%F') }
     let(:yesterday) { (Time.current - 1.day).strftime('%F') }
 
+    def fake_fitbit_activities(day, *summary_responses)
+      expect(fake_fitbit).to receive(:get_activities).with(day).and_return(*summary_responses)
+    end
+
     before do
       Timecop.freeze
       player.instance_variable_set(:@fitbit, fake_fitbit)
@@ -126,26 +130,26 @@ describe Player, type: :model do
       end
 
       it 'pulls steps from the fitbit' do
-        expect(fake_fitbit).to receive(:get_activities).with(today).and_return(summary)
+        fake_fitbit_activities(today, summary)
         player.pull_activity!
         expect(player.steps_available).to eq(12612)
       end
 
       it 'logs the time' do
-        expect(fake_fitbit).to receive(:get_activities).with(today).and_return(summary)
+        fake_fitbit_activities(today, summary)
         player.pull_activity!
         expect(player.activities_synced_at).to eq(Time.current)
       end
 
       it "idempotently ignores steps it's already pulled" do
-        expect(fake_fitbit).to receive(:get_activities).with(today).and_return(summary, summary)
+        fake_fitbit_activities(today, summary, summary)
         player.pull_activity!
         player.pull_activity!
         expect(player.steps_available).to eq(12612)
       end
 
       it "subtracts steps it's already claimed from new steps" do
-        expect(fake_fitbit).to receive(:get_activities).with(today).and_return(summary(steps: 400), summary(steps: 600))
+        fake_fitbit_activities(today, summary(steps: 400), summary(steps: 600))
         player.pull_activity!
         expect(player.steps_available).to eq(400)
         player.claim_steps!
@@ -154,7 +158,7 @@ describe Player, type: :model do
       end
 
       it 'pulls minutes from the fitbit' do
-        expect(fake_fitbit).to receive(:get_activities).with(today).and_return(summary)
+        fake_fitbit_activities(today, summary)
         player.pull_activity!
         expect(player.active_minutes).to eq(30)
       end
@@ -162,13 +166,13 @@ describe Player, type: :model do
       describe 'pull_recent_activity!' do
         it "calls pull_activity for today" do
           allow(fake_fitbit).to receive(:get_activities).and_return(summary) # no-op for previous days
-          expect(fake_fitbit).to receive(:get_activities).with(today).and_return(summary(steps: 100))
+          fake_fitbit_activities(today, summary(steps: 100))
           player.pull_recent_activity!
         end
 
         it "calls pull_activity for each of the past 7 days" do
           (0...7).each do |days_ago|
-            expect(fake_fitbit).to receive(:get_activities).with((Date.current - days_ago).strftime("%F")).and_return(summary(steps: 100))
+            fake_fitbit_activities((Date.current - days_ago).iso8601, summary(steps: 100))
           end
           player.pull_recent_activity!
           expect(player.steps_available).to eq(100 * 7)
@@ -185,17 +189,17 @@ describe Player, type: :model do
           player.activity_for(Date.current - 6).update!({steps: 200, active_minutes: 30})
 
           # but now we learn that they walked 50 today and 150 yesterday
-          expect(fake_fitbit).to receive(:get_activities).with((Date.current).strftime("%F")).and_return(summary(steps: 50))
-          expect(fake_fitbit).to receive(:get_activities).with((Date.current - 1).strftime("%F")).and_return(summary(steps: 150))
+          fake_fitbit_activities((Date.current).iso8601, summary(steps: 50))
+          fake_fitbit_activities((Date.current - 1).iso8601, summary(steps: 150))
 
           # ...and 200 the day before, which matches what we know...
-          expect(fake_fitbit).to receive(:get_activities).with((Date.current - 2).strftime("%F")).and_return(summary(steps: 200))
+          fake_fitbit_activities((Date.current - 2).iso8601, summary(steps: 200))
 
           # ...so the rest of the days should not get fetched
-          expect(fake_fitbit).not_to receive(:get_activities).with((Date.current - 3).strftime("%F"))
-          expect(fake_fitbit).not_to receive(:get_activities).with((Date.current - 4).strftime("%F"))
-          expect(fake_fitbit).not_to receive(:get_activities).with((Date.current - 5).strftime("%F"))
-          expect(fake_fitbit).not_to receive(:get_activities).with((Date.current - 6).strftime("%F"))
+          expect(fake_fitbit).not_to receive(:get_activities).with((Date.current - 3).iso8601)
+          expect(fake_fitbit).not_to receive(:get_activities).with((Date.current - 4).iso8601)
+          expect(fake_fitbit).not_to receive(:get_activities).with((Date.current - 5).iso8601)
+          expect(fake_fitbit).not_to receive(:get_activities).with((Date.current - 6).iso8601)
 
           player.pull_recent_activity!
 
@@ -210,7 +214,34 @@ describe Player, type: :model do
           # todo: same deal for minutes
         end
 
-        it "treats '0 step' days as unknown, since the user might not have synced their device yet, so fitbit would report 0"
+        it "treats '0 step' days as unknown, since the user might not have synced their device yet, so fitbit would report 0" do
+          player.activity_for(Date.current - 1).update!({steps: 0, active_minutes: 0})
+          player.activity_for(Date.current - 2).update!({steps: 0, active_minutes: 0})
+          player.activity_for(Date.current - 3).update!({steps: 100, active_minutes: 0})  # we think they only hit 100
+          player.activity_for(Date.current - 4).update!({steps: 200, active_minutes: 30})
+          player.activity_for(Date.current - 5).update!({steps: 200, active_minutes: 30})
+          player.activity_for(Date.current - 6).update!({steps: 200, active_minutes: 30})
+
+          fake_fitbit_activities((Date.current).iso8601, summary(steps: 50)) # they walked a little today
+          fake_fitbit_activities((Date.current - 1).iso8601, summary(steps: 80)) # a bit yesterday
+          fake_fitbit_activities((Date.current - 2).iso8601, summary(steps: 100)) # and a bit the day before
+          fake_fitbit_activities((Date.current - 3).iso8601, summary(steps: 150)) # and more than we thought before that
+          fake_fitbit_activities((Date.current - 4).iso8601, summary(steps: 200)) # but the same the previous, so that's the last fetch
+
+          # ...so the rest of the days should not get fetched
+          expect(fake_fitbit).not_to receive(:get_activities).with((Date.current - 5).iso8601)
+          expect(fake_fitbit).not_to receive(:get_activities).with((Date.current - 6).iso8601)
+
+          player.pull_recent_activity!
+
+          expect(player.activity_for(Date.current).steps).to eq(50)
+          expect(player.activity_for(Date.current - 1).steps).to eq(80)
+          expect(player.activity_for(Date.current - 2).steps).to eq(100)
+          expect(player.activity_for(Date.current - 3).steps).to eq(150)
+          expect(player.activity_for(Date.current - 4).steps).to eq(200)
+          expect(player.activity_for(Date.current - 5).steps).to eq(200)
+          expect(player.activity_for(Date.current - 6).steps).to eq(200)
+        end
       end
     end
   end

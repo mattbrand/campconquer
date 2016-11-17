@@ -47,9 +47,10 @@ RSpec.describe Outcome, type: :model do
   end
 
   it "validates player id" do
-    pending "should validate that an outcome's player id refers to a real player"
-    NOT_A_REAL_PLAYER_ID = 0 # todo: make a real player using factories
+    pending
+    NOT_A_REAL_PLAYER_ID = 0
     outcome = Outcome.new(team: 'blue', player_id: NOT_A_REAL_PLAYER_ID)
+    outcome.save!
     expect(outcome).not_to be_valid
   end
 
