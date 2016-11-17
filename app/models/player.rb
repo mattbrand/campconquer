@@ -365,6 +365,7 @@ class Player < ActiveRecord::Base
   # See player_activities_spec.rb for more details.
   # TODO: move this into a background task
   def pull_recent_activity!
+    earlier_steps_available = steps_available
     pull_activity! Date.current # always fetch today
 
     days_ago = 1
@@ -380,7 +381,15 @@ class Player < ActiveRecord::Base
 
       days_ago += 1
     end
-    {player_id: self.id, player_name: self.name, days_fetched: days_ago + 1, steps_available: steps_available}
+
+    # return info in a hash for logging
+    {
+        player_id: self.id,
+        player_name: self.name,
+        days_fetched: days_ago + 1,
+        steps_available: steps_available,
+        new_steps_available: (steps_available - earlier_steps_available)
+    }
   end
 
   def reload

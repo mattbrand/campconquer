@@ -5,6 +5,6 @@ task :pull_activity => :environment do
     info = player.pull_recent_activity!
     finish = Time.current
     info[:duration] = (finish - start).to_f
-    p info
+    puts "Pulled Activity: #{info.inspect}"
   end
 end
