@@ -75,10 +75,10 @@ shirt32,SHIRT,FEMALE,Floral T-shirt,,fFloralDecal,Icon_FloralDecal,15000,30,0,8,
 shirt33,SHIRT,GENDER_NEUTRAL_1,Floral T-shirt,,gn1FloralDecal,Icon_FloralDecal,15000,30,0,8,0,0,,0,0,1
 shirt34,SHIRT,GENDER_NEUTRAL_2,Floral T-shirt,,gn2FloralDecal,Icon_FloralDecal,15000,30,0,8,0,0,,0,0,1
 shirt35,SHIRT,MALE,Floral T-shirt,,mFloralDecal,Icon_FloralDecal,15000,30,0,8,0,0,,0,0,1
-shirt36,SHIRT,FEMALE,Striped T-Shirt,,fStripesDecal,Icon_StripesDecal,20000,40,0,8,2,0,,0,0,0
-shirt37,SHIRT,GENDER_NEUTRAL_1,Striped T-Shirt,,gn1StripesDecal,Icon_StripesDecal,20000,40,0,8,2,0,,0,0,0
-shirt38,SHIRT,GENDER_NEUTRAL_2,Striped T-Shirt,,gn2StripesDecal,Icon_StripesDecal,20000,40,0,8,2,0,,0,0,0
-shirt39,SHIRT,MALE,Striped T-Shirt,,mStripesDecal,Icon_StripesDecal,20000,40,0,8,2,0,,0,0,0
+shirt36,SHIRT,FEMALE,Striped T-Shirt,,fStripesDecal,Icon_StripesDecal,20000,40,0,8,2,0,,0,0,1
+shirt37,SHIRT,GENDER_NEUTRAL_1,Striped T-Shirt,,gn1StripesDecal,Icon_StripesDecal,20000,40,0,8,2,0,,0,0,1
+shirt38,SHIRT,GENDER_NEUTRAL_2,Striped T-Shirt,,gn2StripesDecal,Icon_StripesDecal,20000,40,0,8,2,0,,0,0,1
+shirt39,SHIRT,MALE,Striped T-Shirt,,mStripesDecal,Icon_StripesDecal,20000,40,0,8,2,0,,0,0,1
 shoes0,SHOES,,Basic Sneakers,,shoesA,Icon_ShoesA,0,0,0,0,0,0,,1,1,
 shoes1,SHOES,,Sandals,,shoesJ,Icon_ShoesJ,750,2,0,0,1,0,,0,0,
 shoes2,SHOES,,Skate Sneakers,,shoesB,Icon_ShoesB,2000,5,0,0,1,1,,0,0,
