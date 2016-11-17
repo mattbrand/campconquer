@@ -274,6 +274,20 @@ Change Heroku config vars to match local config vars (you probably don't want to
 heroku config:set `cat .env`
 ```
 
+## Check Logs
+
+sign in to <https://heroku.com>
+visit <https://dashboard.heroku.com/apps/campconquer-staging/resources>
+and click on "Papertrail"
+
+## scheduled jobs
+
+We use Heroku Scheduler to run `rake pull_activity` from `lib/tasks/scheduler.rake` 
+every night at 5:30 UTC (12:30 or 1:30 Eastern)
+
+see <https://devcenter.heroku.com/articles/scheduler>
+
+
 ## Fitbit Integration Is (Barely) Functional!
 
 * Create a player: https://campconquer-staging.herokuapp.com/admin/players/new

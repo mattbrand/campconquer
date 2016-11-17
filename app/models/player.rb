@@ -201,6 +201,7 @@ class Player < ActiveRecord::Base
 
   alias_method :active_minutes_claimed, :active_minutes_claimed?
 
+  # todo: stack up gems over several days
   def claim_active_minutes!
     if active_goal_met?
       unless activity_today.active_minutes_claimed?
@@ -364,25 +365,22 @@ class Player < ActiveRecord::Base
   # See player_activities_spec.rb for more details.
   # TODO: move this into a background task
   def pull_recent_activity!
-    bm = Benchmark.measure("Fetch activity") do
-      # always fetch today
-      pull_activity! Date.current
+    pull_activity! Date.current # always fetch today
 
-      days_ago = 1
-      while days_ago < 7 # only look back a week max
-        date = Date.current - days_ago.days
-        known = activity_for(date)
-        fetched = pull_activity!(date)
+    days_ago = 1
+    while days_ago < 7 # only look back a week max
+      date = Date.current - days_ago.days
+      known = activity_for(date)
+      fetched = pull_activity!(date)
 
-        # abort if no different from what we thought
-        break if (known.steps == fetched.steps) and
-            (known.active_minutes == fetched.active_minutes) and
-            (known.steps != 0 and known.active_minutes != 0)
+      # abort if no different from what we thought
+      break if (known.steps == fetched.steps) and
+          (known.active_minutes == fetched.active_minutes) and
+          (known.steps != 0 and known.active_minutes != 0)
 
-        days_ago += 1
-      end
+      days_ago += 1
     end
-    puts bm
+    {player_id: self.id, player_name: self.name, days_fetched: days_ago + 1, steps_available: steps_available}
   end
 
   def reload

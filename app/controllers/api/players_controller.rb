@@ -5,7 +5,6 @@ class API::PlayersController < ::API::APIController
   before_action -> { require_player(@player) }, except: [:index, :show]
 
   before_action :pull_activity, only: [:show,
-                                       :update,
                                        :claim_steps,
                                        :claim_active_minutes,
   ]

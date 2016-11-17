@@ -28,6 +28,8 @@ ActiveAdmin.register Player do
     column :admin
     column :created_at
     column :updated_at
+    column :activities_synced_at
+
     column "Fitbit User" do |player|
       if player.authenticated?
         span raw("&check;") + player.fitbit_token_hash['user_id'], style: 'display: inline-block; width: 3em'
@@ -56,6 +58,7 @@ ActiveAdmin.register Player do
       f.input :password
       f.input :team, :as => :select, :collection => Team::NAMES.values
       # https://github.com/justinfrench/formtastic/issues/171
+      f.input :activities_synced_at, as: :string, input_html: readonly
       f.input :fitbit_token_hash, as: :string, input_html: readonly
       f.input :anti_forgery_token, input_html: readonly
       f.input :session_token, input_html: readonly
