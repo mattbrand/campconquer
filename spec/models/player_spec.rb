@@ -102,11 +102,11 @@ describe Player, type: :model do
       end
 
       {
-        team: 'red',
-        created_at: 9,
-        updated_at: 9,
-        game_id: 9999,
-        player_id: 9999,
+          team: 'red',
+          created_at: 9,
+          updated_at: 9,
+          game_id: 9999,
+          player_id: 9999,
       }.each_pair do |key, value|
         params = {}
         params[key] = value
@@ -144,33 +144,33 @@ describe Player, type: :model do
       before do
         f = Fitbit.new
         stub_request(:post, "https://api.fitbit.com/oauth2/token").
-          with(
-            :headers => {
-              'Authorization' => f.send(:authorization_header)
-            },
-            :body => {
-              "client_id" => f.client_id,
-              "client_secret" => f.client_secret,
-              "code" => "AUTH_CODE",
-              "grant_type" => "authorization_code",
-              "redirect_uri" => f.callback_url
-            },
-          ).
-          to_return(
-            :status => 200,
-            :headers => {
-              "content-type": "application/json"
-            },
-            :body =>
-              {
-                "access_token" => "ACCESS_TOKEN",
-                "expires_in" => 28800,
-                "refresh_token" => "REFRESH_TOKEN",
-                "scope" => "sleep weight social profile activity location heartrate nutrition settings",
-                "token_type" => "Bearer",
-                "user_id" => "FITBIT_USER_ID"
-              }.to_json
-          )
+            with(
+                :headers => {
+                    'Authorization' => f.send(:authorization_header)
+                },
+                :body => {
+                    "client_id" => f.client_id,
+                    "client_secret" => f.client_secret,
+                    "code" => "AUTH_CODE",
+                    "grant_type" => "authorization_code",
+                    "redirect_uri" => f.callback_url
+                },
+            ).
+            to_return(
+                :status => 200,
+                :headers => {
+                    "content-type": "application/json"
+                },
+                :body =>
+                    {
+                        "access_token" => "ACCESS_TOKEN",
+                        "expires_in" => 28800,
+                        "refresh_token" => "REFRESH_TOKEN",
+                        "scope" => "sleep weight social profile activity location heartrate nutrition settings",
+                        "token_type" => "Bearer",
+                        "user_id" => "FITBIT_USER_ID"
+                    }.to_json
+            )
       end
 
       it 'returns a URL' do
@@ -201,7 +201,6 @@ describe Player, type: :model do
     end
 
   end
-
 
 
   describe 'default gear' do
@@ -347,6 +346,17 @@ describe Player, type: :model do
         expect do
           player.unequip_gear!('galoshes')
         end.to raise_error(Player::NotOwned)
+      end
+
+      it 're-equips default gear' do
+        Gear.create!(name: 'flip-flops', gear_type: 'shoes', coins: 0, gems: 0,
+                     equipped_by_default: true, owned_by_default: true)
+        player.buy_gear!('flip-flops')
+        player.buy_gear!('galoshes')
+        player.equip_gear!('galoshes')
+        expect(player.gear_equipped).to eq(['galoshes'])
+        player.unequip_gear!('galoshes')
+        expect(player.gear_equipped).to eq(['flip-flops'])
       end
     end
 

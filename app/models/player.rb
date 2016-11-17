@@ -294,6 +294,8 @@ class Player < ActiveRecord::Base
     item = piece.items.find_by_gear_id(gear.id)
     raise NotOwned, gear if item.nil?
     item.update!(equipped: false)
+
+    equip_default_gear_of_type(item.gear.gear_type)
     self.reload
   end
 
@@ -481,5 +483,10 @@ class Player < ActiveRecord::Base
     end
   end
 
-end
+  def equip_default_gear_of_type(gear_type)
+    Gear.where(gear_type: gear_type, equipped_by_default: true).each do |gear|
+      equip_gear!(gear.name) if gear_owned? gear.name
+    end
+  end
 
+end
