@@ -47,11 +47,12 @@ RSpec.describe Outcome, type: :model do
   end
 
   it "validates player id" do
-    pending
-    NOT_A_REAL_PLAYER_ID = 0
+    NOT_A_REAL_PLAYER_ID = -99
     outcome = Outcome.new(team: 'blue', player_id: NOT_A_REAL_PLAYER_ID)
-    outcome.save!
     expect(outcome).not_to be_valid
+    expect do
+      outcome.save! # in case we decide to use db constraints instead of app validation
+    end.to raise_error(ActiveRecord::RecordInvalid)
   end
 
 end

@@ -27,6 +27,15 @@ class Outcome < ActiveRecord::Base
   validates :team, inclusion: {in: Team::NAMES.values, message: Team::NAMES.validation_message}
   validates :player_id, presence: true # todo: should validate that it's a real player too
 
+  class PlayerExists < ActiveModel::Validator
+    def validate(record)
+      if record.player.nil?
+        record.errors[:base] << "Player #{record.player_id} not found"
+      end
+    end
+  end
+  validates_with PlayerExists, fields: [:player_id]
+
   before_save do
     # defend against nulls
     %w(takedowns throws pickups flag_carry_distance captures).each do |field|
