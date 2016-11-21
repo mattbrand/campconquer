@@ -39,10 +39,10 @@ hat36,HEAD,FEMALE,Green Headband,,hat_08_f,Icon_Hat08,12500,30,0,3,0,7,,0,0,
 hat37,HEAD,GENDER_NEUTRAL_1,Green Headband,,hat_08_gn1,Icon_Hat08,12500,30,0,3,0,7,,0,0,
 hat38,HEAD,GENDER_NEUTRAL_2,Green Headband,,hat_08_gn2,Icon_Hat08,12500,30,0,3,0,7,,0,0,
 hat39,HEAD,MALE,Green Headband,,hat_08_m,Icon_Hat08,12500,30,0,3,0,7,,0,0,
-shirt0,SHIRT,FEMALE,Basic T-Shirt,,AllGenders_BasicDecal_Small,Icon_basicshirt,0,0,0,1,0,0,,1,1,0
-shirt1,SHIRT,GENDER_NEUTRAL_1,Basic T-Shirt,,AllGenders_BasicDecal_Small,Icon_basicshirt,0,0,0,1,0,0,,1,1,0
-shirt2,SHIRT,GENDER_NEUTRAL_2,Basic T-Shirt,,AllGenders_BasicDecal_Small,Icon_basicshirt,0,0,0,1,0,0,,1,1,0
-shirt3,SHIRT,MALE,Basic T-Shirt,,AllGenders_BasicDecal_Small,Icon_basicshirt,0,0,0,1,0,0,,1,1,0
+shirt0,SHIRT,FEMALE,Basic T-Shirt,,AllGenders_BasicDecal_Small,Icon_basicshirt,0,0,0,0,0,0,,1,1,0
+shirt1,SHIRT,GENDER_NEUTRAL_1,Basic T-Shirt,,AllGenders_BasicDecal_Small,Icon_basicshirt,0,0,0,0,0,0,,1,1,0
+shirt2,SHIRT,GENDER_NEUTRAL_2,Basic T-Shirt,,AllGenders_BasicDecal_Small,Icon_basicshirt,0,0,0,0,0,0,,1,1,0
+shirt3,SHIRT,MALE,Basic T-Shirt,,AllGenders_BasicDecal_Small,Icon_basicshirt,0,0,0,0,0,0,,1,1,0
 shirt4,SHIRT,FEMALE,Pocketed T-Shirt,,f_Pocket,Icon_Pocket,1000,1,0,2,0,0,,0,0,1
 shirt5,SHIRT,GENDER_NEUTRAL_1,Pocketed T-Shirt,,gn1_Pocket,Icon_Pocket,1000,1,0,2,0,0,,0,0,1
 shirt6,SHIRT,GENDER_NEUTRAL_2,Pocketed T-Shirt,,gn2_Pocket,Icon_Pocket,1000,1,0,2,0,0,,0,0,1
