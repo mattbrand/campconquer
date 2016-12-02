@@ -146,7 +146,7 @@ class Player < ActiveRecord::Base
               :active_minutes,
               :active_goal_met,
               :active_minutes_claimed,
-              :player_outcomes,
+              :outcomes,
               :gear_owned,
               :gear_equipped,
               :ammo,

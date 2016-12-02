@@ -18,11 +18,11 @@
 
 require 'rails_helper'
 
-RSpec.describe TalliedOutcome, type: :model do
+RSpec.describe Summary, type: :model do
 
   context "even an empty tally" do
     it "has zeroes not nulls" do
-      x = TalliedOutcome.new(games: [])
+      x = Summary.new(games: [])
       x.as_json.each_pair do |stat, value|
         expect(value).to eq(0)
       end
@@ -54,7 +54,7 @@ RSpec.describe TalliedOutcome, type: :model do
       game = Game.new(winner: 'blue',
               match_length: 100,
               player_outcomes: player_outcomes)
-      tallied_outcome = TalliedOutcome.new(games: [game])
+      tallied_outcome = Summary.new(games: [game])
 
       expect(tallied_outcome.as_json).to eq({
                                           takedowns: 11,
@@ -98,7 +98,7 @@ RSpec.describe TalliedOutcome, type: :model do
 
       games << game
 
-      tallied_outcome = TalliedOutcome.new(games: games)
+      tallied_outcome = Summary.new(games: games)
       expect(tallied_outcome.as_json).to include(totals)
     end
   end

@@ -16,7 +16,7 @@
 #   type: float
 #   description: number of meters this team carried the flag
 
-class TalliedOutcome
+class Summary
   include ActiveModel::Model
   include ActiveModel::Serializers::JSON
   include ActiveModel::Serialization

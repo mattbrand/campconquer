@@ -1,4 +1,4 @@
-ActiveAdmin.register TeamOutcome do
+ActiveAdmin.register TeamSummary do
 
   belongs_to :outcome
 # See permitted parameters documentation:

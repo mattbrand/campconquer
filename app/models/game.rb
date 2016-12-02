@@ -125,20 +125,20 @@ class Game < ActiveRecord::Base
         {
           :pieces => Piece.serialization_options,
         },
-        :team_outcomes,
+        :team_summaries,
         :player_outcomes,
         :paths,
       ],
       methods: [
-        :team_outcomes,
+        :team_summaries,
         :paths,
       ],
     }
   end
 
-  def team_outcomes
+  def team_summaries
     Team::NAMES.values.map do |team_name|
-      TeamOutcome.new(team: team_name, games: [self])
+      TeamSummary.new(team: team_name, games: [self])
     end
   end
 

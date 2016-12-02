@@ -295,12 +295,12 @@ describe Game do
 
     end
 
-    it "includes outcome and team_outcomes" do
+    it "includes outcome and team_summaries" do
       json = game.as_json
       expect(json['winner']).to eq('red')
       expect(json['scheduled_start']).to be
       expect(json['scheduled_start']).to eq(Game.next_game_time.iso8601) # this may fail if run precisely at 11:00 or 16:00
-      expect(json['team_outcomes']).to be
+      expect(json['team_summaries']).to be
       expect(json['player_outcomes']).to be
       expect(json['player_outcomes'].size).to eq(2)
       expect(json['player_outcomes'][0]['team']).to eq('blue')
@@ -337,7 +337,7 @@ describe Game do
       game_mvps = game.mvps
       json = game.as_json
       Team::NAMES.values.each do |team_name|
-        team_json = json['team_outcomes'].detect { |h| h['team'] == team_name }
+        team_json = json['team_summaries'].detect { |h| h['team'] == team_name }
         expect(team_json['attack_mvps']).to eq(game_mvps[team_name]['attack_mvps'])
         expect(team_json['defend_mvps']).to eq(game_mvps[team_name]['defend_mvps'])
       end

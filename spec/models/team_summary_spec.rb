@@ -1,13 +1,13 @@
 require 'rails_helper'
 
-describe TeamOutcome do
+describe TeamSummary do
   it "requires team name" do
-    team_outcome = TeamOutcome.new(team: nil, games: nil)
+    team_outcome = TeamSummary.new(team: nil, games: nil)
     expect(team_outcome).not_to be_valid
   end
 
   it "validates team name" do
-    team_outcome = TeamOutcome.new(team: 'blue', games: nil)
+    team_outcome = TeamSummary.new(team: 'blue', games: nil)
     expect(team_outcome).to be_valid
   end
 
@@ -39,7 +39,7 @@ describe TeamOutcome do
     let(:games) { [game] }
 
     it "adds up stats" do
-      team_outcome = TeamOutcome.new(team: 'blue', games: games)
+      team_outcome = TeamSummary.new(team: 'blue', games: games)
       expect(team_outcome.as_json).to eq({team: 'blue',
                                           captures: 1,
                                           takedowns: 1,
@@ -50,7 +50,7 @@ describe TeamOutcome do
                                           defend_mvps: [],
                                          }.with_indifferent_access)
 
-      team_outcome = TeamOutcome.new(team: 'red', games: games)
+      team_outcome = TeamSummary.new(team: 'red', games: games)
       expect(team_outcome.as_json).to eq({team: 'red',
                                           takedowns: 11,
                                           throws: 12,
@@ -73,7 +73,7 @@ describe TeamOutcome do
                             }.with_indifferent_access)
       player_outcomes << cheater
       expect do
-        team_outcome = TeamOutcome.new(team: 'blue', games: games, max: {captures: 1})
+        team_outcome = TeamSummary.new(team: 'blue', games: games, max: {captures: 1})
         ap team_outcome.as_json
       end.to raise_error(RuntimeError, "exceeded maximum value for captures")
     end
@@ -113,7 +113,7 @@ describe TeamOutcome do
       games << game
 
       Team::NAMES.values.each do |team_name|
-        team_outcome = TeamOutcome.new(team: team_name, games: games)
+        team_outcome = TeamSummary.new(team: team_name, games: games)
         expect(team_outcome.as_json).to include(totals[team_name])
       end
     end

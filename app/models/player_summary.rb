@@ -1,4 +1,4 @@
-class PlayerOutcome < TalliedOutcome
+class PlayerSummary < Summary
   attr_reader :player_id
 
   def initialize(games:, player:)

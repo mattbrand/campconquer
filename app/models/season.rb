@@ -32,16 +32,16 @@ class Season < ActiveRecord::Base
   end
 
   # sum of all game outcomes per team
-  def team_outcomes
+  def team_summaries
     Team::NAMES.values.map do |team_name|
-      TeamOutcome.new(team: team_name, games: self.games)
+      TeamSummary.new(team: team_name, games: self.games)
     end
   end
 
   # sum of all game outcomes per player
-  def player_outcomes
+  def player_summaries
     players.map do |player|
-      PlayerOutcome.new(games: self.games, player: player)
+      PlayerSummary.new(games: self.games, player: player)
     end
   end
 
@@ -57,10 +57,10 @@ class Season < ActiveRecord::Base
   def self.serialization_options
     {
       include: [
-        :team_outcomes,
-        :player_outcomes,
+        :team_summaries,
+        :player_summaries,
       ],
-      methods: [:team_outcomes, :player_outcomes]
+      methods: [:team_summaries, :player_summaries]
     }
   end
 

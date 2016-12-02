@@ -13,6 +13,8 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 
 # TODO
 
+- [ ] optimization - look at Scout for slow requests
+
 - [x] un-protect fitbit callback endpoint
 
 - [x] API login
@@ -62,7 +64,11 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 - [ ] create prod env
 - [ ] fixture factories
 - [ ] rename *_outcomes to *_results
-    tally? count? detail? history? result? lowdown? ledger? statement? reckoning? register? chronicle? balance? progress? evaluation? transcript?
+    summary?
+    tally?
+    result?
+    sum?
+    count? detail? history? lowdown? ledger? statement? reckoning? register? chronicle? balance? progress? evaluation? transcript?
 - [ ] merge Piece into Player in API
 - [ ] foreign key indexes for all tables
 - [ ] [upgrade to Rails 5](http://blog.bigbinary.com/2016/08/18/new-framework-defaults-in-rails-5-to-make-upgrade-easier.html)
@@ -153,12 +159,12 @@ Then go back to this dir and run:
 
 ```
 outcome[winner]:red
-outcome[team_outcomes][][team]:red
-outcome[team_outcomes][][takedowns]:20
-outcome[team_outcomes][][throws]:6
-outcome[team_outcomes][][team]:blue
-outcome[team_outcomes][][takedowns]:10
-outcome[team_outcomes][][throws]:12
+outcome[team_summaries][][team]:red
+outcome[team_summaries][][takedowns]:20
+outcome[team_summaries][][throws]:6
+outcome[team_summaries][][team]:blue
+outcome[team_summaries][][takedowns]:10
+outcome[team_summaries][][throws]:12
 ```
 
 ## Admin

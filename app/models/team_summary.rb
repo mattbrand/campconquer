@@ -16,7 +16,7 @@
 #   type: float
 #   description: number of meters this team carried the flag
 
-class TeamOutcome < TalliedOutcome
+class TeamSummary < Summary
   attr_reader :team, :attack_mvps, :defend_mvps
 
   def initialize(games:, team:, max: {})

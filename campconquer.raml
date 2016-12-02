@@ -97,8 +97,8 @@ types:
       player_outcomes:
         type: Outcome[]
         description: once played, stats for each player of this game; should be in alphabetical order by team name when returned by server
-      team_outcomes:
-        type: Outcome[]
+      team_summaries:
+        type: Summary[]
         description: (read-only) once played, stats for each team for this game
 
   Piece:
@@ -200,7 +200,7 @@ types:
 
   Outcome:
     type: object
-    description: the results of a finished game (or season) for a particular player (or team)
+    description: the results of a finished game for a particular player
     properties:
       created: datetime
       team:
@@ -227,6 +227,29 @@ types:
         type: integer[]
         description: player ids (for output of team_outcome only)
 
+  Summary:
+    type: object
+    description: results tallied across several games or players
+    properties:
+      created: datetime
+      team:
+        type: string
+      captures:
+        type: integer
+        description: number of times this team captured the flag (i.e. games this team won)
+      takedowns:
+        type: integer
+        description: count of players on *other* teams who died at this team's (or player's) hand
+      throws:
+        type: integer
+        description: number of balloons thrown
+      pickups:
+        type: integer
+        description: number of times flag was picked up
+      flag_carry_distance:
+        type: float
+        description: number of meters this team carried the flag
+
   Season:
     type: object
     description: a series of games
@@ -237,12 +260,12 @@ types:
         type: string
       current:
         type: boolean
-      team_outcomes:
-        type: Outcome[]
-        description: outcomes per team for all games this season, totalled
-      player_outcomes:
-        type: Outcome[]
-        description: outcomes per player for all games this season, totalled
+      team_summaries:
+        type: Summary[]
+        description: results per team for all games this season, totalled
+      player_summaries:
+        type: Summary[]
+        description: results per player for all games this season, totalled
 
 /gears:
   get:
