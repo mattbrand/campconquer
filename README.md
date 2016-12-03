@@ -58,33 +58,31 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 - [ ] expire session token after X days
 
 ## chores
+- heroku addons
+    - [x] New Relic
+    - [x] Scout
+    - [x] Papertrail
+    - [ ] Honeybadger or Airbrake
+    - [ ] CircleCI
 - [x] `deploy.sh` script which does `git push heroku` and `heroku run rake db:migrate`
+- [ ] kill gear table (load csv directly)
 - [ ] seed_players should use avatar.csv to determine gear asset
 - [ ] remove `current` and `locked` db fields
 - [ ] create prod env
+  - [ ] heroku
+  - [ ] fitbit
+  - [ ] game client selector UI
 - [ ] fixture factories
-- [ ] rename *_outcomes to *_results
-    summary?
-    tally?
-    result?
-    sum?
-    count? detail? history? lowdown? ledger? statement? reckoning? register? chronicle? balance? progress? evaluation? transcript?
+- [x] rename *_outcomes to *_summaries
+- [x] rename attack_mvp to top_attacker and defense_mvp to top_defender
 - [ ] merge Piece into Player in API
-- [ ] foreign key indexes for all tables
 - [ ] [upgrade to Rails 5](http://blog.bigbinary.com/2016/08/18/new-framework-defaults-in-rails-5-to-make-upgrade-easier.html)
-- [ ] switch from RAML to Swagger? http://swagger.io/
 - [ ] make a Procfile https://devcenter.heroku.com/articles/ruby-default-web-server
-- [ ] CircleCI? 
 - [ ] Alex learns Unity (gratis)
-- [ ] kill gear table
 - [x] new player controller for web/auth
 - [x] simulate session creation in tests instead of GOOD_SESSION_TOKEN backdoor
+- [ ] switch from RAML to Swagger? http://swagger.io/
 
-- [ ] heroku addons
-    - [x] New Relic
-    - [x] Scout
-    - [ ] Papertrail
-    - [ ] Honeybadger or Airbrake
 
 # Updating the Seed DB
 
@@ -120,6 +118,8 @@ This should be obsolete soon, but I wrote a little script to convert Matt's path
 * switch to the gdoc, click on a cell and hit *Cmd-V* to paste
 
 ## API Docs
+
+Reference doc: [campconquer.raml](campconquer.raml)
 
 ### Atom
 
@@ -225,6 +225,7 @@ and [Postman](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdgg
               "team": "red",
               ...
               
+3. Use POSTMAN, it's good
 
 ### Terminal Commands
 
