@@ -142,6 +142,11 @@ class Game < ActiveRecord::Base
     end
   end
 
+  def outcome_for_player(player_id)
+    player_id = player_id.id if player_id.is_a? Player
+    player_outcomes.detect{|o| o.player_id == player_id}
+  end
+
   def do_lock_game
     update!(locked: true)
     copy_player_pieces
@@ -221,7 +226,8 @@ class Game < ActiveRecord::Base
 
     null_out_paths
     restore_leftover_ammo(leftover_ammo)
-    update!(mvps: calculate_mvps)
+    calculate_mvps!
+    set_mvps_in_outcomes!
     award_prizes!
     award_mvp_prizes!
   end
@@ -275,7 +281,7 @@ class Game < ActiveRecord::Base
 
   private
 
-  def calculate_mvps
+  def calculate_mvps!
     winner = calculate_winner
     result = {}
     Team::NAMES.values.each do |team|
@@ -291,6 +297,7 @@ class Game < ActiveRecord::Base
         outcome.takedowns
       end
     end
+    update!(mvps: result)
     result
   end
 
@@ -373,6 +380,17 @@ class Game < ActiveRecord::Base
       team_mvps.each_pair do |mvp_type, players|
         players.each do |player_id|
           Player.find(player_id).increment_gems!
+        end
+      end
+    end
+  end
+
+  def set_mvps_in_outcomes!
+    self.mvps.each_pair do |team, team_mvps|
+      team_mvps.each_pair do |mvp_type, players|
+        players.each do |player_id|
+          mvp_attr = mvp_type.chomp("s")
+          outcome_for_player(player_id).update!({mvp_attr => true})
         end
       end
     end

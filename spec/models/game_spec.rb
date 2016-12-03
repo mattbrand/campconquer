@@ -497,7 +497,7 @@ describe Game do
       end
 
       it 'awards mvp prizes' do
-        expect(current_game).to receive(:award_prizes!)
+        expect(current_game).to receive(:award_mvp_prizes!)
         current_game.finish_game!
       end
 
@@ -574,6 +574,22 @@ describe Game do
         # this player had the most takedowns
         expect(mvps['red']['defend_mvps']).to eq([rebecca.id])
       end
+
+      it "marks all MVPs in the player outcome record" do
+        expect(game.outcome_for_player(betty).attack_mvp).to be true
+        expect(game.outcome_for_player(betty).defend_mvp).to be false
+
+        expect(game.outcome_for_player(bob).attack_mvp).to be false
+        expect(game.outcome_for_player(bob).defend_mvp).to be true
+
+        expect(game.outcome_for_player(roger).attack_mvp).to be true
+        expect(game.outcome_for_player(roger).defend_mvp).to be false
+
+        expect(game.outcome_for_player(rebecca).attack_mvp).to be false
+        expect(game.outcome_for_player(rebecca).defend_mvp).to be true
+
+      end
+
     end
 
     context 'when there are several potential mvps' do
@@ -676,6 +692,7 @@ describe Game do
         expect(roger.reload.gems).to eq(1)
         expect(rebecca.reload.gems).to eq(1)
       end
+
     end
 
   end

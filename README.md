@@ -200,6 +200,32 @@ and [Postman](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdgg
 * `rails server` or `heroku local`
 * `open http://localhost:3000`
 
+### API Usage
+
+1. Sign in and get a token
+
+    <http://localhost:3000/api/sessions?name=mod&password=xyzzy> =>
+
+        {
+          "status": "ok",
+          "token": "c1478346db1f93b79030d3d8a7753716ac4c634247af16bd48ab31fa371aee27",
+          "player_id": 1024
+        }
+    
+2. Pass that token in to every subsequent call
+
+    <http://localhost:3000/api/players?token=c1478346db1f93b79030d3d8a7753716ac4c634247af16bd48ab31fa371aee27> =>
+    
+        {
+          "status": "ok",
+          "players": [
+            {
+              "id": 1024,
+              "name": "mod",
+              "team": "red",
+              ...
+              
+
 ### Terminal Commands
 
 | command | description |
@@ -208,6 +234,7 @@ and [Postman](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdgg
 | `rake db:seed_players` | create 50 random players with random roles / positions / paths / etc. (and erases all previous players and games) |``
 | `rake db:seed_game` | create 1 random game |
 | `rake db:seed` | reload the Gear CSV (and migrate player items) |
+
 
 ### Rails Console Commands
 

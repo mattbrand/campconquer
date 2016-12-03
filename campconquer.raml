@@ -267,6 +267,13 @@ types:
         type: Summary[]
         description: results per player for all games this season, totalled
 
+/sessions:
+  post:
+    description: sign in and receive an API token (note: GET works too)
+    queryParameters:
+        name: string
+        password: string
+
 /gears:
   get:
     description: get all the gears

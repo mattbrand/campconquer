@@ -29,7 +29,11 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :sessions, only: ['new', 'create', 'destroy']
+    resources :sessions, only: ['create', 'destroy'] do
+      collection do
+        get :create # hack: enable GET for /api/sessions for easier debugging
+      end
+    end
 
     match "*path", :to => "api#route_not_found", :via => :all
 

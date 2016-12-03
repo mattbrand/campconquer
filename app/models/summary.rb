@@ -1,21 +1,6 @@
-# team:
-#   type: string
-# captures:
-#   type: integer
-#   description: number of games this team won
-# takedowns:
-#   type: integer
-#   description: count of players on *other* teams who died at this team's hand
-# throws:
-#   type: integer
-#   description: number of balloons thrown
-# pickups:
-#   type: integer
-#   description: number of times flag was picked up
-# flag_carry_distance:
-#   type: float
-#   description: number of meters this team carried the flag
-
+# Walks through a list of outcomes and totals up the fields.
+# Used for post-game per-team report (TeamSummary)
+# and for per-player season report (PlayerSummary).
 class Summary
   include ActiveModel::Model
   include ActiveModel::Serializers::JSON
@@ -29,6 +14,9 @@ class Summary
     :pickups,
     :captures,
     :flag_carry_distance,
+
+    :attack_mvp,
+    :defend_mvp,
   ]
 
   attr_reader *STATS
@@ -38,20 +26,11 @@ class Summary
     STATS.each do |stat|
       self.set_stat(stat, 0)
     end
-
-    tally
+    tally_up
   end
 
   def player_outcomes
     games.map{|o| o.player_outcomes}.flatten
-  end
-
-  def tally
-    player_outcomes.each do |player_outcome|
-      STATS.each do |stat|
-        self.add_to_stat(stat, player_outcome.send(stat))
-      end
-    end
   end
 
   def attributes
@@ -60,7 +39,18 @@ class Summary
 
   protected
 
+  def tally_up
+    player_outcomes.each do |player_outcome|
+      STATS.each do |stat|
+        self.add_to_stat(stat, player_outcome.send(stat))
+      end
+    end
+  end
+
   def add_to_stat(stat, game_val)
+    game_val = 1 if game_val == true
+    game_val = 0 if game_val == false
+
     current_val = self.send(stat) || 0
     game_val ||= 0
     new_val = current_val + game_val
