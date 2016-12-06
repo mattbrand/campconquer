@@ -13,6 +13,8 @@
 #  flag_carry_distance :integer          not null
 #  captures            :integer          not null
 #  game_id             :integer
+#  attack_mvp          :boolean          default("f"), not null
+#  defend_mvp          :boolean          default("f"), not null
 #
 # Indexes
 #
@@ -53,6 +55,14 @@ RSpec.describe Outcome, type: :model do
     expect do
       outcome.save! # in case we decide to use db constraints instead of app validation
     end.to raise_error(ActiveRecord::RecordInvalid)
+  end
+
+  describe "json" do
+    it "includes attack_mvp and defend_mvp" do
+      hash = Outcome.new.as_json
+      expect(hash).to include({"attack_mvp" => false})
+      expect(hash).to include({"defend_mvp" => false})
+    end
   end
 
 end

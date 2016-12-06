@@ -13,6 +13,8 @@
 #  flag_carry_distance :integer          not null
 #  captures            :integer          not null
 #  game_id             :integer
+#  attack_mvp          :boolean          default("f"), not null
+#  defend_mvp          :boolean          default("f"), not null
 #
 # Indexes
 #
@@ -38,7 +40,7 @@ class Outcome < ActiveRecord::Base
 
   before_save do
     # defend against nulls
-    %w(takedowns throws pickups flag_carry_distance captures).each do |field|
+    self.class.numeric_fields.each do |field|
       self[field] ||= 0
     end
   end
@@ -52,15 +54,18 @@ class Outcome < ActiveRecord::Base
   # so we have to call these options explicitly from the parent's as_json
   def self.serialization_options
     {
-      only: [:team,
-             :player_id,
-             :takedowns,
-             :throws,
-             :pickups,
-             :captures,
-             :flag_carry_distance,
-      ],
+        only: [:team, :player_id] + numeric_fields + [:attack_mvp, :defend_mvp],
     }
+  end
+
+  def self.numeric_fields
+    [
+        :takedowns,
+        :throws,
+        :pickups,
+        :captures,
+        :flag_carry_distance,
+    ]
   end
 
 end

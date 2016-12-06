@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161116171535) do
+ActiveRecord::Schema.define(version: 20161202223020) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -92,12 +92,14 @@ ActiveRecord::Schema.define(version: 20161116171535) do
     t.integer  "takedowns"
     t.integer  "throws"
     t.integer  "pickups"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
     t.integer  "player_id"
-    t.integer  "flag_carry_distance", null: false
-    t.integer  "captures",            null: false
+    t.integer  "flag_carry_distance",                 null: false
+    t.integer  "captures",                            null: false
     t.integer  "game_id"
+    t.boolean  "attack_mvp",          default: false, null: false
+    t.boolean  "defend_mvp",          default: false, null: false
   end
 
   add_index "outcomes", ["game_id"], name: "index_outcomes_on_game_id"

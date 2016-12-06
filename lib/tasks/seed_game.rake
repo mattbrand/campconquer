@@ -1,4 +1,5 @@
 namespace :db do
+  desc "creates a randomized game"
   task :seed_game => :environment do
     game = Game.current
     game.lock_game! unless game.in_progress?
@@ -33,6 +34,10 @@ namespace :db do
       game_id: game.id,
       winner: game.winner,
       match_length: game.match_length,
+      players: {
+          red: game.pieces_on_team('red').count,
+          blue: game.pieces_on_team('blue').count,
+      }
      })
 
   end

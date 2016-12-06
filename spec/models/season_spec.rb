@@ -74,7 +74,7 @@ describe Season do
   end
 
   describe "as_json" do
-    it "includes team_outcomes and player_outcomes" do
+    it "includes team_summaries and player_outcomes" do
       players = [
         betty = create_player(player_name: 'betty', team: 'blue'),
         bob = create_player(player_name: 'bob', team: 'blue'),
@@ -119,25 +119,25 @@ describe Season do
       season.reload
       json = season.as_json
 
-      expect(json).to include('team_outcomes')
+      expect(json).to include('team_summaries')
 
-      blue = json['team_outcomes'].find { |h| h['team'] == 'blue' }
+      blue = json['team_summaries'].find { |h| h['team'] == 'blue' }
       expect(blue['captures']).to eq(num_games)
       expect(blue['captures']).to eq(num_games)
       expect(blue['takedowns']).to eq(num_games * player_outcome_base[:takedowns] * 2)
       expect(blue['throws']).to eq(num_games * player_outcome_base[:throws] * 2)
       expect(blue['pickups']).to eq(num_games * player_outcome_base[:pickups] * 2)
 
-      red = json['team_outcomes'].find { |h| h['team'] == 'red' }
+      red = json['team_summaries'].find { |h| h['team'] == 'red' }
       expect(red['captures']).to eq(0)
       expect(red['captures']).to eq(0)
       expect(red['takedowns']).to eq(num_games * player_outcome_base[:takedowns] * 2)
       expect(red['throws']).to eq(num_games * player_outcome_base[:throws] * 2)
       expect(red['pickups']).to eq(num_games * player_outcome_base[:pickups] * 2)
 
-      expect(json).to include('player_outcomes')
-      expect(json['player_outcomes'].size).to eq(4)
-      expect(json['player_outcomes'][0]).to eq({
+      expect(json).to include('player_summaries')
+      expect(json['player_summaries'].size).to eq(4)
+      expect(json['player_summaries'][0]).to eq({
                                                  "player_id" => betty.id,
                                                  "takedowns" => 3,
                                                  "throws" => 6,
@@ -145,7 +145,7 @@ describe Season do
                                                  "captures" => 3,
                                                  "flag_carry_distance" => 12,
                                                })
-      expect(json['player_outcomes'][1]).to eq({
+      expect(json['player_summaries'][1]).to eq({
                                                  "player_id" => bob.id,
                                                  "takedowns" => 3,
                                                  "throws" => 6,

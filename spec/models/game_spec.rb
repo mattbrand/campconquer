@@ -295,12 +295,12 @@ describe Game do
 
     end
 
-    it "includes outcome and team_outcomes" do
+    it "includes outcome and team_summaries" do
       json = game.as_json
       expect(json['winner']).to eq('red')
       expect(json['scheduled_start']).to be
       expect(json['scheduled_start']).to eq(Game.next_game_time.iso8601) # this may fail if run precisely at 11:00 or 16:00
-      expect(json['team_outcomes']).to be
+      expect(json['team_summaries']).to be
       expect(json['player_outcomes']).to be
       expect(json['player_outcomes'].size).to eq(2)
       expect(json['player_outcomes'][0]['team']).to eq('blue')
@@ -337,7 +337,7 @@ describe Game do
       game_mvps = game.mvps
       json = game.as_json
       Team::NAMES.values.each do |team_name|
-        team_json = json['team_outcomes'].detect { |h| h['team'] == team_name }
+        team_json = json['team_summaries'].detect { |h| h['team'] == team_name }
         expect(team_json['attack_mvps']).to eq(game_mvps[team_name]['attack_mvps'])
         expect(team_json['defend_mvps']).to eq(game_mvps[team_name]['defend_mvps'])
       end
@@ -497,7 +497,7 @@ describe Game do
       end
 
       it 'awards mvp prizes' do
-        expect(current_game).to receive(:award_prizes!)
+        expect(current_game).to receive(:award_mvp_prizes!)
         current_game.finish_game!
       end
 
@@ -574,6 +574,22 @@ describe Game do
         # this player had the most takedowns
         expect(mvps['red']['defend_mvps']).to eq([rebecca.id])
       end
+
+      it "marks all MVPs in the player outcome record" do
+        expect(game.outcome_for_player(betty).attack_mvp).to be true
+        expect(game.outcome_for_player(betty).defend_mvp).to be false
+
+        expect(game.outcome_for_player(bob).attack_mvp).to be false
+        expect(game.outcome_for_player(bob).defend_mvp).to be true
+
+        expect(game.outcome_for_player(roger).attack_mvp).to be true
+        expect(game.outcome_for_player(roger).defend_mvp).to be false
+
+        expect(game.outcome_for_player(rebecca).attack_mvp).to be false
+        expect(game.outcome_for_player(rebecca).defend_mvp).to be true
+
+      end
+
     end
 
     context 'when there are several potential mvps' do
@@ -676,6 +692,7 @@ describe Game do
         expect(roger.reload.gems).to eq(1)
         expect(rebecca.reload.gems).to eq(1)
       end
+
     end
 
   end
