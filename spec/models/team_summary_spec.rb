@@ -48,6 +48,9 @@ describe TeamSummary do
                                           flag_carry_distance: 4,
                                           attack_mvps: [],
                                           defend_mvps: [],
+                                          attack_mvp: 0,
+                                          defend_mvp: 0,
+
                                          }.with_indifferent_access)
 
       team_outcome = TeamSummary.new(team: 'red', games: games)
@@ -59,6 +62,8 @@ describe TeamSummary do
                                           captures: 0,
                                           attack_mvps: [],
                                           defend_mvps: [],
+                                          attack_mvp: 0,
+                                          defend_mvp: 0,
                                          }.with_indifferent_access)
 
     end

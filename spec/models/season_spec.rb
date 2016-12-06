@@ -74,7 +74,7 @@ describe Season do
   end
 
   describe "as_json" do
-    it "includes team_summaries and player_outcomes" do
+    it "includes team_summaries and player_summaries" do
       players = [
         betty = create_player(player_name: 'betty', team: 'blue'),
         bob = create_player(player_name: 'bob', team: 'blue'),
@@ -144,7 +144,9 @@ describe Season do
                                                  "pickups" => 9,
                                                  "captures" => 3,
                                                  "flag_carry_distance" => 12,
-                                               })
+                                                 "attack_mvp" => 3,
+                                                 "defend_mvp" => 0,
+                                                })
       expect(json['player_summaries'][1]).to eq({
                                                  "player_id" => bob.id,
                                                  "takedowns" => 3,
@@ -152,6 +154,8 @@ describe Season do
                                                  "pickups" => 9,
                                                  "captures" => 0,
                                                  "flag_carry_distance" => 12,
+                                                 "attack_mvp" => 0,
+                                                 "defend_mvp" => 3,
                                                })
 
 
