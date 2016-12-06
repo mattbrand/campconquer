@@ -218,14 +218,15 @@ types:
         type: integer
         description: number of times flag was picked up
       flag_carry_distance:
-        type: float
+        type: number
+        format: float
         description: number of meters this team carried the flag
-      attack_mvps:
-        type: integer[]
-        description: player ids (for output of team_outcome only)
-      defend_mvps:
-        type: integer[]
-        description: player ids (for output of team_outcome only)
+      attack_mvp:
+        type: boolean
+        description: was this player a top attacker this game?
+      defend_mvp:
+        type: boolean
+        description: was this player a top defender this game?
 
   Summary:
     type: object
@@ -247,8 +248,24 @@ types:
         type: integer
         description: number of times flag was picked up
       flag_carry_distance:
-        type: float
+        type: number
+        format: float
         description: number of meters this team carried the flag
+
+      attack_mvps:
+        type: integer[]
+        description: player ids (for team_summary only)
+      defend_mvps:
+        type: integer[]
+        description: player ids (for team_summary only)
+
+      attack_mvp:
+        type: number
+        description: number of times this player was a top attacker (for player_summary only)
+      defend_mvp:
+        type: number
+        description: number of times this player was a top defender (for player_summary only)
+
 
   Season:
     type: object
@@ -266,6 +283,11 @@ types:
       player_summaries:
         type: Summary[]
         description: results per player for all games this season, totalled
+
+
+
+
+
 
 /sessions:
   post:
