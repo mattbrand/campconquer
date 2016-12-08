@@ -284,14 +284,21 @@ types:
         type: Summary[]
         description: results per player for all games this season, totalled
 
-
-
-
-
+  Ammo:
+    type: object
+    properties:
+          name: string
+          cost:
+            type: integer
+            description: cost in coins
+          range_bonus: integer
+          damage: integer
+          splash_damage: integer
+          splash_radius: integer
 
 /sessions:
   post:
-    description: sign in and receive an API token (note: GET works too)
+    description: sign in and receive an API token (note - GET works too)
     queryParameters:
         name: string
         password: string
@@ -392,7 +399,7 @@ types:
         queryParameters:
           winner: string
           match_length: integer
-          moves: text
+          moves: string
           player_outcomes[][team]: string
           player_outcomes[][player_id]: integer
           player_outcomes[][takedowns]: integer
@@ -434,7 +441,7 @@ types:
           body:
             type: Player
             description: |
-            * some attributes are calculated, like health_bonus
+              - some attributes are calculated, like health_bonus
 
     /buy:
       post:
@@ -454,7 +461,7 @@ types:
         responses:
           200:
             description: ok
-          40x:
+          400:
             description: not enough currency to afford the item
 
     /equip:
@@ -467,10 +474,10 @@ types:
         responses:
           200:
             description: ok
-          40x:
-            description: gear not owned
-          40x:
-            description: game locked
+          400:
+            description: |
+                - gear not owned
+                - game locked
 
     /unequip:
       post:
@@ -482,10 +489,10 @@ types:
         responses:
           200:
             description: ok
-          40x:
-            description: gear not owned
-          40x:
-            description: game locked
+          400:
+            description: |
+                - gear not owned
+                - game locked
 
     /claim_steps:
       post:
@@ -526,7 +533,7 @@ types:
   /current:
     get:
       description: get stats for the current season (tallied across all games)
-    responses:
-      200:
-        body:
-          type: Season
+      responses:
+          200:
+            body:
+              type: Season
