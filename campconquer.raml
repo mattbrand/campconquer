@@ -15,12 +15,20 @@ types:
         enum:
           - blue
           - red
+      embodied:
+        type: boolean
+        description: has this player gone through setup yet?
+
       coins:
         type: integer
         description: number of coins currently available to be spent on gear
       gems:
         type: integer
         description: number of gems currently available to be spent on gear
+
+      activities_synced_at:
+        type: datetime
+        description: time of most recent fitbit activity pull
       steps_available:
         type: integer
         description: number of steps currently available to be claimed for coins
@@ -30,6 +38,7 @@ types:
       gems_available:
         type: integer
         description: number of gems available to be claimed
+
       gear_owned:
         type: string[]  # should we include a full Gear object instead of just a name?
         description: gear short name
@@ -37,12 +46,6 @@ types:
         type: string[]
       ammo:
         type: string[]
-      embodied:
-        type: boolean
-        description: has this player gone through setup yet?
-      activities_synced_at:
-        type: datetime
-        description: time of most recent fitbit activity pull
       piece:
         type: Piece
 

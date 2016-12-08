@@ -252,12 +252,9 @@ describe Player, type: :model do
     context "when today's goal has not been reached" do
       before { player.activities.create!(date: Date.current, active_minutes: 20) }
 
-      it "is not met" do
-        expect(player.active_goal_met?).to be_falsey
-      end
-
       it "is not claimable" do
-        expect { player.claim_active_minutes! }.to raise_error(Player::GoalNotMet)
+        player.claim_active_minutes!
+        player.reload
         expect(player.gems).to eq(0)
         expect(player.activity_today.active_minutes_claimed).to be_falsey
       end
@@ -266,10 +263,6 @@ describe Player, type: :model do
     context "when today's goal has been reached" do
       before { player.activities.create!(date: Date.current,
                                          active_minutes: Player::GOAL_MINUTES + 20) }
-
-      it "is met" do
-        expect(player.active_goal_met?).to be_truthy
-      end
 
       it "is claimable" do
         player.claim_active_minutes!
@@ -283,5 +276,59 @@ describe Player, type: :model do
         expect(player.gems).to eq(1)
       end
     end
+
+    context 'with several days of unclaimed activity' do
+
+      let!(:activity_two_days_ago) { player.activities.create!(date: Date.current - 2.day,
+                                                               active_minutes: Player::GOAL_MINUTES + 20) }
+      let!(:activity_yesterday) { player.activities.create!(date: Date.current - 1.day,
+                                                            active_minutes: Player::GOAL_MINUTES - 20) }
+      let!(:activity_today) { player.activities.create!(date: Date.current,
+                                                        active_minutes: Player::GOAL_MINUTES + 10) }
+
+      it 'knows how many gems are available' do
+        expect(player.gems_available).to eq(2)
+      end
+
+      it 'recalculates how many gems are available' do
+        player.claim_active_minutes!
+        expect(player.gems_available).to eq(0)
+      end
+
+      it 'converts active_minutes into gems' do
+        expect(player.gems).to eq(0)
+        player.claim_active_minutes!
+        player.reload
+        expect(player.gems).to eq(2)
+      end
+
+      it 'edits activity to reflect the claimed count' do
+        player.claim_active_minutes!
+        expect(activity_two_days_ago.reload.active_minutes_claimed).to eq(true)
+        expect(activity_yesterday.reload.active_minutes_claimed).to eq(false)
+        expect(activity_today.reload.active_minutes_claimed).to eq(true)
+      end
+
+      it "reclaims adjusted days" do
+        activity_today.update!(active_minutes: Player::GOAL_MINUTES - 10)
+        player.claim_active_minutes!
+        expect(player.gems).to eq(1)
+
+        expect(activity_two_days_ago.reload.active_minutes_claimed).to eq(true)
+        expect(activity_yesterday.reload.active_minutes_claimed).to eq(false)
+        expect(activity_today.reload.active_minutes_claimed).to eq(false)
+
+        activity_yesterday.update!(active_minutes: Player::GOAL_MINUTES + 10)
+        activity_today.update!(active_minutes: Player::GOAL_MINUTES + 10)
+
+        player.claim_active_minutes!
+        expect(player.gems).to eq(3)
+
+        expect(activity_two_days_ago.reload.active_minutes_claimed).to eq(true)
+        expect(activity_yesterday.reload.active_minutes_claimed).to eq(true)
+        expect(activity_today.reload.active_minutes_claimed).to eq(true)
+      end
+    end
+
   end
 end
