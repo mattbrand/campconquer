@@ -147,7 +147,7 @@ npm install
 Then go back to this project dir and run:
 
 ```
-../raml2html/bin/raml2html campconquer.raml > public/campconquer-api.html && open public/campconquer-api.html
+./doc.sh -o
 ```
 
 and when the server is running later on you can access
