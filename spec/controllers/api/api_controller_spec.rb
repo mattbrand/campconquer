@@ -67,7 +67,16 @@ module API
     context 'roles' do
       let!(:alice) { create_alice_with_piece }
       let!(:bob) { create_bob_with_piece }
-      let!(:galoshes) { Gear.create!(name: 'galoshes', gear_type: 'shoes', coins: 1, gems: 0) }
+
+      let!(:galoshes) do
+        g = Gear.new(name: 'galoshes', gear_type: 'shoes', coins: 1, gems: 0)
+        Gear.all = [g]
+        g
+      end
+
+      after do
+        Gear.reset
+      end
 
       context 'a player' do
         before { @controller = PlayersController.new }

@@ -25,9 +25,10 @@ require 'rails_helper'
 
 describe Game do
 
-  let(:galoshes) { Gear.create!(name: 'galoshes', gear_type: 'shoes') }
-  let(:tee_shirt) { Gear.create!(name: 'tee-shirt', gear_type: 'shirt') }
-
+  let(:galoshes) { Gear.new(name: 'galoshes', gear_type: 'shoes') }
+  let(:tee_shirt) { Gear.new(name: 'tee-shirt', gear_type: 'shirt') }
+  before { Gear.all = [galoshes, tee_shirt] }
+  after { Gear.reset }
 
   describe "current" do
     context "when there is no game at all" do

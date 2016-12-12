@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161212194201) do
+ActiveRecord::Schema.define(version: 20161212212223) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -58,26 +58,6 @@ ActiveRecord::Schema.define(version: 20161212194201) do
 
   add_index "games", ["current"], name: "index_games_on_current"
   add_index "games", ["season_id"], name: "index_games_on_season_id"
-
-  create_table "gears", force: :cascade do |t|
-    t.string  "name"
-    t.string  "display_name"
-    t.string  "description"
-    t.integer "health_bonus",        default: 0,     null: false
-    t.integer "speed_bonus",         default: 0,     null: false
-    t.integer "range_bonus",         default: 0,     null: false
-    t.string  "gear_type"
-    t.string  "asset_name"
-    t.string  "icon_name"
-    t.integer "coins",               default: 0,     null: false
-    t.integer "gems",                default: 0,     null: false
-    t.integer "level",               default: 0,     null: false
-    t.boolean "equipped_by_default", default: false, null: false
-    t.boolean "owned_by_default",    default: false, null: false
-    t.string  "hair"
-    t.string  "body_type"
-    t.boolean "color_decal",         default: false, null: false
-  end
 
   create_table "items", force: :cascade do |t|
     t.integer "piece_id",                  null: false

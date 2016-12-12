@@ -65,7 +65,7 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
     - [ ] Honeybadger or Airbrake
     - [ ] CircleCI
 - [x] `deploy.sh` script which does `git push heroku` and `heroku run rake db:migrate`
-- [ ] kill gear table (load csv directly)
+- [x] kill gear table (load csv directly)
 - [ ] seed_players should use avatar.csv to determine gear asset
 - [ ] remove `current` and `locked` db fields
 - [ ] create prod env
@@ -93,25 +93,21 @@ To update the gear database,
 1. select the "Gear" worksheet
 1. select "File > Download As > CSV (current sheet)"
 1. save as `db/gear.csv`
-1. locally run `rake db:seed` (or `rake db:setup` to wipe the local DB first)
 1. verify everything locally (`rake spec`, `open http://localhost:3000`, etc.)
-1. `git add db; git push; git push heroku`
-1. `heroku run rake db:seed`
+1. `git add db; git push; ./deploy.sh`
 
 > `Name` must be unique and remain consistent.
-> NEVER remove or change the short name ("Name") of an item that exists inside a player's inventory or a game that has ever been played
+> NEVER remove or change the short name ("Name") of an item that already
+> exists inside a player's inventory 
+> or was used in a game that has ever been played.
 
-(we may want to add a "disabled" flag to the spreadsheet for that scenario, or "upsert" the seeds instead of wiping them and re-inserting them)
-
-> You may be tempted to edit the gear etc. via the admin interface. RESIST THE TEMPTATION. Do it through Google Doc / Export CSV / Git or else local demos, staging, etc. will get out of sync with production.
+(We may want to add a "disabled" flag to the spreadsheet for that scenario in order to retire gear.)
 
 For paths, similar to above but
 
 1. use the "Paths" sheet
 1. save as `db/paths.csv`
 1. `git add db; git push; ./deploy.sh` to deploy
-
-(Path changes are file-only; there is no need to re-seed the database.)
 
 This should be obsolete soon, but I wrote a little script to convert Matt's path json into tab-delimited format for easy pasting into the gdoc. Put the various json files in `db` e.g. `db/bluePaths.json` and then...
 * run `rails r "Path.print_rows('blue', 'defense')" | pbcopy`
@@ -235,7 +231,6 @@ and [Postman](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdgg
 | `rake state_machine:draw CLASS=Game` | update the state diagram in `Game_state.png` |
 | `rake db:seed_players` | create 50 random players with random roles / positions / paths / etc. (and erases all previous players and games) |``
 | `rake db:seed_game` | create 1 random game |
-| `rake db:seed` | reload the Gear CSV (and migrate player items) |
 
 
 ### Rails Console Commands

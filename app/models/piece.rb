@@ -38,7 +38,7 @@ class Piece < ActiveRecord::Base
   belongs_to :game
   belongs_to :player
 
-  has_many :items, -> { includes(:gear) }
+  has_many :items
 
   # has_many :items_equipped, -> { where(equipped: true).includes(:gear) },
   #          class_name: 'Item'

@@ -28,19 +28,22 @@ require 'files'
 describe Gear do
   include Files
 
-  before do
-    @f = file "foo.csv", <<-CSV
-Name,Type,Body Type,Display Name,Description,Asset Name,Icon Name,Coins,Gems,Level,Health Bonus,Speed Bonus,Range Bonus,Hair,Owned By Default,Equipped By Default
-hat0,HEAD,GENDER_NEUTRAL_1,Headscarf,a lovely scarf,hair_headscarf,scarf_icon,1,2,3,4,5,6,hair_short_01_gn1,1,0
-    CSV
-    Gear.read_csv(@f)
+  let(:csv_header) { "Name,Type,Body Type,Display Name,Description,Asset Name,Icon Name,Coins,Gems,Level,Health Bonus,Speed Bonus,Range Bonus,Hair,Owned By Default,Equipped By Default" }
+  let(:good_row) { "hat0,HEAD,GENDER_NEUTRAL_1,Headscarf,a lovely scarf,hair_headscarf,scarf_icon,1,2,3,4,5,6,hair_short_01_gn1,1,0" }
+
+  before { load_csv }
+  after { Gear.reset }
+
+  def load_csv(row = good_row)
+    @f = file "foo.csv", [csv_header, row].join("\n")
+    Gear.all = Gear.read_csv(@f)
   end
 
   describe 'read_csv' do
     it 'loads a piece of gear with some values' do
       expect(Gear.all.size).to eq(1)
-      g = Gear.first
-      expect(g.attributes).to include({
+      g = Gear.all.first
+      expect(g.as_json.with_indifferent_access).to include({
                              name: 'hat0',
                              gear_type: 'head',
                              display_name: 'Headscarf',
@@ -60,23 +63,28 @@ hat0,HEAD,GENDER_NEUTRAL_1,Headscarf,a lovely scarf,hair_headscarf,scarf_icon,1,
                            }.with_indifferent_access)
     end
 
-    let(:player) { create_player(player_name: "Joe", team: 'blue', coins: 10, gems: 2) }
-
-    it 'regenerates player/piece items' do
-      expect(player.gear_owned).to eq(['hat0'])
-      player.equip_gear! 'hat0'
-      expect(player.gear_equipped).to eq(['hat0'])
-
-      original_gear_id = Gear.find_by_name('hat0').id
-
-      Gear.read_csv(@f)
-
-      new_gear_id = Gear.find_by_name('hat0').id
-      expect(new_gear_id).not_to eq(original_gear_id)
-
-      player.reload
-      expect(player.gear_owned).to eq(['hat0'])
-      expect(player.gear_equipped).to eq(['hat0'])
+    it 'checks for bogus gear types' do
+      expect do
+        load_csv(good_row.gsub('HEAD', 'ELBOW'))
+      end.to raise_error(ArgumentError, 'Validation failed: Gear type must be "head" or "shirt" or "belt" or "shoes" or "accessory" or "pet"')
     end
+
+    it 'checks for duplicate gear names' do
+      expect do
+        load_csv(good_row + "\n" + good_row)
+      end.to raise_error(ArgumentError, 'Gear name must be unique, but we already have gear named \'hat0\'')
+    end
+
+    it 'checks for items with previously OK, but now missing gear names' do
+      # let's say we have a player with a "hat0" (the default hat)
+      p = create_player player_name: 'alice', coins: 10, gems: 10
+
+      # but we (mistakenly) rename hat0 to beanie in the CSV
+      expect do
+        load_csv(good_row.gsub('hat0', 'beanie'))
+      end.to raise_error(ArgumentError, "Found items with gear ('hat0') missing from the current gear list. Deleting.")
+
+    end
+
   end
 end

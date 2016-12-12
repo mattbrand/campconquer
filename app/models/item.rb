@@ -14,9 +14,8 @@
 
 class Item < ActiveRecord::Base
   belongs_to :piece
-  belongs_to :gear, primary_key: "name", foreign_key: "gear_name"
 
-  def gear_name
-    gear.name
+  def gear
+    Gear.find_by_name(gear_name)
   end
 end

@@ -97,6 +97,16 @@ class Player < ActiveRecord::Base
   validates_uniqueness_of :name
   validates :team, inclusion: {in: Team::NAMES.values, message: Team::NAMES.validation_message}
 
+
+  # def require_piece
+  #   raise NoPiece if self.piece.nil?
+  # end
+
+  after_create do
+    set_piece
+    buy_and_equip_default_gear
+  end
+
   def set_piece(params = {})
     if Game.has_current? and Game.current.locked?
       # todo: use an AR exception that lets the response be not a 500
@@ -113,13 +123,7 @@ class Player < ActiveRecord::Base
     self.piece
   end
 
-  # def require_piece
-  #   raise NoPiece if self.piece.nil?
-  # end
-
-  after_create do
-    set_piece
-
+  def buy_and_equip_default_gear
     Gear.where(owned_by_default: true, equipped_by_default: false).each do |gear|
       buy_gear! gear.name
     end
@@ -129,6 +133,7 @@ class Player < ActiveRecord::Base
       equip_gear! gear.name
     end
   end
+
 
   include ActiveModel::Serialization
 

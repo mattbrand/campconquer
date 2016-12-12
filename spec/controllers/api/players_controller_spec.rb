@@ -23,6 +23,11 @@ describe API::PlayersController, type: :controller do
     @current_player
   end
 
+  let!(:galoshes) { Gear.new(name: 'galoshes', gear_type: 'shoes', coins: 1, gems: 0) }
+  let!(:tee_shirt) { Gear.new(name: 'tee-shirt', gear_type: 'shirt') }
+  before { Gear.all = [galoshes, tee_shirt] }
+  after { Gear.reset }
+
   before { start_session(Player.create! valid_attributes) }
 
   describe "GET #index" do
@@ -133,7 +138,7 @@ describe API::PlayersController, type: :controller do
 
   describe 'gear' do
     before { player.update(coins: 1000) }
-    let!(:galoshes) { Gear.create!(name: 'galoshes', gear_type: 'shoes', coins: 1, gems: 0) }
+
 
     describe "POST #buy" do
       context "with valid params" do
