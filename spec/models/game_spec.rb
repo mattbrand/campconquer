@@ -182,8 +182,8 @@ describe Game do
       it "copies a player's items" do
         alice = create_alice_with_piece
 
-        alice.piece.items.create!(gear_id: tee_shirt.id, equipped: false)
-        alice.piece.items.create!(gear_id: galoshes.id, equipped: true)
+        alice.piece.items.create!(gear_name: tee_shirt.name, equipped: false)
+        alice.piece.items.create!(gear_name: galoshes.name, equipped: true)
 
         alice.piece.items.reload # Rails is silly
 

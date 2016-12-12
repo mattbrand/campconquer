@@ -77,8 +77,8 @@ RSpec.describe Piece, type: :model do
     let!(:galoshes) { Gear.create!(name: 'Galoshes', gear_type: 'shoes') }
 
     before do
-      piece.items.create!(gear_id: tee_shirt.id)
-      piece.items.create!(gear_id: galoshes.id, equipped: true)
+      piece.items.create!(gear_name: tee_shirt.name)
+      piece.items.create!(gear_name: galoshes.name, equipped: true)
       piece.reload # :-( -- otherwise we get duplicates for some dumb reason
     end
 

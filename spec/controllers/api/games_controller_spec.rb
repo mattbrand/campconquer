@@ -200,8 +200,8 @@ describe API::GamesController, type: :controller do
       let(:tee_shirt) { Gear.create!(name: 'tee-shirt', gear_type: 'shirt') }
 
       it 'copies gear' do
-        @betsys_piece.items.create!(gear_id: tee_shirt.id, equipped: false)
-        @betsys_piece.items.create!(gear_id: galoshes.id, equipped: true)
+        @betsys_piece.items.create!(gear_name: tee_shirt.name, equipped: false)
+        @betsys_piece.items.create!(gear_name: galoshes.name, equipped: true)
 
         @betsys_piece.items.reload
         expect(@betsys_piece.gear_equipped).to eq(['galoshes'])

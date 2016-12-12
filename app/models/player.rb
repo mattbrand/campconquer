@@ -254,7 +254,7 @@ class Player < ActiveRecord::Base
     if gear_owned?(gear_name)
       raise Player::AlreadyOwned, gear
     elsif self.coins >= gear.coins and self.gems >= gear.gems
-      piece.items.create!(gear_id: gear.id, equipped: false)
+      piece.items.create!(gear_name: gear.name, equipped: false)
       self.coins -= gear.coins
       self.gems -= gear.gems
       self.save!
@@ -267,7 +267,7 @@ class Player < ActiveRecord::Base
     raise Player::GameLocked if Game.current.locked? # todo: test
 
     gear = gear_named(gear_name)
-    item = piece.items.find_by_gear_id(gear.id)
+    item = piece.items.find_by_gear_name(gear.name)
     raise NotOwned, gear if item.nil?
     item.destroy
     self.reload # ?
@@ -277,7 +277,7 @@ class Player < ActiveRecord::Base
     raise Player::GameLocked if Game.current.locked? # todo: test
 
     gear = gear_named(gear_name)
-    item = piece.items.find_by_gear_id(gear.id)
+    item = piece.items.find_by_gear_name(gear.name)
     raise NotOwned, gear if item.nil?
     return if item.equipped?
 
@@ -291,7 +291,7 @@ class Player < ActiveRecord::Base
     raise Player::GameLocked if Game.current.locked? # todo: test
 
     gear = gear_named(gear_name)
-    item = piece.items.find_by_gear_id(gear.id)
+    item = piece.items.find_by_gear_name(gear.name)
     raise NotOwned, gear if item.nil?
     item.update!(equipped: false)
 
