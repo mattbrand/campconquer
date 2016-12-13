@@ -25,9 +25,10 @@ require 'rails_helper'
 
 describe Game do
 
-  let(:galoshes) { Gear.create!(name: 'galoshes', gear_type: 'shoes') }
-  let(:tee_shirt) { Gear.create!(name: 'tee-shirt', gear_type: 'shirt') }
-
+  let(:galoshes) { Gear.new(name: 'galoshes', gear_type: 'shoes') }
+  let(:tee_shirt) { Gear.new(name: 'tee-shirt', gear_type: 'shirt') }
+  before { Gear.all = [galoshes, tee_shirt] }
+  after { Gear.reset }
 
   describe "current" do
     context "when there is no game at all" do
@@ -182,8 +183,8 @@ describe Game do
       it "copies a player's items" do
         alice = create_alice_with_piece
 
-        alice.piece.items.create!(gear_id: tee_shirt.id, equipped: false)
-        alice.piece.items.create!(gear_id: galoshes.id, equipped: true)
+        alice.piece.items.create!(gear_name: tee_shirt.name, equipped: false)
+        alice.piece.items.create!(gear_name: galoshes.name, equipped: true)
 
         alice.piece.items.reload # Rails is silly
 

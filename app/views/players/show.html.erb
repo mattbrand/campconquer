@@ -1,0 +1,88 @@
+<h1><%= @player.name %></h1>
+
+<h2>Activity</h2>
+<table class="player-info">
+  <tr>
+    <th>last synced</th>
+    <td>TODO</td>
+  </tr>
+  <tr>
+    <th>steps available</th>
+    <td><%= @player.steps_available %></td>
+  </tr>
+  <tr>
+    <th>active minutes available</th>
+    <td><%= @player.active_minutes %></td> <%# todo: use total, not today only, once branch merged %>
+  </tr>
+</table>
+
+
+<h2>Info</h2>
+<table class="player-info">
+  <tr>
+    <th>team</th>
+    <td><%= @player.team %></td>
+  </tr>
+  <tr>
+    <th>role</th>
+    <td><%= @player.role %></td>
+  </tr>
+  <tr>
+    <th>speed</th>
+    <td><%= @player.speed %></td>
+  </tr>
+  <tr>
+    <th>health</th>
+    <td><%= @player.health %></td>
+  </tr>
+  <tr>
+    <th>range</th>
+    <td><%= @player.range %></td>
+  </tr>
+</table>
+
+<h2>Currency</h2>
+<table class="player-info">
+  <tr>
+    <th>coins</th>
+    <td><%= @player.coins %></td>
+  </tr>
+  <tr>
+    <th>gems</th>
+    <td><%= @player.gems %></td>
+  </tr>
+</table>
+
+<h2>Gear</h2>
+<table class="player-info">
+  <tr>
+    <th>equipped</th>
+    <td><%= @player.piece.items_equipped.map { |item| item.gear.display_name }.join(", ") %></td>
+  </tr>
+  <tr>
+    <th>owned</th>
+    <td><%= @player.piece.items.map { |item| item.gear.display_name }.join(", ") %></td>
+  </tr>
+  <tr>
+    <th>ammo</th>
+    <td><%= @player.ammo.join(", ") %></td>
+  </tr>
+</table>
+
+<h2>Summaries</h2>
+<h3>Current Season</h3>
+<% summary = PlayerSummary.new(player: @player, games: Season.current.games) %>
+<table class="player-info">
+
+  <tr>
+    <th>Games</th>
+    <td><%= summary.games.size %></td>
+  </tr>
+    <% Summary::STATS.each do |stat| %>
+  <tr>
+    <th><%= stat.to_s.titleize %></th>
+    <td><%= summary.send(stat) %></td>
+  </tr>
+  <% end %>
+
+</table>

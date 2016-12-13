@@ -18,6 +18,10 @@ class PlayersController < WebController
     end
   end
 
+  # GET /players/1
+  def show
+  end
+
   # # just for demo
   # def steps
   #   puts "fetching user activities"

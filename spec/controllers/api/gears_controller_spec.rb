@@ -34,7 +34,7 @@ describe API::GearsController, type: :controller do
 
   describe "GET /gears" do
     let!(:trucker_cap) {
-      Gear.create trucker_cap_attrs
+      Gear.all = [Gear.new(trucker_cap_attrs)]
     }
 
     it "returns all gears as json" do

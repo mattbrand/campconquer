@@ -1,3 +1,22 @@
 // Place all the styles related to the players controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+table.player-info {
+  background: #EEE;
+
+  border: 1px solid black;
+  border-collapse: collapse;
+
+  th {
+    text-align: right;
+    border: 1px solid black;
+    padding: 4px 8px;
+  }
+
+  td {
+    border: 1px solid black;
+    padding: 4px 8px;
+    background: #F9F9FE;
+  }
+}

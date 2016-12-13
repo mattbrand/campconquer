@@ -17,6 +17,8 @@ describe API::GamesController, type: :controller do
     {}
   }
 
+  before { Gear.all = [] } # workaround so start_session doesn't create a game
+
   let!(:gamemaster) { create_gamemaster }
   before { start_session(gamemaster) }
 
@@ -26,6 +28,7 @@ describe API::GamesController, type: :controller do
 
   describe "GET /games" do
     it "assigns all games as @games" do
+      ap Game.all
       expect(Game.count).to eq(0)
       game = Game.create! valid_attributes
       get :index, {}, valid_session
@@ -196,15 +199,17 @@ describe API::GamesController, type: :controller do
         expect(response_json['game']['pieces'].size).to eq(2)
       end
 
-      let(:galoshes) { Gear.create!(name: 'galoshes', gear_type: 'shoes') }
-      let(:tee_shirt) { Gear.create!(name: 'tee-shirt', gear_type: 'shirt') }
+      let(:galoshes) { Gear.new(name: 'galoshes', gear_type: 'shoes') }
+      let(:tee_shirt) { Gear.new(name: 'tee-shirt', gear_type: 'shirt') }
+      before { Gear.all = [galoshes, tee_shirt] }
+      after { Gear.reset }
 
       it 'copies gear' do
-        @betsys_piece.items.create!(gear_id: tee_shirt.id, equipped: false)
-        @betsys_piece.items.create!(gear_id: galoshes.id, equipped: true)
+        @betsys_piece.items.create!(gear_name: tee_shirt.name, equipped: false)
+        @betsys_piece.items.create!(gear_name: galoshes.name, equipped: true)
 
         @betsys_piece.items.reload
-        expect(@betsys_piece.gear_equipped).to eq(['galoshes'])
+        expect(@betsys_piece.gear_equipped).to include('galoshes')
         expect(@betsys_piece.gear_owned).to include('galoshes', 'tee-shirt')
 
         post :lock, {:id => @game.to_param}, valid_session

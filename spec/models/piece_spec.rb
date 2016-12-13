@@ -73,12 +73,15 @@ RSpec.describe Piece, type: :model do
 
   context "gear" do
     let!(:piece) { Piece.create!(team: 'blue') }
-    let!(:tee_shirt) { Gear.create!(name: 'T-Shirt', gear_type: 'shirt') }
-    let!(:galoshes) { Gear.create!(name: 'Galoshes', gear_type: 'shoes') }
+
+    let!(:galoshes) { Gear.new(name: 'galoshes', gear_type: 'shoes', coins: 1, gems: 0) }
+    let!(:tee_shirt) { Gear.new(name: 'tee-shirt', gear_type: 'shirt') }
+    before { Gear.all = [galoshes, tee_shirt] }
+    after { Gear.reset }
 
     before do
-      piece.items.create!(gear_id: tee_shirt.id)
-      piece.items.create!(gear_id: galoshes.id, equipped: true)
+      piece.items.create!(gear_name: tee_shirt.name)
+      piece.items.create!(gear_name: galoshes.name, equipped: true)
       piece.reload # :-( -- otherwise we get duplicates for some dumb reason
     end
 

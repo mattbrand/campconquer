@@ -44,7 +44,7 @@ class ApplicationController < ActionController::Base
   def find_player_from_session
     if session[SESSION_KEY]
       session_object = Session.where(id: session[SESSION_KEY]).includes(:player).first
-      if session_object
+      if session_object and !session_object.expired?
         session_object.player
       end
     end
@@ -52,21 +52,14 @@ class ApplicationController < ActionController::Base
 
   def create_session(player)
     @session = Session.create!(player_id: player.id)
-    destroy_session
     session[SESSION_KEY] = @session.id
     @session
-  end
-
-  def destroy_session
-    if session[SESSION_KEY]
-      Session.destroy(session[SESSION_KEY])
-      session[SESSION_KEY] = nil
-    end
   end
 
   def current_player
     @current_player ||= find_player_from_session
   end
+
   helper_method :current_player
 
   # for active_admin
@@ -82,24 +75,27 @@ class ApplicationController < ActionController::Base
 
   def find_game
     game_id = params[:game_id] || params[:id]
-    if game_id == 'current'
-      @game = Game.current || raise(ActiveRecord::RecordNotFound, "current game not found")
-    elsif game_id == 'previous'
-      @game = Game.previous || raise(ActiveRecord::RecordNotFound, "previous game not found")
-    else
-      @game = Game.find(game_id)
-    end
+    @game =
+        if game_id == 'current'
+          Game.current || raise(ActiveRecord::RecordNotFound, "current game not found")
+        elsif game_id == 'previous'
+          Game.previous || raise(ActiveRecord::RecordNotFound, "previous game not found")
+        else
+          Game.find(game_id)
+        end
   end
 
+  # note that @player may well be different from current_player
+  # since @player is from the URL (whose data is being looked at)
+  # and current_player is from the session (who's logged in)
   def find_player
     player_id = params[:player_id] || params[:id]
-    @player = Player.find(player_id)
-  end
-
-  def pull_activity
-    if @player and @player.authenticated?
-      @player.pull_recent_activity!
-    end
+    @player =
+        if player_id == 'current'
+          current_player
+        else
+          Player.find(player_id)
+        end
   end
 
   def find_season

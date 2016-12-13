@@ -47,7 +47,6 @@ class API::PlayersController < ::API::APIController
     render_player
   end
 
-
   def buy
     # require_player(@player) || return # todo: do this with a before_action
 
@@ -77,4 +76,11 @@ class API::PlayersController < ::API::APIController
   def player_params
     params.require(:player).permit(:name, :password, :team, :embodied)
   end
+
+  def pull_activity
+    if @player and @player.authenticated?
+      @player.pull_recent_activity!
+    end
+  end
+
 end
