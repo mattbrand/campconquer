@@ -23,4 +23,12 @@ class Session < ActiveRecord::Base
     @name = attrs.delete(:name) if attrs
     super
   end
+
+  def expired?
+    if new_record?
+      false
+    else
+      updated_at < Time.current - 7.days
+    end
+  end
 end

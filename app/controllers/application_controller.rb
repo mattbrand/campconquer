@@ -44,7 +44,7 @@ class ApplicationController < ActionController::Base
   def find_player_from_session
     if session[SESSION_KEY]
       session_object = Session.where(id: session[SESSION_KEY]).includes(:player).first
-      if session_object
+      if session_object and !session_object.expired?
         session_object.player
       end
     end
@@ -52,16 +52,8 @@ class ApplicationController < ActionController::Base
 
   def create_session(player)
     @session = Session.create!(player_id: player.id)
-    destroy_session
     session[SESSION_KEY] = @session.id
     @session
-  end
-
-  def destroy_session
-    if session[SESSION_KEY]
-      Session.destroy(session[SESSION_KEY])
-      session[SESSION_KEY] = nil
-    end
   end
 
   def current_player
@@ -96,12 +88,6 @@ class ApplicationController < ActionController::Base
     @player = Player.find(player_id)
   end
 
-  def pull_activity
-    if @player and @player.authenticated?
-      @player.pull_recent_activity!
-    end
-  end
-
   def find_season
     season_id = params[:season_id] || params[:id]
     if season_id == 'current'
@@ -112,6 +98,7 @@ class ApplicationController < ActionController::Base
       @season = Season.find(season_id)
     end
   end
+
 
 
 end

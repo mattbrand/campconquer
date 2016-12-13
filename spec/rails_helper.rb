@@ -102,3 +102,9 @@ def create_player(player_name:,
   player.set_piece(piece_attributes)
   player
 end
+
+def expire_session(session)
+  last_week = Time.current - 8.days
+  session.update_columns(created_at: last_week, updated_at: last_week)
+end
+

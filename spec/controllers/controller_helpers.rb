@@ -23,4 +23,12 @@ module ControllerHelpers
     {token: @session_token}
   end
 
+  def current_user
+    controller.send(:current_player)
+  end
+
+  def login_as(player)
+    controller.send(:create_session, player)
+  end
+
 end

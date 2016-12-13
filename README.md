@@ -25,8 +25,8 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
   - [x] mod role, seed mod player
 
 - [x] Web login
- - [ ] allow mutiple sessions
- - [ ] expire sessions
+ - [x] allow mutiple sessions
+ - [x] expire sessions
 
 - [x] load fitbit data as far back as needed and no further
 

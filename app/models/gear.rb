@@ -127,7 +127,6 @@ class Gear
       g
     end.compact
 
-
     item_gear_names = Item.select('gear_name').uniq.map(&:gear_name)
     csv_gear_names = gears.map(&:name)
     missing_gear_names = item_gear_names - csv_gear_names

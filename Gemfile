@@ -25,6 +25,7 @@ gem 'rack-timeout'
 
 group :development, :test do
   gem 'sqlite3'
+  gem 'wrong'
   gem 'byebug' # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem "rspec-rails"
   gem 'dotenv-rails' # https://github.com/bkeepers/dotenv

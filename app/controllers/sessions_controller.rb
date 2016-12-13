@@ -25,7 +25,10 @@ class SessionsController < WebController
   end
 
   def destroy
-    destroy_session
+    if session[SESSION_KEY]
+      Session.destroy(session[SESSION_KEY])
+      session[SESSION_KEY] = nil
+    end
     redirect_to '/'
   end
 
