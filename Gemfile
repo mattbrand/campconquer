@@ -47,5 +47,5 @@ end
 group :production do
   gem 'rails_12factor'
   gem 'pg'
-  gem 'scout_apm'
+  gem 'scout_apm', '~> 3.0.x'
 end
