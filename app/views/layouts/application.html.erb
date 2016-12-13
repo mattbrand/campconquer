@@ -13,12 +13,18 @@
       <a href="/">Camp Conquer</a>
     </li>
     <li>
-      <a href="/admin">Admin</a>
-    </li>
-    <li>
       <a href="/game">Game</a>
     </li>
+    <% if current_player and current_player.admin? %>
+        <li>
+          <a href="/admin">Admin</a>
+        </li>
+    <% end %>
+
     <% if current_player %>
+        <li>
+          <a href="/players/current">Profile</a>
+        </li>
         <li>
           Signed in as <%= current_player.name %>
           <!-- todo: logout -->

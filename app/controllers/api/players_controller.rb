@@ -47,7 +47,6 @@ class API::PlayersController < ::API::APIController
     render_player
   end
 
-
   def buy
     # require_player(@player) || return # todo: do this with a before_action
 

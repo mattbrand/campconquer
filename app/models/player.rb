@@ -134,6 +134,7 @@ class Player < ActiveRecord::Base
     end
   end
 
+  delegate :role, :speed, :health, :range, to: :piece
 
   include ActiveModel::Serialization
 
