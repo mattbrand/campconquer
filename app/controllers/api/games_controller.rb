@@ -28,11 +28,11 @@ module API
 
     # POST /games/1
     def update
-      if !@game.locked?
+      if !@game.in_progress?
         render status: :conflict,
                json: {
                  status: 'error',
-                 message: 'You can only set an outcome on a locked game'
+                 message: 'You can only set an outcome on a locked (in progress) game'
                }
         return
       end

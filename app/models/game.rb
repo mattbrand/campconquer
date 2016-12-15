@@ -5,7 +5,6 @@
 #  id              :integer          not null, primary key
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  locked          :boolean
 #  current         :boolean          default("f")
 #  season_id       :integer
 #  state           :string           default("preparing")
@@ -14,14 +13,6 @@
 #  match_length    :integer          default("0"), not null
 #  scheduled_start :datetime
 #  mvps            :text
-#
-# Indexes
-#
-#  index_games_on_current    (current)
-#  index_games_on_season_id  (season_id)
-#
-
-#  scheduled_start :datetime
 #
 # Indexes
 #
@@ -99,8 +90,7 @@ class Game < ActiveRecord::Base
   def self.current
     current_game = where(current: true).first
     if current_game.nil?
-      current_game = Game.create! locked: false,
-                                  current: true,
+      current_game = Game.create! current: true,
                                   season_id: Season.current.id,
                                   scheduled_start: Game.next_game_time
     end
@@ -132,6 +122,7 @@ class Game < ActiveRecord::Base
       methods: [
         :team_summaries,
         :paths,
+        :locked,
       ],
     }
   end
@@ -147,13 +138,14 @@ class Game < ActiveRecord::Base
     player_outcomes.detect{|o| o.player_id == player_id}
   end
 
+  alias_method :locked, :in_progress?
+  alias_method :locked?, :in_progress?
+
   def do_lock_game
-    update!(locked: true)
     copy_player_pieces
   end
 
   def do_unlock_game
-    update!(locked: false)
     pieces.destroy_all
   end
 
@@ -218,7 +210,6 @@ class Game < ActiveRecord::Base
     set_winner(params)
 
     self.current = false
-    self.locked = false
     self.moves = moves if moves
     save!
 

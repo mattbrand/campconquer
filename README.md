@@ -67,7 +67,8 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 - [x] `deploy.sh` script which does `git push heroku` and `heroku run rake db:migrate`
 - [x] kill gear table (load csv directly)
 - [ ] seed_players should use avatar.csv to determine gear asset
-- [ ] remove `current` and `locked` db fields
+- [ ] remove `current` db field
+- [x] remove `locked` db field
 - [ ] create prod env
   - [ ] heroku
   - [ ] fitbit

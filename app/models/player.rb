@@ -25,7 +25,7 @@
 #
 
 class Player < ActiveRecord::Base
-  CANT_CHANGE_PIECE_WHEN_GAME_LOCKED = "you can't edit your piece if the current game is locked"
+  CANT_CHANGE_PIECE_WHEN_GAME_LOCKED = "you can't edit your piece if the current game is locked (in progress)"
   STEPS_PER_COIN = 10
   MAXIMUM_CLAIMABLE_STEPS = 10000
   GOAL_MINUTES = 60
@@ -108,10 +108,7 @@ class Player < ActiveRecord::Base
   end
 
   def set_piece(params = {})
-    if Game.has_current? and Game.current.locked?
-      # todo: use an AR exception that lets the response be not a 500
-      raise Player::GameLocked
-    end
+    require_unlocked_game
 
     params = params.pick(:body_type, :role, :path, :face, :hair, :skin_color, :hair_color, :health, :speed, :range, :ammo)
     if self.piece
@@ -253,7 +250,7 @@ class Player < ActiveRecord::Base
   end
 
   def buy_gear! gear_name
-    raise Player::GameLocked if Game.current.locked? # todo: test
+    require_locked_game # todo: test
 
     gear = gear_named(gear_name)
 
@@ -270,7 +267,7 @@ class Player < ActiveRecord::Base
   end
 
   def drop_gear! gear_name
-    raise Player::GameLocked if Game.current.locked? # todo: test
+    require_locked_game # todo: test
 
     gear = gear_named(gear_name)
     item = piece.items.find_by_gear_name(gear.name)
@@ -280,7 +277,7 @@ class Player < ActiveRecord::Base
   end
 
   def equip_gear!(gear_name)
-    raise Player::GameLocked if Game.current.locked? # todo: test
+    require_locked_game # todo: test
 
     gear = gear_named(gear_name)
     item = piece.items.find_by_gear_name(gear.name)
@@ -294,7 +291,7 @@ class Player < ActiveRecord::Base
   end
 
   def unequip_gear!(gear_name)
-    raise Player::GameLocked if Game.current.locked? # todo: test
+    require_locked_game # todo: test
 
     gear = gear_named(gear_name)
     item = piece.items.find_by_gear_name(gear.name)
@@ -306,7 +303,7 @@ class Player < ActiveRecord::Base
   end
 
   def buy_ammo!(ammo_name)
-    raise Player::GameLocked if Game.current.locked? # todo: test
+    require_locked_game # todo: test
 
     # todo: term 'ammo' used for both singular and plural
 
@@ -493,6 +490,14 @@ class Player < ActiveRecord::Base
     Gear.where(gear_type: gear_type, equipped_by_default: true).each do |gear|
       equip_gear!(gear.name) if gear_owned? gear.name
     end
+  end
+
+  def require_unlocked_game
+    raise Player::GameLocked if Game.has_current? and Game.current.locked?
+  end
+
+  def require_locked_game
+    raise Player::GameLocked if Game.current.locked?
   end
 
 end

@@ -5,7 +5,6 @@
 #  id              :integer          not null, primary key
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  locked          :boolean
 #  current         :boolean          default("f")
 #  season_id       :integer
 #  state           :string           default("preparing")
@@ -265,7 +264,7 @@ describe Game do
       end
     end
 
-    context 'when the game is locked' do
+    context 'when the game is locked (in progress)' do
       it 'fails' do
         current_game.lock_game!
         expect do
@@ -342,6 +341,15 @@ describe Game do
         expect(team_json['attack_mvps']).to eq(game_mvps[team_name]['attack_mvps'])
         expect(team_json['defend_mvps']).to eq(game_mvps[team_name]['defend_mvps'])
       end
+    end
+
+    it "includes 'locked' (same as state==in_progress)" do
+      json = game.as_json
+      expect(json['locked']).to eq(false)
+
+      game.state = :in_progress
+      json = game.as_json
+      expect(json['locked']).to eq(true)
     end
   end
 

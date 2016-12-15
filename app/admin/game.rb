@@ -3,18 +3,18 @@ ActiveAdmin.register Game do
 # See permitted parameters documentation:
 # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
 #
-  permit_params :locked
+  permit_params :state
 
   filter :created_at
   filter :updated_at
-  filter :locked
+  filter :state
 
   index do
     id_column
     column :created_at
     column :updated_at
-    column :locked
-    column :pieces
+    column :state
+    # column :pieces  # todo: show pieces for this game only -- how? 
 
     actions
   end
