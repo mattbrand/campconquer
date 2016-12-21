@@ -1,0 +1,22 @@
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Versions Changes %%%
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+24/07/2016 - v3.2.10
+- Improved the 'Convert To TextFx' menuitem logic to prevent some incorrect conversions.
+
+07/07/2016 - v3.2.9
+- Added first support for the Text Mesh Pro rendering plugin
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%%% Feedback / Bugs %%%
+%%%%%%%%%%%%%%%%%%%%%%%
+
+
+Please get in contact if you have any problems!
+
+fenderrio@gmail.com
+
+Thanks!

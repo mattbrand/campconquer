@@ -1,0 +1,176 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!74 &7400000
+AnimationClip:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: FThrow
+  serializedVersion: 6
+  m_Legacy: 0
+  m_Compressed: 0
+  m_UseHighQualityCurve: 1
+  m_RotationCurves: []
+  m_CompressedRotationCurves: []
+  m_EulerCurves: []
+  m_PositionCurves: []
+  m_ScaleCurves: []
+  m_FloatCurves: []
+  m_PPtrCurves:
+  - curve:
+    - time: 0
+      value: {fileID: 21300000, guid: ecd9d5576234b437eabd8e38d8cd4aa0, type: 3}
+    - time: 0.16666667
+      value: {fileID: 21300000, guid: 59e1ac1b6857e48c5966cd0f4f9e2131, type: 3}
+    - time: 0.3
+      value: {fileID: 21300000, guid: 3cb4f28f65f94412db5f19283e6527ec, type: 3}
+    - time: 0.33333334
+      value: {fileID: 21300000, guid: 3cb4f28f65f94412db5f19283e6527ec, type: 3}
+    attribute: m_Sprite
+    path: 
+    classID: 212
+    script: {fileID: 0}
+  - curve:
+    - time: 0
+      value: {fileID: 21300000, guid: fd6ac0d6e480c4532838d4221cf2859a, type: 3}
+    - time: 0.16666667
+      value: {fileID: 21300000, guid: 1e0f3a65844924e5fa80501bfaa19d4f, type: 3}
+    - time: 0.3
+      value: {fileID: 21300000, guid: 3ef24b932b23d4c9fb0688ffd5e30f7d, type: 3}
+    - time: 0.33333334
+      value: {fileID: 21300000, guid: 3ef24b932b23d4c9fb0688ffd5e30f7d, type: 3}
+    attribute: m_Sprite
+    path: Shirt
+    classID: 212
+    script: {fileID: 0}
+  - curve:
+    - time: 0
+      value: {fileID: 21300000, guid: 6deb99e32b94a45ef9c0031b0c26257a, type: 3}
+    - time: 0.16666667
+      value: {fileID: 21300000, guid: 6383dcebbc31d4f919da600ec89b7588, type: 3}
+    - time: 0.3
+      value: {fileID: 21300000, guid: bd3b9d31a08154d4588412a66fdd3be6, type: 3}
+    - time: 0.33333334
+      value: {fileID: 21300000, guid: bd3b9d31a08154d4588412a66fdd3be6, type: 3}
+    attribute: m_Sprite
+    path: Shorts
+    classID: 212
+    script: {fileID: 0}
+  - curve:
+    - time: 0
+      value: {fileID: 21300000, guid: f0a65ad9c449d441dba29245f2a64503, type: 3}
+    - time: 0.16666667
+      value: {fileID: 21300000, guid: 6402dd966bcc84b9fbed0ad8bb9ca082, type: 3}
+    - time: 0.3
+      value: {fileID: 21300000, guid: 1c6078c606df84e06b65891b20275f56, type: 3}
+    - time: 0.33333334
+      value: {fileID: 21300000, guid: 1c6078c606df84e06b65891b20275f56, type: 3}
+    attribute: m_Sprite
+    path: Shoes
+    classID: 212
+    script: {fileID: 0}
+  - curve:
+    - time: 0
+      value: {fileID: 21300000, guid: 805ef9677ee354fb3819a68f83adb933, type: 3}
+    - time: 0.16666667
+      value: {fileID: 21300000, guid: ba2346a213b064e9c909e68f76af8bab, type: 3}
+    - time: 0.3
+      value: {fileID: 21300000, guid: 3e146e31f05c14dc2bcad7078a97d31d, type: 3}
+    - time: 0.33333334
+      value: {fileID: 21300000, guid: 3e146e31f05c14dc2bcad7078a97d31d, type: 3}
+    attribute: m_Sprite
+    path: Hair
+    classID: 212
+    script: {fileID: 0}
+  m_SampleRate: 60
+  m_WrapMode: 0
+  m_Bounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
+  m_ClipBindingConstant:
+    genericBindings:
+    - path: 0
+      attribute: 0
+      script: {fileID: 0}
+      classID: 212
+      customType: 23
+      isPPtrCurve: 1
+    - path: 1248117524
+      attribute: 0
+      script: {fileID: 0}
+      classID: 212
+      customType: 23
+      isPPtrCurve: 1
+    - path: 620044393
+      attribute: 0
+      script: {fileID: 0}
+      classID: 212
+      customType: 23
+      isPPtrCurve: 1
+    - path: 3574509203
+      attribute: 0
+      script: {fileID: 0}
+      classID: 212
+      customType: 23
+      isPPtrCurve: 1
+    - path: 1019596327
+      attribute: 0
+      script: {fileID: 0}
+      classID: 212
+      customType: 23
+      isPPtrCurve: 1
+    pptrCurveMapping:
+    - {fileID: 21300000, guid: ecd9d5576234b437eabd8e38d8cd4aa0, type: 3}
+    - {fileID: 21300000, guid: 59e1ac1b6857e48c5966cd0f4f9e2131, type: 3}
+    - {fileID: 21300000, guid: 3cb4f28f65f94412db5f19283e6527ec, type: 3}
+    - {fileID: 21300000, guid: 3cb4f28f65f94412db5f19283e6527ec, type: 3}
+    - {fileID: 21300000, guid: fd6ac0d6e480c4532838d4221cf2859a, type: 3}
+    - {fileID: 21300000, guid: 1e0f3a65844924e5fa80501bfaa19d4f, type: 3}
+    - {fileID: 21300000, guid: 3ef24b932b23d4c9fb0688ffd5e30f7d, type: 3}
+    - {fileID: 21300000, guid: 3ef24b932b23d4c9fb0688ffd5e30f7d, type: 3}
+    - {fileID: 21300000, guid: 6deb99e32b94a45ef9c0031b0c26257a, type: 3}
+    - {fileID: 21300000, guid: 6383dcebbc31d4f919da600ec89b7588, type: 3}
+    - {fileID: 21300000, guid: bd3b9d31a08154d4588412a66fdd3be6, type: 3}
+    - {fileID: 21300000, guid: bd3b9d31a08154d4588412a66fdd3be6, type: 3}
+    - {fileID: 21300000, guid: f0a65ad9c449d441dba29245f2a64503, type: 3}
+    - {fileID: 21300000, guid: 6402dd966bcc84b9fbed0ad8bb9ca082, type: 3}
+    - {fileID: 21300000, guid: 1c6078c606df84e06b65891b20275f56, type: 3}
+    - {fileID: 21300000, guid: 1c6078c606df84e06b65891b20275f56, type: 3}
+    - {fileID: 21300000, guid: 805ef9677ee354fb3819a68f83adb933, type: 3}
+    - {fileID: 21300000, guid: ba2346a213b064e9c909e68f76af8bab, type: 3}
+    - {fileID: 21300000, guid: 3e146e31f05c14dc2bcad7078a97d31d, type: 3}
+    - {fileID: 21300000, guid: 3e146e31f05c14dc2bcad7078a97d31d, type: 3}
+  m_AnimationClipSettings:
+    serializedVersion: 2
+    m_AdditiveReferencePoseClip: {fileID: 0}
+    m_AdditiveReferencePoseTime: 0
+    m_StartTime: 0
+    m_StopTime: 0.35000002
+    m_OrientationOffsetY: 0
+    m_Level: 0
+    m_CycleOffset: 0
+    m_HasAdditiveReferencePose: 0
+    m_LoopTime: 0
+    m_LoopBlend: 0
+    m_LoopBlendOrientation: 0
+    m_LoopBlendPositionY: 0
+    m_LoopBlendPositionXZ: 0
+    m_KeepOriginalOrientation: 0
+    m_KeepOriginalPositionY: 1
+    m_KeepOriginalPositionXZ: 0
+    m_HeightFromFeet: 0
+    m_Mirror: 0
+  m_EditorCurves: []
+  m_EulerEditorCurves: []
+  m_HasGenericRootTransform: 0
+  m_HasMotionFloatCurves: 0
+  m_GenerateMotionCurves: 0
+  m_IsEmpty: 0
+  m_Events:
+  - time: 0.33333334
+    functionName: EndThrow
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0

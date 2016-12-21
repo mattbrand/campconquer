@@ -1,0 +1,92 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   'api-workbench' ]
+2 info using npm@2.14.12
+3 info using node@v4.3.1
+4 verbose config Skipping project config: /Users/mattbrand/.npmrc. (matches userconfig)
+5 verbose install initial load of /Users/mattbrand/package.json
+6 verbose installManyTop reading scoped package data from /Users/mattbrand/node_modules/babel/package.json
+7 verbose installManyTop reading scoped package data from /Users/mattbrand/node_modules/babel-core/package.json
+8 verbose installManyTop reading scoped package data from /Users/mattbrand/node_modules/babel-loader/package.json
+9 verbose installManyTop reading scoped package data from /Users/mattbrand/node_modules/uniq/package.json
+10 verbose installManyTop reading scoped package data from /Users/mattbrand/node_modules/webpack/package.json
+11 verbose readDependencies loading dependencies from /Users/mattbrand/package.json
+12 silly cache add args [ 'api-workbench', null ]
+13 verbose cache add spec api-workbench
+14 silly cache add parsed spec Result {
+14 silly cache add   raw: 'api-workbench',
+14 silly cache add   scope: null,
+14 silly cache add   name: 'api-workbench',
+14 silly cache add   rawSpec: '',
+14 silly cache add   spec: 'latest',
+14 silly cache add   type: 'tag' }
+15 silly addNamed api-workbench@latest
+16 verbose addNamed "latest" is being treated as a dist-tag for api-workbench
+17 info addNameTag [ 'api-workbench', 'latest' ]
+18 silly mapToRegistry name api-workbench
+19 silly mapToRegistry using default registry
+20 silly mapToRegistry registry https://registry.npmjs.org/
+21 silly mapToRegistry uri https://registry.npmjs.org/api-workbench
+22 verbose addNameTag registry:https://registry.npmjs.org/api-workbench not in flight; fetching
+23 verbose request uri https://registry.npmjs.org/api-workbench
+24 verbose request no auth needed
+25 info attempt registry request try #1 at 10:03:07 AM
+26 verbose request id ef7349de53e78f61
+27 http request GET https://registry.npmjs.org/api-workbench
+28 http 404 https://registry.npmjs.org/api-workbench
+29 verbose headers { 'content-type': 'application/json',
+29 verbose headers   'cache-control': 'max-age=0',
+29 verbose headers   'content-length': '2',
+29 verbose headers   'accept-ranges': 'bytes',
+29 verbose headers   date: 'Tue, 31 May 2016 14:03:08 GMT',
+29 verbose headers   via: '1.1 varnish',
+29 verbose headers   age: '0',
+29 verbose headers   connection: 'keep-alive',
+29 verbose headers   'x-served-by': 'cache-jfk1047-JFK',
+29 verbose headers   'x-cache': 'MISS',
+29 verbose headers   'x-cache-hits': '0',
+29 verbose headers   'x-timer': 'S1464703388.010028,VS0,VE21',
+29 verbose headers   vary: 'Accept-Encoding' }
+30 silly get cb [ 404,
+30 silly get   { 'content-type': 'application/json',
+30 silly get     'cache-control': 'max-age=0',
+30 silly get     'content-length': '2',
+30 silly get     'accept-ranges': 'bytes',
+30 silly get     date: 'Tue, 31 May 2016 14:03:08 GMT',
+30 silly get     via: '1.1 varnish',
+30 silly get     age: '0',
+30 silly get     connection: 'keep-alive',
+30 silly get     'x-served-by': 'cache-jfk1047-JFK',
+30 silly get     'x-cache': 'MISS',
+30 silly get     'x-cache-hits': '0',
+30 silly get     'x-timer': 'S1464703388.010028,VS0,VE21',
+30 silly get     vary: 'Accept-Encoding' } ]
+31 verbose stack Error: Registry returned 404 for GET on https://registry.npmjs.org/api-workbench
+31 verbose stack     at makeError (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:264:12)
+31 verbose stack     at CachingRegistryClient.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:242:14)
+31 verbose stack     at Request._callback (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:172:14)
+31 verbose stack     at Request.self.callback (/usr/local/lib/node_modules/npm/node_modules/request/request.js:198:22)
+31 verbose stack     at emitTwo (events.js:87:13)
+31 verbose stack     at Request.emit (events.js:172:7)
+31 verbose stack     at Request.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:1082:10)
+31 verbose stack     at emitOne (events.js:82:20)
+31 verbose stack     at Request.emit (events.js:169:7)
+31 verbose stack     at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:1009:12)
+32 verbose statusCode 404
+33 verbose pkgid api-workbench
+34 verbose cwd /Users/mattbrand/Desktop/Camp Conquer
+35 error Darwin 15.5.0
+36 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "install" "api-workbench"
+37 error node v4.3.1
+38 error npm  v2.14.12
+39 error code E404
+40 error 404 Registry returned 404 for GET on https://registry.npmjs.org/api-workbench
+40 error 404
+40 error 404 'api-workbench' is not in the npm registry.
+40 error 404 You should bug the author to publish it (or use the name yourself!)
+40 error 404
+40 error 404 Note that you can also install from a
+40 error 404 tarball, folder, http url, or git url.
+41 verbose exit [ 1, true ]

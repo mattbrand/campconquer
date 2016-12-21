@@ -1,0 +1,37 @@
+%%%%%%%%%%%%
+%%% NOTE %%%
+%%%%%%%%%%%%
+
+For any users using NGUI versions pre 3.9.8, you will need to uncomment the top line in your TextFxNGUI.cs script after importing the latest TextFxNGUI unitypackage in this folder.
+
+It should then start the script like this:
+
+#define NGUI_PRE_3_9_8
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Versions Changes %%%
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+07/07/2016 - v3.2.9
+- Added support for Curve positioning of NGUI TextFx components
+- Optimised performance
+- Fixed bugs with latest NGUI version with change to Color32 objects
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%%% Feedback / Bugs %%%
+%%%%%%%%%%%%%%%%%%%%%%%
+
+
+Please get in contact if you have any problems!
+
+fenderrio@gmail.com
+
+Thanks!
