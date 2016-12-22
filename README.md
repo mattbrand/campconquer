@@ -64,24 +64,18 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
     - [x] Papertrail
     - [ ] Honeybadger or Airbrake
     - [ ] CircleCI
-- [x] `deploy.sh` script which does `git push heroku` and `heroku run rake db:migrate`
-- [x] kill gear table (load csv directly)
+- [ ] rename attack_mvp to top_attacker and defense_mvp to top_defender
 - [ ] seed_players should use avatar.csv to determine gear asset
 - [ ] remove `current` db field
-- [x] remove `locked` db field
 - [ ] create prod env
   - [ ] heroku
   - [ ] fitbit
   - [ ] game client selector UI
 - [ ] fixture factories
-- [x] rename *_outcomes to *_summaries
-- [ ] rename attack_mvp to top_attacker and defense_mvp to top_defender
 - [ ] merge Piece into Player in API
 - [ ] [upgrade to Rails 5](http://blog.bigbinary.com/2016/08/18/new-framework-defaults-in-rails-5-to-make-upgrade-easier.html)
 - [ ] make a Procfile https://devcenter.heroku.com/articles/ruby-default-web-server
 - [ ] Alex learns Unity (gratis)
-- [x] new player controller for web/auth
-- [x] simulate session creation in tests instead of GOOD_SESSION_TOKEN backdoor
 - [ ] switch from RAML to Swagger? http://swagger.io/
 
 

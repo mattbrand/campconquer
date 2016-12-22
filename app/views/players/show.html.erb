@@ -1,6 +1,7 @@
 <h1><%= @player.name %></h1>
 
 <h2>Activity</h2>
+</tr>
 <table class="player-info">
   <tr>
     <th>last synced</th>
@@ -14,8 +15,33 @@
     <th>active minutes available</th>
     <td><%= @player.active_minutes %></td> <%# todo: use total, not today only, once branch merged %>
   </tr>
-</table>
+  <tr>
+    <th>Activity Details</th>
+    <td>
+      <table class="player-info">
+        <tr>
+          <th>date</th>
+          <th>steps</th>
+          <th>steps claimed?</th>
+          <th>active minutes</th>
+          <th>active goal met?</th>
+          <th>active minutes claimed?</th>
+        </tr>
+        <% @player.activities.order(date: 'desc').each do |activity| %>
+            <tr>
+              <td><%= activity.date %></td>
+              <td><%= activity.steps %></td>
+              <td><%= activity.steps_claimed? %></td>
+              <td><%= activity.active_minutes %></td>
+              <td><%= activity.active_goal_met? %></td>
+              <td><%= activity.active_minutes_claimed? %></td>
+            </tr>
+        <% end %>
+      </table>
 
+    </td>
+  </tr>
+</table>
 
 <h2>Info</h2>
 <table class="player-info">
@@ -78,11 +104,11 @@
     <th>Games</th>
     <td><%= summary.games.size %></td>
   </tr>
-    <% Summary::STATS.each do |stat| %>
-  <tr>
-    <th><%= stat.to_s.titleize %></th>
-    <td><%= summary.send(stat) %></td>
-  </tr>
+  <% Summary::STATS.each do |stat| %>
+      <tr>
+        <th><%= stat.to_s.titleize %></th>
+        <td><%= summary.send(stat) %></td>
+      </tr>
   <% end %>
 
 </table>

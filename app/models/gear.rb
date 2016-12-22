@@ -139,7 +139,7 @@ class Gear
 
   # todo: unit test
   def self.where(**opts)
-    all.select do |gear|
+    all.find_all do |gear|
       ok = true
       opts.each_pair do |attribute_name, desired_value|
         if gear.send(attribute_name) != desired_value

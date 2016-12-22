@@ -193,7 +193,7 @@ class Player < ActiveRecord::Base
   end
 
   def active_goal_met?
-    active_minutes >= GOAL_MINUTES
+    activity_today.active_goal_met?
   end
 
   alias_method :active_goal_met, :active_goal_met?

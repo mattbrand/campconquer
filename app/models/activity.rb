@@ -26,5 +26,10 @@ class Activity < ActiveRecord::Base
   def steps_unclaimed
     steps - steps_claimed
   end
+
+  def active_goal_met?
+    active_minutes >= Player::GOAL_MINUTES
+  end
+
 end
 
