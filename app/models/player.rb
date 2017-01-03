@@ -110,6 +110,10 @@ class Player < ActiveRecord::Base
     end
   end
 
+  def can_play?
+    (not in_control_group? and not gamemaster?)
+  end
+
   def set_piece(params = {})
     require_unlocked_game
 
@@ -359,7 +363,8 @@ class Player < ActiveRecord::Base
     summary = fitbit.get_activities(date.strftime('%F'))["summary"]
     attrs = {steps: summary["steps"].to_i,
              active_minutes: summary["veryActiveMinutes"].to_i + summary["fairlyActiveMinutes"].to_i, }
-    Rails.logger.info(attrs)
+    Rails.logger.info("FITBIT fetched " +
+                          ({player: self.id, name: self.name, date: date} + attrs).inspect)
     activity = activity_for(date)
     activity.update!(attrs)
     self.update!(activities_synced_at: DateTime.current)

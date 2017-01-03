@@ -4,8 +4,9 @@ namespace :db do
     Player.destroy_all
     Player.create!(name: 'mod', password: 'xyzzy', team: 'red', admin: true, gamemaster: true)
     puts "Created mod"
-    Board.new.seed_teams
-    Board.new.seed_control_group
+    board = Board.new
+    board.seed_teams
+    board.seed_control_group
     Rake::Task['db:seed_activities'].invoke
   end
 end

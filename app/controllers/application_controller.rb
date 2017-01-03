@@ -3,6 +3,15 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  # fitbit activity
+
+  # note that @player may well be different from current_player
+  def pull_activity
+    if @player and @player.authenticated?
+      @player.pull_recent_activity!
+    end
+  end
+
   # login and roles
 
   def require_session_token

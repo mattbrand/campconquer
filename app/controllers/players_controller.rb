@@ -20,6 +20,7 @@ class PlayersController < WebController
 
   # GET /players/1
   def show
+    pull_activity if @player.activities_synced_at.nil? or @player.activities_synced_at < 10.minutes.ago
   end
 
   # # just for demo

@@ -77,10 +77,5 @@ class API::PlayersController < ::API::APIController
     params.require(:player).permit(:name, :password, :team, :embodied)
   end
 
-  def pull_activity
-    if @player and @player.authenticated?
-      @player.pull_recent_activity!
-    end
-  end
 
 end
