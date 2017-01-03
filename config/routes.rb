@@ -60,7 +60,8 @@ Rails.application.routes.draw do
 
 
   get "/login", to: "sessions#new", as: 'login'
-  delete "/logout", to: "sessions#destroy", as: 'logout'
+  delete "/logout", to: "sessions#destroy" #, as: 'logout'
+  get "/logout", to: "sessions#destroy" #, as: 'logout'
 
   root to: "statics#index"
   get "/game", to: "statics#game", as: "game"

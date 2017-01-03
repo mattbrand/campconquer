@@ -26,13 +26,18 @@
           <a href="/players/current">Profile</a>
         </li>
         <li>
-          Signed in as <%= current_player.name %>
-          <!-- todo: logout -->
+          <div>
+            Signed in as <%= current_player.name %>
+          </div>
+        </li>
+        <li>
+          <a href="/logout">Log Out</a>
+        </li>
+    <% else %>
+        <li>
+          <a href="/login">Log In</a>
         </li>
     <% end %>
-    <li>
-      <a href="/login.html">Log In</a>
-    </li>
   </ul>
 </nav>
 
