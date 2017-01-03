@@ -10,7 +10,7 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: DefaultCompany
+  companyName: GameTheory
   productName: Camp Conquer
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
@@ -422,8 +422,8 @@ PlayerSettings:
   spritePackerPolicy: 
   webGLMemorySize: 2032
   webGLExceptionSupport: 1
-  webGLDataCaching: 0
-  webGLDebugSymbols: 0
+  webGLDataCaching: 1
+  webGLDebugSymbols: 1
   webGLEmscriptenArgs: 
   webGLModulesDirectory: 
   webGLTemplate: APPLICATION:Default
