@@ -5,16 +5,18 @@
 <table class="player-info">
   <tr>
     <th>last synced</th>
-    <td>TODO</td>
+    <td><%= @player.activities_synced_at %></td>
   </tr>
-  <tr>
-    <th>steps available</th>
-    <td><%= @player.steps_available %></td>
-  </tr>
-  <tr>
-    <th>active minutes available</th>
-    <td><%= @player.active_minutes %></td> <%# todo: use total, not today only, once branch merged %>
-  </tr>
+  <% unless @player.in_control_group? %>
+      <tr>
+        <th>steps available</th>
+        <td><%= @player.steps_available %></td>
+      </tr>
+      <tr>
+        <th>active minutes available</th>
+        <td><%= @player.active_minutes %></td> <%# todo: use total, not today only, once branch merged %>
+      </tr>
+  <% end %>
   <tr>
     <th>Activity Details</th>
     <td>
@@ -22,26 +24,42 @@
         <tr>
           <th>date</th>
           <th>steps</th>
-          <th>steps claimed?</th>
+
+          <% unless @player.in_control_group? %>
+              <th>steps claimed?</th>
+          <% end %>
+
           <th>active minutes</th>
+
           <th>active goal met?</th>
-          <th>active minutes claimed?</th>
+
+          <% unless @player.in_control_group? %>
+              <th>active minutes claimed?</th>
+          <% end %>
         </tr>
         <% @player.activities.order(date: 'desc').each do |activity| %>
             <tr>
               <td><%= activity.date %></td>
+
               <td><%= activity.steps %></td>
-              <td><%= activity.steps_claimed? %></td>
+              <% unless @player.in_control_group? %>
+                  <td><%= activity.steps_claimed? %></td>
+              <% end %>
+
               <td><%= activity.active_minutes %></td>
               <td><%= activity.active_goal_met? %></td>
-              <td><%= activity.active_minutes_claimed? %></td>
+
+              <% unless @player.in_control_group? %>
+                  <td><%= activity.active_minutes_claimed? %></td>
+              <% end %>
             </tr>
         <% end %>
       </table>
-
     </td>
   </tr>
 </table>
+
+<% unless @player.in_control_group? %>
 
 <h2>Info</h2>
 <table class="player-info">
@@ -112,3 +130,5 @@
   <% end %>
 
 </table>
+
+<% end %>

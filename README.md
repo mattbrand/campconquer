@@ -47,11 +47,7 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 
 - [ ] validate max. one capture per game
 
-- [x] unequip (or we may not need unequip if i add the rule “only one of each item type can be equipped” )
-
 - [ ] player stats across all seasons in GET player endpoint
-
-- [x] admin user who is not a player
 
 - [ ] set session token inside WebGL HTML; skip login in client
 
@@ -66,17 +62,19 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
     - [ ] CircleCI
 - [ ] rename attack_mvp to top_attacker and defense_mvp to top_defender
 - [ ] seed_players should use avatar.csv to determine gear asset
+- [ ] remove/unify json path files -> paths.csv
 - [ ] remove `current` db field
 - [ ] create prod env
   - [ ] heroku
   - [ ] fitbit
   - [ ] game client selector UI
 - [ ] fixture factories
-- [ ] merge Piece into Player in API
-- [ ] [upgrade to Rails 5](http://blog.bigbinary.com/2016/08/18/new-framework-defaults-in-rails-5-to-make-upgrade-easier.html)
+- [ ] merge Piece into Player in API and DB
 - [ ] make a Procfile https://devcenter.heroku.com/articles/ruby-default-web-server
 - [ ] Alex learns Unity (gratis)
+
 - [ ] switch from RAML to Swagger? http://swagger.io/
+- [ ] [upgrade to Rails 5](http://blog.bigbinary.com/2016/08/18/new-framework-defaults-in-rails-5-to-make-upgrade-easier.html)
 
 
 # Updating the Seed DB

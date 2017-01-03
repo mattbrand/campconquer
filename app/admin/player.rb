@@ -23,6 +23,7 @@ ActiveAdmin.register Player do
     column :password_set? do |p|
       status_tag p.password_set?
     end
+    column :in_control_group
     column :embodied
     column :gamemaster
     column :admin
@@ -64,6 +65,7 @@ ActiveAdmin.register Player do
       f.input :session_token, input_html: readonly
       f.input :coins
       f.input :gems
+      f.input :in_control_group, as: :boolean
       f.input :embodied, as: :boolean
       f.input :gamemaster, as: :boolean
       f.input :admin, as: :boolean

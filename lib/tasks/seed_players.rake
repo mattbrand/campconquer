@@ -5,6 +5,8 @@ namespace :db do
     Player.create!(name: 'mod', password: 'xyzzy', team: 'red', admin: true, gamemaster: true)
     puts "Created mod"
     Board.new.seed_teams
+    Board.new.seed_control_group
+    Rake::Task['db:seed_activities'].invoke
   end
 end
 
@@ -70,6 +72,14 @@ class Board
       player.update(embodied: true)
 
       puts ["created player ##{player.id}", player.name.ljust(20), @team_name, piece.role, piece.body_type].join("\t")
+    end
+  end
+
+  def seed_control_group
+    10.times do
+      player = Player.new(name: random_name, password: 'password', in_control_group: true)
+      player.save!
+      puts ["created control player ##{player.id}", player.name.ljust(20)].join("\t")
     end
   end
 end

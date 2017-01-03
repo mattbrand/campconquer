@@ -18,6 +18,7 @@
 #  gamemaster           :boolean          default("f"), not null
 #  admin                :boolean          default("f"), not null
 #  activities_synced_at :datetime
+#  in_control_group     :boolean          default("f"), not null
 #
 # Indexes
 #
@@ -95,7 +96,7 @@ class Player < ActiveRecord::Base
   serialize :fitbit_token_hash
 
   validates_uniqueness_of :name
-  validates :team, inclusion: {in: Team::NAMES.values, message: Team::NAMES.validation_message}
+  validates :team, inclusion: {in: Team::NAMES.values, message: Team::NAMES.validation_message}, unless: :in_control_group?
 
 
   # def require_piece
@@ -103,8 +104,10 @@ class Player < ActiveRecord::Base
   # end
 
   after_create do
-    set_piece
-    buy_and_equip_default_gear
+    unless in_control_group?
+      set_piece
+      buy_and_equip_default_gear
+    end
   end
 
   def set_piece(params = {})
