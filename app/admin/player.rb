@@ -8,7 +8,8 @@ ActiveAdmin.register Player do
                 :gems,
                 :embodied,
                 :gamemaster,
-                :admin
+                :admin,
+                :in_control_group
 
   filter :name
   filter :team, as: :select
