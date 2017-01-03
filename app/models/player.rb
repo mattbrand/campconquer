@@ -110,8 +110,8 @@ class Player < ActiveRecord::Base
     end
   end
 
-  def can_play?
-    (not in_control_group? and not gamemaster?)
+  def can_see_game?
+    not in_control_group? # players and gamemasters but not control groupers
   end
 
   def set_piece(params = {})

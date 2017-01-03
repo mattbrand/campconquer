@@ -19,7 +19,7 @@
     <% end %>
 
     <% if current_player %>
-        <% if current_player.can_play? %>
+        <% if current_player.can_see_game? %>
           <li>
             <a href="/game">Game</a>
           </li>
