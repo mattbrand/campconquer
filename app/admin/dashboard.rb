@@ -28,6 +28,7 @@ ActiveAdmin.register_page "Dashboard" do
         panel "Info" do
           para "Welcome to Camp Conquer!"
           para "Click in the top nav on the resource you want."
+          a "Home", href: '/'
         end
       end
     end
