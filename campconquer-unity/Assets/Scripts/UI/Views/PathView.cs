@@ -102,7 +102,7 @@ public class PathView : UIView
         Canvas myCanvas = GameObject.Find("Canvas").GetComponent<Canvas>();
 
         _scale = new Vector2(0.78f, 0.78f);
-        _offset = new Vector2(1.7f, 0.8f);
+        _offset = new Vector2(1.7f, 1.1f);
 
         //Debug.Log("GeneratePathList - scale = " + _scale + " offset = " + _offset);
 
@@ -117,13 +117,15 @@ public class PathView : UIView
             //Debug.Log(PathManager.Instance.GetRedPathCount());
             for (i = 0; i < PathManager.Instance.GetRedPathCount(); i++)
             {
-                x = (PathManager.Instance.GetRedPath(i).Points[2].x * 0.78f) + 1.7f;
-                y = (PathManager.Instance.GetRedPath(i).Points[2].y * 0.78f) + 0.8f;
+                //Debug.Log("path " + i + " count = " + PathManager.Instance.GetRedPath(i).Count);
+                //x = (PathManager.Instance.GetRedPath(i).Points[2].x * 0.78f) + 1.7f;
+                //y = (PathManager.Instance.GetRedPath(i).Points[2].y * 0.78f) + 0.8f;
+
+                x = (PathManager.Instance.GetRedPath(i).ButtonPosition.x * 0.78f) + 1.7f;
+                y = (PathManager.Instance.GetRedPath(i).ButtonPosition.y * 0.78f) + 0.8f;
 
                 pathItem = (PathItem)Instantiate(PathItemPrefab, new Vector3(x, y, -9.5f), Quaternion.identity);
                 pathItem.Init(PathManager.Instance.GetRedPath(i), new Vector2(x, y));
-                //pathItem.Initialize(PathManager.Instance.GetBluePath(i));
-                //pathItem.RenderPath(_scale, _offset);
                 _paths.Add(pathItem);
             }
         }
@@ -132,9 +134,11 @@ public class PathView : UIView
             //Debug.Log(PathManager.Instance.GetBluePathCount());
             for (i = 0; i < PathManager.Instance.GetBluePathCount(); i++)
             {
-                pathItem = (PathItem)Instantiate(PathItemPrefab, Vector3.zero, Quaternion.identity);
-                //pathItem.Initialize(PathManager.Instance.GetBluePath(i));
-                //pathItem.RenderPath(_scale, _offset);
+                x = (PathManager.Instance.GetBluePath(i).ButtonPosition.x * 0.78f) + 1.7f;
+                y = (PathManager.Instance.GetBluePath(i).ButtonPosition.y * 0.78f) + 0.8f;
+
+                pathItem = (PathItem)Instantiate(PathItemPrefab, new Vector3(x, y, -9.5f), Quaternion.identity);
+                pathItem.Init(PathManager.Instance.GetBluePath(i), new Vector2(x, y));
                 _paths.Add(pathItem);
             }
         }
@@ -159,6 +163,8 @@ public class PathView : UIView
         HelpText.Deactivate();
 
         RoleView.Instance.UnselectPositions();
+        RoleView.Instance.ActivateSelectButton();
+        RoleView.Instance.ActivateTip(1);
         RoleView.Instance.State = RoleView.RoleViewState.PATH;
     }
 
@@ -193,12 +199,12 @@ public class PathView : UIView
                 rotation = Quaternion.Euler(0.0f, 180.0f, 0.0f);
 
             //Debug.Log("instantiating piece!");
-            _piece = (Piece)Instantiate(GN1Prefab, new Vector2(_path.GetPath.Points[2].x, _path.GetPath.Points[2].y), rotation);
-            _piece.InitializeForAttack(_scale, _offset, new CampConquer.Point(_path.GetPath.Points[2].x, _path.GetPath.Points[2].y));
+            _piece = (Piece)Instantiate(GN1Prefab, new Vector2(_path.GetPath.ButtonPosition.x, _path.GetPath.ButtonPosition.y), rotation);
+            _piece.InitializeForAttack(_scale, _offset, new CampConquer.Point(_path.GetPath.ButtonPosition.x, _path.GetPath.ButtonPosition.y));
         }
         else
         {
-            _piece.InitializeForAttack(_scale, _offset, new CampConquer.Point(_path.GetPath.Points[2].x, _path.GetPath.Points[2].y));
+            _piece.InitializeForAttack(_scale, _offset, new CampConquer.Point(_path.GetPath.ButtonPosition.x, _path.GetPath.ButtonPosition.y));
         }
     }
 

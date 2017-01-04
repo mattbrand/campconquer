@@ -11,17 +11,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09ad9ddc0e5b942a98ec392b434d39bd, type: 3}
   m_Name: FabricSettings
   m_EditorClassIdentifier: 
-  email: 
-  rawToken: 
+  email: mattbrand@gametheoryco.com
+  rawToken: '{"access_token":"d57f2bac8e579bc37db358d3eaa2bd95671be7c605f9a43f798f17a7cbdfe2dd","refresh_token":"0092825a0d66a919a2630e5754bfb40b495ce8348c9674a6f96f4799fd55b1eb","token_type":"bearer","expires_in":86400}'
   organization:
-    Name: 
-    Id: 
-    ApiKey: 
-    BuildSecret: 
+    Name: Gametheory
+    Id: 57040c415127aee7340000d3
+    ApiKey: bf167bca8a36d3d65bdeaacab304cd2d31afb186
+    BuildSecret: 9dc0582ff0244cfc4c20147886fd82a4a8d09c1687a0acba5e26e8a49e9338a9
   iconUrl: 
   dashboardUrl: 
   initialization: 0
-  flowSequence: 0
+  flowSequence: 100
   conflict: 
   kit: 
   installedKits: []

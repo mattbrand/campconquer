@@ -50,6 +50,8 @@ namespace CampConquer
         #region Methods
         public void Initialize()
         {
+            //Debug.Log("PathManager Initialize");
+
             _redPaths = new List<Path>();
             _bluePaths = new List<Path>();
 
@@ -114,6 +116,8 @@ namespace CampConquer
 
         void LoadPathsFromGameData()
         {
+            //Debug.Log("LoadPathsFromGameData");
+
             for (int i = 0; i < OnlineManager.Instance.GameData.paths.Count; i++)
             {
                 PathData pathData = OnlineManager.Instance.GameData.paths[i];
@@ -130,7 +134,7 @@ namespace CampConquer
                 else
                 {
                     //Debug.Log("adding path for " + color);
-                    AddOffensePath(color, pathData.points, pathData.count);
+                    AddOffensePath(color, pathData.points, pathData.count, pathData.button_position, pathData.button_angle);
                 }
             }
         }
@@ -144,9 +148,11 @@ namespace CampConquer
                 _blueDefensePos.Add(pos);
         }
 
-        void AddOffensePath(TeamColor color, List<Point> points, int count)
+        void AddOffensePath(TeamColor color, List<Point> points, int count, Point buttonPosition, int buttonAngle)
         {
             Path path = new Path(points, count);
+            path.ButtonPosition = buttonPosition;
+            path.ButtonAngle = buttonAngle;
             if (color == TeamColor.RED)
                 _redPaths.Add(path);
             else
@@ -402,6 +408,8 @@ namespace CampConquer
     {
         public List<Point> Points;
         public int Count;
+        public Point ButtonPosition;
+        public int ButtonAngle;
 
         public Path(List<Point> points)
         {

@@ -123,6 +123,8 @@ public class PositionView : UIView
         InstantiatePiece();
 
         RoleView.Instance.UnselectPaths();
+        RoleView.Instance.ActivateSelectButton();
+        RoleView.Instance.ActivateTip(1);
         RoleView.Instance.State = RoleView.RoleViewState.POSITION;
     }
 

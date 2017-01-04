@@ -15,19 +15,25 @@ public class RoleView : UIView
 	const string DEFENSE_SETUP_VIEW = "PositionView";
 	const string ATTACK_SETUP_VIEW = "PathView";
 	const string ROLE_VIEW = "RoleView";
+    const string TIP_1 = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s";
+    const string TIP_2 = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution";
 	#endregion
 
     #region Public Vars
     public ExtendedText TimeText;
+    public ExtendedText TipText;
     public ExtendedButton OffenseButton;
     public ExtendedButton DefenseButton;
     public ExtendedButton SelectButton;
     public ExtendedButton RefreshButton;
     public ExtendedButton BackButton;
+    public ExtendedButton PrepareButton;
     public ExtendedImage PrepareSplashImage;
     public ExtendedImage PreparedSplashImage;
     public ExtendedImage TimerPanelImage;
     public ExtendedImage BattleCompleteImage;
+    public ExtendedImage TipBGImage;
+    public ExtendedImage TipHeaderImage;
     public Sprite RedBattleInProgressSprite;
     public Sprite BlueBattleInProgressSprite;
     public Sprite BluePreparedSprite;
@@ -206,13 +212,35 @@ public class RoleView : UIView
                 break;
             case RoleViewState.PATH_SELECTED:
             case RoleViewState.POSITION_SELECTED:
-			    //SelectButton.Text = CONFIRM_TEXT;
 			    PreparedSplashImage.Deactivate();
                 PathItem.CanClick = true;
 			    PositionItem.CanClick = true;
                 State = RoleViewState.ROLE;
                 break;
         }
+    }
+
+    public void ClickPrepare()
+    {
+        PrepareSplashImage.Deactivate();
+        PrepareButton.Deactivate();
+
+        ActivateTip(0);
+
+        UIViewController.ActivateUIView(PathView.Load());
+        UIViewController.ActivateUIView(PositionView.Load());
+    }
+
+    public void ActivateTip(int tipNumber)
+    {
+        TipBGImage.Activate();
+        TipHeaderImage.Activate();
+        TipText.Activate();
+
+        if (tipNumber == 0)
+            TipText.Text = TIP_1;
+        else
+            TipText.Text = TIP_2;
     }
 
     void SelectYes()
@@ -245,12 +273,8 @@ public class RoleView : UIView
     {
     }
 
-    void ActivateSelectButton()
+    public void ActivateSelectButton()
     {
-        if (State == RoleViewState.PATH)
-            SelectButton.Text = "CONFIRM PATH";
-        else
-            SelectButton.Text = "CONFIRM POSITION";
         SelectButton.Activate();
     }
 
@@ -283,6 +307,8 @@ public class RoleView : UIView
     {
         yield return StartCoroutine(OnlineManager.Instance.StartGetGame());
 
+        PathManager.Instance.Initialize();
+
         if (OnlineManager.Instance.GameStatus == OnlineGameStatus.PREPARING)
         {
             OffenseButton.Deactivate();
@@ -304,8 +330,8 @@ public class RoleView : UIView
             //Debug.Log(selectionAlreadyMade);
             if (selectionAlreadyMade)
             {
-                PrepareSplashImage.Deactivate();
-                PreparedSplashImage.Activate();
+                //PrepareSplashImage.Deactivate();
+                //PreparedSplashImage.Activate();
                 SelectButton.Activate();
 
                 UIViewController.ActivateUIView(PathView.Load());
@@ -327,8 +353,9 @@ public class RoleView : UIView
             else
             {
 				SelectButton.Deactivate();
-				UIViewController.ActivateUIView(PathView.Load());
-				UIViewController.ActivateUIView(PositionView.Load());
+
+                PrepareSplashImage.Activate();
+                PrepareButton.Activate();
             }
 
             // calculate time
@@ -344,8 +371,8 @@ public class RoleView : UIView
         }
         else
         {
-            OffenseButton.Deactivate();
-            DefenseButton.Deactivate();
+            //OffenseButton.Deactivate();
+            //DefenseButton.Deactivate();
             SelectButton.Deactivate();
             PrepareSplashImage.Deactivate();
             if (Avatar.Instance.Color == TeamColor.RED)

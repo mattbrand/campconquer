@@ -91,9 +91,11 @@ public class PositionItem : MonoBehaviour
         _countText.rectTransform.anchoredPosition3D = new Vector3(WorldObject_ScreenPosition.x, WorldObject_ScreenPosition.y, 0.0f);
 
         // set initial variables
-        _position = position;
         SetCount(defensePos.Count);
+        _position = position;
         _selected = false;
+
+        // pulse
         _pulse = true;
         _dir = 1;
         _alpha = UNSELECTED_LINE_ALPHA;
