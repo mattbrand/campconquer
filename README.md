@@ -12,6 +12,7 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 
 
 # TODO
+- [ ] make sure client behaves OK with maintenance mode on
 
 - [ ] optimization - look at Scout for slow requests
 

@@ -50,6 +50,9 @@ case ${answer:0:1} in
     ;;
 esac
 
+echo ""
+echo "Entering maintenance mode"
+heroku maintenance:on  --app ${app}
 
 echo ""
 echo "Deploying ${branch} to ${app} (remote ${remote})"
@@ -62,3 +65,7 @@ heroku run rake db:migrate --app ${app}
 echo ""
 echo "Seeding ${app} DB"
 heroku run rake db:seed --app ${app}
+
+echo ""
+echo "Leaving maintenance mode"
+heroku maintenance:off  --app ${app}
