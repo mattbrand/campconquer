@@ -128,9 +128,11 @@ public class OnlineManager : MonoBehaviour
 
     void SetGameInfo(string json)
     {
+        //Debug.Log("SetGameInfo");
         GameResponseData responseData = JsonConvert.DeserializeObject<GameResponseData>(json);
         //Debug.Log("1");
         _gameData = responseData.game;
+        //Debug.Log(json);
         _gameStatus = (OnlineGameStatus)Enum.Parse(typeof(OnlineGameStatus), _gameData.state.ToUpper(), true);
         //Debug.Log("2");
     }
@@ -830,6 +832,8 @@ public class PlayerData
 public class PathData
 {
     public string team;
+    public Point button_position;
+    public int button_angle;
     public string role;
     public List<Point> points;
     public int count;

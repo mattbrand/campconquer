@@ -220,6 +220,7 @@
 ./Fabric/Managed.meta
 ./Fabric/Manifest
 ./Fabric/Manifest.meta
+./Fabric/NOTICE.txt
 ./Fabric/Runtime
 ./Fabric/Runtime/Fabric.cs
 ./Fabric/Runtime/Fabric.cs.meta
@@ -236,6 +237,7 @@
 ./Fabric/Runtime/Internal/Impl.cs.meta
 ./Fabric/Runtime/Internal.meta
 ./Fabric/Runtime.meta
+./Fabric/THIRDPARTYLICENSE.TXT
 ./Fabric/ThirdParty
 ./Fabric/ThirdParty/MiniJSON.cs
 ./Fabric/ThirdParty/MiniJSON.cs.meta

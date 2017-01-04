@@ -19,6 +19,7 @@ public class PathItem : MonoBehaviour
     #region Public Vars
     public SpriteRenderer SpriteRend;
     public Text PositionTextPrefab;
+    public GameObject ArrowObject;
     #endregion
 
     #region Private Vars
@@ -74,11 +75,17 @@ public class PathItem : MonoBehaviour
     #endregion
 
     #region Methods
+    public void Click()
+    {
+        if (CanClick && !_selected)
+        {
+            if (clickPath != null)
+                clickPath(this);
+        }
+    }
+
     public void Init(Path path, Vector2 position)
     {
-        _path = path;
-        _selected = false;
-
         // create count text
         Camera myCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
         Canvas myCanvas = GameObject.Find("Canvas").GetComponent<Canvas>();
@@ -89,19 +96,21 @@ public class PathItem : MonoBehaviour
         Vector2 WorldObject_ScreenPosition = new Vector2(((ViewportPosition.x * CanvasRect.sizeDelta.x) - (CanvasRect.sizeDelta.x * X_FACTOR)), ((ViewportPosition.y * CanvasRect.sizeDelta.y) - (CanvasRect.sizeDelta.y * Y_FACTOR)));
         _countText.rectTransform.anchoredPosition3D = new Vector3(WorldObject_ScreenPosition.x, WorldObject_ScreenPosition.y, 0.0f);
 
+        // initial variables
         SetCount(path.Count);
-
-        /*
-        // set initial variables
-        _position = position;
-        SetCount(defensePos.Count);
+        _path = path;
         _selected = false;
+
+        // pulse
         _pulse = true;
         _dir = 1;
         _alpha = UNSELECTED_LINE_ALPHA;
         _pulseColor = new Color(1.0f, 1.0f, 1.0f, _alpha);
-        SpriteRend.color = _pulseColor;
-        */
+        //SpriteRend.color = _pulseColor;
+
+        transform.eulerAngles = new Vector3(0.0f, 0.0f, path.ButtonAngle);
+
+        //this.transform.localEulerAngles = 
     }
 
     public void Select()
