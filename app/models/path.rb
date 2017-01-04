@@ -10,7 +10,7 @@ class Path
     paths = rows.map do |row|
       team = row["team"]
       button_position = Point.from_s(row["button_position"])
-      button_angle = row["button_angle"] and row["button_angle"].to_i
+      button_angle = row["button_angle"] && row["button_angle"].to_i
       role = row["role"]
       points = parse_point_cells(row)
       Path.new(team: team,
