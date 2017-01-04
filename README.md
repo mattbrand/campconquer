@@ -33,9 +33,7 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 - [ ] player HTML page -- when logged in, shows activities etc 
   - http://sprint.ly/product/41137/item/338
 
-- [ ] 'control group' players (no team)
-  - can see steps etc but no redemption 
-  - need UI (Web only, for moderator? or for players too?)
+- [x] 'control group' players (no team)
 
 ## low priority features
 
@@ -204,7 +202,7 @@ Open the `campconquer-unity` directory as a project dir in Unity
 
 ### API Usage
 
-1. Sign in and get a token
+1. Sign in and get a token (use your actual password, not `xyzzy`)
 
     <http://localhost:3000/api/sessions?name=mod&password=xyzzy> =>
 
@@ -274,7 +272,6 @@ Player.all.map{|p| [p.name, p.gear_owned]}
 Player.all.each {|p| Gear.where(owned_by_default: true).each {|g| p.buy_gear! g.name unless p.gear_owned.include?(g.name)}}
 ```
 
-
 *set a random path on a player `p`*
 
 ```
@@ -298,24 +295,33 @@ Player.all.each {|p| Gear.where(owned_by_default: true).each {|g| p.buy_gear! g.
 
 * https://ngrok.com/ may be useful if you want to demo a locally-running app to someone on the wider Internet
 
-# Staging
+# Production and Staging
 
-## Deploy to Heroku
+## Local Setup
 
 ```
-./deploy.sh
+git remote add prod https://git.heroku.com/campconquer-prod.git
+git remote add staging https://git.heroku.com/campconquer-staging.git
 ```
 
-Change Heroku config vars to match local config vars (you probably don't want to do this):
-```
-heroku config:set `cat .env`
-```
+## Heroku Commands
+
+| command | description |
+|---|---|
+| `./deploy.sh staging` | deploy local master branch to staging |
+| `heroku console --app campconquer-staging` | open Rails console on staging  |
+| `heroku config --app campconquer-staging` | display config vars for staging  |
+|---|---|
+| `./deploy.sh production` | deploy local master branch to production  |
+| `heroku console --app campconquer-prod` | open Rails console on production  |
+| `heroku config --app campconquer-prod` | display config vars for production  |
 
 ## Check Logs
 
-sign in to <https://heroku.com>
-visit <https://dashboard.heroku.com/apps/campconquer-staging/resources>
-and click on "Papertrail"
+* sign in to <https://heroku.com>
+* visit <https://dashboard.heroku.com/apps/campconquer-staging/resources>
+* or <https://dashboard.heroku.com/apps/campconquer-prod/resources>
+* and click on "Papertrail"
 
 ## scheduled jobs
 

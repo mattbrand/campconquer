@@ -1,7 +1,29 @@
 #!/usr/bin/env bash
 set -e
 
-app="campconquer-staging" # todo: command-line parameter to switch btw staging and prod
+function usage {
+    echo "./deploy.sh [staging|prod]"
+}
+
+target=$1
+if [[ -z "$target" ]]; then
+    echo "You must specify the target!"
+    usage
+    exit
+fi
+
+case $target in
+    prod|production)
+        app="campconquer-prod"
+        ;;
+    staging)
+        app="campconquer-staging"
+        ;;
+    * )
+        echo "Invalid target '$target'!"
+        usage
+        exit
+esac
 
 remote=`git remote -v | grep ${app}.git | awk '{print $1}' | head -1`
 
