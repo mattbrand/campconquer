@@ -57,8 +57,8 @@ class Game < ActiveRecord::Base
                           message: 'should be true for only one game'
 
   validates :winner, inclusion: {
-    in: Team::NAMES.values + ["none"],
-    message: Team::NAMES.validation_message + ' or "none"',
+      in: Team::NAMES.values + ["none"],
+      message: Team::NAMES.validation_message + ' or "none"',
   }, allow_nil: true
 
   before_validation do
@@ -110,20 +110,20 @@ class Game < ActiveRecord::Base
 
   def self.serialization_options
     {
-      except: :moves,
-      include: [
-        {
-          :pieces => Piece.serialization_options,
-        },
-        :team_summaries,
-        :player_outcomes,
-        :paths,
-      ],
-      methods: [
-        :team_summaries,
-        :paths,
-        :locked,
-      ],
+        except: :moves,
+        include: [
+            {
+                :pieces => Piece.serialization_options,
+            },
+            :team_summaries,
+            :player_outcomes,
+            :paths,
+        ],
+        methods: [
+            :team_summaries,
+            :paths,
+            :locked,
+        ],
     }
   end
 
@@ -135,7 +135,7 @@ class Game < ActiveRecord::Base
 
   def outcome_for_player(player_id)
     player_id = player_id.id if player_id.is_a? Player
-    player_outcomes.detect{|o| o.player_id == player_id}
+    player_outcomes.detect { |o| o.player_id == player_id }
   end
 
   alias_method :locked, :in_progress?
@@ -158,10 +158,10 @@ class Game < ActiveRecord::Base
 
     # todo: test using ready_players' pieces vs self.pieces based on state
     pieces = if self.preparing?
-                ready_players.map(&:piece)
-              else
-                self.pieces
-              end
+               ready_players.map(&:piece)
+             else
+               self.pieces
+             end
 
     pieces.each do |piece|
       path_points = piece.path # # todo: resolve "path" vs "points" ambiguity
@@ -169,7 +169,7 @@ class Game < ActiveRecord::Base
 
       found_path = all_paths.detect { |p| p == seeking_path }
       if found_path
-      found_path.increment_count
+        found_path.increment_count
       else
         logger.warn("couldn't match path #{seeking_path.to_json}")
       end
@@ -193,7 +193,7 @@ class Game < ActiveRecord::Base
     params = params.with_indifferent_access
     moves = params.delete(:moves)
     defaults = {
-      match_length: 0,
+        match_length: 0,
     }
 
     # Rails is SO WEIRD
@@ -255,10 +255,10 @@ class Game < ActiveRecord::Base
 
   def ready_players
     Player.all.includes(piece: :items).
-      # where(embodied: true).
-      where('pieces.game_id IS NULL').
-      where('pieces.path IS NOT NULL').
-      references(:pieces, :items)
+        # where(embodied: true).
+        where('pieces.game_id IS NULL').
+        where('pieces.path IS NOT NULL').
+        references(:pieces, :items)
   end
 
   def calculate_winner

@@ -10,7 +10,7 @@ class Path
     paths = rows.map do |row|
       team = row["team"]
       button_position = Point.from_s(row["button_position"])
-      button_angle = row["button_angle"]
+      button_angle = row["button_angle"] and row["button_angle"].to_i
       role = row["role"]
       points = parse_point_cells(row)
       Path.new(team: team,
@@ -67,12 +67,12 @@ class Path
   def serializable_hash(options=nil)
     {
         team: @team,
-        button_position: @button_position,
+        button_position: @button_position.as_json, # serialization is dumb
         button_angle: @button_angle,
         role: @role,
         count: @count,
         active: @active,
-        points: @points.map(&:as_json),
+        points: @points.map(&:as_json), # serialization is nuts
     }.deep_stringify_keys
   end
 

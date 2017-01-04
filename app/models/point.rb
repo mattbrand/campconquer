@@ -1,6 +1,8 @@
 # it's a model, and it's not persistent
 # (except as an array inside Piece.path)
 class Point
+  include ActiveModel::Serializers::JSON
+
   attr_reader :x
   attr_reader :y
 
@@ -35,8 +37,8 @@ class Point
     {x: @x, y: @y}
   end
 
-  def serializable_hash
-    to_hash
+  def attributes
+    to_hash.deep_stringify_keys
   end
 
   def ==(other)
@@ -44,4 +46,5 @@ class Point
         other.x == self.x and
         other.y == self.y
   end
+
 end
