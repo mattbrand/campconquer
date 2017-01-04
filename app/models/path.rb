@@ -10,7 +10,7 @@ class Path
     paths = rows.map do |row|
       team = row["team"]
       button_position = Point.from_s(row["button_position"])
-      button_angle = row["button_angle"] && row["button_angle"].to_i
+      button_angle = row["button_angle"].to_i
       role = row["role"]
       points = parse_point_cells(row)
       Path.new(team: team,
@@ -42,7 +42,7 @@ class Path
 
   attr_reader :team, :button_position, :button_angle, :role, :points, :count, :active
 
-  def initialize(team:, button_position:nil, button_angle:nil, role:, points:, count: 0, active: true)
+  def initialize(team:, button_position:nil, button_angle:0, role:, points:, count: 0, active: true)
     @team = team
     @button_position = button_position
     @button_angle = button_angle
