@@ -31,7 +31,11 @@ describe Path do
     end
   end
 
-  let(:path) { Path.new(team: 'red', role: 'defense', points: [Point.new(x: 1, y: 2)]) }
+  let(:path) { Path.new(team: 'red',
+                        button_position: Point.new(x: 1, y: 2),
+                        button_angle: -45,
+                        role: 'defense',
+                        points: [Point.new(x: 1, y: 2)]) }
 
   describe 'count' do
     it 'can be incremented' do
@@ -46,6 +50,8 @@ describe Path do
       path.increment_count
       expect(path.as_json).to eq({
                                    'team' => 'red',
+                                   "button_position"=>{"x"=>1, "y"=>2},
+                                   "button_angle"=>-45,
                                    'role' => 'defense',
                                    'active' => true,
                                    'count' => 1,
@@ -73,7 +79,8 @@ describe Path do
       expect_equal(red_offense_path_1, red_offense_path_1)
       expect_equal(red_offense_path_1, red_offense_path_2)
 
-      red_offense_path_3 = Path.new(team: 'red', role: 'offense', points: [Point.new(x: 1, y: 2), Point.new(x: 2, y: 1)])
+      red_offense_path_3 = Path.new(team: 'red', role: 'offense', points: [Point.new(x: 1, y: 2),
+                                                                           Point.new(x: 2, y: 1)])
 
       expect_not_equal(red_offense_path_1, red_offense_path_3)
 

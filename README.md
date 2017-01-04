@@ -202,7 +202,7 @@ Open the `campconquer-unity` directory as a project dir in Unity
 
 ### API Usage
 
-1. Sign in and get a token (use your actual password, not `xyzzy`)
+1. Sign in and get a token (use your actual name and password)
 
     <http://localhost:3000/api/sessions?name=mod&password=xyzzy> =>
 

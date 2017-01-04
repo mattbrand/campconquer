@@ -9,16 +9,25 @@ class Path
     rows = CSV.read(f, headers: :first_row)
     paths = rows.map do |row|
       team = row["team"]
+      button_position = Point.from_s(row["button_position"])
+      button_angle = row["button_angle"]
       role = row["role"]
-      point_cells = (0..9).map do |i|
-        row["point#{i}"]
-      end.compact
-      points = point_cells.map do |cell|
-        Point.from_a(cell.split(',').map(&:to_f))
-      end.compact
-      Path.new(team: team, role: role, points: points)
+      points = parse_point_cells(row)
+      Path.new(team: team,
+               button_position: button_position,
+               button_angle: button_angle,
+               role: role,
+               points: points)
     end
     paths
+  end
+
+  def self.parse_point_cells(row)
+    (0..9).map do |i|
+      row["point#{i}"]
+    end.compact.map do |cell|
+      Point.from_s(cell)
+    end.compact
   end
 
   def self.all
@@ -31,10 +40,12 @@ class Path
     end
   end
 
-  attr_reader :team, :role, :points, :count, :active
+  attr_reader :team, :button_position, :button_angle, :role, :points, :count, :active
 
-  def initialize(team:, role:, points:, count: 0, active: true)
+  def initialize(team:, button_position:nil, button_angle:nil, role:, points:, count: 0, active: true)
     @team = team
+    @button_position = button_position
+    @button_angle = button_angle
     @role = role
     @points = points
     @count = count
@@ -43,9 +54,9 @@ class Path
 
   def ==(other)
     other.is_a? Path and
-      other.team == self.team and
-      other.role == self.role and
-      other.points == self.points
+        other.team == self.team and
+        other.role == self.role and
+        other.points == self.points
   end
 
   # for export to gdoc sheet
@@ -55,11 +66,13 @@ class Path
 
   def serializable_hash(options=nil)
     {
-      team: @team,
-      role: @role,
-      count: @count,
-      active: @active,
-      points: @points.map(&:as_json),
+        team: @team,
+        button_position: @button_position,
+        button_angle: @button_angle,
+        role: @role,
+        count: @count,
+        active: @active,
+        points: @points.map(&:as_json),
     }.deep_stringify_keys
   end
 

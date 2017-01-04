@@ -15,6 +15,14 @@ class Point
     new(**hash.symbolize_keys)
   end
 
+  def self.from_s(s)
+    if s.blank?
+      nil
+    else
+      Point.from_a(s.split(',').map(&:to_f))
+    end
+  end
+
   def initialize(x:, y:)
     @x, @y = x, y
   end
@@ -33,7 +41,7 @@ class Point
 
   def ==(other)
     other.is_a? Point and
-      other.x == self.x and
-      other.y == self.y
+        other.x == self.x and
+        other.y == self.y
   end
 end
