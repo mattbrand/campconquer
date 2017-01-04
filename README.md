@@ -190,6 +190,18 @@ and [Postman](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdgg
 * `rails server` or `heroku local`
 * `open http://localhost:3000`
 
+### Unity
+
+Open the `campconquer-unity` directory as a project dir in Unity
+
+#### Building a Unity Build in Unity
+
+1. click "Build Settings" (cmd-shift-B)
+1. make sure platform is "WebGL" (select it and click "Switch Platform" if it's not)
+1. click "Player Settings" button and make sure memory is 2032
+1. click "Build" button
+1. click on "public" and *Save As "CampConquer"* -- if it doesn't say "Are you sure?" then you clicked wrong
+
 ### API Usage
 
 1. Sign in and get a token
