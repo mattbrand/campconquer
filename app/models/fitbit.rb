@@ -75,8 +75,8 @@ class Fitbit
 
   # see https://dev.fitbit.com/docs/oauth2/#scope
   def scope
-    'activity heartrate location nutrition profile settings sleep social weight'
-    # 'activity settings'  # todo: reduce scope?
+    # 'activity heartrate location nutrition profile settings sleep social weight'
+    'activity'
   end
 
   public
