@@ -21,7 +21,7 @@ MonoBehaviour:
   iconUrl: 
   dashboardUrl: 
   initialization: 0
-  flowSequence: 100
+  flowSequence: 0
   conflict: 
   kit: 
   installedKits: []

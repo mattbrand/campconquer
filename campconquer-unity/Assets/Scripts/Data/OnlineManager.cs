@@ -531,7 +531,7 @@ public class OnlineManager : MonoBehaviour
 
     void RedeemActiveMinutes(string json)
     {
-        //Debug.Log(json);
+        Debug.Log(json);
         PlayerResponseData responseData = JsonConvert.DeserializeObject<PlayerResponseData>(json);
         PlayerData playerData = responseData.player;
         //Debug.Log("received player info with gems = " + playerData.gems);
