@@ -43,6 +43,7 @@ public class HistoryView : UIView
     public ExtendedText LastSynced;
     public ExtendedText ClaimGemButtonText;
     public ExtendedText ClaimCoinsButtonText;
+    public ExtendedText GemCountText;
 
     public Sprite BlueLeaderboard;
     public Sprite BlueLeadTitle;
@@ -68,7 +69,8 @@ public class HistoryView : UIView
     #region Unity Methods
     void Update()
     {
-        bool canDisable = true;
+        bool canDisableSteps = true;
+        bool canDisableMins = true;
         switch (_state)
         {
             case HistoryViewState.FILL:
@@ -82,40 +84,50 @@ public class HistoryView : UIView
                         _stepsShown = Avatar.Instance.Steps;
                     }
                     else
-                        canDisable = false;
+                    {
+                        canDisableSteps = false;
+                        //Debug.Log("can disable for steps");
+                    }
 
                     SetCoinsText();
                     SetChestSprite();
                 }
                 // fill activity meter
                 //Debug.Log(_activityMinShown);
+                //Debug.Log(_activityMinShown + " / " + Avatar.Instance.ActiveMins + " max = " + MINUTES_MAX);
                 if (_activityMinShown < Avatar.Instance.ActiveMins && _activityMinShown < MINUTES_MAX)
                 {
                     _activityMinShown++;
+                    //Debug.Log(_activityMinShown + " / " + Avatar.Instance.ActiveMins);
                     if (_activityMinShown >= Avatar.Instance.ActiveMins)
                     {
                         _activityMinShown = Avatar.Instance.ActiveMins;
                     }
                     else
-                        canDisable = false;
+                        canDisableMins = false;
 
                     SetActivityFill();
                     SetActivityText();
+                    //Debug.Log("canDisableMins = " + canDisableMins);
                 }
 
                 // check if update is done
-                if (canDisable)
+                //Debug.Log(canDisableSteps + " --- " + canDisableMins);
+                if (canDisableSteps && canDisableMins)
                 {
+                    //Debug.Log("disabling!");
                     if (_stepsShown > MIN_STEPS)
                     {
                         CoinsClaimButton.Enable();
                         CoinsClaimText.color = Color.white;
                     }
+                    /*
                     if (Avatar.Instance.ActiveMet && !Avatar.Instance.ActiveClaimed)
                     {
                         ActivityClaimButton.Enable();
                         GemClaimText.color = Color.white;
                     }
+                    */
                     _state = HistoryViewState.NONE;
                     SoundManager.Instance.StopCoinTallySound();
                     enabled = false;
@@ -133,7 +145,7 @@ public class HistoryView : UIView
                         _state = HistoryViewState.NONE;
                     }
                     else
-                        canDisable = false;
+                        canDisableSteps = false;
 
                     SetStepsWalkedText();
                     SetCoinsText();
@@ -141,7 +153,7 @@ public class HistoryView : UIView
                 }
 
                 // check if update is done
-                if (canDisable)
+                if (canDisableSteps)
                 {
                     _state = HistoryViewState.NONE;
                     enabled = false;
@@ -341,13 +353,27 @@ public class HistoryView : UIView
         if (DMVP.Text == "")
             DMVP.Text = "0";
 
+        /*
         // if activity claimed, fill meter and set button text
-        if (Avatar.Instance.ActiveClaimed)
+        if (Avatar.Instance.ActiveMins > 0)
         {
-            _activityMinShown = (int)MINUTES_MAX;
-            SetActivityFill();
-            SetActivityText();
-            ClaimGemButtonText.Text = "CLAIMED!";
+            //_activityMinShown = (int)MINUTES_MAX;
+            //SetActivityFill();
+            //SetActivityText();
+            //ClaimGemButtonText.Text = "CLAIMED!";
+        }
+        */
+
+        GemCountText.Text = "x " + Avatar.Instance.GemsAvailable;
+        if (Avatar.Instance.GemsAvailable > 0)
+        {
+            if (Avatar.Instance.GemsAvailable == 1)
+                ClaimGemButtonText.Text = "CLAIM GEM!";
+            else
+                ClaimGemButtonText.Text = "CLAIM GEMS!";
+
+            ActivityClaimButton.Enable();
+            GemClaimText.color = Color.white;
         }
 
         // play fill sound effect

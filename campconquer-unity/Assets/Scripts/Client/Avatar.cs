@@ -259,6 +259,12 @@ public class Avatar : MonoBehaviour, IBindingContext
         }
     }
 
+    public int GemsAvailable
+    {
+        get { return _data.GemsAvailable; }
+        set { _data.GemsAvailable = value; }
+    }
+
     public int ActiveMins
     {
         get { return _data.ActiveMins; }
@@ -266,38 +272,16 @@ public class Avatar : MonoBehaviour, IBindingContext
     }
 
     /*
-    public int VigorousMins
-    {
-        get { return _data.VigorousMins; }
-        set { _data.VigorousMins = value; }
-    }
-    */
-
     public bool ActiveMet
     {
         get { return _data.ActiveMet; }
         set { _data.ActiveMet = value; }
     }
 
-    /*
-    public bool VigorousMet
-    {
-        get { return _data.VigorousMet; }
-        set { _data.VigorousMet = value; }
-    }
-    */
-
     public bool ActiveClaimed
     {
         get { return _data.ActiveClaimed; }
         set { _data.ActiveClaimed = value; }
-    }
-
-    /*
-    public bool VigorousClaimed
-    {
-        get { return _data.VigorousClaimed; }
-        set { _data.VigorousClaimed = value; }
     }
     */
 
@@ -337,13 +321,6 @@ public class Avatar : MonoBehaviour, IBindingContext
         set { _data.GearHairAsset = value; }
     }
 
-    /*
-    public string GetBodyTypeStr()
-    {
-        return _bodyTypeLookup[BodyType];
-    }
-    */
-
     public List<string> EquippedIDs
     {
         get { return _data.EquippedIDs; }
@@ -382,11 +359,12 @@ public class UserData
     public int RangeBonus;
     public int Coins;
     public int Gems;
+    public int GemsAvailable;
     public bool Embodied;
     public int ActiveMins;
     public int Steps;
-    public bool ActiveMet;
-    public bool ActiveClaimed;
+    //public bool ActiveMet;
+    //public bool ActiveClaimed;
     public string Name = "";
     public string SkinColor;
     public string FaceAsset;

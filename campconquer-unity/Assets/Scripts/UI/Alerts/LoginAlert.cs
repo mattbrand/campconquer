@@ -108,6 +108,10 @@ public class LoginAlert : UIAlert
 
             yield return StartCoroutine(OnlineManager.Instance.StartGetPlayer(OnlineManager._playerID));
 
+            //Debug.Log(OnlineManager.Instance.PlayerReponseData);
+
+            //Debug.Log(OnlineManager.Instance.PlayerReponseData.player);
+
             if (OnlineManager.Instance.PlayerReponseData.player.gamemaster)
             {
                 GameManager.Client = false;

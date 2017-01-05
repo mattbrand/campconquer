@@ -30,12 +30,6 @@ class Player < ActiveRecord::Base
   GOAL_MINUTES = 60
   MAXIMUM_AMMO_SLOTS = 10
 
-  class GoalNotMet < RuntimeError
-    def initialize(active_minutes)
-      super("goal not met: #{active_minutes} of #{GOAL_MINUTES} achieved")
-    end
-  end
-
   class NotEnoughMoney < RuntimeError
     def initialize(gear)
       name = gear.name
@@ -170,8 +164,8 @@ class Player < ActiveRecord::Base
           methods: [
               :steps_available,
               :active_minutes,
-              :active_goal_met,
-              :active_minutes_claimed,
+              :gems_available,
+
               :outcomes,
               :gear_owned,
               :gear_equipped,
@@ -212,15 +206,13 @@ class Player < ActiveRecord::Base
     activities.sum('steps - steps_claimed')
   end
 
+  def gems_available
+    activities_with_unclaimed_gems.count
+  end
+
   def active_minutes
     activity_today.active_minutes
   end
-
-  def active_goal_met?
-    activity_today.active_goal_met?
-  end
-
-  alias_method :active_goal_met, :active_goal_met?
 
   def active_minutes_claimed?
     activity_today.active_minutes_claimed?
@@ -228,20 +220,17 @@ class Player < ActiveRecord::Base
 
   alias_method :active_minutes_claimed, :active_minutes_claimed?
 
-  # todo: stack up gems over several days
   def claim_active_minutes!
-    if active_goal_met?
-      unless activity_today.active_minutes_claimed?
-        activity_today.update!(active_minutes_claimed: true)
-        increment_gems!
-      end
-    else
-      raise GoalNotMet, active_minutes
+    new_gems = 0
+    activities_with_unclaimed_gems.each do |activity|
+      new_gems += 1
+      activity.update!(active_minutes_claimed: true)
     end
+    self.increment_gems! new_gems
   end
 
-  def increment_gems!
-    self.gems += 1
+  def increment_gems!(amount = 1)
+    self.gems += amount
     save!
   end
 
@@ -515,6 +504,12 @@ class Player < ActiveRecord::Base
 
   def require_locked_game
     raise Player::GameLocked if Game.current.locked?
+  end
+
+  def activities_with_unclaimed_gems
+    self.activities.order(date: :asc).
+        where('active_minutes >= ?', [Player::GOAL_MINUTES]).
+        where(active_minutes_claimed: false)
   end
 
 end
