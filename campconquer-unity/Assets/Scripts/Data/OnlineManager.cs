@@ -225,9 +225,10 @@ public class OnlineManager : MonoBehaviour
         Avatar.Instance.Gems = playerData.gems;
         Avatar.Instance.Embodied = playerData.embodied;
         Avatar.Instance.Steps = playerData.steps_available;
-        Avatar.Instance.ActiveMins = playerData.active_minutes;
-        Avatar.Instance.ActiveMet = playerData.active_goal_met;
-        Avatar.Instance.ActiveClaimed = playerData.active_minutes_claimed;
+        Avatar.Instance.GemsAvailable = playerData.gems_available;
+        //Avatar.Instance.ActiveMins = playerData.active_minutes;
+        //Avatar.Instance.ActiveMet = playerData.active_goal_met;
+        //Avatar.Instance.ActiveClaimed = playerData.active_minutes_claimed;
         //Debug.Log(Avatar.Instance.ActiveClaimed);
 
         //Debug.Log("2");
@@ -538,8 +539,8 @@ public class OnlineManager : MonoBehaviour
         //Debug.Log("coins = " + playerData.coins);
         //Debug.Log("minutes = " + playerData.active_minutes);
         Avatar.Instance.ActiveMins = playerData.active_minutes;
-        Avatar.Instance.ActiveMet = playerData.active_goal_met;
-        Avatar.Instance.ActiveClaimed = playerData.active_minutes_claimed;
+        //Avatar.Instance.ActiveMet = playerData.active_goal_met;
+        //Avatar.Instance.ActiveClaimed = playerData.active_minutes_claimed;
         Avatar.Instance.Gems = playerData.gems;
     }
 
@@ -579,6 +580,7 @@ public class OnlineManager : MonoBehaviour
         if (dict != null)
         {
             _error = dict["message"].ToString();
+            Debug.Log(_error);
         }
         else
             _error = "Error fetching data from server";
@@ -821,8 +823,9 @@ public class PlayerData
     public string activities_synced_at;
     public int steps_available;
     public int active_minutes;
-    public bool active_goal_met;
-    public bool active_minutes_claimed;
+    //public bool active_goal_met;
+    //public bool active_minutes_claimed;
+    public int gems_available;
     public List<string> gear_owned;
     public List<string> gear_equipped;
     public List<string> ammo;

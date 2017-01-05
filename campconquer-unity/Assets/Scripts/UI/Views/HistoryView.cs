@@ -111,11 +111,13 @@ public class HistoryView : UIView
                         CoinsClaimButton.Enable();
                         CoinsClaimText.color = Color.white;
                     }
+                    /*
                     if (Avatar.Instance.ActiveMet && !Avatar.Instance.ActiveClaimed)
                     {
                         ActivityClaimButton.Enable();
                         GemClaimText.color = Color.white;
                     }
+                    */
                     _state = HistoryViewState.NONE;
                     SoundManager.Instance.StopCoinTallySound();
                     enabled = false;
@@ -342,6 +344,7 @@ public class HistoryView : UIView
             DMVP.Text = "0";
 
         // if activity claimed, fill meter and set button text
+        /*
         if (Avatar.Instance.ActiveClaimed)
         {
             _activityMinShown = (int)MINUTES_MAX;
@@ -349,6 +352,7 @@ public class HistoryView : UIView
             SetActivityText();
             ClaimGemButtonText.Text = "CLAIMED!";
         }
+        */
 
         // play fill sound effect
         if (_stepsShown < Avatar.Instance.Steps || _activityMinShown < Avatar.Instance.ActiveMins)
