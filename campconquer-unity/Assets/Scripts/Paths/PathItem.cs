@@ -109,9 +109,6 @@ public class PathItem : MonoBehaviour
         //SpriteRend.color = _pulseColor;
 
         transform.eulerAngles = new Vector3(0.0f, 0.0f, path.ButtonAngle);
-        //transform.eulerAngles = new Vector3(0.0f, 0.0f, 135.0f);
-
-        //this.transform.localEulerAngles = 
     }
 
     public void Select()

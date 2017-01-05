@@ -32,7 +32,7 @@ public class Piece : MonoBehaviour
     const float BASE_SPEED = 0.5f;
     const float SPEED_FACTOR = 1.25f;
     const float BASE_RANGE = 0.5f;
-    const float RANGE_FACTOR = 2.5f;
+    const float RANGE_FACTOR = 3.75f;
     const float ANIM_DELAY = 1.0f;
     const int MAX_HP = 20;
     const int BASE_HEALTH = 5;

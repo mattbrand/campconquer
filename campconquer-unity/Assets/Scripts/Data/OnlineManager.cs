@@ -140,7 +140,7 @@ public class OnlineManager : MonoBehaviour
     public IEnumerator StartGetPreviousGame()
     {
         string url = _url + "/games/previous";
-        yield return StartCoroutine(BestHTTPHelper.Instance.CallToServerForJson(url, HTTPMethods.Get, NewParams(), SetPreviousGameInfo, DisplayError, DisplayError, RequestFailure));
+        yield return StartCoroutine(BestHTTPHelper.Instance.CallToServerForJson(url, HTTPMethods.Get, NewParams(), SetPreviousGameInfo, null, null, RequestFailure));
     }
 
     void SetPreviousGameInfo(string json)
