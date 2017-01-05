@@ -7,6 +7,7 @@
 #  updated_at :datetime
 #  name       :string
 #  current    :boolean          default("f"), not null
+#  start_at   :date
 #
 
 require 'rails_helper'
@@ -76,19 +77,19 @@ describe Season do
   describe "as_json" do
     it "includes team_summaries and player_summaries" do
       players = [
-        betty = create_player(player_name: 'betty', team: 'blue'),
-        bob = create_player(player_name: 'bob', team: 'blue'),
-        roger = create_player(player_name: 'roger', team: 'red'),
-        rita = create_player(player_name: 'rita', team: 'red'),
+          betty = create_player(player_name: 'betty', team: 'blue'),
+          bob = create_player(player_name: 'bob', team: 'blue'),
+          roger = create_player(player_name: 'roger', team: 'red'),
+          rita = create_player(player_name: 'rita', team: 'red'),
       ]
 
       games = []
 
       player_outcome_base = {
-        takedowns: 1,
-        throws: 2,
-        pickups: 3,
-        flag_carry_distance: 4,
+          takedowns: 1,
+          throws: 2,
+          pickups: 3,
+          flag_carry_distance: 4,
       }
 
       season = Season.current
@@ -99,15 +100,15 @@ describe Season do
           Outcome.new(({team: player.team,
                         player_id: player.id,
                         captures: player.name == 'betty' ? 1 : 0,
-                      } + player_outcome_base).with_indifferent_access)
+          } + player_outcome_base).with_indifferent_access)
         end
 
         game = Game.current
 
-        betty.set_piece(role: 'offense', path: [[0,0]])
-        bob.set_piece(role: 'defense', path: [[0,0]])
-        roger.set_piece(role: 'offense', path: [[0,0]])
-        rita.set_piece(role: 'defense', path: [[0,0]])
+        betty.set_piece(role: 'offense', path: [[0, 0]])
+        bob.set_piece(role: 'defense', path: [[0, 0]])
+        roger.set_piece(role: 'offense', path: [[0, 0]])
+        rita.set_piece(role: 'defense', path: [[0, 0]])
 
         game.lock_game!
         game.finish_game! winner: 'blue',
@@ -138,34 +139,71 @@ describe Season do
       expect(json).to include('player_summaries')
       expect(json['player_summaries'].size).to eq(4)
       expect(json['player_summaries'][0]).to eq({
-                                                 "player_id" => betty.id,
-                                                 "takedowns" => 3,
-                                                 "throws" => 6,
-                                                 "pickups" => 9,
-                                                 "captures" => 3,
-                                                 "flag_carry_distance" => 12,
-                                                 "attack_mvp" => 3,
-                                                 "defend_mvp" => 0,
+                                                    "player_id" => betty.id,
+                                                    "takedowns" => 3,
+                                                    "throws" => 6,
+                                                    "pickups" => 9,
+                                                    "captures" => 3,
+                                                    "flag_carry_distance" => 12,
+                                                    "attack_mvp" => 3,
+                                                    "defend_mvp" => 0,
                                                 })
       expect(json['player_summaries'][1]).to eq({
-                                                 "player_id" => bob.id,
-                                                 "takedowns" => 3,
-                                                 "throws" => 6,
-                                                 "pickups" => 9,
-                                                 "captures" => 0,
-                                                 "flag_carry_distance" => 12,
-                                                 "attack_mvp" => 0,
-                                                 "defend_mvp" => 3,
-                                               })
+                                                    "player_id" => bob.id,
+                                                    "takedowns" => 3,
+                                                    "throws" => 6,
+                                                    "pickups" => 9,
+                                                    "captures" => 0,
+                                                    "flag_carry_distance" => 12,
+                                                    "attack_mvp" => 0,
+                                                    "defend_mvp" => 3,
+                                                })
 
 
     end
   end
 
+  describe "start_at" do
+    it "is initialized as the next upcoming Sunday (but can be changed before it starts)" do
+      s = Season.create!
+      expect(s.start_at.to_date).to eq(Chronic.parse("next Sunday").to_date)
+    end
+  end
+
   describe "weeks" do
     it "returns a list of sets of games" do
-      season = Season.current
+      start_date = Chronic.parse("2 weeks ago Sunday").to_date
+      Timecop.freeze
 
+      season = Season.create! start_at: start_date
+      expect(season.start_at).to eq(start_date)
+
+      preseason = [
+          Game.create!(season: season, state: 'completed', played_at: start_date - 1.day)
+      ]
+      first_week = [
+          Game.create!(season: season, state: 'completed', played_at: start_date + 11.hours),
+          Game.create!(season: season, state: 'completed', played_at: start_date + 1.day + 9.hours),
+      ]
+      second_week = [
+          Game.create!(season: season, state: 'completed', played_at: start_date + 1.week + 12.hours),
+          Game.create!(season: season, state: 'completed', played_at: start_date + 1.week + 1.day + 10.hours),
+      ]
+      third_week = []
+      fourth_week = [
+          Game.create!(season: season, state: 'completed', played_at: start_date + 3.week + 13.hours),
+          Game.create!(season: season, state: 'completed', played_at: start_date + 3.week + 1.day + 11.hours),
+      ]
+
+      expect(season.week(0).games).to eq(preseason)
+      expect(season.week(1).games).to eq(first_week)
+      expect(season.week(2).games).to eq(second_week)
+      expect(season.week(3).games).to eq(third_week)
+      expect(season.week(4).games).to eq(fourth_week)
+
+      expect(season.weeks.map(&:games)).to eq([
+                                                  preseason, first_week, second_week, third_week, fourth_week
+                                              ])
     end
   end
 end
