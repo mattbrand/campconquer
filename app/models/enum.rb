@@ -48,7 +48,11 @@ class Enum
 
   def initialize item_tuples
     @items = item_tuples.map do |item_tuple|
-      Item.new(item_tuple[0], item_tuple[1])
+      if item_tuple.is_a? Enum::Item
+        item_tuple
+      else
+        Item.new(item_tuple[0], item_tuple[1])
+      end
     end
   end
 
@@ -65,8 +69,12 @@ class Enum
   end
 
   def label_for(value)
+    item_for(value).label
+  end
+
+  def item_for(value)
     @items.detect do |item|
       item.value == value.to_sym
-    end.label
+    end
   end
 end

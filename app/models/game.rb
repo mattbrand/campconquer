@@ -57,8 +57,8 @@ class Game < ActiveRecord::Base
                           message: 'should be true for only one game'
 
   validates :winner, inclusion: {
-      in: Team::NAMES.values + ["none"],
-      message: Team::NAMES.validation_message + ' or "none"',
+      in: Team::GAME_TEAMS.values + ["none"],
+      message: Team::GAME_TEAMS.validation_message + ' or "none"',
   }, allow_nil: true
 
   before_validation do
@@ -128,7 +128,7 @@ class Game < ActiveRecord::Base
   end
 
   def team_summaries
-    Team::NAMES.values.map do |team_name|
+    Team::GAME_TEAMS.values.map do |team_name|
       TeamSummary.new(team: team_name, games: [self])
     end
   end
@@ -275,7 +275,7 @@ class Game < ActiveRecord::Base
   def calculate_mvps!
     winner = calculate_winner
     result = {}
-    Team::NAMES.values.each do |team|
+    Team::GAME_TEAMS.values.each do |team|
       result[team] = {}
       result[team]['attack_mvps'] = calculate_mvps_for(team, 'offense') do |outcome|
         if team == winner

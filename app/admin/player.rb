@@ -8,8 +8,7 @@ ActiveAdmin.register Player do
                 :gems,
                 :embodied,
                 :gamemaster,
-                :admin,
-                :in_control_group
+                :admin
 
   filter :name
   filter :team, as: :select
@@ -24,7 +23,6 @@ ActiveAdmin.register Player do
     column :password_set? do |p|
       status_tag p.password_set?
     end
-    column :in_control_group
     column :embodied
     column :gamemaster
     column :admin
@@ -58,7 +56,7 @@ ActiveAdmin.register Player do
       f.input :name
       f.input :password_set?, as: :string, input_html: readonly
       f.input :password
-      f.input :team, :as => :select, :collection => Team::NAMES.values
+      f.input :team, :as => :select, :collection => Team::ALL.values
       # https://github.com/justinfrench/formtastic/issues/171
       f.input :activities_synced_at, as: :string, input_html: readonly
       f.input :fitbit_token_hash, as: :string, input_html: readonly
@@ -66,7 +64,6 @@ ActiveAdmin.register Player do
       f.input :session_token, input_html: readonly
       f.input :coins
       f.input :gems
-      f.input :in_control_group, as: :boolean
       f.input :embodied, as: :boolean
       f.input :gamemaster, as: :boolean
       f.input :admin, as: :boolean

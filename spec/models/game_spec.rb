@@ -336,7 +336,7 @@ describe Game do
     it "includes mvps under their teams" do
       game_mvps = game.mvps
       json = game.as_json
-      Team::NAMES.values.each do |team_name|
+      Team::GAME_TEAMS.values.each do |team_name|
         team_json = json['team_summaries'].detect { |h| h['team'] == team_name }
         expect(team_json['attack_mvps']).to eq(game_mvps[team_name]['attack_mvps'])
         expect(team_json['defend_mvps']).to eq(game_mvps[team_name]['defend_mvps'])

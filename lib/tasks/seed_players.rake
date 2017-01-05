@@ -78,7 +78,7 @@ class Board
 
   def seed_control_group
     10.times do
-      player = Player.new(name: random_name, password: 'password', in_control_group: true)
+      player = Player.new(name: random_name, password: 'password', team: 'control')
       player.save!
       puts ["created control player ##{player.id}", player.name.ljust(20)].join("\t")
     end

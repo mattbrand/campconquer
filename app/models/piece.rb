@@ -52,8 +52,8 @@ class Piece < ActiveRecord::Base
   serialize :ammo, JSON
 
   validates :team, inclusion: {
-    in: Team::NAMES.values,
-    message: Team::NAMES.validation_message
+    in: Team::GAME_TEAMS.values,
+    message: Team::GAME_TEAMS.validation_message
   }
 
   validates :body_type, inclusion: {

@@ -100,7 +100,7 @@ describe TeamSummary do
           captures: rand(10),
         }.with_indifferent_access
 
-        team_name = Team::NAMES.values.sample
+        team_name = Team::GAME_TEAMS.values.sample
         stats.each_pair do |stat, val|
           totals[team_name][stat] ||= 0
           totals[team_name][stat] += val
@@ -117,7 +117,7 @@ describe TeamSummary do
 
       games << game
 
-      Team::NAMES.values.each do |team_name|
+      Team::GAME_TEAMS.values.each do |team_name|
         team_outcome = TeamSummary.new(team: team_name, games: games)
         expect(team_outcome.as_json).to include(totals[team_name])
       end

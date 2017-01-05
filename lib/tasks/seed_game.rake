@@ -8,7 +8,7 @@ namespace :db do
       puts "draw"
       winning_team = capturing_piece = nil
     else
-      winning_team = Team::NAMES.values.sample(1).first
+      winning_team = Team::GAME_TEAMS.values.sample(1).first
       capturing_piece = game.pieces_on_team(winning_team).where(role: 'offense').sample
       winning_team = nil if capturing_piece.nil?
     end

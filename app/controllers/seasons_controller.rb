@@ -1,7 +1,9 @@
 class SeasonsController < WebController
   before_action :find_season, only: [:show, :edit, :update, :destroy]
 
-  before_action -> { require_role('gamemaster', 'admin') }
+  before_action -> {
+    require_role('gamemaster', 'admin')
+  }
 
   # GET /seasons
   def index

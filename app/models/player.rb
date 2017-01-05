@@ -99,7 +99,7 @@ class Player < ActiveRecord::Base
   serialize :fitbit_token_hash
 
   validates_uniqueness_of :name
-  validates :team, inclusion: {in: Team::NAMES.values, message: Team::NAMES.validation_message}, unless: :in_control_group?
+  validates :team, inclusion: {in: Team::ALL.values, message: Team::ALL.validation_message}
 
 
   # def require_piece
@@ -111,6 +111,10 @@ class Player < ActiveRecord::Base
       set_piece
       buy_and_equip_default_gear
     end
+  end
+
+  def in_control_group?
+    team == 'control'
   end
 
   def can_see_game?
@@ -148,7 +152,6 @@ class Player < ActiveRecord::Base
     end
   end
 
-  delegate :role, :speed, :health, :range, to: :piece
 
   include ActiveModel::Serialization
 
@@ -238,18 +241,10 @@ class Player < ActiveRecord::Base
     save!
   end
 
-  def gear_owned
-    # require_piece
-    piece.try(:gear_owned)
-  end
-
-  def gear_equipped
-    # require_piece
-    piece.try(:gear_equipped)
-  end
-
-  def ammo
-    piece.try(:ammo)
+  [:role, :speed, :health, :range, :gear_owned, :gear_equipped, :ammo].each do |delegated_method|
+    define_method(delegated_method) do
+      piece.try(delegated_method)
+    end
   end
 
   def gear_owned?(gear_name)
@@ -429,7 +424,7 @@ class Player < ActiveRecord::Base
   end
 
   def role
-    self.piece.role
+    self.piece.try(:role)
   end
 
   # LOGIN STUFF

@@ -26,7 +26,7 @@ class Outcome < ActiveRecord::Base
   belongs_to :game
   belongs_to :player
 
-  validates :team, inclusion: {in: Team::NAMES.values, message: Team::NAMES.validation_message}
+  validates :team, inclusion: {in: Team::GAME_TEAMS.values, message: Team::GAME_TEAMS.validation_message}
   validates :player_id, presence: true # todo: should validate that it's a real player too
 
   class PlayerExists < ActiveModel::Validator

@@ -13,7 +13,7 @@ class Season < ActiveRecord::Base
   has_many :games, -> { includes(:player_outcomes) }
 
   has_many :pieces, through: :games
-  has_many :players, -> { uniq }, through: :pieces
+
 
   validates_uniqueness_of :current,
                           unless: Proc.new { |game| !game.current? },
@@ -31,13 +31,23 @@ class Season < ActiveRecord::Base
     where(current: false).order(updated_at: :desc).first
   end
 
+  # was has_many :players, -> { uniq }, through: :pieces
+  # but we need a better season/player/game hierarchy and workflow
+  def players
+    Player.all
+  end
+
+  def begun?
+    self.games.count > 0
+  end
+
   def name
     super or id.to_s
   end
 
   # sum of all game outcomes per team
   def team_summaries
-    Team::NAMES.values.map do |team_name|
+    Team::GAME_TEAMS.values.map do |team_name|
       TeamSummary.new(team: team_name, games: self.games)
     end
   end

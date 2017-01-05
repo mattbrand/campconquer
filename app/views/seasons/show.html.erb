@@ -1,6 +1,6 @@
 <h1>Season <%= @season.name %></h1>
 
-<% Team::NAMES.each do |team_name| %>
+<% Team::ALL.each do |team_name| %>
     <h2><%= team_name.label %></h2>
     <table class="player-info">
       <tr>
@@ -14,11 +14,10 @@
         <th>range</th>
 
         <th>last synced</th>
-        <th>steps available</th>
-        <th>active minutes available</th>
       </tr>
 
-      <% @season.players.select { |p| p.team }.each do |player| %>
+      <% players = @season.players.includes(:piece) %>
+      <% players.select { |p| p.team == team_name.value.to_s }.each do |player| %>
 
           <tr>
             <td><%= player.id %></td>
@@ -33,8 +32,6 @@
             <td><%=
               player.activities_synced_at.try(:strftime, "%A, %B %-d, %Y, %l:%M %p %Z")
             %></td>
-            <td><%= player.steps_available %></td>
-            <td><%= player.active_minutes %></td> <%# todo: use total, not today only, once branch merged %>
           </tr>
 
       <% end %>

@@ -28,7 +28,6 @@ describe API::GamesController, type: :controller do
 
   describe "GET /games" do
     it "assigns all games as @games" do
-      ap Game.all
       expect(Game.count).to eq(0)
       game = Game.create! valid_attributes
       get :index, {}, valid_session

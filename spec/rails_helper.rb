@@ -93,16 +93,14 @@ def create_player(player_name:,
                   coins: 100,
                   gems: 0,
                   embodied: true,
-                  gamemaster: false,
-                  in_control_group: false)
+                  gamemaster: false)
   player = Player.create!(name: player_name,
                           password: password,
                           team: team,
                           coins: coins,
                           gems: gems,
                           embodied: embodied,
-                          gamemaster: gamemaster,
-                          in_control_group: in_control_group)
+                          gamemaster: gamemaster)
   piece_attributes = {
       body_type: body_type,
       role: role,
