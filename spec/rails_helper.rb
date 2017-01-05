@@ -63,9 +63,8 @@ def create_gamemaster(player_name: 'gertie gamemaster',
                       password: 'password')
   Player.create!(name: player_name,
                  password: password,
-                 team: 'red',
-                 embodied: false,
-                 gamemaster: true)
+                 team: 'gamemaster',
+                 embodied: false)
 end
 
 def create_admin(player_name: 'annie admin',
@@ -85,22 +84,20 @@ def create_bob_with_piece
   create_player(player_name: 'bob', body_type: 'male', team: 'blue')
 end
 
-def create_player(player_name:,
+def create_player(player_name: 'peter',
                   password: 'password',
                   team: 'red',
                   body_type: 'female',
                   role: 'defense',
                   coins: 100,
                   gems: 0,
-                  embodied: true,
-                  gamemaster: false)
+                  embodied: true)
   player = Player.create!(name: player_name,
                           password: password,
                           team: team,
                           coins: coins,
                           gems: gems,
-                          embodied: embodied,
-                          gamemaster: gamemaster)
+                          embodied: embodied)
   piece_attributes = {
       body_type: body_type,
       role: role,

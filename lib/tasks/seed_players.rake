@@ -2,7 +2,7 @@ namespace :db do
   task :seed_players => :environment do
     Season.current.games.destroy_all
     Player.destroy_all
-    Player.create!(name: 'mod', password: 'xyzzy', team: 'red', admin: true, gamemaster: true)
+    Player.create!(name: 'mod', password: 'xyzzy', team: 'gamemaster', admin: true)
     puts "Created mod"
     board = Board.new
     board.seed_teams

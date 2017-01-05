@@ -8,6 +8,7 @@ class Team
                            GAME_TEAMS.item_for(:blue),
                            GAME_TEAMS.item_for(:red),
                            [:control, "Control Group"],
+                           [:gamemaster, "Gamemasters"],
                        ])
 
   # todo: test better

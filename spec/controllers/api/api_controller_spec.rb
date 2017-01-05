@@ -135,10 +135,10 @@ module API
 
       context 'game locking -- ' do
         before { @controller = GamesController.new }
-        before { alice.update(gamemaster: true) }
+        let(:gertie) { create_gamemaster }
 
         it "a gamemaster can lock a game" do
-          token = alice.start_session
+          token = gertie.start_session
           post :lock, id: Game.current.id, token: token
           expect_ok
           expect(Game.current).to be_locked

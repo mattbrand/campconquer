@@ -15,10 +15,8 @@
 #  session_token        :string
 #  encrypted_password   :string
 #  salt                 :string
-#  gamemaster           :boolean          default("f"), not null
 #  admin                :boolean          default("f"), not null
 #  activities_synced_at :datetime
-#  in_control_group     :boolean          default("f"), not null
 #
 # Indexes
 #
@@ -57,6 +55,13 @@ describe Player, type: :model do
       p = create_player(player_name: "Joe", password: "password", team: 'blue')
       p.activities_synced_at = nowish
       expect(p.as_json).to include({activities_synced_at: nowish}.stringify_keys)
+    end
+
+    it 'includes gamemaster' do
+      p = create_gamemaster
+      expect(p.as_json).to include({gamemaster: true}.stringify_keys)
+      p = create_player
+      expect(p.as_json).to include({gamemaster: false}.stringify_keys)
     end
   end
 
@@ -264,11 +269,10 @@ describe Player, type: :model do
   end
 
   describe 'is_one_of_these?' do
-    let!(:george) { create_player(player_name: 'george', password: nil, gamemaster: true) }
+    let!(:gertie) { create_gamemaster() }
     it 'works' do
-      ap george
-      expect(george.is_one_of_these?(['gamemaster', 'admin'])).to eq(true)
-      expect(george.is_one_of_these?(['in_control_group', 'admin'])).to eq(false)
+      expect(gertie.is_one_of_these?(['gamemaster', 'admin'])).to eq(true)
+      expect(gertie.is_one_of_these?(['in_control_group', 'admin'])).to eq(false)
     end
   end
 

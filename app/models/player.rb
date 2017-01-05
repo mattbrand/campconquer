@@ -15,10 +15,8 @@
 #  session_token        :string
 #  encrypted_password   :string
 #  salt                 :string
-#  gamemaster           :boolean          default("f"), not null
 #  admin                :boolean          default("f"), not null
 #  activities_synced_at :datetime
-#  in_control_group     :boolean          default("f"), not null
 #
 # Indexes
 #
@@ -107,7 +105,7 @@ class Player < ActiveRecord::Base
   # end
 
   after_create do
-    unless in_control_group?
+    unless in_control_group? or gamemaster?
       set_piece
       buy_and_equip_default_gear
     end
@@ -116,6 +114,11 @@ class Player < ActiveRecord::Base
   def in_control_group?
     team == 'control'
   end
+
+  def gamemaster?
+    team == 'gamemaster'
+  end
+  alias_method :gamemaster, :gamemaster?
 
   def can_see_game?
     not in_control_group? # players and gamemasters but not control groupers
@@ -173,6 +176,7 @@ class Player < ActiveRecord::Base
               :gear_owned,
               :gear_equipped,
               :ammo,
+              :gamemaster,
           ],
           include: [{:piece => Piece.serialization_options}],
       }

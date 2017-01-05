@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170105173142) do
+ActiveRecord::Schema.define(version: 20170105173143) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -116,7 +116,6 @@ ActiveRecord::Schema.define(version: 20170105173142) do
     t.string   "session_token"
     t.string   "encrypted_password"
     t.string   "salt"
-    t.boolean  "gamemaster",           default: false, null: false
     t.boolean  "admin",                default: false, null: false
     t.datetime "activities_synced_at"
   end

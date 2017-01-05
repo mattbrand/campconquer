@@ -7,7 +7,6 @@ ActiveAdmin.register Player do
                 :coins,
                 :gems,
                 :embodied,
-                :gamemaster,
                 :admin
 
   filter :name
@@ -24,7 +23,6 @@ ActiveAdmin.register Player do
       status_tag p.password_set?
     end
     column :embodied
-    column :gamemaster
     column :admin
     column :created_at
     column :updated_at
@@ -65,7 +63,6 @@ ActiveAdmin.register Player do
       f.input :coins
       f.input :gems
       f.input :embodied, as: :boolean
-      f.input :gamemaster, as: :boolean
       f.input :admin, as: :boolean
       f.actions
     end
