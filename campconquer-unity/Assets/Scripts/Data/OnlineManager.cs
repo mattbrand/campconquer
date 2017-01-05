@@ -226,7 +226,9 @@ public class OnlineManager : MonoBehaviour
         Avatar.Instance.Embodied = playerData.embodied;
         Avatar.Instance.Steps = playerData.steps_available;
         Avatar.Instance.GemsAvailable = playerData.gems_available;
-        //Avatar.Instance.ActiveMins = playerData.active_minutes;
+        Debug.Log(playerData.gems_available);
+        Avatar.Instance.ActiveMins = playerData.active_minutes;
+        Debug.Log(Avatar.Instance.ActiveMins);
         //Avatar.Instance.ActiveMet = playerData.active_goal_met;
         //Avatar.Instance.ActiveClaimed = playerData.active_minutes_claimed;
         //Debug.Log(Avatar.Instance.ActiveClaimed);
@@ -542,6 +544,7 @@ public class OnlineManager : MonoBehaviour
         //Avatar.Instance.ActiveMet = playerData.active_goal_met;
         //Avatar.Instance.ActiveClaimed = playerData.active_minutes_claimed;
         Avatar.Instance.Gems = playerData.gems;
+        Avatar.Instance.GemsAvailable = playerData.gems_available;
     }
 
     public IEnumerator StartGetSeason()
