@@ -31,6 +31,10 @@ class Season < ActiveRecord::Base
     where(current: false).order(updated_at: :desc).first
   end
 
+  def name
+    super or id.to_s
+  end
+
   # sum of all game outcomes per team
   def team_summaries
     Team::NAMES.values.map do |team_name|

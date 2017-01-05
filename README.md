@@ -18,23 +18,11 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 
 - [x] un-protect fitbit callback endpoint
 
-- [x] API login
-  - [x] one password, sent in the clear :-O
-  - [x] actual passwords for API
-  - [x] login with id or name
-  - [x] admin create password function
-  - [x] mod role, seed mod player
-
-- [x] Web login
- - [x] allow mutiple sessions
- - [x] expire sessions
-
-- [x] load fitbit data as far back as needed and no further
-
 - [ ] player HTML page -- when logged in, shows activities etc 
   - http://sprint.ly/product/41137/item/338
 
-- [x] 'control group' players (no team)
+- [ ] reexamine FitBit API to see if there's a more efficient call to fetch a bunch of days at once
+
 
 ## low priority features
 
@@ -51,6 +39,7 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 - [ ] set session token inside WebGL HTML; skip login in client
 
 - [ ] expire session token after X days
+
 
 ## chores
 - heroku addons

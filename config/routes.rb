@@ -41,6 +41,9 @@ Rails.application.routes.draw do
 
   resources :sessions, only: ['create']
 
+  resources :seasons do
+  end
+
   resources :players do
 
     collection do

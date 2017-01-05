@@ -23,28 +23,4 @@ class PlayersController < WebController
     pull_activity if @player.activities_synced_at.nil? or @player.activities_synced_at < 10.minutes.ago
   end
 
-  # # just for demo
-  # def steps
-  #   puts "fetching user activities"
-  #   # output['activity-types'] = @player.fitbit.get('/1/activities.json') # the whole list -- big
-  #   output = {}
-  #   a_while_ago = (Time.current - 3.month).strftime('%F')
-  #   yesterday = (Time.current - 1.day).strftime('%F')
-  #   output = @player.fitbit.get("/1/user/-/activities/steps/date/#{a_while_ago}/#{yesterday}.json")
-  #   render json: output
-  # end
-  #
-  # # just for demo
-  # def activities
-  #   puts "fetching user activities"
-  #   # output['activity-types'] = @player.fitbit.get('/1/activities.json') # the whole list -- big
-  #   render json: @player.fitbit.get_activities(Date.today.strftime('%F'))
-  # end
-  #
-  # # just for demo
-  # def profile
-  #   puts "fetching user profile"
-  #   render json: @player.fitbit_profile
-  # end
-
 end

@@ -1,0 +1,44 @@
+<h1>Season <%= @season.name %></h1>
+
+<% Team::NAMES.each do |team_name| %>
+    <h2><%= team_name.label %></h2>
+    <table class="player-info">
+      <tr>
+        <th>id</th>
+        <th>name</th>
+
+        <th>team</th>
+        <th>role</th>
+        <th>speed</th>
+        <th>health</th>
+        <th>range</th>
+
+        <th>last synced</th>
+        <th>steps available</th>
+        <th>active minutes available</th>
+      </tr>
+
+      <% @season.players.select { |p| p.team }.each do |player| %>
+
+          <tr>
+            <td><%= player.id %></td>
+            <td><%= link_to player.name, player_path(player) %></td>
+
+            <td><%= player.team %></td>
+            <td><%= player.role %></td>
+            <td><%= player.speed %></td>
+            <td><%= player.health %></td>
+            <td><%= player.range %></td>
+
+            <td><%=
+              player.activities_synced_at.try(:strftime, "%A, %B %-d, %Y, %l:%M %p %Z")
+            %></td>
+            <td><%= player.steps_available %></td>
+            <td><%= player.active_minutes %></td> <%# todo: use total, not today only, once branch merged %>
+          </tr>
+
+      <% end %>
+    </table>
+<% end %>
+
+<%# todo: make 'control group' a team %>

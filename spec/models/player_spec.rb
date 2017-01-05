@@ -263,4 +263,13 @@ describe Player, type: :model do
     end
   end
 
+  describe 'is_one_of_these?' do
+    let!(:george) { create_player(player_name: 'george', password: nil, gamemaster: true) }
+    it 'works' do
+      ap george
+      expect(george.is_one_of_these?(['gamemaster', 'admin'])).to eq(true)
+      expect(george.is_one_of_these?(['in_control_group', 'admin'])).to eq(false)
+    end
+  end
+
 end

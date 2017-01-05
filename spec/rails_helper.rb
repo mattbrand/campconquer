@@ -60,7 +60,7 @@ end
 # todo: move to a fixture factory or something
 
 def create_gamemaster(player_name: 'gertie gamemaster',
-                  password: 'password')
+                      password: 'password')
   Player.create!(name: player_name,
                  password: password,
                  team: 'red',
@@ -69,7 +69,7 @@ def create_gamemaster(player_name: 'gertie gamemaster',
 end
 
 def create_admin(player_name: 'annie admin',
-                  password: 'password')
+                 password: 'password')
   Player.create!(name: player_name,
                  password: password,
                  team: 'red',
@@ -92,12 +92,21 @@ def create_player(player_name:,
                   role: 'defense',
                   coins: 100,
                   gems: 0,
-                  embodied: true)
-  player = Player.create!(name: player_name, password: password, team: team, coins: coins, gems: gems, embodied: embodied)
+                  embodied: true,
+                  gamemaster: false,
+                  in_control_group: false)
+  player = Player.create!(name: player_name,
+                          password: password,
+                          team: team,
+                          coins: coins,
+                          gems: gems,
+                          embodied: embodied,
+                          gamemaster: gamemaster,
+                          in_control_group: in_control_group)
   piece_attributes = {
-    body_type: body_type,
-    role: role,
-    path: [[0, 0]]
+      body_type: body_type,
+      role: role,
+      path: [[0, 0]]
   }
   player.set_piece(piece_attributes)
   player

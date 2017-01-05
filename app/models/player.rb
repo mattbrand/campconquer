@@ -90,6 +90,9 @@ class Player < ActiveRecord::Base
     end
   end
 
+  # the player's piece is for setting up for the next game;
+  # once the game is locked the piece is uneditable and the
+  # player gets a new piece for the next game
   has_one :piece, -> { where(game_id: nil).includes(:items) }
   has_many :activities
   has_many :outcomes
@@ -112,6 +115,13 @@ class Player < ActiveRecord::Base
 
   def can_see_game?
     not in_control_group? # players and gamemasters but not control groupers
+  end
+
+  def is_one_of_these? roles
+    roles.each do |role|
+      return true if self.send("#{role}?")
+    end
+    false
   end
 
   def set_piece(params = {})

@@ -27,9 +27,9 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def require_role(required_role)
-    unless current_player and current_player.send("#{required_role}?")
-      forbidden("role '#{required_role}' required")
+  def require_role(*required_roles)
+    unless current_player and current_player.is_one_of_these?(required_roles)
+      forbidden("#{required_roles.join(" or ")} role required")
     end
   end
 

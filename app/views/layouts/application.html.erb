@@ -18,6 +18,12 @@
         </li>
     <% end %>
 
+    <% if current_player and (current_player.admin? or current_player.gamemaster?) %>
+        <li>
+          <a href="/seasons">Seasons</a>
+        </li>
+    <% end %>
+
     <% if current_player %>
         <% if current_player.can_see_game? %>
           <li>

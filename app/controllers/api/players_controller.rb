@@ -24,7 +24,6 @@ class API::PlayersController < ::API::APIController
       status: 'ok',
       player: @player.as_json,
     }
-    output[:devices] = @player.fitbit.get_devices if @player.authenticated?
     render json: output
   end
 
