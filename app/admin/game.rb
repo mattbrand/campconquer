@@ -16,7 +16,7 @@ ActiveAdmin.register Game do
     column :state
     # column :pieces  # todo: show pieces for this game only -- how? 
     column :scheduled_start
-    # column :played_at
+    column :played_at
     actions
   end
 

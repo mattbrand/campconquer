@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170105173143) do
+ActiveRecord::Schema.define(version: 20170105193947) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(version: 20170105173143) do
     t.integer  "match_length",    default: 0,           null: false
     t.datetime "scheduled_start"
     t.text     "mvps"
+    t.datetime "played_at"
   end
 
   add_index "games", ["current"], name: "index_games_on_current"

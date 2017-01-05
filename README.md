@@ -26,6 +26,7 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 
 ## low priority features
 
+
 - [x] check steps in the background at least 1x/day, not just when players connect
 
 - [ ] round up remainder steps
@@ -42,6 +43,10 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 
 
 ## chores
+- [ ] git-lfs
+
+- [ ] look into memory usage errors
+
 - heroku addons
     - [x] New Relic
     - [x] Scout

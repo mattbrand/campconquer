@@ -161,4 +161,11 @@ describe Season do
 
     end
   end
+
+  describe "weeks" do
+    it "returns a list of sets of games" do
+      season = Season.current
+
+    end
+  end
 end
