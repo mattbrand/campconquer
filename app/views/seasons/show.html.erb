@@ -11,6 +11,8 @@
         <% else %>
             <td colspan="2"><%= week.start_at %> - <%= week.start_at + 1.week %></td>
         <% end %>
+
+        <td><%= pluralize(week.games.size, "game") %></td>
       </tr>
 
       <tr>
@@ -32,7 +34,7 @@
             <% end %>
 
             <td><%= summary.attack_mvps.map { |id| Player.find(id).name }.join(', ') %></td>
-            <td><%= summary.defend_mvps { |id| Player.find(id).name }.join(', ') %></td>
+            <td><%= summary.defend_mvps.map { |id| Player.find(id).name }.join(', ') %></td>
           </tr>
       <% end %>
     </table>
