@@ -90,7 +90,7 @@ class Season < ActiveRecord::Base
     # sanity check
     week_game_count = list.inject(0) { |sum, week| sum + week.size }
 
-    raise "Assertion failed: #{week_game_count} != #{games.count}" if week_game_count != games.count
+    raise "Assertion failed: #{week_game_count} != #{games.select{|g| g.completed?}.count}" if week_game_count != games.count
 
     list
   end
