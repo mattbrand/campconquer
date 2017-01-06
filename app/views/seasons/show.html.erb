@@ -9,7 +9,7 @@
         <% if week.start_at.nil? %>
             <td colspan="3">Before <%= @season.start_at %></td>
         <% else %>
-            <td colspan="3"><%= week.start_at %> - <%= week.start_at + 1.week %></td>
+            <td colspan="3"><%= week.start_at %> - <%= week.start_at + 1.week - 1.day %></td>
         <% end %>
 
         <td><%= pluralize(week.games.size, "game") %></td>
