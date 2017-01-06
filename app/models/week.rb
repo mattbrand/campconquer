@@ -36,4 +36,16 @@ class Week
     end
   end
 
+  def all_top_attackers
+    top_player_ids = team_summaries.inject(Set.new) { |tops, summary| tops.merge(summary.attack_mvps) }.to_a
+  end
+
+  def all_top_defenders
+    top_player_ids = team_summaries.inject(Set.new) { |tops, summary| tops.merge(summary.defend_mvps) }.to_a
+  end
+
+  def player_names player_ids
+    player_ids.map { |id| Player.find(id).name }.sort.join(', ')
+  end
+
 end

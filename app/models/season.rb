@@ -115,6 +115,7 @@ class Season < ActiveRecord::Base
 
   public
 
+
   include ActiveModel::Serialization
 
   def as_json(options=nil)
