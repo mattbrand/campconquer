@@ -304,12 +304,11 @@ git remote add staging https://git.heroku.com/campconquer-staging.git
 | command | description |
 |---|---|
 | `./deploy.sh staging` | deploy local master branch to staging |
-| `heroku console --app campconquer-staging` | open Rails console on staging  |
-| `heroku config --app campconquer-staging` | display config vars for staging  |
+| `heroku console -r staging` | open Rails console on staging  |
+| `heroku config -r staging` | display config vars for staging  |
 |---|---|
 | `./deploy.sh production` | deploy local master branch to production  |
-| `heroku console --app campconquer-prod` | open Rails console on production  |
-| `heroku config --app campconquer-prod` | display config vars for production  |
+| `heroku whatever -r prod` | do whatever on production  |
 
 ## Check Logs
 
