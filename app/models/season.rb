@@ -85,14 +85,35 @@ class Season < ActiveRecord::Base
   def weeks
     latest_game = games.where(state: 'completed').sort_by(&:played_at).last
     return [] unless latest_game
-    number_of_days = (latest_game.played_at.to_date - self.start_at.to_date).to_i
-    number_of_weeks = number_of_days / 7 + 1 + 1
+    list = all_weeks(latest_game.played_at)
+
+    # sanity check
+    week_game_count = list.inject(0) { |sum, week| sum + week.size }
+
+    raise "Assertion failed: #{week_game_count} != #{games.count}" if week_game_count != games.count
+
+    list
+  end
+
+  private
+  def all_weeks(latest_game_played_at)
     list = []
-    number_of_weeks.times do |i|
+    number_of_weeks(latest_game_played_at).times do |i|
       list << week(i)
     end
     list
   end
+
+  def number_of_weeks(latest_game_played_at)
+    if latest_game_played_at < self.start_at.to_date
+      1
+    else
+      number_of_days = (latest_game_played_at.to_date - self.start_at.to_date).to_i
+      number_of_days / 7 + 2 # +1 for preseason, +1 for the remainder
+    end
+  end
+
+  public
 
   include ActiveModel::Serialization
 

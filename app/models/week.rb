@@ -6,6 +6,10 @@ class Week
     @number, @start_at, @games = number, start_at, games
   end
 
+  def size
+    @games.size
+  end
+
   def name
     if number == 0
       "Preseason"
