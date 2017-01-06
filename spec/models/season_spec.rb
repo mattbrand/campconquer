@@ -211,8 +211,8 @@ describe Season do
       season_start = Date.parse("2017-01-01")
       season = Season.create! start_at: season_start
 
+      Game.create!(season: season, state: 'preparing', played_at: Time.parse("2017-01-05T15:06:34.611-05:00"))
       games = [
-          # "2017-01-05T15:06:34.611-05:00",     # preparing
           "2016-12-05T16:02:19.058-05:00",
           "2016-11-16T16:02:17.302-05:00",
           "2016-11-22T16:01:21.576-05:00",
@@ -243,7 +243,7 @@ describe Season do
           "2016-12-09T16:03:56.998-05:00",
           "2016-12-15T16:01:04.289-05:00",
           "2016-12-19T15:56:55.713-05:00"
-      ]  .map do |iso8601|
+      ].map do |iso8601|
         Game.create! season: season, state: 'completed', played_at: Time.parse(iso8601)
       end
 
