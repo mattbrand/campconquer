@@ -17,6 +17,7 @@ public class AmmoDisplay : VisualElement
     public Sprite BlueBombSprite;
     public ExtendedImage AmmoImage;
     public Image Highlight;
+    public AmmoBelt AmmoBelt;
     #endregion
 
     #region Private Vars
@@ -87,6 +88,23 @@ public class AmmoDisplay : VisualElement
     public void Clear()
     {
         AmmoImage.Deactivate();
+    }
+
+    public void PointerDown()
+    {
+        AmmoBelt.ActivateMovingAmmo();
+        AmmoImage.Deactivate();
+    }
+
+    public void PointerUp()
+    {
+        AmmoBelt.DeactivateMovingAmmo();
+        AmmoImage.Activate();
+    }
+
+    public void PointerEnter()
+    {
+        
     }
     #endregion
 
