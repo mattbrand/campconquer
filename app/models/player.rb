@@ -151,7 +151,6 @@ class Player < ActiveRecord::Base
     end
   end
 
-
   include ActiveModel::Serialization
 
   def as_json(options=nil)

@@ -53,8 +53,15 @@ class TeamSummary < Summary
   private
 
   def fetch_mvps(role_key)
-    mvps = games.first.try(:mvps)
-    mvps ? mvps.fetch(@team, {}).fetch(role_key, []) : []
+
+    # todo: test
+    player_ids = Set.new
+    games.each do |game|
+      next if game.mvps.nil?
+      player_ids.merge game.mvps[@team][role_key]
+    end
+    player_ids.to_a
+
   end
 
 end

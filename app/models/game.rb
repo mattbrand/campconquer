@@ -13,6 +13,7 @@
 #  match_length    :integer          default("0"), not null
 #  scheduled_start :datetime
 #  mvps            :text
+#  played_at       :datetime
 #
 # Indexes
 #
@@ -194,6 +195,7 @@ class Game < ActiveRecord::Base
     moves = params.delete(:moves)
     defaults = {
         match_length: 0,
+        played_at: Time.current,
     }
 
     # Rails is SO WEIRD

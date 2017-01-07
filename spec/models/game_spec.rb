@@ -13,6 +13,7 @@
 #  match_length    :integer          default("0"), not null
 #  scheduled_start :datetime
 #  mvps            :text
+#  played_at       :datetime
 #
 # Indexes
 #
@@ -452,6 +453,12 @@ describe Game do
       it 'changes the state to "completed"' do
         current_game.finish_game!
         expect(current_game.state).to eq('completed')
+      end
+
+      it 'sets the "played at" datetime' do
+        Timecop.freeze
+        current_game.finish_game!
+        expect(current_game.played_at).to eq(Time.current)
       end
 
       it "calculates winner if it's not passed in" do

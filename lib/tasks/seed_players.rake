@@ -9,6 +9,10 @@ namespace :db do
     board.seed_control_group
     Rake::Task['db:seed_activities'].invoke
   end
+
+  task :setup_for_game => :environment do
+    Board.new.setup_for_game
+  end
 end
 
 class Board
@@ -24,7 +28,7 @@ class Board
 
   def random_name
     begin
-       name = [Faker::Name.first_name, Faker::Pokemon.name, Faker::Superhero.name].sample.downcase
+      name = [Faker::Name.first_name, Faker::Pokemon.name, Faker::Superhero.name].sample.downcase
     end while @names.include? name
     @names << name
     name
@@ -50,7 +54,7 @@ class Board
       player = Player.create!(name: random_name, password: 'password', team: @team_name)
 
       role = Piece::ROLES.values.sample
-      path_points = Path.where(team: @team_name, role: role).sample.points
+      path_points = random_path(role: role)
 
       body_type = Piece::BODY_TYPES.values.sample
       speed = rand(10)
@@ -58,22 +62,26 @@ class Board
       range = 10 - speed - health
 
       piece = player.set_piece(
-                    role: role,
-                    path: path_points,
-                    speed: speed,
-                    health: health,
-                    range: range,
-                    body_type: body_type,
-                    face: "face_01_f",
-                    hair: "hair_short_02_f",
-                    skin_color: "EFD8CC",
-                    hair_color: "2968c2",
-                    ammo: ["balloon", "arrow", "balloon"]
+          role: role,
+          path: path_points,
+          speed: speed,
+          health: health,
+          range: range,
+          body_type: body_type,
+          face: "face_01_f",
+          hair: "hair_short_02_f",
+          skin_color: "EFD8CC",
+          hair_color: "2968c2",
+          ammo: ["balloon", "arrow", "balloon"]
       )
       player.update(embodied: true)
 
       puts ["created player ##{player.id}", player.name.ljust(20), @team_name, piece.role, piece.body_type].join("\t")
     end
+  end
+
+  def random_path(team: @team_name, role:)
+    Path.where(team: team, role: role).sample.points
   end
 
   def seed_control_group
@@ -83,5 +91,15 @@ class Board
       puts ["created control player ##{player.id}", player.name.ljust(20)].join("\t")
     end
   end
+
+  def setup_for_game
+    Player.all.each do |player|
+      path_points = random_path(role: player.role, team: player.team)
+      if player.piece
+        player.piece.update!(path: path_points, ammo: ["balloon", "arrow", "balloon"])
+      end
+    end
+  end
+
 end
 
