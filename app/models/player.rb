@@ -15,8 +15,10 @@
 #  session_token        :string
 #  encrypted_password   :string
 #  salt                 :string
+#  gamemaster           :boolean          default("f"), not null
 #  admin                :boolean          default("f"), not null
 #  activities_synced_at :datetime
+#  in_control_group     :boolean          default("f"), not null
 #
 # Indexes
 #

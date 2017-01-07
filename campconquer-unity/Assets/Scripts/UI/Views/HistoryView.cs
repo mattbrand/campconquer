@@ -353,17 +353,6 @@ public class HistoryView : UIView
         if (DMVP.Text == "")
             DMVP.Text = "0";
 
-        /*
-        // if activity claimed, fill meter and set button text
-        if (Avatar.Instance.ActiveMins > 0)
-        {
-            //_activityMinShown = (int)MINUTES_MAX;
-            //SetActivityFill();
-            //SetActivityText();
-            //ClaimGemButtonText.Text = "CLAIMED!";
-        }
-        */
-
         GemCountText.Text = "x " + Avatar.Instance.GemsAvailable;
         if (Avatar.Instance.GemsAvailable > 0)
         {
@@ -400,11 +389,20 @@ public class HistoryView : UIView
 
     IEnumerator ClaimExercise()
     {
+        int beforeGems = Avatar.Instance.Gems;
+
         yield return StartCoroutine(OnlineManager.Instance.StartRedeemActiveMinutes());
+
+        int gemsClaimed = Avatar.Instance.Gems - beforeGems;
 
         ClaimGemButtonText.Text = "CLAIMED!";
 
-        DefaultAlert.Present("Hooray!", "You got a gem!");
+        string message = "You got ";
+        if (gemsClaimed == 1)
+            message += "a gem!";
+        else
+            message += gemsClaimed.ToString() + " gems!";
+        DefaultAlert.Present("Hooray!", message);
     }
     #endregion
 }

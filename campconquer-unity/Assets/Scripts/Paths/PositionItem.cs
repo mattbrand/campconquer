@@ -18,10 +18,6 @@ public class PositionItem : MonoBehaviour
 
     #region Public Vars
     public SpriteRenderer SpriteRend;
-    //public SpriteRenderer BodySpriteRend;
-    //public SpriteRenderer HairSpriteRend;
-    //public SpriteRenderer ShirtSpriteRend;
-    //public SpriteRenderer ShortsSpriteRend;
     public Text PositionTextPrefab;
     #endregion
 
@@ -143,6 +139,7 @@ public class PositionItem : MonoBehaviour
         transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, -9.5f);
         transform.localScale = new Vector3(SMALL_DOT_SCALE, SMALL_DOT_SCALE, SMALL_DOT_SCALE);
         _pulseColor.a = UNSELECTED_LINE_ALPHA;
+        SpriteRend.color = Color.white;
         //SpriteRend.color = _pulseColor;
     }
 

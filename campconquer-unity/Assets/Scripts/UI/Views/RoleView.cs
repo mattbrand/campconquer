@@ -15,8 +15,9 @@ public class RoleView : UIView
 	const string DEFENSE_SETUP_VIEW = "PositionView";
 	const string ATTACK_SETUP_VIEW = "PathView";
 	const string ROLE_VIEW = "RoleView";
-    const string TIP_1 = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s";
-    const string TIP_2 = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution";
+    const string TIP_1 = "Choose a position to set up your player for the battle.";
+    const string TIP_2 = "Make sure you have purchased water balloons from the store before setting up for battle. Without balloons you won't be able to fight!";
+    const float TIMER_HIGH_Y = 144.0f;
     #endregion
 
     #region Public Vars
@@ -30,7 +31,6 @@ public class RoleView : UIView
     public ExtendedButton PrepareButton;
     public ExtendedImage PrepareSplashImage;
     public ExtendedImage PreparedSplashImage;
-    //public ExtendedImage TimerPanelImage;
     public ExtendedImage BattleCompleteImage;
     public ExtendedImage TipBGImage;
     public ExtendedImage TipHeaderImage;
@@ -88,7 +88,6 @@ public class RoleView : UIView
     {
         GameManager.Client = true;
         GameManager.ClientColor = Avatar.Instance.Color;
-        //GameManager.PlayerWatchingID = OnlineManager.Instance.PlayerID;
         SceneManager.LoadScene("Moderator");
     }
 
@@ -147,6 +146,17 @@ public class RoleView : UIView
     {
         SoundManager.Instance.PlaySoundEffect(SoundType.BUTTON_CLICK);
 
+        if (PositionView.Instance != null)
+            PositionView.Instance.RemovePositions();
+        if (PathView.Instance != null)
+            PathView.Instance.RemovePaths();
+        UIViewController.DeactivateUIView(ATTACK_SETUP_VIEW);
+        UIViewController.DeactivateUIView(DEFENSE_SETUP_VIEW);
+        UIViewController.DeactivateUIView(ROLE_VIEW);
+        ClientGameManager.Instance.gameObject.SetActive(false);
+        UIViewController.ActivateUIView("ClientMainView");
+
+        /*
         switch (State)
         {
             case RoleViewState.ROLE:
@@ -189,6 +199,7 @@ public class RoleView : UIView
                 UIViewController.ActivateUIView("ClientMainView");
                 break;
         }
+        */
     }
 
     public void ClickSelect()
@@ -201,11 +212,6 @@ public class RoleView : UIView
         {
 		    case RoleViewState.PATH:
             case RoleViewState.POSITION:
-                /*
-                if (PathView.Instance != null)
-                    PathView.Instance.CanClick = false;
-                YesNoAlert.Present("Ready?", "This will enter your choices and get you ready for battle!", SelectYes, SelectNo);
-                */
                 if (State == RoleViewState.PATH)
                 {
                     if (PathView.Instance != null)
@@ -344,9 +350,7 @@ public class RoleView : UIView
     void MoveTimerUp()
     {
         //Debug.Log(TimeContainer.rect);
-        TimeContainer.anchoredPosition = new Vector2(TimeContainer.anchoredPosition.x, 144.0f);
-        //TimeContainer.rect = new Rect(TimeContainer.rect.x, 144.0f, TimeContainer.rect.width, TimeContainer.rect.height);
-        //TimeContainer.SetYPosition(144.0f);
+        TimeContainer.anchoredPosition = new Vector2(TimeContainer.anchoredPosition.x, TIMER_HIGH_Y);
     }
 
     void MoveTimerToOriginalPlace()
@@ -385,8 +389,6 @@ public class RoleView : UIView
             //Debug.Log(selectionAlreadyMade);
             if (selectionAlreadyMade)
             {
-                //PrepareSplashImage.Deactivate();
-                //PreparedSplashImage.Activate();
                 PreparedSplashImage.Activate();
                 SelectButton.ButtonIconImage.sprite = ChangePositionButtonSprite;
                 SelectButton.Activate();
@@ -426,8 +428,6 @@ public class RoleView : UIView
             SetTimeText();
             //Debug.Log(timeToNextBattle);
 
-            //TimerPanelImage.Activate();
-            //TimeText.Activate();
             RefreshButton.Activate();
             enabled = true;
         }
@@ -435,13 +435,6 @@ public class RoleView : UIView
         {
             SelectButton.Deactivate();
             PrepareSplashImage.Deactivate();
-
-            /*
-            if (Avatar.Instance.Color == TeamColor.RED)
-                PreparedSplashImage.Image.sprite = RedBattleInProgressSprite;
-            else
-                PreparedSplashImage.Image.sprite = BlueBattleInProgressSprite;
-            */
             PreparedSplashImage.Activate();
         }
         BackButton.Activate();

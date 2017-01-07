@@ -226,9 +226,9 @@ public class OnlineManager : MonoBehaviour
         Avatar.Instance.Embodied = playerData.embodied;
         Avatar.Instance.Steps = playerData.steps_available;
         Avatar.Instance.GemsAvailable = playerData.gems_available;
-        Debug.Log(playerData.gems_available);
+        //Debug.Log(playerData.gems_available);
         Avatar.Instance.ActiveMins = playerData.active_minutes;
-        Debug.Log(Avatar.Instance.ActiveMins);
+        //Debug.Log(Avatar.Instance.ActiveMins);
         //Avatar.Instance.ActiveMet = playerData.active_goal_met;
         //Avatar.Instance.ActiveClaimed = playerData.active_minutes_claimed;
         //Debug.Log(Avatar.Instance.ActiveClaimed);
@@ -242,7 +242,6 @@ public class OnlineManager : MonoBehaviour
             //Debug.Log("read playerinfo - piece body type = " + piece.body_type);
             Avatar.Instance.BodyType = (AvatarBodyType)Enum.Parse(typeof(AvatarBodyType), piece.body_type.ToUpper(), true);
         }
-            //Avatar.Instance.SetBodyTypeFromTypeString(piece.body_type);
         if (piece.face != null)
             Avatar.Instance.FaceAsset = piece.face;
         if (piece.hair != null)
