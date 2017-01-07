@@ -10,46 +10,41 @@ public class AmmoBelt : MonoBehaviour
     #endregion
 
     #region Private Vars
-    Camera _camera;
-    Canvas _canvas;
-    RectTransform _movingAmmoRect;
+    AmmoDisplay _movingAmmoDisplay;
     bool _movingAmmo;
     #endregion
 
     #region Unity Methods
-    void Start()
-    {
-        _camera = GameObject.Find("Main Camera").GetComponent<Camera>();
-        _canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
-    }
-
     void Update()
     {
         if (_movingAmmo)
         {
             MovingAmmo.transform.position = Input.mousePosition;
-            /*
-            Vector2 pos;
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvas.transform as RectTransform, Input.mousePosition, _canvas.worldCamera, out pos);
-            MovingAmmo.transform.position = _canvas.transform.TransformPoint(pos);
-            //_movingAmmoRect.position = _camera.ScreenToViewportPoint(Input.mousePosition);
-            */
         }
     }
     #endregion
 
     #region Methods
-    public void ActivateMovingAmmo()
+    public void ActivateMovingAmmo(AmmoDisplay ammoDisplay)
     {
         MovingAmmo.SetActive(true);
-        //_movingAmmoRect = MovingAmmo.GetComponent<RectTransform>();
         _movingAmmo = true;
+        _movingAmmoDisplay = ammoDisplay;
     }
 
     public void DeactivateMovingAmmo()
     {
         MovingAmmo.SetActive(false);
         _movingAmmo = false;
+        _movingAmmoDisplay = null;
+    }
+    #endregion
+
+    #region Accessors
+    public AmmoDisplay MovingAmmoDisplay
+    {
+        get { return _movingAmmoDisplay; }
+        set { _movingAmmoDisplay = value; }
     }
     #endregion
 }

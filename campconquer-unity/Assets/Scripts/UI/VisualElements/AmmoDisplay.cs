@@ -104,7 +104,10 @@ public class AmmoDisplay : VisualElement
 
     public void PointerEnter()
     {
-        
+        if (AmmoBelt.MovingAmmoDisplay != this)
+        {
+            // do something
+        }
     }
     #endregion
 
