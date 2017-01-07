@@ -90,23 +90,30 @@ public class AmmoDisplay : VisualElement
         AmmoImage.Deactivate();
     }
 
+    public void ShowImage()
+    {
+        AmmoImage.Activate();
+    }
+
     public void PointerDown()
     {
-        AmmoBelt.ActivateMovingAmmo();
+        AmmoBelt.ActivateMovingAmmo(this);
         AmmoImage.Deactivate();
     }
 
     public void PointerUp()
     {
         AmmoBelt.DeactivateMovingAmmo();
-        AmmoImage.Activate();
+        //AmmoImage.Activate();
     }
 
     public void PointerEnter()
     {
+        Debug.Log("PointerEnter " + this.name);
         if (AmmoBelt.MovingAmmoDisplay != this)
         {
-            // do something
+            AmmoBelt.EnterAmmo(this);
+            AmmoBelt.DeactivateMovingAmmo();
         }
     }
     #endregion

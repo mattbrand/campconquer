@@ -359,7 +359,7 @@ GameObject:
   - component: {fileID: 11472946}
   - component: {fileID: 114275846573077576}
   m_Layer: 5
-  m_Name: Ammo0
+  m_Name: MovingAmmoImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2331,6 +2331,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MovingAmmo: {fileID: 178908}
+  MovingAmmoImage: {fileID: 11445224}
   AmmoDisplayArray:
   - {fileID: 114997187528299298}
   - {fileID: 11454412}
