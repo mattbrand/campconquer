@@ -11,7 +11,9 @@ public class AmmoBelt : MonoBehaviour
 
     #region Public Vars
     public GameObject MovingAmmo;
-    public Image MovingAmmoImage; 
+    public GameObject TempAmmo;
+    public Image MovingAmmoImage;
+    public Image TempAmmoImage;
     public AmmoDisplay[] AmmoDisplayArray;
     #endregion
 
@@ -19,9 +21,16 @@ public class AmmoBelt : MonoBehaviour
     AmmoDisplay _movingAmmoDisplay;
     AmmoType[] _ammoTypeArray;
     bool _movingAmmo;
+    bool _tempAmmoActive;
     #endregion
 
     #region Unity Methods
+    void Start()
+    {
+        _tempAmmoActive = false;
+        _movingAmmo = false;
+    }
+
     void Update()
     {
         //Debug.Log(_movingAmmo + " " + Input.GetMouseButtonUp(0));
@@ -40,19 +49,32 @@ public class AmmoBelt : MonoBehaviour
                 {
                     //Debug.Log("switch " + ammoOverlap.name + " with " + _movingAmmoDisplay.name);
                     SwitchAmmo(ammoOverlap);
+                    if (_tempAmmoActive)
+                        DeactivateTempAmmo();
                 }
                 else
                 {
                     //Debug.Log("revert");
                     RevertAmmo();
+                    if (_tempAmmoActive)
+                        DeactivateTempAmmo();
                 }
             }
             else
             {
                 if (ammoOverlap != null && ammoOverlap.Set)
+                {
                     MovingAmmo.transform.position = ammoOverlap.transform.position;
+                    //Debug.Log("activating temp ammo with " + _movingAmmoDisplay.name);
+                    if (_movingAmmoDisplay != ammoOverlap)
+                        ActivateTempAmmo(ammoOverlap, _movingAmmoDisplay.transform.position);
+                }
                 else
+                {
                     MovingAmmo.transform.position = Input.mousePosition;
+                    if (_tempAmmoActive)
+                        DeactivateTempAmmo();
+                }
             }
         }
     }
@@ -115,6 +137,20 @@ public class AmmoBelt : MonoBehaviour
             position.y >= ammoDisplay.transform.position.y - BOX_SIZE && position.y <= ammoDisplay.transform.position.y + BOX_SIZE)
             return true;
         return false;
+    }
+
+    void ActivateTempAmmo(AmmoDisplay ammoDisplay, Vector2 position)
+    {
+        TempAmmo.SetActive(true);
+        TempAmmo.transform.position = position;
+        TempAmmoImage.sprite = ammoDisplay.AmmoImage.CurrentSprite;
+        _tempAmmoActive = true;
+    }
+
+    void DeactivateTempAmmo()
+    {
+        TempAmmo.SetActive(false);
+        _tempAmmoActive = false;
     }
     #endregion
 
