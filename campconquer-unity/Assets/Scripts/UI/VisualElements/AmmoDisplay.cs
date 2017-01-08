@@ -16,6 +16,7 @@ public class AmmoDisplay : VisualElement
     public Sprite RedBombSprite;
     public Sprite BlueBombSprite;
     public ExtendedImage AmmoImage;
+    public Image BGImage;
     public Image Highlight;
     public AmmoBelt AmmoBelt;
     #endregion
@@ -41,25 +42,31 @@ public class AmmoDisplay : VisualElement
             case AmmoType.BALLOON:
                 if (Avatar.Instance.Color == TeamColor.BLUE)
                     AmmoImage.Image.sprite = AssetLookUp.Instance.BlueBalloons[0];
+                else
+                    AmmoImage.Image.sprite = AssetLookUp.Instance.RedBalloons[0];
+                //Debug.Log("balloon setting image to " + AmmoImage.Image.sprite);
                 break;
             case AmmoType.ARROW:
                 if (Avatar.Instance.Color == TeamColor.BLUE)
                     AmmoImage.Image.sprite = AssetLookUp.Instance.BlueBalloons[1];
                 else
                     AmmoImage.Image.sprite = AssetLookUp.Instance.RedBalloons[1];
+                //Debug.Log("arrow setting image to " + AmmoImage.Image.sprite);
                 break;
             case AmmoType.BOMB:
                 if (Avatar.Instance.Color == TeamColor.BLUE)
                     AmmoImage.Image.sprite = AssetLookUp.Instance.BlueBalloons[2];
                 else
                     AmmoImage.Image.sprite = AssetLookUp.Instance.RedBalloons[2];
+                //Debug.Log("bomb setting image to " + AmmoImage.Image.sprite);
                 break;
         }
         _selected = false;
         _type = type;
         _set = true;
-        //Debug.Log("initialize ammo with type " + type);
+        //Debug.Log("initialize ammo " + this.name + " with type " + type);
         AmmoImage.Activate();
+        BGImage.color = Color.white;
     }
 
     public void Click()
@@ -93,28 +100,14 @@ public class AmmoDisplay : VisualElement
     public void ShowImage()
     {
         AmmoImage.Activate();
+        BGImage.color = Color.white;
     }
 
     public void PointerDown()
     {
         AmmoBelt.ActivateMovingAmmo(this);
         AmmoImage.Deactivate();
-    }
-
-    public void PointerUp()
-    {
-        AmmoBelt.DeactivateMovingAmmo();
-        //AmmoImage.Activate();
-    }
-
-    public void PointerEnter()
-    {
-        Debug.Log("PointerEnter " + this.name);
-        if (AmmoBelt.MovingAmmoDisplay != this)
-        {
-            AmmoBelt.EnterAmmo(this);
-            AmmoBelt.DeactivateMovingAmmo();
-        }
+        BGImage.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
     }
     #endregion
 
