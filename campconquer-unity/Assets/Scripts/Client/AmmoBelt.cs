@@ -117,6 +117,9 @@ public class AmmoBelt : MonoBehaviour
                 if (AmmoDisplayArray[i].Set)
                     Avatar.Instance.Ammo.AmmoList[i] = AmmoDisplayArray[i].Type;
             }
+
+            LoadingAlert.Present();
+            StartCoroutine(SendAmmoArrangeToServer());
         }
     }
 
@@ -151,6 +154,14 @@ public class AmmoBelt : MonoBehaviour
     {
         TempAmmo.SetActive(false);
         _tempAmmoActive = false;
+    }
+    #endregion
+
+    #region Coroutines
+    IEnumerator SendAmmoArrangeToServer()
+    {
+        yield return StartCoroutine(OnlineManager.Instance.StartArrangeAmmo());
+        LoadingAlert.FinishLoading();
     }
     #endregion
 

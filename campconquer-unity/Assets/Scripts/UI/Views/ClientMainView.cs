@@ -4,8 +4,14 @@ using CampConquer;
 
 public class ClientMainView : UIView 
 {
+    #region Constants
+    const string VERSION = "1.0";
+    #endregion
+
     #region Public Vars
     public ExtendedInputField UserIdInput;
+
+    public ExtendedText VersionText;
 
     public MenuButton BattleButton;
     public MenuButton StoreButton;
@@ -45,6 +51,8 @@ public class ClientMainView : UIView
             _music = true;
             SoundManager.Instance.StartMenuMusic();
         }
+
+        VersionText.Text = "Version " + VERSION;
     }
     #endregion
 
