@@ -78,11 +78,13 @@ public class OnlineManager : MonoBehaviour
     #region Methods
     public void SetServer(bool local, bool staging, bool production)
     {
-        Debug.Log("is web player = " + Application.isWebPlayer + " url = " + Application.absoluteURL);
+        string url = Application.absoluteURL;
+        url.Replace("index.html", "api");
+        Debug.Log("is web player = " + Application.isWebPlayer + " url = " + url);
 
         //if (Application.isWebPlayer)
         {
-            _url = Application.absoluteURL + "/api";
+            _url = url;
         }
         /*
         else
