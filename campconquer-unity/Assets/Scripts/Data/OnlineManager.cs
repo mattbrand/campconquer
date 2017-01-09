@@ -80,8 +80,8 @@ public class OnlineManager : MonoBehaviour
     {
         string url = Application.absoluteURL;
         //url = "https://campconquer-staging.herokuapp.com/CampConquer/index.html";
-        string correctURL = url.Replace("index.html", "api");
-        Debug.Log("a is web player = " + Application.isWebPlayer + " url = " + correctURL);
+        string correctURL = url.Replace("CampConquer/index.html", "api");
+        Debug.Log("b is web player = " + Application.isWebPlayer + " url = " + correctURL);
 
         //if (Application.isWebPlayer)
         {
