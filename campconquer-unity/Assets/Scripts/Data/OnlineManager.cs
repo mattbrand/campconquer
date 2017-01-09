@@ -573,6 +573,17 @@ public class OnlineManager : MonoBehaviour
             GearData data = _gearResponseData.gears[i];
         }
     }
+
+    public IEnumerator StartArrangeAmmo()
+    {
+        string url = _url + "/players/" + _playerID + "/arrange/";
+        List<HTTPTuple> tuples = NewParams();
+        for (int i = 0; i < Avatar.Instance.Ammo.AmmoList.Count; i++)
+        {
+            tuples.Add(new HTTPTuple("ammo[]", Avatar.Instance.Ammo.AmmoList[i].ToString().ToLower()));
+        }
+        yield return StartCoroutine(BestHTTPHelper.Instance.CallToServerForJson(url, HTTPMethods.Post, tuples, null, DisplayError, DisplayError, RequestFailure));
+    }
     #endregion
 
     #region Error Methods

@@ -185,7 +185,9 @@ public class HistoryView : UIView
         SetCoinsText();
 
         string syncedDateTime = OnlineManager.Instance.PlayerReponseData.player.activities_synced_at;
-        if (syncedDateTime == "")
+        //Debug.Log(OnlineManager.Instance.PlayerReponseData.player.activities_synced_at);
+        //Debug.Log(syncedDateTime);
+        if (syncedDateTime == null || syncedDateTime == "")
             LastSynced.Text = "NA";
         else
             LastSynced.Text = Convert.ToDateTime(syncedDateTime).ToString();
