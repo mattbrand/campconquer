@@ -38,6 +38,12 @@ public class LoginAlert : UIAlert
             else
                 Username.InputField.OnPointerClick(new PointerEventData(_eventSystem));
         }
+
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            if (_username != "" && _password != "")
+                ClickSignIn();
+        }
     }
     #endregion
 
