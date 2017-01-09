@@ -78,30 +78,16 @@ public class OnlineManager : MonoBehaviour
     #region Methods
     public void SetServer(bool local, bool staging, bool production)
     {
-        string url = Application.absoluteURL;
-        //url = "https://campconquer-staging.herokuapp.com/CampConquer/index.html";
-        string correctURL = url.Replace("CampConquer/index.html", "api");
-        Debug.Log("b is web player = " + Application.isWebPlayer + " url = " + correctURL);
-
-        //if (Application.isWebPlayer)
-        {
-            _url = correctURL;
-        }
-        /*
-        else
-        {
-            _url = LOCALHOST;
-
-            if (local)
-            {
-                _url = LOCALHOST;
-            }
-            else if (staging)
-            {
-                _url = STAGING;
-            }
-        }
-        */
+        string url = "";
+        string correctURL = "";
+#if UNITY_EDITOR
+        url = LOCALHOST;
+        correctURL = url;
+#else
+        url = Application.absoluteURL;
+        correctURL = url.Replace("CampConquer/index.html", "api");
+#endif
+        _url = correctURL;
     }
 
     private List<HTTPTuple> NewParams() {
