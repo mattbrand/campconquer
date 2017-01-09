@@ -79,12 +79,13 @@ public class OnlineManager : MonoBehaviour
     public void SetServer(bool local, bool staging, bool production)
     {
         string url = Application.absoluteURL;
-        url.Replace("index.html", "api");
-        Debug.Log("is web player = " + Application.isWebPlayer + " url = " + url);
+        //url = "https://campconquer-staging.herokuapp.com/CampConquer/index.html";
+        string correctURL = url.Replace("index.html", "api");
+        Debug.Log("a is web player = " + Application.isWebPlayer + " url = " + correctURL);
 
         //if (Application.isWebPlayer)
         {
-            _url = url;
+            _url = correctURL;
         }
         /*
         else
