@@ -78,15 +78,17 @@ public class OnlineManager : MonoBehaviour
     #region Methods
     public void SetServer(bool local, bool staging, bool production)
     {
-        if (Application.isWebPlayer)
+        Debug.Log("is web player = " + Application.isWebPlayer + " url = " + Application.absoluteURL);
+
+        //if (Application.isWebPlayer)
         {
             _url = Application.absoluteURL + "/api";
         }
+        /*
         else
         {
             _url = LOCALHOST;
 
-            /*
             if (local)
             {
                 _url = LOCALHOST;
@@ -95,8 +97,8 @@ public class OnlineManager : MonoBehaviour
             {
                 _url = STAGING;
             }
-            */
         }
+        */
     }
 
     private List<HTTPTuple> NewParams() {
