@@ -23,6 +23,7 @@ Rails.application.routes.draw do
         post :buy
         post :equip
         post :unequip
+        post :arrange
         post :claim_steps
         post :claim_active_minutes
 

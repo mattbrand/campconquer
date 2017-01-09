@@ -69,6 +69,18 @@ class API::PlayersController < ::API::APIController
     render_player
   end
 
+  def arrange
+    ammo = params[:ammo]
+    raise "parameter ammo required" if ammo.nil?
+    ammo = [ammo] unless ammo.is_a? Array
+    @player.arrange_ammo! ammo
+    render_player
+  end
+
+  def arrange_ammo(ammo)
+    @player.piece.update!(ammo: ammo)
+  end
+
   private
 
   # Never trust parameters from the scary internet, only allow the white list through.

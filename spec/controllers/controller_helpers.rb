@@ -14,6 +14,11 @@ module ControllerHelpers
     raise e
   end
 
+  def expect_error(message=nil)
+    expect(response_json['status']).to eq('error')
+    expect(response_json['message']).to include(message) if message
+  end
+
   def start_session(player)
     @session_token = player.start_session
     @current_player = player

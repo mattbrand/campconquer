@@ -24,15 +24,15 @@
 class Piece < ActiveRecord::Base
 
   BODY_TYPES = Enum.new([
-                          [:gender_neutral_1],
-                          [:gender_neutral_2],
-                          [:male],
-                          [:female],
+                            [:gender_neutral_1],
+                            [:gender_neutral_2],
+                            [:male],
+                            [:female],
                         ])
 
   ROLES = Enum.new([
-                     [:offense],
-                     [:defense],
+                       [:offense],
+                       [:defense],
                    ])
 
   belongs_to :game
@@ -52,19 +52,29 @@ class Piece < ActiveRecord::Base
   serialize :ammo, JSON
 
   validates :team, inclusion: {
-    in: Team::GAME_TEAMS.values,
-    message: Team::GAME_TEAMS.validation_message
+      in: Team::GAME_TEAMS.values,
+      message: Team::GAME_TEAMS.validation_message
   }
 
   validates :body_type, inclusion: {
-    in: BODY_TYPES.values,
-    message: BODY_TYPES.validation_message
+      in: BODY_TYPES.values,
+      message: BODY_TYPES.validation_message
   }, allow_nil: true
 
   validates :role, inclusion: {
-    in: ROLES.values,
-    message: ROLES.validation_message
+      in: ROLES.values,
+      message: ROLES.validation_message
   }, allow_nil: true
+
+  class AmmoValidator < ActiveModel::EachValidator
+    def validate_each(record, attribute, value)
+      value.each do |ammo_name|
+        record.errors.add attribute, (options[:message] || "unknown ammo name '#{ammo_name}'") if Ammo.by_name[ammo_name].nil?
+      end
+    end
+  end
+
+  validates :ammo, allow_nil: true, ammo: true
 
   def player_name
     self.player.try(:name)
@@ -95,11 +105,11 @@ class Piece < ActiveRecord::Base
   end
 
   def gear_owned
-    items.map{|item| item.gear_name}
+    items.map { |item| item.gear_name }
   end
 
   def gear_equipped
-    items_equipped.map{|item| item.gear_name}
+    items_equipped.map { |item| item.gear_name }
   end
 
   def ammo
@@ -126,21 +136,21 @@ class Piece < ActiveRecord::Base
   # so we have to call these options explicitly from the parent's as_json
   def self.serialization_options
     {
-      only: [:player_id,
-             :team,
-             :body_type,
-             :role,
-             :path,
-             :speed,
-             :health,
-             :range,
-             :face,
-             :hair,
-             :skin_color,
-             :hair_color,
-             :ammo,
-      ],
-      :methods => [:player_name, :gear_owned, :gear_equipped] # Rails is SO unencapsulated :-(
+        only: [:player_id,
+               :team,
+               :body_type,
+               :role,
+               :path,
+               :speed,
+               :health,
+               :range,
+               :face,
+               :hair,
+               :skin_color,
+               :hair_color,
+               :ammo,
+        ],
+        :methods => [:player_name, :gear_owned, :gear_equipped] # Rails is SO unencapsulated :-(
     }
   end
 

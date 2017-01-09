@@ -21,6 +21,10 @@ class Ammo
     end]
   end
 
+  def self.named ammo_name
+    by_name[ammo_name] || raise("Unknown ammo '#{ammo_name}'")
+  end
+
   attr_reader :name, :cost
 
   # sadly and uncharacteristically un-DRY for Ruby

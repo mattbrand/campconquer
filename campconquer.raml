@@ -498,6 +498,22 @@ types:
                 - gear not owned
                 - game locked
 
+    /arrange:
+      post:
+        description: arrange your ammo - example `http://localhost:3000/api/players/10/arrange?ammo[]=arrow&ammo[]=balloon&ammo[]=arrow`
+        queryParameters:
+          ammo[]:
+            type: string[]
+            description: the short name of the ammos to equip, in order
+        responses:
+          200:
+            description: ok
+          400:
+            description: |
+                - ammo doesn't match currently owned ammo
+                - game locked
+
+
     /claim_steps:
       post:
         description: attempt to claim all available steps and get gold coins

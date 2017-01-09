@@ -112,6 +112,7 @@ class Player < ActiveRecord::Base
   def gamemaster?
     team == 'gamemaster'
   end
+
   alias_method :gamemaster, :gamemaster?
 
   def can_see_game?
@@ -311,7 +312,7 @@ class Player < ActiveRecord::Base
 
     # todo: term 'ammo' used for both singular and plural
 
-    desired_ammo = Ammo.by_name[ammo_name]
+    desired_ammo = Ammo.named ammo_name
     if ammo.size >= MAXIMUM_AMMO_SLOTS
       raise Player::NotEnoughSpace, desired_ammo
     elsif self.coins >= desired_ammo.cost
@@ -322,6 +323,17 @@ class Player < ActiveRecord::Base
       raise Player::NotEnoughMoney, desired_ammo
     end
 
+  end
+
+  def arrange_ammo! arranged_ammo
+    require_unlocked_game
+
+    if arranged_ammo.size != self.ammo.size or arranged_ammo.sort != self.ammo.sort
+      raise "ammo mismatch (current: #{self.ammo.join(',')}; requested: #{arranged_ammo.join(',')})"
+    end
+    arranged_ammo.each { |a| Ammo.named(a) } # try to provoke an "unknown ammo" error
+
+    self.piece.update!(ammo: arranged_ammo)
   end
 
   # methods which call Fitbit

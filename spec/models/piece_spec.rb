@@ -40,6 +40,12 @@ RSpec.describe Piece, type: :model do
     expect(Piece.new(team: 'blue', role: 'management')).not_to be_valid
   end
 
+  it "validates ammo type" do
+    expect(Piece.new(team: 'blue', role: 'offense', ammo: ['balloon'])).to be_valid
+    expect(Piece.new(team: 'blue', role: 'offense', ammo: ['tomato'])).not_to be_valid
+  end
+
+
   context "path" do
     let(:point1_2) { Point.new(x: 1, y: 2) }
     let(:point3_4) { Point.new(x: 3, y: 4) }
@@ -104,4 +110,5 @@ RSpec.describe Piece, type: :model do
       expect(piece.as_json['gear_equipped']).to eq([galoshes.name])
     end
   end
+
 end
