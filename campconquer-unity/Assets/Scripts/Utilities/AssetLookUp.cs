@@ -9,6 +9,11 @@ public class AssetLookUp : MonoBehaviour
     public Sprite StoreNormal;
     public Sprite StorePurchased;
     public Sprite StoreSelected;
+    public Sprite BuyButton;
+    public Sprite EquipButton;
+    public Sprite UnequipButton;
+    public Sprite ClaimedButton;
+    public Sprite ClaimGemsButton;
 
     public Sprite[] AvatarNavIcons;
     public Sprite[] AmmoIcons;
