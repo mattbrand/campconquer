@@ -3,11 +3,7 @@
 
   <table class="player-info" style="float: right">
     <tr>
-      <% if week.start_at.nil? %>
-          <td colspan="3">Before <%= @season.start_at %></td>
-      <% else %>
-          <td colspan="3">from <%= week.start_at %> until <%= week.start_at + 1.week - 1.day %></td>
-      <% end %>
+      <td colspan="3">from <%= week.start_at %> until <%= week.finish_at %></td>
       <td><%= pluralize(week.games.size, "game") %></td>
     </tr>
   </table>
