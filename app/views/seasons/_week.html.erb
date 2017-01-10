@@ -3,7 +3,7 @@
 
   <table class="player-info" style="float: right">
     <tr>
-      <td colspan="3">from <%= week.start_at %> until <%= week.finish_at %></td>
+      <td colspan="3">from <%= week.start_at %> to <%= week.finish_at - 1.day %></td>
       <td><%= pluralize(week.games.size, "game") %></td>
     </tr>
   </table>

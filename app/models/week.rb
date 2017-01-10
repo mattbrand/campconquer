@@ -2,7 +2,7 @@
 class Week
   attr_reader :number, :games
 
-  def initialize(number:, start_at:, finish_at:, games:[])
+  def initialize(number:, start_at:, finish_at:nil, games:[])
     @number, @start_at, @finish_at = number, start_at, finish_at
     @games = games
   end
@@ -16,7 +16,7 @@ class Week
   end
 
   def finish_at
-    start_at + 1.week
+    @finish_at || (self.start_at + 1.week)
   end
 
   def range
