@@ -1,14 +1,12 @@
 <h1>Season <%= @season.name %></h1>
 
+<hr/>
 <h2>Weeks</h2>
 
 <%# todo: refactor and test the hell out of this %>
-
-<% @season.weeks.each do |week| %>
-    <%= render partial: 'week', object: week %>
-
-    <hr/>
-<% end %>
+  <% @season.weeks.each do |week| %>
+      <%= render partial: 'week', object: week %>
+  <% end %>
 
 <h2>Players</h2>
 

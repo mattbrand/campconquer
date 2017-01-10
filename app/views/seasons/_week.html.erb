@@ -1,80 +1,85 @@
 <%# todo: refactor and test the hell out of this %>
+<div style="border: 3px solid blue; padding: 1em; width: 90%">
 
-<table class="player-info">
-  <tr>
-    <th><%= week.name %></th>
-    <% if week.start_at.nil? %>
-        <td colspan="3">Before <%= @season.start_at %></td>
-    <% else %>
-        <td colspan="3"><%= week.start_at %> - <%= week.start_at + 1.week - 1.day %></td>
-    <% end %>
-
-    <td><%= pluralize(week.games.size, "game") %></td>
-  </tr>
-</table>
-
-<% unless week.games.size == 0 %>
-    <br/>
-    <h3>Team Stats</h3>
-    <table class="player-info">
-      <tr>
-        <th>team</th>
-        <% stats = (Summary::STATS - [:attack_mvp, :defend_mvp])
-           stats.each do |stat| %>
-            <th><%= stat %></th>
-        <% end %>
-      </tr>
-
-      <% week.team_summaries.each do |summary| %>
-          <tr>
-            <th><%= summary.team %></th>
-
-            <% stats.each do |stat| %>
-                <td><%= summary.send(stat) %></td>
-            <% end %>
-          </tr>
+  <table class="player-info" style="float: right">
+    <tr>
+      <% if week.start_at.nil? %>
+          <td colspan="3">Before <%= @season.start_at %></td>
+      <% else %>
+          <td colspan="3">from <%= week.start_at %> until <%= week.start_at + 1.week - 1.day %></td>
       <% end %>
-<% end %>
-</table>
-<% unless week.games.size == 0 %>
+      <td><%= pluralize(week.games.size, "game") %></td>
+    </tr>
+  </table>
 
-    <br/>
-    <h3>Top Players</h3>
-    <table class="player-info">
-      <tr>
-        <th>top</th>
-        <th>count</th>
-        <th>names</th>
-        <th colspan="2">random</th>
-      </tr>
-      <tr>
-        <th>attackers</th>
-        <%= render partial: 'players_with_chosen_one', locals: {players: week.all_top_attackers} %>
-      </tr>
-      <tr>
-        <th>defenders</th>
-        <%= render partial: 'players_with_chosen_one', locals: {players: week.all_top_defenders} %>
-      </tr>
-    </table>
+  <h2 style="-webkit-margin-before: 0px;"><%= week.name %>:</h2>
 
-    <br/>
 
-    <h3>Activity</h3>
-    <table class="player-info">
-      <tr>
-        <th>active</th>
-        <th>count</th>
-        <th>names</th>
-        <th colspan="2">random</th>
-      </tr>
-      <tr>
-        <th>game players</th>
-        <%= render partial: 'players_with_chosen_one', locals: {players: week.active_players(week.game_players)} %>
-      </tr>
-      <tr>
-        <th>control group members</th>
-        <%= render partial: 'players_with_chosen_one', locals: {players: week.active_players(week.control_players)} %>
-      </tr>
+  <% unless week.games.size == 0 %>
+      <!--<th>Team Stats</th>-->
 
-    </table>
-<% end %>
+      <table class="player-info">
+        <tr>
+          <th>team</th>
+          <% stats = (Summary::STATS - [:attack_mvp, :defend_mvp])
+             stats.each do |stat| %>
+              <th><%= stat %></th>
+          <% end %>
+        </tr>
+
+        <% week.team_summaries.each do |summary| %>
+            <tr>
+              <th><%= summary.team %></th>
+
+              <% stats.each do |stat| %>
+                  <td><%= summary.send(stat) %></td>
+              <% end %>
+            </tr>
+        <% end %>
+  <% end %>
+  </table>
+
+  <% unless week.games.size == 0 %>
+
+      <br/>
+      <h3>Top Players</h3>
+      <table class="player-info">
+        <tr>
+          <th>top</th>
+          <th>count</th>
+          <th>names</th>
+          <th colspan="2">random</th>
+        </tr>
+        <tr>
+          <th>attackers</th>
+          <%= render partial: 'players_with_chosen_one', locals: {players: week.all_top_attackers} %>
+        </tr>
+        <tr>
+          <th>defenders</th>
+          <%= render partial: 'players_with_chosen_one', locals: {players: week.all_top_defenders} %>
+        </tr>
+      </table>
+
+      <br/>
+
+      <h3>Activity</h3>
+      <table class="player-info">
+        <tr>
+          <th>active</th>
+          <th>count</th>
+          <th>names</th>
+          <th colspan="2">random</th>
+        </tr>
+        <tr>
+          <th>game players</th>
+          <%= render partial: 'players_with_chosen_one', locals: {players: week.active_players(week.game_players)} %>
+        </tr>
+        <tr>
+          <th>control group members</th>
+          <%= render partial: 'players_with_chosen_one', locals: {players: week.active_players(week.control_players)} %>
+        </tr>
+
+      </table>
+  <% end %>
+</div>
+<br style="clear:both"/>
