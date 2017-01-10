@@ -5,7 +5,7 @@ using CampConquer;
 public class ClientMainView : UIView 
 {
     #region Constants
-    const string VERSION = "1.0";
+    const string VERSION = "1.1";
     #endregion
 
     #region Public Vars
