@@ -301,7 +301,8 @@ public class StoreView : UIView
             GemCostText.Activate();
             GemImage.Activate();
             OwnedText.Deactivate();
-			BuyButton.Text = BUY;
+            BuyButton.ButtonIconImage.sprite = AssetLookUp.Instance.BuyButton;
+			//BuyButton.Text = BUY;
             BuyButton.Activate();
 		}
 		else
@@ -319,13 +320,15 @@ public class StoreView : UIView
                 else
                 {
                     Type type = storeItem.GetType();
-                    BuyButton.Text = UNEQUIP;
+                    BuyButton.ButtonIconImage.sprite = AssetLookUp.Instance.UnequipButton;
+                    //BuyButton.Text = UNEQUIP;
                     BuyButton.Activate();
 				}
 			}
             else
             {
-				BuyButton.Text = EQUIP;
+                BuyButton.ButtonIconImage.sprite = AssetLookUp.Instance.EquipButton;
+				//BuyButton.Text = EQUIP;
                 BuyButton.Activate();
             }
 		}

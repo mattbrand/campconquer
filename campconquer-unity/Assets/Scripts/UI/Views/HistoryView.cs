@@ -41,21 +41,19 @@ public class HistoryView : UIView
     public ExtendedText AMVP;
     public ExtendedText DMVP;
     public ExtendedText LastSynced;
-    public ExtendedText ClaimGemButtonText;
-    public ExtendedText ClaimCoinsButtonText;
+    //public ExtendedText ClaimGemButtonText;
+    //public ExtendedText ClaimCoinsButtonText;
     public ExtendedText GemCountText;
 
-    public Sprite BlueLeaderboard;
     public Sprite BlueLeadTitle;
-    public Sprite PurpleLeaderboard;
     public Sprite TieTitle;
     public Sprite ChestEmpty;
     public Sprite ChestSemiEmpty;
     public Sprite ChestSemiFull;
     public Sprite ChestFull;
 
-    public Text CoinsClaimText;
-    public Text GemClaimText;
+    //public Text CoinsClaimText;
+    //public Text GemClaimText;
 
     public CoinsGemsView CoinsGemsView;
     #endregion
@@ -119,7 +117,7 @@ public class HistoryView : UIView
                     if (_stepsShown > MIN_STEPS)
                     {
                         CoinsClaimButton.Enable();
-                        CoinsClaimText.color = Color.white;
+                        //CoinsClaimText.color = Color.white;
                     }
                     /*
                     if (Avatar.Instance.ActiveMet && !Avatar.Instance.ActiveClaimed)
@@ -177,9 +175,9 @@ public class HistoryView : UIView
         enabled = true;
 
         CoinsClaimButton.Disable();
-        CoinsClaimText.color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
+        //CoinsClaimText.color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
         ActivityClaimButton.Disable();
-        GemClaimText.color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
+        //GemClaimText.color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
 
         SetChestSprite();
         SetCoinsText();
@@ -326,18 +324,18 @@ public class HistoryView : UIView
         {
             LeadTitleImage.Image.sprite = BlueLeadTitle;
             BannerImage.Image.color = Colors.BlueBannerColor;
-            LeaderboardTitleImage.Image.sprite = BlueLeaderboard;
+            //LeaderboardTitleImage.Image.sprite = BlueLeaderboard;
         }
         // tie
         else if (blueWins == redWins)
         {
             LeadTitleImage.Image.sprite = TieTitle;
             BannerImage.Image.color = Colors.PurpleBannerColor;
-            LeaderboardTitleImage.Image.sprite = PurpleLeaderboard;
+            //LeaderboardTitleImage.Image.sprite = PurpleLeaderboard;
         }
         BannerImage.Activate();
         LeadTitleImage.Activate();
-        LeaderboardTitleImage.Activate();
+        //LeaderboardTitleImage.Activate();
 
         // set player data
         for (int i = 0; i < OnlineManager.Instance.SeasonSyncData.player_summaries.Count; i++)
@@ -358,13 +356,18 @@ public class HistoryView : UIView
         GemCountText.Text = "x " + Avatar.Instance.GemsAvailable;
         if (Avatar.Instance.GemsAvailable > 0)
         {
+            /*
             if (Avatar.Instance.GemsAvailable == 1)
                 ClaimGemButtonText.Text = "CLAIM GEM!";
             else
                 ClaimGemButtonText.Text = "CLAIM GEMS!";
+                */
+
+            if (Avatar.Instance.GemsAvailable > 1)
+                ActivityClaimButton.ButtonIconImage.sprite = AssetLookUp.Instance.ClaimGemsButton;
 
             ActivityClaimButton.Enable();
-            GemClaimText.color = Color.white;
+            //GemClaimText.color = Color.white;
         }
 
         // play fill sound effect
@@ -397,7 +400,8 @@ public class HistoryView : UIView
 
         int gemsClaimed = Avatar.Instance.Gems - beforeGems;
 
-        ClaimGemButtonText.Text = "CLAIMED!";
+        ActivityClaimButton.ButtonIconImage.sprite = AssetLookUp.Instance.ClaimedButton;
+        //ClaimGemButtonText.Text = "CLAIMED!";
 
         string message = "You got ";
         if (gemsClaimed == 1)
