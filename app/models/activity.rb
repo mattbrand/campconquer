@@ -31,5 +31,9 @@ class Activity < ActiveRecord::Base
     active_minutes >= Player::GOAL_MINUTES
   end
 
+  def active?
+    steps > 0 or active_minutes > 0
+  end
+
 end
 

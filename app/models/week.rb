@@ -1,13 +1,26 @@
 # todo: test
 class Week
-  attr_reader :number, :games, :start_at
+  attr_reader :number, :games
 
-  def initialize(number:, start_at:, games:[])
-    @number, @start_at, @games = number, start_at, games
+  def initialize(number:, start_at:, finish_at:, games:[])
+    @number, @start_at, @finish_at = number, start_at, finish_at
+    @games = games
   end
 
   def size
     @games.size
+  end
+
+  def start_at
+    @start_at.to_date
+  end
+
+  def finish_at
+    start_at + 1.week
+  end
+
+  def range
+    (start_at...finish_at) # three dots = exclusive range
   end
 
   def name
@@ -18,8 +31,31 @@ class Week
     end
   end
 
-  def players
-    game.collect{|g| g.players}.flatten.uniq
+  def in? date
+    range.include? date
+  end
+
+  def game_players
+    games.collect{|g| g.players}.flatten.uniq
+  end
+
+  def control_players
+    Player.where(team: 'control').includes(:activities)
+  end
+
+  def active_players players
+    players.select do |player|
+      player.activities.select do |activity|
+        self.in?(activity.date) and activity.active?
+      end.present?
+    end
+  end
+
+  # sum of all game outcomes per player
+  def player_summaries
+    game_players.map do |player|
+      PlayerSummary.new(games: self.games, player: player)
+    end
   end
 
   # sum of all game outcomes per team
@@ -29,23 +65,12 @@ class Week
     end
   end
 
-  # sum of all game outcomes per player
-  def player_summaries
-    players.map do |player|
-      PlayerSummary.new(games: self.games, player: player)
-    end
-  end
-
   def all_top_attackers
-    top_player_ids = team_summaries.inject(Set.new) { |tops, summary| tops.merge(summary.attack_mvps) }.to_a
+    Player.find(team_summaries.inject(Set.new) { |tops, summary| tops.merge(summary.attack_mvps) }.to_a)
   end
 
   def all_top_defenders
-    top_player_ids = team_summaries.inject(Set.new) { |tops, summary| tops.merge(summary.defend_mvps) }.to_a
-  end
-
-  def player_names player_ids
-    player_ids.map { |id| Player.find(id).name }.sort.join(', ')
+    Player.find(team_summaries.inject(Set.new) { |tops, summary| tops.merge(summary.defend_mvps) }.to_a)
   end
 
 end

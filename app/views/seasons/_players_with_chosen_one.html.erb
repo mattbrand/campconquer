@@ -1,0 +1,7 @@
+<td><%= players.size %></td>
+<td><%= players.map(&:name).sort.join(', ') %></td>
+<% unless players.empty? %>
+    <% chosen_one = players.sample %>
+    <td><%= chosen_one.name %></td>
+    <td>id&nbsp;<%= chosen_one.id %></td>
+<% end %>

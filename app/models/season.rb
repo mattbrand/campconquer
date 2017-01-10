@@ -69,17 +69,15 @@ class Season < ActiveRecord::Base
 
   def week n
     if n == 0
-      week_games = games.where(state: 'completed').where(["played_at < ?", self.start_at])
-      week_start = nil
+      week_start = Date.current - 1.year
+      week_finish = self.start_at
     else
-      start = self.start_at + (n-1).weeks
-      finish = self.start_at + (n).weeks
-
-      week_games = games.where(state: 'completed').where(["played_at >= ? AND played_at < ?", start, finish])
-      week_start = start
+      week_start = self.start_at + (n-1).weeks
+      week_finish = self.start_at + (n).weeks
     end
+    week_games = games.where(state: 'completed').where(["played_at >= ? AND played_at < ?", week_start, week_finish])
 
-    Week.new(number: n, start_at: week_start, games: week_games)
+    Week.new(number: n, start_at: week_start, finish_at: week_finish, games: week_games)
   end
 
   def weeks

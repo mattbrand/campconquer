@@ -2,69 +2,11 @@
 
 <h2>Weeks</h2>
 
-<% @season.weeks.each_with_index do |week, index| %>
-    <table class="player-info">
-      <tr>
-        <th><%= week.name %></th>
-        <% if week.start_at.nil? %>
-            <td colspan="3">Before <%= @season.start_at %></td>
-        <% else %>
-            <td colspan="3"><%= week.start_at %> - <%= week.start_at + 1.week - 1.day %></td>
-        <% end %>
+<%# todo: refactor and test the hell out of this %>
 
-        <td><%= pluralize(week.games.size, "game") %></td>
-      </tr>
+<% @season.weeks.each do |week| %>
+    <%= render partial: 'week', object: week %>
 
-      <tr>
-        <th>team</th>
-        <% stats = (Summary::STATS - [:attack_mvp, :defend_mvp])
-           stats.each do |stat| %>
-            <th><%= stat %></th>
-        <% end %>
-      </tr>
-
-      <% week.team_summaries.each do |summary| %>
-          <tr>
-            <th><%= summary.team %></th>
-
-            <% stats.each do |stat| %>
-                <td><%= summary.send(stat) %></td>
-            <% end %>
-          </tr>
-      <% end %>
-
-    </table>
-    <br/>
-
-    <table class="player-info">
-      <tr>
-        <th>top attackers</th>
-        <% tops = week.all_top_attackers %>
-        <td><%= week.player_names(tops) %></td>
-        <% unless tops.empty? %>
-            <% chosen_one = tops.sample(1) %>
-            <td>RANDOM:
-              <%= week.player_names(chosen_one) %>
-              (id <%= chosen_one.first %>)
-            </td>
-        <% end %>
-      </tr>
-
-      <tr>
-        <th>top defenders</th>
-        <% tops = week.all_top_defenders %>
-        <td><%= week.player_names(tops) %></td>
-        <% unless tops.empty? %>
-            <% chosen_one = tops.sample(1) %>
-            <td>RANDOM:
-              <%= week.player_names(chosen_one) %>
-              (id <%= chosen_one.first %>)
-            </td>
-        <% end %>
-      </tr>
-
-    </table>
-    <br/>
     <hr/>
 <% end %>
 
