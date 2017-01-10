@@ -99,8 +99,15 @@ public class AmmoDisplay : VisualElement
 
     public void ShowImage()
     {
-        AmmoImage.Activate();
+        if (_set)
+            AmmoImage.Activate();
         BGImage.color = Color.white;
+    }
+
+    public void HideImage()
+    {
+        AmmoImage.Deactivate();
+        BGImage.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
     }
 
     public void PointerDown()

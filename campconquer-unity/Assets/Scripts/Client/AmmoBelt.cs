@@ -41,6 +41,11 @@ public class AmmoBelt : MonoBehaviour
             {
                 if (CheckWithinBounds(Input.mousePosition, AmmoDisplayArray[i]))
                     ammoOverlap = AmmoDisplayArray[i];
+                else
+                {
+                    if (AmmoDisplayArray[i] != _movingAmmoDisplay)
+                        AmmoDisplayArray[i].ShowImage();
+                }
             }
 
             if (!Input.GetMouseButton(0))
@@ -65,6 +70,7 @@ public class AmmoBelt : MonoBehaviour
                 if (ammoOverlap != null && ammoOverlap.Set)
                 {
                     MovingAmmo.transform.position = ammoOverlap.transform.position;
+                    ammoOverlap.HideImage();
                     //Debug.Log("activating temp ammo with " + _movingAmmoDisplay.name);
                     if (_movingAmmoDisplay != ammoOverlap)
                         ActivateTempAmmo(ammoOverlap, _movingAmmoDisplay.transform.position);
