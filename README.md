@@ -138,18 +138,6 @@ and when the server is running later on you can access
 
 
 
-### sample request with multiple nested values
-
-```
-outcome[winner]:red
-outcome[team_summaries][][team]:red
-outcome[team_summaries][][takedowns]:20
-outcome[team_summaries][][throws]:6
-outcome[team_summaries][][team]:blue
-outcome[team_summaries][][takedowns]:10
-outcome[team_summaries][][throws]:12
-```
-
 ## Admin
 
 We are using [ActiveAdmin](http://activeadmin.info/) for some non-API UI
@@ -161,6 +149,7 @@ We are using [ActiveAdmin](http://activeadmin.info/) for some non-API UI
 
 ### First Time Setup:
 
+* install Homebrew, XCode Command-Line Tools, RVM, Bundler, Rails, etc.; see <http://installfest.railsbridge.org/> for more info
 * `git clone git@github.com:mattbrand/campconquer.git`
 * `cd campconquer`
 * `bundle install`
