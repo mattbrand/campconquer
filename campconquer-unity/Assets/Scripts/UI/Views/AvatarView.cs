@@ -154,9 +154,12 @@ public class AvatarView : UIView
         UIViewController.DeactivateUIView("AmmoEquipView");
         UIViewController.DeactivateUIView("AmmoBeltView");
         NavButtons[0].Disable();
-        NavButtonAnimators[0].SetTrigger("Activate");
+        //NavButtonAnimators[0].SetTrigger("Activate");
+        NavButtons[0].transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
+        //NavButtons[0].transform.Scale = new Vector3(1.25f, 1.25f, 1.25f);
         NavButtons[1].Enable();
-        NavButtonAnimators[1].SetTrigger("Default");
+        //NavButtonAnimators[1].SetTrigger("Default");
+        NavButtons[1].transform.localScale = Vector3.one;
         CoinsGemsView.Instance.MoveToFront();
     }
 
@@ -170,9 +173,11 @@ public class AvatarView : UIView
         UIViewController.DeactivateUIView("GearEquipView");
         UIViewController.DeactivateUIView("StoreView");
         NavButtons[0].Enable();
-        NavButtonAnimators[0].SetTrigger("Default");
+        NavButtons[0].transform.localScale = Vector3.one;
+        //NavButtonAnimators[0].SetTrigger("Default");
         NavButtons[1].Disable();
-        NavButtonAnimators[1].SetTrigger("Activate");
+        //NavButtonAnimators[1].SetTrigger("Activate");
+        NavButtons[1].transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
         CoinsGemsView.Instance.MoveToFront();
 
         if (_displayedItem != null)

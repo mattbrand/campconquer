@@ -31,6 +31,7 @@ public class AmmoDisplay : VisualElement
 	void Start()
     {
         enabled = false;
+        BGImage.color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
 	}
     #endregion
 
@@ -100,8 +101,12 @@ public class AmmoDisplay : VisualElement
     public void ShowImage()
     {
         if (_set)
+        {
             AmmoImage.Activate();
-        BGImage.color = Color.white;
+            BGImage.color = Color.white;
+        }
+        else
+            BGImage.color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
     }
 
     public void HideImage()

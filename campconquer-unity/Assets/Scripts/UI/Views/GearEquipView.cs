@@ -13,8 +13,9 @@ public class GearEquipView : UIView
         base.OnActivate();
 
         int gearCount = 0;
+        int i;
         // set up gear
-        for (int i = 0; i < Avatar.Instance.EquippedIDs.Count; i++)
+        for (i = 0; i < Avatar.Instance.EquippedIDs.Count; i++)
         {
             StoreItem gear = Database.Instance.GetGearItem(Avatar.Instance.EquippedIDs[i]);
             if (gear.BodyType == Avatar.Instance.BodyType.ToString())
@@ -23,6 +24,11 @@ public class GearEquipView : UIView
                 GearList[gearCount].GearImage.Activate();
                 gearCount++;
             }
+        }
+
+        for (i = gearCount; i < GearList.Length; i++)
+        {
+            GearList[i].BGImage.Image.color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
         }
     }
     #endregion
