@@ -12,7 +12,9 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 
 
 # TODO
-- [ ] make sure client behaves OK with maintenance mode on (503 (Service Unavailable))
+
+- [/] make sure client behaves OK with maintenance mode on (503 (Service Unavailable))
+  - [ ] some client calls still need to be hardened
 
 - [ ] optimization - look at Scout for slow requests
 

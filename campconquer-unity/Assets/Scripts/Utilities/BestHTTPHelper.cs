@@ -138,7 +138,7 @@ namespace gametheory.Utilities
 
         public IEnumerator CallToServerForJson(string url, HTTPMethods method, List<HTTPTuple> tupleParameters, Action<string> successCallback = null, Action<Dictionary<string, object>> requestNotOKCallback = null, Action<Dictionary<string, object>> failureCallback = null, Action requestFailureCallback = null)
         {
-            //Debug.Log("CallToServerForJson");
+            Debug.Log("CallToServerForJson " + url);
 
             if (tupleParameters != null)
             {
@@ -182,30 +182,31 @@ namespace gametheory.Utilities
 
             //Debug.Log(request.State);
 
-            if (request.State == HTTPRequestStates.Finished)
-            {
+            if (request.State == HTTPRequestStates.Finished) {
                 //Debug.Log("success = " + request.Response.IsSuccess);
 
-                if (request.Response.IsSuccess)
-                {
+                if (request.Response.IsSuccess) {
                     if (successCallback != null)
-                        successCallback(request.Response.DataAsText);
-                }
-                else
-                {
+                        successCallback (request.Response.DataAsText);
+                } else {
                     //Debug.Log("failure text = " + request.Response.DataAsText);
-                    Dictionary<string, object> dict = Json.Deserialize(request.Response.DataAsText) as Dictionary<string, object>;
-                    if (failureCallback != null)
-                    {
+                    Dictionary<string, object> dict;
+
+                    if (request.Response.StatusCode == 503) {
+                        // maintenance mode
+                        dict = new Dictionary<string, object> {
+                            { "message", "Server is down for maintenance; try again later" },
+                        };
+                    } else {
+                        dict = Json.Deserialize (request.Response.DataAsText) as Dictionary<string, object>;
+                    }
+                    if (failureCallback != null) {
                         //Debug.Log("failure callback");
                         failureCallback(dict);
                     }
                 }
-            }
-            else
-            {
-                if (requestFailureCallback != null)
-                {
+            } else {
+                if (requestFailureCallback != null) {
                     //Debug.Log("request failure");
                     requestFailureCallback();
                 }
