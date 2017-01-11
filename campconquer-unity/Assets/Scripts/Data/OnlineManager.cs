@@ -239,42 +239,42 @@ public class OnlineManager : MonoBehaviour
 
         // set avatar info from piece data
         PieceData piece = playerData.piece;
-        if (piece.body_type != null)
-        {
-            //Debug.Log("read playerinfo - piece body type = " + piece.body_type);
-            Avatar.Instance.BodyType = (AvatarBodyType)Enum.Parse(typeof(AvatarBodyType), piece.body_type.ToUpper(), true);
-        }
-        if (piece.face != null)
-            Avatar.Instance.FaceAsset = piece.face;
-        if (piece.hair != null)
-            Avatar.Instance.HairAsset = piece.hair;
-        if (piece.skin_color != null)
-            Avatar.Instance.SkinColor = piece.skin_color;
-        if (piece.hair_color != null)
-            Avatar.Instance.HairColor = piece.hair_color;
+		if (piece != null) {
+			if (piece.body_type != null) {
+				//Debug.Log("read playerinfo - piece body type = " + piece.body_type);
+				Avatar.Instance.BodyType = (AvatarBodyType)Enum.Parse (typeof(AvatarBodyType), piece.body_type.ToUpper (), true);
+			}
+			if (piece.face != null)
+				Avatar.Instance.FaceAsset = piece.face;
+			if (piece.hair != null)
+				Avatar.Instance.HairAsset = piece.hair;
+			if (piece.skin_color != null)
+				Avatar.Instance.SkinColor = piece.skin_color;
+			if (piece.hair_color != null)
+				Avatar.Instance.HairColor = piece.hair_color;
 
-        //Debug.Log("3");
+			//Debug.Log("3");
 
-        Avatar.Instance.Health = piece.health;
-        Avatar.Instance.Speed = (int)piece.speed;
-        Avatar.Instance.Range = (int)piece.range;
+			Avatar.Instance.Health = piece.health;
+			Avatar.Instance.Speed = (int)piece.speed;
+			Avatar.Instance.Range = (int)piece.range;
 
-        //Debug.Log("3a");
+			//Debug.Log("3a");
 
-        List<Point> points = piece.path;
-        //Debug.Log("3b");
-        Path path = new Path(points);
-        //Debug.Log("3c");
-        Avatar.Instance.Path = path;
-        //Debug.Log("3d");
-        if (piece.role == "offense")
-            Avatar.Instance.Role = PieceRole.OFFENSE;
-        else
-        {
-            Avatar.Instance.Role = PieceRole.DEFENSE;
-            if (Avatar.Instance.Path != null && Avatar.Instance.Path.Points.Count > 0)
-                Avatar.Instance.Position = new Vector2(Avatar.Instance.Path.Points[0].x, Avatar.Instance.Path.Points[0].y);
-        }
+			List<Point> points = piece.path;
+			//Debug.Log("3b");
+			Path path = new Path (points);
+			//Debug.Log("3c");
+			Avatar.Instance.Path = path;
+			//Debug.Log("3d");
+			if (piece.role == "offense")
+				Avatar.Instance.Role = PieceRole.OFFENSE;
+			else {
+				Avatar.Instance.Role = PieceRole.DEFENSE;
+				if (Avatar.Instance.Path != null && Avatar.Instance.Path.Points.Count > 0)
+					Avatar.Instance.Position = new Vector2 (Avatar.Instance.Path.Points [0].x, Avatar.Instance.Path.Points [0].y);
+			}
+		}
         //Debug.Log("3e");
 
         // set gear
