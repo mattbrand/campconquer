@@ -3,6 +3,10 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
 
   namespace :api do
+
+    # Uncomment this to temporarily simulate maintenance mode locally... Remember to revert!
+    # match "*path", :to => "api#maintenance_mode", :via => :all
+
     resources :gears, only: ['index']
     resources :ammos, only: ['index']
     resources :seasons, only: ['show']

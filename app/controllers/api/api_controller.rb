@@ -2,7 +2,7 @@ module API
   class APIController < ApplicationController
 
     # homegrown auth, see SessionsController
-    before_action :require_session_token
+    before_action :require_session_token, except: :maintenance_mode
 
     # Prevent CSRF attacks by raising an exception.
     # For APIs, you may want to use :null_session instead.
@@ -24,6 +24,11 @@ module API
     def route_not_found
       render_error status: :not_found,
                    message: "path '#{params[:path]}' not found"
+    end
+
+    def maintenance_mode
+      render_error status: 503,
+                   message: "down for maintenance"
     end
 
 

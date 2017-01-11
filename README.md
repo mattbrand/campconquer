@@ -18,18 +18,10 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 
 - [ ] optimization - look at Scout for slow requests
 
-- [x] un-protect fitbit callback endpoint
-
-- [ ] player HTML page -- when logged in, shows activities etc 
-  - http://sprint.ly/product/41137/item/338
-
 - [ ] reexamine FitBit API to see if there's a more efficient call to fetch a bunch of days at once
 
 
 ## low priority features
-
-
-- [x] check steps in the background at least 1x/day, not just when players connect
 
 - [ ] round up remainder steps
 
@@ -45,8 +37,6 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 
 
 ## chores
-- [ ] git-lfs
-
 - [ ] look into memory usage errors
 
 - heroku addons
