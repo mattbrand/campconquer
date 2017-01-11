@@ -126,10 +126,18 @@ public class AvatarChoiceView : UIView
         }
         ChoiceButtonList.ClearElements();
         PopulateChoiceButtons();
+
+        if (_page == 0)
+            PreviousButton.Deactivate();
+        else
+            PreviousButton.Activate();
+        /*
+        Debug.Log("here!");
         if (_page == (BUTTON_COUNT - 1))
             NextButton.Text = "Done";
         else
             NextButton.Text = "Next";
+            */
     }
 
     void ChoiceItemSelected(VisualElement element, object obj)
@@ -204,8 +212,10 @@ public class AvatarChoiceView : UIView
             _page = 0;
             PreviousButton.Deactivate();
         }
+        /*
         if (_page < (BUTTON_COUNT - 1))
             NextButton.Activate();
+            */
         SetUpNavButtons();
     }
 
@@ -220,8 +230,10 @@ public class AvatarChoiceView : UIView
         }
         else
         {
+            /*
             if (_page > 0)
                 PreviousButton.Activate();
+                */
             SetUpNavButtons();
         }
     }
