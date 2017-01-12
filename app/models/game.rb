@@ -34,8 +34,8 @@ class Game < ActiveRecord::Base
     Chronic.time_class = Time.zone
     if now.hour < 11
       Chronic.parse('11 am')
-    elsif now.hour < 16
-      Chronic.parse('4 pm')
+    elsif now.hour < 15
+      Chronic.parse('3 pm')
     else
       Chronic.parse('tomorrow 11 am')
     end

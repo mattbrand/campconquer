@@ -121,33 +121,36 @@ describe Game do
     winter_month = 1
     summer_month = 8
 
+    morning_hour = 11 # 11:00 am
+    afternoon_hour = 15 # 3:00 pm
+
     def local_time(year: 2008, month: 1, day: 1, hour: 0, minute: 0, second: 0)
       Time.zone.local(year, month, day, hour, minute, second)
     end
 
     it "at midnight, forwards to 11" do
-      check_time(local_time(month: winter_month, hour: 0), local_time(month: winter_month, hour: 11))
-      check_time(local_time(month: summer_month, hour: 0), local_time(month: summer_month, hour: 11))
+      check_time(local_time(month: winter_month, hour: 0), local_time(month: winter_month, hour: morning_hour))
+      check_time(local_time(month: summer_month, hour: 0), local_time(month: summer_month, hour: morning_hour))
     end
 
     it "before 11, forwards to 11" do
-      check_time(local_time(month: winter_month, hour: 10, minute: 59), local_time(month: winter_month, hour: 11))
-      check_time(local_time(month: summer_month, hour: 10, minute: 59), local_time(month: summer_month, hour: 11))
+      check_time(local_time(month: winter_month, hour: morning_hour - 1, minute: 59), local_time(month: winter_month, hour: morning_hour))
+      check_time(local_time(month: summer_month, hour: morning_hour - 1, minute: 59), local_time(month: summer_month, hour: morning_hour))
     end
 
-    it "at 11, forwards to 4" do
-      check_time(local_time(month: winter_month, hour: 11), local_time(month: winter_month, hour: 16))
-      check_time(local_time(month: summer_month, hour: 11), local_time(month: summer_month, hour: 16))
+    it "at 11, forwards to 3 pm" do
+      check_time(local_time(month: winter_month, hour: morning_hour), local_time(month: winter_month, hour: afternoon_hour))
+      check_time(local_time(month: summer_month, hour: morning_hour), local_time(month: summer_month, hour: afternoon_hour))
     end
 
-    it "at 4, forwards to 11 the next day" do
-      check_time(local_time(month: winter_month, hour: 16), local_time(month: winter_month, day: 2, hour: 11))
-      check_time(local_time(month: summer_month, hour: 16), local_time(month: summer_month, day: 2, hour: 11))
+    it "at 3 pm, forwards to 11 the next day" do
+      check_time(local_time(month: winter_month, hour: afternoon_hour), local_time(month: winter_month, day: 2, hour: morning_hour))
+      check_time(local_time(month: summer_month, hour: afternoon_hour), local_time(month: summer_month, day: 2, hour: morning_hour))
     end
 
-    it "after 4, forwards to 11 the next day" do
-      check_time(local_time(month: winter_month, hour: 16, minute: 1), local_time(month: winter_month, day: 2, hour: 11))
-      check_time(local_time(month: summer_month, hour: 16, minute: 1), local_time(month: summer_month, day: 2, hour: 11))
+    it "after 3 pm, forwards to 11 the next day" do
+      check_time(local_time(month: winter_month, hour: afternoon_hour, minute: 1), local_time(month: winter_month, day: 2, hour: morning_hour))
+      check_time(local_time(month: summer_month, hour: afternoon_hour, minute: 1), local_time(month: summer_month, day: 2, hour: morning_hour))
     end
 
   end
