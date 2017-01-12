@@ -31,7 +31,7 @@ class Week
     end
   end
 
-  def in? date
+  def includes? date
     range.include? date
   end
 
@@ -43,12 +43,28 @@ class Week
     Player.where(team: 'control').includes(:activities)
   end
 
-  def active_players players
-    players.select do |player|
-      player.activities.select do |activity|
-        self.in?(activity.date) and activity.active?
-      end.present?
+  class ::Date
+    def weekend?
+      saturday? or sunday?
     end
+    def weekday?
+      not weekend?
+    end
+  end
+
+  # todo: test, no really, i mean it
+  def active_players players
+    players.map do |player|
+      player.activities.map do |activity|
+        if self.includes?(activity.date) and
+            activity.active? and
+            activity.date.weekday?
+          player
+        else
+          nil
+        end
+      end.compact
+    end.flatten
   end
 
   # sum of all game outcomes per player

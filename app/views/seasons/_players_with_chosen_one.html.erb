@@ -1,5 +1,5 @@
 <td><%= players.size %></td>
-<td><%= players.map(&:name).sort.join(', ') %></td>
+<td><%= players.map(&:name).sort.uniq.join(', ') %></td>
 <% unless players.empty? %>
     <% chosen_one = players.sample %>
     <td><%= chosen_one.name %></td>

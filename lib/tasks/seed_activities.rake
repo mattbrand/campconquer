@@ -2,7 +2,8 @@ namespace :db do
   task :seed_activities => :environment do
     Player.all.each do |player|
 
-      for date in [Date.current, Date.current - 1.day]
+      rand(10).times do |days_ago|
+        date  = Date.current - days_ago.day
         attrs = {
             steps: rand(12000),
             active_minutes: rand(100),
