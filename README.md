@@ -144,7 +144,7 @@ We are using [ActiveAdmin](http://activeadmin.info/) for some non-API UI
 * install Homebrew, XCode Command-Line Tools, RVM, Bundler, Rails, etc.; see <http://installfest.railsbridge.org/> for more info
         
         rvm get master
-        rvm install 2.4.0
+        rvm install ruby-2.3.3
         gem install bundler
 
 * `git clone git@github.com:mattbrand/campconquer.git`

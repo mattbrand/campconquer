@@ -1,7 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.4.0'
-
-gem 'activesupport', :path => File.join(File.dirname(__FILE__), '/vendor/gems/activesupport-4.2.7.1')
+ruby '2.3.3'
 
 gem 'rails', '4.2.7.1'
 gem 'sass-rails', '~> 5.0'
