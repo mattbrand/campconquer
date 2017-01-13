@@ -27,6 +27,7 @@ describe API::SessionsController, type: :controller do
       expect(controller.send(:good_session_token?, token)).to eq(true)
       expect(controller.send(:good_session_token?, "NOT A GOOD TOKEN")).to eq(false)
     end
+
   end
 
   context 'given a valid username and bogus password' do
@@ -73,4 +74,17 @@ describe API::SessionsController, type: :controller do
       expect(subject.send(:current_player)).to eq(alice)
     end
   end
+
+  context 'given a valid username and password for a CONTROL GROUP user' do
+    it 'fails to start a session' do
+      charlie = Player.create!(name: 'charlie', password: good_password, team: 'control')
+
+      get :create, name: 'charlie', password: good_password
+      expect(response.body).to include('"status":"error"')
+      expect(response_json).to include({"status" => "error"})
+      expect(response_json["message"].downcase).to include("control group players cannot play the game")
+      expect(response.status).to eq(403)
+    end
+  end
+
 end
