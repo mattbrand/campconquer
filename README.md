@@ -142,6 +142,11 @@ We are using [ActiveAdmin](http://activeadmin.info/) for some non-API UI
 ### First Time Setup:
 
 * install Homebrew, XCode Command-Line Tools, RVM, Bundler, Rails, etc.; see <http://installfest.railsbridge.org/> for more info
+        
+        rvm get master
+        rvm install 2.4.0
+        gem install bundler
+
 * `git clone git@github.com:mattbrand/campconquer.git`
 * `cd campconquer`
 * `bundle install`

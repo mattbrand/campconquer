@@ -1,7 +1,9 @@
 source 'https://rubygems.org'
-ruby '2.2.4'
+ruby '2.4.0'
 
-gem 'rails', '4.2.7'
+gem 'activesupport', :path => File.join(File.dirname(__FILE__), '/vendor/gems/activesupport-4.2.7.1')
+
+gem 'rails', '4.2.7.1'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.1.0'
