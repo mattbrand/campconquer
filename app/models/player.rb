@@ -369,6 +369,7 @@ class Player < ActiveRecord::Base
   end
 
   def pull_activity!(date = Date.current)
+    Rails.logger.info("Pulling activity for player #{self.id} on #{date}")
     summary = fitbit.get_activities(date.strftime('%F'))["summary"]
     attrs = {steps: summary["steps"].to_i,
              active_minutes: summary["veryActiveMinutes"].to_i + summary["fairlyActiveMinutes"].to_i, }

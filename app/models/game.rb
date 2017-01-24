@@ -23,6 +23,30 @@
 
 class Game < ActiveRecord::Base
 
+  class Schedule
+    attr_reader :now
+
+    def initialize(now)
+      @now = now
+    end
+
+    def next_game_time
+      Chronic.time_class = Time.zone
+
+      time = if now.hour < 13 or (now.hour == 13 and now.min < 15)
+               Chronic.parse('1:15 pm')
+             else
+               Chronic.parse('tomorrow 1:15 pm')
+             end
+
+      if time.to_date.weekend?
+        time = Chronic.parse("Monday at 1:15 pm")
+      end
+
+      time
+    end
+  end
+
   class WinnerMismatch < RuntimeError
     def initialize(sent, computed)
       super("client said #{sent.inspect} was the winner but we think it's #{computed.inspect}")
@@ -31,14 +55,8 @@ class Game < ActiveRecord::Base
 
   def self.next_game_time
     now = Time.current
-    Chronic.time_class = Time.zone
-    if now.hour < 11
-      Chronic.parse('11 am')
-    elsif now.hour < 15
-      Chronic.parse('3 pm')
-    else
-      Chronic.parse('tomorrow 11 am')
-    end
+
+    Schedule.new(now).next_game_time
   end
 
   belongs_to :season

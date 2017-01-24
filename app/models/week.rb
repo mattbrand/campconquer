@@ -43,15 +43,6 @@ class Week
     Player.where(team: 'control').includes(:activities)
   end
 
-  class ::Date
-    def weekend?
-      saturday? or sunday?
-    end
-    def weekday?
-      not weekend?
-    end
-  end
-
   # todo: test, no really, i mean it
   def active_players players
     players.map do |player|

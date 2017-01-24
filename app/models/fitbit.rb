@@ -131,20 +131,22 @@ class Fitbit
       hash = e.try(:response).try(:parsed) # defensive coding
       unless hash.nil?
         puts hash
-        error_type = hash["errors"][0]["errorType"]
-        if ['expired_token', 'invalid_token'].include? error_type
-          print "Token invalid; refreshing..."
-          refresh!
-          return yield
+        if !hash["success"]
+          error_type = hash["errors"][0]["errorType"]
+          if ['expired_token', 'invalid_token'].include? error_type
+            print "Token invalid; refreshing..."
+            refresh!
+            puts "Token refreshed."
+            return yield
+          end
         end
       end
       raise e
     end
   end
 
-
   def get(path, params = {})
-    # todo: test this error
+    # todo: test that this error is thrown
     raise Unauthorized unless token
 
     refreshing do
@@ -154,8 +156,6 @@ class Fitbit
         headers: headers,
         raise_errors: true
       })
-      # todo: error check
-      # if response.ok?
       JSON.parse(response.body)
     end
 
