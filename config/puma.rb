@@ -17,5 +17,5 @@ end
 before_fork do
   require 'puma_worker_killer'
 
-  PumaWorkerKiller.enable_rolling_restart(60) # Default is every 6 hours
+  PumaWorkerKiller.enable_rolling_restart(0.5 * 3600) # restart every half hour; default is every 6 hours
 end
