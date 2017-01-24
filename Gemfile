@@ -36,6 +36,7 @@ group :development do
   gem 'web-console', '~> 2.0' # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'spring' # https://github.com/rails/spring
   gem 'annotate'
+  gem 'derailed' # https://devcenter.heroku.com/articles/ruby-memory-use#too-much-memory-on-boot
 end
 
 group :test do
@@ -48,4 +49,5 @@ group :production do
   gem 'rails_12factor'
   gem 'pg'
   gem 'scout_apm', '~> 3.0.x'
+  gem "puma_worker_killer"  # see https://devcenter.heroku.com/articles/ruby-memory-use#too-many-workers-over-time
 end
