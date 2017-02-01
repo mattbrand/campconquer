@@ -16,7 +16,7 @@ public class RoleView : UIView
 	const string ATTACK_SETUP_VIEW = "PathView";
 	const string ROLE_VIEW = "RoleView";
     const string TIP_1 = "Choose a position to set up your player for the battle.";
-    const string TIP_2 = "Make sure you have purchased water balloons from the store before setting up for battle. Without balloons you won't be able to fight!";
+    const string TIP_2 = "Make sure you have purchased water balloons from the store before the next battle starts. Without balloons you won't be able to fight!";
     const float TIMER_HIGH_Y = 144.0f;
     #endregion
 

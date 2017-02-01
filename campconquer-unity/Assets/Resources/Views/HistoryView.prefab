@@ -4527,10 +4527,10 @@ RectTransform:
   m_Father: {fileID: 224000013761327036}
   m_RootOrder: 41
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: -0.0033281327, y: 0.905825}
-  m_AnchorMax: {x: 0.06022396, y: 0.99790835}
-  m_AnchoredPosition: {x: -30.935364, y: 8.94104}
-  m_SizeDelta: {x: 3.4953613, y: 2.0258179}
+  m_AnchorMin: {x: -0.033988554, y: 0.9130691}
+  m_AnchorMax: {x: 0.033425815, y: 1.0086573}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224485782676646002
 RectTransform:
