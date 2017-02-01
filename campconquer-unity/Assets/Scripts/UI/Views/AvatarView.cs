@@ -417,6 +417,11 @@ public class AvatarView : UIView
 
         DisplayEquippedGear();
     }
+
+    public void ClickTutorial()
+    {
+        TutorialAlert.Present(TutorialAlertType.STORE);
+    }
     #endregion
 
     #region Accessors

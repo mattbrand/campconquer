@@ -1308,6 +1308,18 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 22cc9f2afd37940898a58c64360b93cf, type: 3}
   - {fileID: 21300000, guid: 069c05935006441649f354ca40bad876, type: 3}
   - {fileID: 21300000, guid: 7ec3482c1a65a4f2f95e3a0b57c5942a, type: 3}
+  TutorialBattleImages:
+  - {fileID: 21300000, guid: c8f06b7c64d7948dba570d11bcc9b4ad, type: 3}
+  - {fileID: 21300000, guid: 192a3eb4072a64818b7b952bef26b242, type: 3}
+  - {fileID: 21300000, guid: 1b074eba11710430e945818dec189906, type: 3}
+  TutorialStoreImages:
+  - {fileID: 21300000, guid: a44c4e15cb75444a291b13c31e79ab57, type: 3}
+  - {fileID: 21300000, guid: 277a857d82021460e947dd0f3073794b, type: 3}
+  - {fileID: 21300000, guid: 10374abc6d51243ccbac7d3078408b4c, type: 3}
+  TutorialRewardsImages:
+  - {fileID: 21300000, guid: 01646b4299926493e9bf5d3a5bf53a97, type: 3}
+  - {fileID: 21300000, guid: 408f785cec67648dfa06b389f18d7d05, type: 3}
+  - {fileID: 21300000, guid: 0732cecf7b02a492d8af34098f2cd663, type: 3}
 --- !u!4 &954731146
 Transform:
   m_ObjectHideFlags: 0
@@ -2386,7 +2398,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!225 &1271709096
 CanvasGroup:
   m_ObjectHideFlags: 0

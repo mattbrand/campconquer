@@ -357,6 +357,11 @@ public class RoleView : UIView
     {
         TimeContainer.anchoredPosition = new Vector2(TimeContainer.anchoredPosition.x, _originalTimerY);
     }
+
+    public void ClickTutorial()
+    {
+        TutorialAlert.Present(TutorialAlertType.BATTLE);
+    }
     #endregion
 
     #region Coroutines

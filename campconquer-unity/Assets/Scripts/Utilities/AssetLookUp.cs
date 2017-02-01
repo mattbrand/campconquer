@@ -31,6 +31,10 @@ public class AssetLookUp : MonoBehaviour
     public Sprite[] RedBalloons;
     public Sprite[] BlueBalloons;
 
+    public Sprite[] TutorialBattleImages;
+    public Sprite[] TutorialStoreImages;
+    public Sprite[] TutorialRewardsImages;
+
     public static AssetLookUp Instance = null;
     #endregion
 
