@@ -283,6 +283,11 @@ public class HistoryView : UIView
         //GameManager.PlayerWatchingID = OnlineManager.Instance.PlayerID;
         SceneManager.LoadScene("Moderator");
     }
+
+    public void ClickTutorial()
+    {
+        TutorialAlert.Present(TutorialAlertType.REWARDS);
+    }
     #endregion
 
     #region Coroutines
