@@ -1308,6 +1308,14 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 22cc9f2afd37940898a58c64360b93cf, type: 3}
   - {fileID: 21300000, guid: 069c05935006441649f354ca40bad876, type: 3}
   - {fileID: 21300000, guid: 7ec3482c1a65a4f2f95e3a0b57c5942a, type: 3}
+  RedBalloonIcons:
+  - {fileID: 21300000, guid: f77501a07935948f491427951a6f9148, type: 3}
+  - {fileID: 21300000, guid: 686cc1e7ed113401f9d51e2bfe40420f, type: 3}
+  - {fileID: 21300000, guid: 7fd445c9284a242749159465165516bf, type: 3}
+  BlueBalloonIcons:
+  - {fileID: 21300000, guid: df534c5e0cd554ad4ad605968431dbc7, type: 3}
+  - {fileID: 21300000, guid: b22f64ae2361342c38407ebf4174a88b, type: 3}
+  - {fileID: 21300000, guid: dcbfabfee53484859b5a3d5108dd1548, type: 3}
   TutorialBattleImages:
   - {fileID: 21300000, guid: c8f06b7c64d7948dba570d11bcc9b4ad, type: 3}
   - {fileID: 21300000, guid: 192a3eb4072a64818b7b952bef26b242, type: 3}

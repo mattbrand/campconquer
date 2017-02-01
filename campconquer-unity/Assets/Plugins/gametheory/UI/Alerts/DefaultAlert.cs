@@ -89,7 +89,6 @@ public class DefaultAlert : UIAlert
         
             _instance.TitleText.text = title;
             _instance.MessageText.text = message;
-            _instance.ConfirmText.text = confirmText;
 
 			UIAlertController.Instance.PresentAlert(_instance);
 
