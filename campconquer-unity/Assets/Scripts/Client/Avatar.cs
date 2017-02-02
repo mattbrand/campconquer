@@ -138,6 +138,11 @@ public class Avatar : MonoBehaviour, IBindingContext
     {
         return _data.Range + _data.RangeBonus;
     }
+
+    public void ClearAmmo()
+    {
+        _ammoBandelier.AmmoList.Clear();
+    }
     #endregion
 
     #region Accessors

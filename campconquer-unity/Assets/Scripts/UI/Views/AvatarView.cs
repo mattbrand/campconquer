@@ -30,12 +30,11 @@ public class AvatarView : UIView
     public ExtendedImage ShirtDecalImage;
     public ExtendedImage ShoesImage;
     public ExtendedImage AccessoriesImage;
+    public GameObject StoreRefreshButtonObj;
     public static AvatarView Instance;
     #endregion
 
     #region Private Vars
-    CoinsGemsView _coinsGemsView;
-    AmmoBeltView _ammoBeltView;
     AvatarViewState _state;
     StoreItem _displayedItem;
     #endregion
@@ -48,6 +47,7 @@ public class AvatarView : UIView
         if (Instance == null)
         {
             Instance = this;
+            StoreRefreshButton.RefreshStoreData += Refresh;
         }
         else
         {
@@ -87,15 +87,15 @@ public class AvatarView : UIView
         DisplayEquippedGear();
 
         _state = AvatarViewState.MAIN;
-        _coinsGemsView = CoinsGemsView.Load();
-        UIViewController.ActivateUIView(_coinsGemsView);
-        _ammoBeltView = AmmoBeltView.Load();
-        UIViewController.ActivateUIView(_ammoBeltView);
+        UIViewController.ActivateUIView(CoinsGemsView.Load());
+        UIViewController.ActivateUIView(AmmoBeltView.Load());
     }
 
     protected override void OnCleanUp()
     {
         base.OnCleanUp();
+
+        StoreRefreshButton.RefreshStoreData -= Refresh;
 
         Instance = null;
     }
@@ -161,6 +161,7 @@ public class AvatarView : UIView
         NavButtons[1].Enable();
         NavButtons[1].transform.localScale = Vector3.one;
         CoinsGemsView.Instance.MoveToFront();
+        StoreRefreshButtonObj.transform.SetAsLastSibling();
 
         _state = AvatarViewState.STORE;
     }
@@ -179,6 +180,7 @@ public class AvatarView : UIView
         NavButtons[1].Disable();
         NavButtons[1].transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
         CoinsGemsView.Instance.MoveToFront();
+        StoreRefreshButtonObj.transform.SetAsLastSibling();
 
         if (_displayedItem != null)
             RemoveGear(_displayedItem);
@@ -405,7 +407,7 @@ public class AvatarView : UIView
         TutorialAlert.Present(TutorialAlertType.STORE);
     }
 
-    public void ClickRefresh()
+    void Refresh()
     {
         LoadingAlert.Present();
 
@@ -417,6 +419,9 @@ public class AvatarView : UIView
     IEnumerator StartRefresh()
     {
         yield return StartCoroutine(OnlineManager.Instance.StartGetPlayer(OnlineManager.Instance.PlayerID));
+
+        if (_state == AvatarViewState.AMMO)
+            AmmoBeltView.Instance.Refresh();
 
         // remove loader
         LoadingAlert.FinishLoading();

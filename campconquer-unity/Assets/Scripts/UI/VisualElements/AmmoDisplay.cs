@@ -96,6 +96,7 @@ public class AmmoDisplay : VisualElement
     public void Clear()
     {
         AmmoImage.Deactivate();
+        _set = false;
     }
 
     public void ShowImage()
@@ -139,6 +140,7 @@ public class AmmoDisplay : VisualElement
     public bool Set
     {
         get { return _set; }
+        set { _set = value; }
     }
     #endregion
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using UnityEngine;
+using System.Collections;
 using gametheory.UI;
 using CampConquer;
 
@@ -17,6 +18,8 @@ public class ClientMainView : UIView
     public MenuButton StoreButton;
     public MenuButton StatsButton;
     public MenuButton SettingsButton;
+
+    public GameObject StoreRefreshButtonObj;
     #endregion
 
     #region Private Vars
@@ -52,6 +55,8 @@ public class ClientMainView : UIView
             SoundManager.Instance.StartMenuMusic();
         }
 
+        StoreRefreshButtonObj.SetActive(false);
+
         VersionText.Text = "Version " + VERSION;
     }
     #endregion
@@ -71,7 +76,11 @@ public class ClientMainView : UIView
         UIViewController.DeactivateUIView("ClientMainView");
         UIViewController.ActivateUIView(BackgroundView.Load());
         UIViewController.ActivateUIView(GearEquipView.Load());
-        UIViewController.ActivateUIView(AvatarView.Load());
+        AvatarView avatarView = AvatarView.Load();
+        UIViewController.ActivateUIView(avatarView);
+        StoreRefreshButtonObj.SetActive(true);
+        StoreRefreshButtonObj.transform.SetAsLastSibling();
+        avatarView.StoreRefreshButtonObj = StoreRefreshButtonObj;
     }
 
     public void ClickBattleButton()
