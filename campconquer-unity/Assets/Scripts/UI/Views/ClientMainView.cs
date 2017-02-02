@@ -70,11 +70,8 @@ public class ClientMainView : UIView
         SoundManager.Instance.PlaySoundEffect(SoundType.BUTTON_CLICK);
         UIViewController.DeactivateUIView("ClientMainView");
         UIViewController.ActivateUIView(BackgroundView.Load());
-        UIViewController.ActivateUIView(AvatarView.Load());
-        AvatarView.Instance.SetState(AvatarViewState.MAIN);
         UIViewController.ActivateUIView(GearEquipView.Load());
-        UIViewController.ActivateUIView(AmmoBeltView.Load());
-        UIViewController.ActivateUIView(CoinsGemsView.Load());
+        UIViewController.ActivateUIView(AvatarView.Load());
     }
 
     public void ClickBattleButton()

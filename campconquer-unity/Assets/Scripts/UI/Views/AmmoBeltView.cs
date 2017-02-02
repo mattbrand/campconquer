@@ -103,5 +103,10 @@ public class AmmoBeltView : UIView
         }
         return -1;
     }
+
+    public void Refresh()
+    {
+        StartCoroutine(CheckGameStatus());
+    }
     #endregion
 }

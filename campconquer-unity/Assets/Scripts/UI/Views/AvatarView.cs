@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System;
+using System.Collections;
 using gametheory.UI;
 
 #region Enums
@@ -33,6 +34,8 @@ public class AvatarView : UIView
     #endregion
 
     #region Private Vars
+    CoinsGemsView _coinsGemsView;
+    AmmoBeltView _ammoBeltView;
     AvatarViewState _state;
     StoreItem _displayedItem;
     #endregion
@@ -61,9 +64,6 @@ public class AvatarView : UIView
 
         InitStats();
 
-        //Debug.Log(Avatar.Instance.BodyType);
-        // set up avatar assets
-        //Debug.Log("In AvatarView - " + Avatar.Instance.BodyType);
         AvatarImage.sprite = AssetLookUp.Instance.GetAvatarBody(Database.Instance.GetBodyAssetForBodyType(Avatar.Instance.BodyType));
         Database.Instance.BuildCurrentFaceList();
         Database.Instance.BuildCurrentHairList();
@@ -73,7 +73,6 @@ public class AvatarView : UIView
             FaceImage.sprite = AssetLookUp.Instance.GetAvatarFace(Avatar.Instance.FaceAsset);
         else
             FaceImage.sprite = AssetLookUp.Instance.GetAvatarFace(Database.Instance.GetCurrentFaceList()[0].ObjectId);
-            //FaceImage.sprite = Database.Instance.GetDefaultFace(Avatar.Instance.BodyType.ToString());
         FaceImage.color = Colors.HexToColor(Database.Instance.GetFaceColorForSkinColor(Avatar.Instance.SkinColor));
         HairImage.sprite = AssetLookUp.Instance.GetAvatarHair(Avatar.Instance.HairAsset);
         //Debug.Log("1 set hair sprite to " + HairImage.sprite);
@@ -87,7 +86,11 @@ public class AvatarView : UIView
 
         DisplayEquippedGear();
 
-        //Debug.Log(Avatar.Instance.Health + " / " + Avatar.Instance.Speed + " / " + Avatar.Instance.Range);
+        _state = AvatarViewState.MAIN;
+        _coinsGemsView = CoinsGemsView.Load();
+        UIViewController.ActivateUIView(_coinsGemsView);
+        _ammoBeltView = AmmoBeltView.Load();
+        UIViewController.ActivateUIView(_ammoBeltView);
     }
 
     protected override void OnCleanUp()
@@ -154,13 +157,12 @@ public class AvatarView : UIView
         UIViewController.DeactivateUIView("AmmoEquipView");
         UIViewController.DeactivateUIView("AmmoBeltView");
         NavButtons[0].Disable();
-        //NavButtonAnimators[0].SetTrigger("Activate");
         NavButtons[0].transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
-        //NavButtons[0].transform.Scale = new Vector3(1.25f, 1.25f, 1.25f);
         NavButtons[1].Enable();
-        //NavButtonAnimators[1].SetTrigger("Default");
         NavButtons[1].transform.localScale = Vector3.one;
         CoinsGemsView.Instance.MoveToFront();
+
+        _state = AvatarViewState.STORE;
     }
 
     public void ClickAmmoEquip()
@@ -174,14 +176,14 @@ public class AvatarView : UIView
         UIViewController.DeactivateUIView("StoreView");
         NavButtons[0].Enable();
         NavButtons[0].transform.localScale = Vector3.one;
-        //NavButtonAnimators[0].SetTrigger("Default");
         NavButtons[1].Disable();
-        //NavButtonAnimators[1].SetTrigger("Activate");
         NavButtons[1].transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
         CoinsGemsView.Instance.MoveToFront();
 
         if (_displayedItem != null)
             RemoveGear(_displayedItem);
+
+        _state = AvatarViewState.AMMO;
     }
 
     public void ClickBackButton()
@@ -318,26 +320,6 @@ public class AvatarView : UIView
         Avatar.Instance.RangeBonus = rangeBonus;
     }
 
-    public void SetState(AvatarViewState state)
-    {
-        _state = state;
-        switch (_state)
-        {
-            case AvatarViewState.MAIN:
-                NavButtons[0].Enable();
-                NavButtons[1].Enable();
-                break;
-            case AvatarViewState.STORE:
-                NavButtons[0].Disable();
-                NavButtons[1].Enable();
-                break;
-            case AvatarViewState.AMMO:
-                NavButtons[0].Enable();
-                NavButtons[1].Disable();
-                break;
-        }
-    }
-
     public void DisplayGear(StoreItem item)
     {
         GearType itemType = (GearType)Enum.Parse(typeof(GearType), item.Type, true);
@@ -421,6 +403,23 @@ public class AvatarView : UIView
     public void ClickTutorial()
     {
         TutorialAlert.Present(TutorialAlertType.STORE);
+    }
+
+    public void ClickRefresh()
+    {
+        LoadingAlert.Present();
+
+        StartCoroutine(StartRefresh());
+    }
+    #endregion
+
+    #region Coroutines
+    IEnumerator StartRefresh()
+    {
+        yield return StartCoroutine(OnlineManager.Instance.StartGetPlayer(OnlineManager.Instance.PlayerID));
+
+        // remove loader
+        LoadingAlert.FinishLoading();
     }
     #endregion
 
