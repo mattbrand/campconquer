@@ -20,3 +20,5 @@
 .idea/*
 .env
 .DS_Store
+
+latest.dump

@@ -30,6 +30,8 @@ group :development, :test do
   gem "rspec-rails"
   gem 'dotenv-rails' # https://github.com/bkeepers/dotenv
   gem 'ruby-graphviz', :require => 'graphviz'
+  gem 'sys-proctable', platforms: [:mingw, :mswin, :x64_mingw]
+  gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
 end
 
 group :development do
@@ -48,6 +50,6 @@ end
 group :production do
   gem 'rails_12factor'
   gem 'pg'
-  gem 'scout_apm', '~> 3.0.x'
+  gem 'scout_apm', '~> 3.0.x', :platform => :ruby
   gem "puma_worker_killer"  # see https://devcenter.heroku.com/articles/ruby-memory-use#too-many-workers-over-time
 end

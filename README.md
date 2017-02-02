@@ -16,7 +16,8 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 - [/] make sure client behaves OK with maintenance mode on (503 (Service Unavailable))
   - [ ] some client calls still need to be hardened
 
-- [ ] optimization - look at Scout for slow requests
+- [ ] optimization - look at Scout for slow/bloated requests
+    - [ ] split Season view into multiple requests
 
 - [ ] reexamine FitBit API to see if there's a more efficient call to fetch a bunch of days at once
 
@@ -139,13 +140,37 @@ We are using [ActiveAdmin](http://activeadmin.info/) for some non-API UI
 
 ## Local Development
 
-### First Time Setup:
+### Mac OS
 
-* install Homebrew, XCode Command-Line Tools, RVM, Bundler, Rails, etc.; see <http://installfest.railsbridge.org/> for more info
-        
+* install Homebrew, 
+          XCode Command-Line Tools, 
+          RVM, 
+          Bundler, 
+          Rails, 
+          etc.; 
+          see <http://installfest.railsbridge.org/> for more info
+
         rvm get master
         rvm install ruby-2.3.3
         gem install bundler
+
+* install [Heroku Toolbelt](https://devcenter.heroku.com/articles/heroku-cli#download-and-install)
+
+
+### Windows
+
+  * <http://railsinstaller.org/en>
+    
+  * <https://www.postgresql.org/download/windows/>
+  * set up admin user `postgres` with password `password`
+  * run pgAdmin
+  * connect to local database
+  * right click on Databases, select Create.., enter `campconquer-dev`
+  * right click on Databases, select Create.., enter `campconquer-test`
+  * from inside RubyMine, select the Ruby SDK
+  * `git config core.fileMode false`
+
+### First Time Setup:
 
 * `git clone git@github.com:mattbrand/campconquer.git`
 * `cd campconquer`
@@ -158,6 +183,7 @@ Optional setup:
 Alex recommends [JSON Viewer](https://chrome.google.com/webstore/detail/json-viewer/gbmdgpbipfallnflgajpaliibnhdgobh) for nicely viewing JSON output in Chrome
 
 and [Postman](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?utm_source=chrome-ntp-launcher) for exploring APIs
+
 
 ### Pulling Code
 
@@ -310,6 +336,15 @@ every night at 5:30 UTC (12:30 or 1:30 Eastern)
 
 see <https://devcenter.heroku.com/articles/scheduler>
 
+## Pull Prod DB to Localhost
+
+* install heroku toolbelt
+* `set PATH=%PATH%;C:\Program Files\Heroku\bin;C:\Program Files\PostgreSQL\9.6\bin`
+* `heroku pg:info -r prod` to tell you what the db name is -- something like `postgresql-triangular-60934`
+* `heroku pg:backups:capture -r prod`
+* it'll say something like `Backing up DATABASE to b001... done` -- take note of that `b001`
+* `heroku pg:backups:download -r prod` -- this creates latest.dump
+* `pg_restore --verbose --clean --no-acl --no-owner -h localhost -U postgres -d campconquer-dev latest.dump` -- this replaces local campconquer db with prod data
 
 ## Fitbit Integration Is Functional!
 

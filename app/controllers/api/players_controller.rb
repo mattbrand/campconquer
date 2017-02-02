@@ -12,10 +12,10 @@ class API::PlayersController < ::API::APIController
   # GET /players
   def index
     @players = Player.all
-    render json: {
-      status: 'ok',
-      players: @players.as_json,
-    }
+    render_json({
+                    status: 'ok',
+                    players: @players.as_json,
+                })
   end
 
   # GET /players/1
@@ -24,16 +24,16 @@ class API::PlayersController < ::API::APIController
       status: 'ok',
       player: @player.as_json,
     }
-    render json: output
+    render_json(output)
   end
 
   # PATCH/PUT /players/1
   def update
     @player.update!(player_params)
-    render :json => {
+    render_json({
       status: 'ok',
-      player: @player.as_json,
-    }
+      player: @player.as_json}
+    )
   end
 
   def claim_steps
@@ -87,6 +87,5 @@ class API::PlayersController < ::API::APIController
   def player_params
     params.require(:player).permit(:name, :password, :team, :embodied)
   end
-
 
 end

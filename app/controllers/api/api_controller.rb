@@ -114,27 +114,32 @@ module API
 
     # rendering
 
-    def render_game(**args)
+    def render_json(response, render_args = {})
+      puts "Rendering json: #{response.ai}"
+      render json: response, **render_args
+    end
+
+    def render_game(**render_args)
       game_hash = @game.as_json
       game_hash['moves'] = @game.moves.as_json if params[:include_moves].to_boolean
 
       body = {status: 'ok', game: game_hash}
-      render json: body, **args
+      render_json body, render_args
     end
 
     def render_ok(response, render_args: {})
       body = {status: 'ok'} + response
-      render json: body, **render_args
+      render_json body, render_args
     end
 
-    def render_player(**args)
+    def render_player(**render_args)
       body = {status: 'ok', player: @player.as_json}
-      render json: body, **args
+      render_json body, render_args
     end
 
-    def render_season(**args)
+    def render_season(**render_args)
       body = {status: 'ok', season: @season.as_json}
-      render json: body, **args
+      render_json body, render_args
     end
 
   end

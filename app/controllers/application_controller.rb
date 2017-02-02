@@ -7,8 +7,10 @@ class ApplicationController < ActionController::Base
 
   # note that @player may well be different from current_player
   def pull_activity
-    if @player and @player.authenticated?
-      @player.pull_recent_activity!
+    unless Gem.win_platform? # todo: make this a feature flag, not platform specific
+      if @player and @player.authenticated?
+        @player.pull_recent_activity!
+      end
     end
   end
 

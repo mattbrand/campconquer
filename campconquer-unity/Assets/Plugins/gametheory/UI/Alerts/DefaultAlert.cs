@@ -77,6 +77,7 @@ public class DefaultAlert : UIAlert
     #region Methods
     public static void Present(string title, string message, Action confirmCallback=null, Action cancelCallback=null, bool showClose = false, string confirmText="")
     {
+        Debug.Log(message);
 		GetInstance();
 
         if (confirmText == "")
