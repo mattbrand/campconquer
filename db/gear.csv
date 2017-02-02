@@ -3,92 +3,128 @@ hat0,HEAD,FEMALE,Headscarf,,hair_headscarf_f,Icon_headscarf,0,0,0,0,0,0,hair_sho
 hat1,HEAD,GENDER_NEUTRAL_1,Headscarf,,hair_headscarf_gn1,Icon_headscarf,0,0,0,0,0,0,hair_short_01_gn1,1,0,
 hat2,HEAD,GENDER_NEUTRAL_2,Headscarf,,hair_headscarf_gn2,Icon_headscarf,0,0,0,0,0,0,hair_short_01_gn2,1,0,
 hat3,HEAD,MALE,Headscarf,,hair_headscarf_m,Icon_headscarf,0,0,0,0,0,0,hair_short_01_m,1,0,
-hat4,HEAD,FEMALE,Bandana,,hat_03_f,Icon_bandana,500,1,0,1,0,0,,0,0,
-hat5,HEAD,GENDER_NEUTRAL_1,Bandana,,hat_03_gn1,Icon_bandana,500,1,0,1,0,0,,0,0,
-hat6,HEAD,GENDER_NEUTRAL_2,Bandana,,hat_03_gn2,Icon_bandana,500,1,0,1,0,0,,0,0,
-hat7,HEAD,MALE,Bandana,,hat_03_m,Icon_bandana,500,1,0,1,0,0,,0,0,
-hat8,HEAD,FEMALE,Green Baseball Cap,,hat_05_f,Icon_baseballcap,500,1,0,0,0,1,hair_short_01_f,0,0,
-hat9,HEAD,GENDER_NEUTRAL_1,Green Baseball Cap,,hat_05_gn1,Icon_baseballcap,500,1,0,0,0,1,hair_short_01_gn1,0,0,
-hat10,HEAD,GENDER_NEUTRAL_2,Green Baseball Cap,,hat_05_gn2,Icon_baseballcap,500,1,0,0,0,1,hair_short_01_gn2,0,0,
-hat11,HEAD,MALE,Green Baseball Cap,,hat_05_m,Icon_baseballcap,500,1,0,0,0,1,hair_short_01_m,0,0,
-hat12,HEAD,FEMALE,Purple Baseball Cap,,hat_07_f,Icon_Hat07,1500,3,0,0,0,2,hair_short_01_f,0,0,
-hat13,HEAD,GENDER_NEUTRAL_1,Purple Baseball Cap,,hat_07_gn1,Icon_Hat07,1500,3,0,0,0,2,hair_short_01_gn1,0,0,
-hat14,HEAD,GENDER_NEUTRAL_2,Purple Baseball Cap,,hat_07_gn2,Icon_Hat07,1500,3,0,0,0,2,hair_short_01_gn2,0,0,
-hat15,HEAD,MALE,Purple Baseball Cap,,hat_07_m,Icon_Hat07,1500,3,0,0,0,2,hair_short_01_m,0,0,
-hat16,HEAD,FEMALE,Purple Beanie,,hat_04_f,Icon_beanie,2500,5,0,1,0,2,hair_short_01_f,0,0,
-hat17,HEAD,GENDER_NEUTRAL_1,Purple Beanie,,hat_04_gn1,Icon_beanie,2500,5,0,1,0,2,hair_short_01_gn1,0,0,
-hat18,HEAD,GENDER_NEUTRAL_2,Purple Beanie,,hat_04_gn2,Icon_beanie,2500,5,0,1,0,2,hair_short_01_gn2,0,0,
-hat19,HEAD,MALE,Purple Beanie,,hat_04_m,Icon_beanie,2500,5,0,1,0,2,hair_short_01_m,0,0,
-hat20,HEAD,FEMALE,Green Beanie,,hat_09_f,Icon_Hat09,2500,7,0,1,0,3,hair_short_01_f,0,0,
-hat21,HEAD,GENDER_NEUTRAL_1,Green Beanie,,hat_09_gn1,Icon_Hat09,2500,7,0,1,0,3,hair_short_01_gn1,0,0,
-hat22,HEAD,GENDER_NEUTRAL_2,Green Beanie,,hat_09_gn2,Icon_Hat09,2500,7,0,1,0,3,hair_short_01_gn2,0,0,
-hat23,HEAD,MALE,Green Beanie,,hat_09_m,Icon_Hat09,2500,7,0,1,0,3,hair_short_01_m,0,0,
-hat24,HEAD,FEMALE,Orange Headband,,hat_06_f,Icon_headband,6000,10,0,1,0,4,,0,0,
-hat25,HEAD,GENDER_NEUTRAL_1,Orange Headband,,hat_06_gn1,Icon_headband,6000,10,0,1,0,4,,0,0,
-hat26,HEAD,GENDER_NEUTRAL_2,Orange Headband,,hat_06_gn2,Icon_headband,6000,10,0,1,0,4,,0,0,
-hat27,HEAD,MALE,Orange Headband,,hat_06_m,Icon_headband,6000,10,0,1,0,4,,0,0,
-hat28,HEAD,FEMALE,Sun Hat,,hat_02_f,Icon_sunhat,7000,14,0,2,0,5,hair_short_01_f,0,0,
-hat29,HEAD,GENDER_NEUTRAL_1,Sun Hat,,hat_02_gn1,Icon_sunhat,7000,14,0,2,0,5,hair_short_01_gn1,0,0,
-hat30,HEAD,GENDER_NEUTRAL_2,Sun Hat,,hat_02_gn2,Icon_sunhat,7000,14,0,2,0,5,hair_short_01_gn2,0,0,
-hat31,HEAD,MALE,Sun Hat,,hat_02_m,Icon_sunhat,7000,14,0,2,0,5,hair_short_01_m,0,0,
-hat32,HEAD,FEMALE,Flat Brim Hat,,hat_01_f,Icon_flatbrimhat,8000,18,0,2,0,6,hair_short_01_f,0,0,
-hat33,HEAD,GENDER_NEUTRAL_1,Flat Brim Hat,,hat_01_gn1,Icon_flatbrimhat,8000,18,0,2,0,6,hair_short_01_gn1,0,0,
-hat34,HEAD,GENDER_NEUTRAL_2,Flat Brim Hat,,hat_01_gn2,Icon_flatbrimhat,8000,18,0,2,0,6,hair_short_01_gn2,0,0,
-hat35,HEAD,MALE,Flat Brim Hat,,hat_01_m,Icon_flatbrimhat,8000,18,0,2,0,6,hair_short_01_m,0,0,
-hat36,HEAD,FEMALE,Green Headband,,hat_08_f,Icon_Hat08,12500,30,0,3,0,7,,0,0,
-hat37,HEAD,GENDER_NEUTRAL_1,Green Headband,,hat_08_gn1,Icon_Hat08,12500,30,0,3,0,7,,0,0,
-hat38,HEAD,GENDER_NEUTRAL_2,Green Headband,,hat_08_gn2,Icon_Hat08,12500,30,0,3,0,7,,0,0,
-hat39,HEAD,MALE,Green Headband,,hat_08_m,Icon_Hat08,12500,30,0,3,0,7,,0,0,
+hat40,HEAD,FEMALE,Green Headscarf,,Hair_Headscarf_F_Green,Icon_headscarf_green,300,1,0,1,0,0,hair_short_01_f,0,0,
+hat41,HEAD,GENDER_NEUTRAL_1,Green Headscarf,,Hair_Headscarf_GN1_Green,Icon_headscarf_green,300,1,0,1,0,0,hair_short_01_gn1,0,0,
+hat42,HEAD,GENDER_NEUTRAL_2,Green Headscarf,,Hair_Headscarf_GN2_Green,Icon_headscarf_green,300,1,0,1,0,0,hair_short_01_gn2,0,0,
+hat43,HEAD,MALE,Green Headscarf,,Hair_Headscarf_M_Green,Icon_headscarf_green,300,1,0,1,0,0,hair_short_01_m,0,0,
+hat44,HEAD,FEMALE,Orange Headscarf,,Hair_Headscarf_F_Orange,Icon_headscarf_orange,300,1,0,0,0,1,hair_short_01_f,0,0,
+hat45,HEAD,GENDER_NEUTRAL_1,Orange Headscarf,,Hair_Headscarf_GN1_Orange,Icon_headscarf_orange,300,1,0,0,0,1,hair_short_01_gn1,0,0,
+hat46,HEAD,GENDER_NEUTRAL_2,Orange Headscarf,,Hair_Headscarf_GN2_Orange,Icon_headscarf_orange,300,1,0,0,0,1,hair_short_01_gn2,0,0,
+hat47,HEAD,MALE,Orange Headscarf,,Hair_Headscarf_M_Orange,Icon_headscarf_orange,300,1,0,0,0,1,hair_short_01_m,0,0,
+hat48,HEAD,FEMALE,Pink Headscarf,,Hair_Headscarf_F_Pink,Icon_headscarf_pink,900,2,0,0,0,2,hair_short_01_f,0,0,
+hat49,HEAD,GENDER_NEUTRAL_1,Pink Headscarf,,Hair_Headscarf_GN1_Pink,Icon_headscarf_pink,900,2,0,0,0,2,hair_short_01_gn1,0,0,
+hat50,HEAD,GENDER_NEUTRAL_2,Pink Headscarf,,Hair_Headscarf_GN2_Pink,Icon_headscarf_pink,900,2,0,0,0,2,hair_short_01_gn2,0,0,
+hat51,HEAD,MALE,Pink Headscarf,,Hair_Headscarf_M_Pink,Icon_headscarf_pink,900,2,0,0,0,2,hair_short_01_m,0,0,
+hat52,HEAD,FEMALE,Purple Headscarf,,Hair_Headscarf_F_Purple,Icon_headscarf_purple,1500,3,0,1,0,2,hair_short_01_f,0,0,
+hat53,HEAD,GENDER_NEUTRAL_1,Purple Headscarf,,Hair_Headscarf_GN1_Purple,Icon_headscarf_purple,1500,3,0,1,0,2,hair_short_01_gn1,0,0,
+hat54,HEAD,GENDER_NEUTRAL_2,Purple Headscarf,,Hair_Headscarf_GN2_Purple,Icon_headscarf_purple,1500,3,0,1,0,2,hair_short_01_gn2,0,0,
+hat55,HEAD,MALE,Purple Headscarf,,Hair_Headscarf_M_Purple,Icon_headscarf_purple,1500,3,0,1,0,2,hair_short_01_m,0,0,
+hat56,HEAD,FEMALE,Mint Headscarf,,Hair_Headscarf_F_Mint,Icon_headscarf_mint,1500,4,0,1,0,3,hair_short_01_f,0,0,
+hat57,HEAD,GENDER_NEUTRAL_1,Mint Headscarf,,Hair_Headscarf_GN1_Mint,Icon_headscarf_mint,1500,4,0,1,0,3,hair_short_01_gn1,0,0,
+hat58,HEAD,GENDER_NEUTRAL_2,Mint Headscarf,,Hair_Headscarf_GN2_Mint,Icon_headscarf_mint,1500,4,0,1,0,3,hair_short_01_gn2,0,0,
+hat59,HEAD,MALE,Mint Headscarf,,Hair_Headscarf_M_Mint,Icon_headscarf_mint,1500,4,0,1,0,3,hair_short_01_m,0,0,
+hat60,HEAD,FEMALE,Tangerine Headscarf,,Hair_Headscarf_F_Tangerine,Icon_headscarf_tangerine,3600,5,0,1,0,4,hair_short_01_f,0,0,
+hat61,HEAD,GENDER_NEUTRAL_1,Tangerine Headscarf,,Hair_Headscarf_GN1_Tangerine,Icon_headscarf_tangerine,3600,5,0,1,0,4,hair_short_01_gn1,0,0,
+hat62,HEAD,GENDER_NEUTRAL_2,Tangerine Headscarf,,Hair_Headscarf_GN2_Tangerine,Icon_headscarf_tangerine,3600,5,0,1,0,4,hair_short_01_gn2,0,0,
+hat63,HEAD,MALE,Tangerine Headscarf,,Hair_Headscarf_M_Tangerine,Icon_headscarf_tangerine,3600,5,0,1,0,4,hair_short_01_m,0,0,
+hat64,HEAD,FEMALE,Yellow Headscarf,,Hair_Headscarf_F_Yellow,Icon_headscarf_yellow,4200,7,0,2,0,5,hair_short_01_f,0,0,
+hat65,HEAD,GENDER_NEUTRAL_1,Yellow Headscarf,,Hair_Headscarf_GN1_Yellow,Icon_headscarf_yellow,4200,7,0,2,0,5,hair_short_01_gn1,0,0,
+hat66,HEAD,GENDER_NEUTRAL_2,Yellow Headscarf,,Hair_Headscarf_GN2_Yellow,Icon_headscarf_yellow,4200,7,0,2,0,5,hair_short_01_gn2,0,0,
+hat67,HEAD,MALE,Yellow Headscarf,,Hair_Headscarf_M_Yellow,Icon_headscarf_yellow,4200,7,0,2,0,5,hair_short_01_m,0,0,
+hat68,HEAD,FEMALE,Lavender Headscarf,,Hair_Headscarf_F_Lavender,Icon_headscarf_lavender,4800,9,0,2,0,6,hair_short_01_f,0,0,
+hat69,HEAD,GENDER_NEUTRAL_1,Lavender Headscarf,,Hair_Headscarf_GN1_Lavender,Icon_headscarf_lavender,4800,9,0,2,0,6,hair_short_01_gn1,0,0,
+hat70,HEAD,GENDER_NEUTRAL_2,Lavender Headscarf,,Hair_Headscarf_GN2_Lavender,Icon_headscarf_lavender,4800,9,0,2,0,6,hair_short_01_gn2,0,0,
+hat71,HEAD,MALE,Lavender Headscarf,,Hair_Headscarf_M_Lavender,Icon_headscarf_lavender,4800,9,0,2,0,6,hair_short_01_m,0,0,
+hat72,HEAD,FEMALE,Fuschia Headscarf,,Hair_Headscarf_F_Fuschia,Icon_headscarf_fuschia,7500,15,0,3,0,7,hair_short_01_f,0,0,
+hat73,HEAD,GENDER_NEUTRAL_1,Fuschia Headscarf,,Hair_Headscarf_GN1_Fuschia,Icon_headscarf_fuschia,7500,15,0,3,0,7,hair_short_01_gn1,0,0,
+hat74,HEAD,GENDER_NEUTRAL_2,Fuschia Headscarf,,Hair_Headscarf_GN2_Fuschia,Icon_headscarf_fuschia,7500,15,0,3,0,7,hair_short_01_gn2,0,0,
+hat75,HEAD,MALE,Fuschia Headscarf,,Hair_Headscarf_M_Fuschia,Icon_headscarf_fuschia,7500,15,0,3,0,7,hair_short_01_m,0,0,
+hat4,HEAD,FEMALE,Bandana,,hat_03_f,Icon_bandana,300,1,0,1,0,0,hair_short_01_f,0,0,
+hat5,HEAD,GENDER_NEUTRAL_1,Bandana,,hat_03_gn1,Icon_bandana,300,1,0,1,0,0,hair_short_01_gn1,0,0,
+hat6,HEAD,GENDER_NEUTRAL_2,Bandana,,hat_03_gn2,Icon_bandana,300,1,0,1,0,0,hair_short_01_gn2,0,0,
+hat7,HEAD,MALE,Bandana,,hat_03_m,Icon_bandana,300,1,0,1,0,0,hair_short_01_m,0,0,
+hat8,HEAD,FEMALE,Green Baseball Cap,,hat_05_f,Icon_baseballcap,300,1,0,0,0,1,hair_short_01_f,0,0,
+hat9,HEAD,GENDER_NEUTRAL_1,Green Baseball Cap,,hat_05_gn1,Icon_baseballcap,300,1,0,0,0,1,hair_short_01_gn1,0,0,
+hat10,HEAD,GENDER_NEUTRAL_2,Green Baseball Cap,,hat_05_gn2,Icon_baseballcap,300,1,0,0,0,1,hair_short_01_gn2,0,0,
+hat11,HEAD,MALE,Green Baseball Cap,,hat_05_m,Icon_baseballcap,300,1,0,0,0,1,hair_short_01_m,0,0,
+hat12,HEAD,FEMALE,Purple Baseball Cap,,hat_07_f,Icon_Hat07,900,2,0,0,0,2,hair_short_01_f,0,0,
+hat13,HEAD,GENDER_NEUTRAL_1,Purple Baseball Cap,,hat_07_gn1,Icon_Hat07,900,2,0,0,0,2,hair_short_01_gn1,0,0,
+hat14,HEAD,GENDER_NEUTRAL_2,Purple Baseball Cap,,hat_07_gn2,Icon_Hat07,900,2,0,0,0,2,hair_short_01_gn2,0,0,
+hat15,HEAD,MALE,Purple Baseball Cap,,hat_07_m,Icon_Hat07,900,2,0,0,0,2,hair_short_01_m,0,0,
+hat16,HEAD,FEMALE,Purple Beanie,,hat_04_f,Icon_beanie,1500,3,0,1,0,2,hair_short_01_f,0,0,
+hat17,HEAD,GENDER_NEUTRAL_1,Purple Beanie,,hat_04_gn1,Icon_beanie,1500,3,0,1,0,2,hair_short_01_gn1,0,0,
+hat18,HEAD,GENDER_NEUTRAL_2,Purple Beanie,,hat_04_gn2,Icon_beanie,1500,3,0,1,0,2,hair_short_01_gn2,0,0,
+hat19,HEAD,MALE,Purple Beanie,,hat_04_m,Icon_beanie,1500,3,0,1,0,2,hair_short_01_m,0,0,
+hat20,HEAD,FEMALE,Green Beanie,,hat_09_f,Icon_Hat09,1500,4,0,1,0,3,hair_short_01_f,0,0,
+hat21,HEAD,GENDER_NEUTRAL_1,Green Beanie,,hat_09_gn1,Icon_Hat09,1500,4,0,1,0,3,hair_short_01_gn1,0,0,
+hat22,HEAD,GENDER_NEUTRAL_2,Green Beanie,,hat_09_gn2,Icon_Hat09,1500,4,0,1,0,3,hair_short_01_gn2,0,0,
+hat23,HEAD,MALE,Green Beanie,,hat_09_m,Icon_Hat09,1500,4,0,1,0,3,hair_short_01_m,0,0,
+hat24,HEAD,FEMALE,Orange Headband,,hat_06_f,Icon_headband,3600,5,0,1,0,4,,0,0,
+hat25,HEAD,GENDER_NEUTRAL_1,Orange Headband,,hat_06_gn1,Icon_headband,3600,5,0,1,0,4,,0,0,
+hat26,HEAD,GENDER_NEUTRAL_2,Orange Headband,,hat_06_gn2,Icon_headband,3600,5,0,1,0,4,,0,0,
+hat27,HEAD,MALE,Orange Headband,,hat_06_m,Icon_headband,3600,5,0,1,0,4,,0,0,
+hat28,HEAD,FEMALE,Sun Hat,,hat_02_f,Icon_sunhat,4200,7,0,2,0,5,hair_short_01_f,0,0,
+hat29,HEAD,GENDER_NEUTRAL_1,Sun Hat,,hat_02_gn1,Icon_sunhat,4200,7,0,2,0,5,hair_short_01_gn1,0,0,
+hat30,HEAD,GENDER_NEUTRAL_2,Sun Hat,,hat_02_gn2,Icon_sunhat,4200,7,0,2,0,5,hair_short_01_gn2,0,0,
+hat31,HEAD,MALE,Sun Hat,,hat_02_m,Icon_sunhat,4200,7,0,2,0,5,hair_short_01_m,0,0,
+hat32,HEAD,FEMALE,Flat Brim Hat,,hat_01_f,Icon_flatbrimhat,4800,9,0,2,0,6,hair_short_01_f,0,0,
+hat33,HEAD,GENDER_NEUTRAL_1,Flat Brim Hat,,hat_01_gn1,Icon_flatbrimhat,4800,9,0,2,0,6,hair_short_01_gn1,0,0,
+hat34,HEAD,GENDER_NEUTRAL_2,Flat Brim Hat,,hat_01_gn2,Icon_flatbrimhat,4800,9,0,2,0,6,hair_short_01_gn2,0,0,
+hat35,HEAD,MALE,Flat Brim Hat,,hat_01_m,Icon_flatbrimhat,4800,9,0,2,0,6,hair_short_01_m,0,0,
+hat36,HEAD,FEMALE,Green Headband,,hat_08_f,Icon_Hat08,7500,15,0,3,0,7,,0,0,
+hat37,HEAD,GENDER_NEUTRAL_1,Green Headband,,hat_08_gn1,Icon_Hat08,7500,15,0,3,0,7,,0,0,
+hat38,HEAD,GENDER_NEUTRAL_2,Green Headband,,hat_08_gn2,Icon_Hat08,7500,15,0,3,0,7,,0,0,
+hat39,HEAD,MALE,Green Headband,,hat_08_m,Icon_Hat08,7500,15,0,3,0,7,,0,0,
 shirt0,SHIRT,FEMALE,Basic T-Shirt,,AllGenders_BasicDecal_Small,Icon_basicshirt,0,0,0,0,0,0,,1,1,0
 shirt1,SHIRT,GENDER_NEUTRAL_1,Basic T-Shirt,,AllGenders_BasicDecal_Small,Icon_basicshirt,0,0,0,0,0,0,,1,1,0
 shirt2,SHIRT,GENDER_NEUTRAL_2,Basic T-Shirt,,AllGenders_BasicDecal_Small,Icon_basicshirt,0,0,0,0,0,0,,1,1,0
 shirt3,SHIRT,MALE,Basic T-Shirt,,AllGenders_BasicDecal_Small,Icon_basicshirt,0,0,0,0,0,0,,1,1,0
-shirt4,SHIRT,FEMALE,Pocketed T-Shirt,,f_Pocket,Icon_Pocket,1000,1,0,2,0,0,,0,0,1
+shirt4,SHIRT,FEMALE,Pocketed T-Shirt,,f_Pocket,Icon_Pocket,600,1,0,2,0,0,,0,0,1
 shirt5,SHIRT,GENDER_NEUTRAL_1,Pocketed T-Shirt,,gn1_Pocket,Icon_Pocket,1000,1,0,2,0,0,,0,0,1
 shirt6,SHIRT,GENDER_NEUTRAL_2,Pocketed T-Shirt,,gn2_Pocket,Icon_Pocket,1000,1,0,2,0,0,,0,0,1
 shirt7,SHIRT,MALE,Pocketed T-Shirt,,m_Pocket,Icon_Pocket,1000,1,0,2,0,0,,0,0,1
-shirt8,SHIRT,FEMALE,Geometric T-Shirt,,f_geometricFox,Icon_geometricFox,2000,3,0,2,0,0,,0,0,1
-shirt9,SHIRT,GENDER_NEUTRAL_1,Geometric T-Shirt,,gn1_geometricFox,Icon_geometricFox,2000,3,0,2,0,0,,0,0,1
-shirt10,SHIRT,GENDER_NEUTRAL_2,Geometric T-Shirt,,gn2_geometricFox,Icon_geometricFox,2000,3,0,2,0,0,,0,0,1
-shirt11,SHIRT,MALE,Geometric T-Shirt,,m_geometricFox,Icon_geometricFox,2000,3,0,2,0,0,,0,0,1
-shirt12,SHIRT,FEMALE,Vermont T-Shirt,,f_VTdecal,Icon_VTdecal,2500,5,0,3,0,0,,0,0,1
-shirt13,SHIRT,GENDER_NEUTRAL_1,Vermont T-Shirt,,gn1_VTdecal,Icon_VTdecal,2500,5,0,3,0,0,,0,0,1
-shirt14,SHIRT,GENDER_NEUTRAL_2,Vermont T-Shirt,,gn2_VTdecal,Icon_VTdecal,2500,5,0,3,0,0,,0,0,1
-shirt15,SHIRT,MALE,Vermont T-Shirt,,m_VTdecal,Icon_VTdecal,2500,5,0,3,0,0,,0,0,1
-shirt16,SHIRT,FEMALE,Camp Conquer T-Shirt,,f_ccDecal,Icon_ccDecal,4000,11,0,4,0,0,,0,0,1
-shirt17,SHIRT,GENDER_NEUTRAL_1,Camp Conquer T-Shirt,,gn1_ccDecal,Icon_ccDecal,4000,11,0,4,0,0,,0,0,1
-shirt18,SHIRT,GENDER_NEUTRAL_2,Camp Conquer T-Shirt,,gn2_ccDecal,Icon_ccDecal,4000,11,0,4,0,0,,0,0,1
-shirt19,SHIRT,MALE,Camp Conquer T-Shirt,,m_ccDecal,Icon_ccDecal,4000,11,0,4,0,0,,0,0,1
-shirt20,SHIRT,FEMALE,Snacking T-Shirt,,fFoodDecal,Icon_FoodDecal,5000,14,0,4,1,0,,0,0,0
-shirt21,SHIRT,GENDER_NEUTRAL_1,Snacking T-Shirt,,gn1FoodDecal,Icon_FoodDecal,5000,14,0,4,1,0,,0,0,0
-shirt22,SHIRT,GENDER_NEUTRAL_2,Snacking T-Shirt,,gn2FoodDecal,Icon_FoodDecal,5000,14,0,4,1,0,,0,0,0
-shirt23,SHIRT,MALE,Snacking T-Shirt,,mFoodDecal,Icon_FoodDecal,5000,14,0,4,1,0,,0,0,0
-shirt24,SHIRT,FEMALE,Metal T-Shirt,,fMetalDecal,Icon_MetalDecal,7500,18,0,5,1,0,,0,0,0
-shirt25,SHIRT,GENDER_NEUTRAL_1,Metal T-Shirt,,gn1MetalDecal,Icon_MetalDecal,7500,18,0,5,1,0,,0,0,0
-shirt26,SHIRT,GENDER_NEUTRAL_2,Metal T-Shirt,,gn2MetalDecal,Icon_MetalDecal,7500,18,0,5,1,0,,0,0,0
-shirt27,SHIRT,MALE,Metal T-Shirt,,mMetalDecal,Icon_MetalDecal,7500,18,0,5,1,0,,0,0,0
-shirt28,SHIRT,FEMALE,Nope T-Shirt,,fNopeDecal,Icon_NopeDecal,10000,24,0,6,1,0,,0,0,0
-shirt29,SHIRT,GENDER_NEUTRAL_1,Nope T-Shirt,,gn1NopeDecal,Icon_NopeDecal,10000,24,0,6,1,0,,0,0,0
-shirt30,SHIRT,GENDER_NEUTRAL_2,Nope T-Shirt,,gn2NopeDecal,Icon_NopeDecal,10000,24,0,6,1,0,,0,0,0
-shirt31,SHIRT,MALE,Nope T-Shirt,,mNopeDecal,Icon_NopeDecal,10000,24,0,6,1,0,,0,0,0
-shirt32,SHIRT,FEMALE,Floral T-shirt,,fFloralDecal,Icon_FloralDecal,15000,30,0,8,0,0,,0,0,1
-shirt33,SHIRT,GENDER_NEUTRAL_1,Floral T-shirt,,gn1FloralDecal,Icon_FloralDecal,15000,30,0,8,0,0,,0,0,1
-shirt34,SHIRT,GENDER_NEUTRAL_2,Floral T-shirt,,gn2FloralDecal,Icon_FloralDecal,15000,30,0,8,0,0,,0,0,1
-shirt35,SHIRT,MALE,Floral T-shirt,,mFloralDecal,Icon_FloralDecal,15000,30,0,8,0,0,,0,0,1
-shirt36,SHIRT,FEMALE,Striped T-Shirt,,fStripesDecal,Icon_StripesDecal,20000,40,0,8,2,0,,0,0,1
-shirt37,SHIRT,GENDER_NEUTRAL_1,Striped T-Shirt,,gn1StripesDecal,Icon_StripesDecal,20000,40,0,8,2,0,,0,0,1
-shirt38,SHIRT,GENDER_NEUTRAL_2,Striped T-Shirt,,gn2StripesDecal,Icon_StripesDecal,20000,40,0,8,2,0,,0,0,1
-shirt39,SHIRT,MALE,Striped T-Shirt,,mStripesDecal,Icon_StripesDecal,20000,40,0,8,2,0,,0,0,1
+shirt8,SHIRT,FEMALE,Geometric T-Shirt,,f_geometricFox,Icon_geometricFox,1200,2,0,2,0,0,,0,0,1
+shirt9,SHIRT,GENDER_NEUTRAL_1,Geometric T-Shirt,,gn1_geometricFox,Icon_geometricFox,1200,2,0,2,0,0,,0,0,1
+shirt10,SHIRT,GENDER_NEUTRAL_2,Geometric T-Shirt,,gn2_geometricFox,Icon_geometricFox,1200,2,0,2,0,0,,0,0,1
+shirt11,SHIRT,MALE,Geometric T-Shirt,,m_geometricFox,Icon_geometricFox,1200,2,0,2,0,0,,0,0,1
+shirt12,SHIRT,FEMALE,Vermont T-Shirt,,f_VTdecal,Icon_VTdecal,1500,3,0,3,0,0,,0,0,1
+shirt13,SHIRT,GENDER_NEUTRAL_1,Vermont T-Shirt,,gn1_VTdecal,Icon_VTdecal,1500,3,0,3,0,0,,0,0,1
+shirt14,SHIRT,GENDER_NEUTRAL_2,Vermont T-Shirt,,gn2_VTdecal,Icon_VTdecal,1500,3,0,3,0,0,,0,0,1
+shirt15,SHIRT,MALE,Vermont T-Shirt,,m_VTdecal,Icon_VTdecal,1500,3,0,3,0,0,,0,0,1
+shirt16,SHIRT,FEMALE,Camp Conquer T-Shirt,,f_ccDecal,Icon_ccDecal,2400,6,0,4,0,0,,0,0,1
+shirt17,SHIRT,GENDER_NEUTRAL_1,Camp Conquer T-Shirt,,gn1_ccDecal,Icon_ccDecal,2400,6,0,4,0,0,,0,0,1
+shirt18,SHIRT,GENDER_NEUTRAL_2,Camp Conquer T-Shirt,,gn2_ccDecal,Icon_ccDecal,2400,6,0,4,0,0,,0,0,1
+shirt19,SHIRT,MALE,Camp Conquer T-Shirt,,m_ccDecal,Icon_ccDecal,2400,6,0,4,0,0,,0,0,1
+shirt20,SHIRT,FEMALE,Snacking T-Shirt,,fFoodDecal,Icon_FoodDecal,3000,7,0,4,1,0,,0,0,0
+shirt21,SHIRT,GENDER_NEUTRAL_1,Snacking T-Shirt,,gn1FoodDecal,Icon_FoodDecal,3000,7,0,4,1,0,,0,0,0
+shirt22,SHIRT,GENDER_NEUTRAL_2,Snacking T-Shirt,,gn2FoodDecal,Icon_FoodDecal,3000,7,0,4,1,0,,0,0,0
+shirt23,SHIRT,MALE,Snacking T-Shirt,,mFoodDecal,Icon_FoodDecal,3000,7,0,4,1,0,,0,0,0
+shirt24,SHIRT,FEMALE,Metal T-Shirt,,fMetalDecal,Icon_MetalDecal,4500,9,0,5,1,0,,0,0,0
+shirt25,SHIRT,GENDER_NEUTRAL_1,Metal T-Shirt,,gn1MetalDecal,Icon_MetalDecal,4500,9,0,5,1,0,,0,0,0
+shirt26,SHIRT,GENDER_NEUTRAL_2,Metal T-Shirt,,gn2MetalDecal,Icon_MetalDecal,4500,9,0,5,1,0,,0,0,0
+shirt27,SHIRT,MALE,Metal T-Shirt,,mMetalDecal,Icon_MetalDecal,4500,9,0,5,1,0,,0,0,0
+shirt28,SHIRT,FEMALE,Nope T-Shirt,,fNopeDecal,Icon_NopeDecal,6000,12,0,6,1,0,,0,0,0
+shirt29,SHIRT,GENDER_NEUTRAL_1,Nope T-Shirt,,gn1NopeDecal,Icon_NopeDecal,6000,12,0,6,1,0,,0,0,0
+shirt30,SHIRT,GENDER_NEUTRAL_2,Nope T-Shirt,,gn2NopeDecal,Icon_NopeDecal,6000,12,0,6,1,0,,0,0,0
+shirt31,SHIRT,MALE,Nope T-Shirt,,mNopeDecal,Icon_NopeDecal,6000,12,0,6,1,0,,0,0,0
+shirt32,SHIRT,FEMALE,Floral T-shirt,,fFloralDecal,Icon_FloralDecal,9000,15,0,8,0,0,,0,0,1
+shirt33,SHIRT,GENDER_NEUTRAL_1,Floral T-shirt,,gn1FloralDecal,Icon_FloralDecal,9000,15,0,8,0,0,,0,0,1
+shirt34,SHIRT,GENDER_NEUTRAL_2,Floral T-shirt,,gn2FloralDecal,Icon_FloralDecal,9000,15,0,8,0,0,,0,0,1
+shirt35,SHIRT,MALE,Floral T-shirt,,mFloralDecal,Icon_FloralDecal,9000,15,0,8,0,0,,0,0,1
+shirt36,SHIRT,FEMALE,Striped T-Shirt,,fStripesDecal,Icon_StripesDecal,12000,20,0,8,2,0,,0,0,1
+shirt37,SHIRT,GENDER_NEUTRAL_1,Striped T-Shirt,,gn1StripesDecal,Icon_StripesDecal,12000,20,0,8,2,0,,0,0,1
+shirt38,SHIRT,GENDER_NEUTRAL_2,Striped T-Shirt,,gn2StripesDecal,Icon_StripesDecal,12000,20,0,8,2,0,,0,0,1
+shirt39,SHIRT,MALE,Striped T-Shirt,,mStripesDecal,Icon_StripesDecal,12000,20,0,8,2,0,,0,0,1
 shoes0,SHOES,,Basic Sneakers,,shoesA,Icon_ShoesA,0,0,0,0,0,0,,1,1,
-shoes1,SHOES,,Sandals,,shoesJ,Icon_ShoesJ,750,2,0,0,1,0,,0,0,
-shoes2,SHOES,,Skate Sneakers,,shoesB,Icon_ShoesB,2000,5,0,0,1,1,,0,0,
-shoes3,SHOES,,Ankle High Boots,,shoesC,Icon_ShoesC,3500,8,0,0,2,1,,0,0,
-shoes4,SHOES,,Running Shoes,,shoesD,Icon_ShoesD,5500,12,0,0,4,0,,0,0,
-shoes5,SHOES,,Hiking Boots,,shoesE,Icon_ShoesE,6000,14,0,0,4,1,,0,0,
-shoes6,SHOES,,High-Laced Sneakers,,shoesF,Icon_ShoesF,7000,16,0,0,5,2,,0,0,
-shoes7,SHOES,,Comfortable Sneakers,,shoesG,Icon_ShoesG,9000,24,0,2,5,0,,0,0,
-shoes8,SHOES,,Short Boots,,shoesH,Icon_ShoesH,12500,28,0,2,6,2,,0,0,
-shoes9,SHOES,,Rain Boots,,shoesI,Icon_ShoesI,15000,35,0,2,8,2,,0,0,
+shoes1,SHOES,,Sandals,,shoesJ,Icon_ShoesJ,450,2,0,0,1,0,,0,0,
+shoes2,SHOES,,Skate Sneakers,,shoesB,Icon_ShoesB,1200,3,0,0,1,1,,0,0,
+shoes3,SHOES,,Ankle High Boots,,shoesC,Icon_ShoesC,2100,5,0,0,2,1,,0,0,
+shoes4,SHOES,,Running Shoes,,shoesD,Icon_ShoesD,3300,8,0,0,4,0,,0,0,
+shoes5,SHOES,,Hiking Boots,,shoesE,Icon_ShoesE,3600,8,0,0,4,1,,0,0,
+shoes6,SHOES,,High-Laced Sneakers,,shoesF,Icon_ShoesF,4200,12,0,0,5,2,,0,0,
+shoes7,SHOES,,Comfortable Sneakers,,shoesG,Icon_ShoesG,5400,15,0,2,5,0,,0,0,
+shoes8,SHOES,,Short Boots,,shoesH,Icon_ShoesH,7500,18,0,2,6,2,,0,0,
+shoes9,SHOES,,Rain Boots,,shoesI,Icon_ShoesI,9000,20,0,2,8,2,,0,0,
 accessory0,ACCESSORY,FEMALE,Glasses,,accessories_glasses_f,Icon_glasses,50,0,0,0,0,0,,0,0,
 accessory1,ACCESSORY,GENDER_NEUTRAL_1,Glasses,,accessories_glasses_gn1,Icon_glasses,50,0,0,0,0,0,,0,0,
 accessory2,ACCESSORY,GENDER_NEUTRAL_2,Glasses,,accessories_glasses_gn2,Icon_glasses,50,0,0,0,0,0,,0,0,

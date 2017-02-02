@@ -6,9 +6,9 @@
 #  team       :string
 #  role       :string
 #  path       :text
-#  speed      :integer          default("0"), not null
-#  health     :integer          default("0"), not null
-#  range      :integer          default("0"), not null
+#  speed      :integer          default(0), not null
+#  health     :integer          default(0), not null
+#  range      :integer          default(0), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  game_id    :integer

@@ -1,3 +1,28 @@
+# == Schema Information
+#
+# Table name: players
+#
+#  id                   :integer          not null, primary key
+#  name                 :string
+#  team                 :string
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  fitbit_token_hash    :text
+#  anti_forgery_token   :string
+#  coins                :integer          default(0), not null
+#  gems                 :integer          default(0), not null
+#  embodied             :boolean          default(FALSE), not null
+#  session_token        :string
+#  encrypted_password   :string
+#  salt                 :string
+#  admin                :boolean          default(FALSE), not null
+#  activities_synced_at :datetime
+#
+# Indexes
+#
+#  index_players_on_session_token  (session_token)
+#
+
 require 'rails_helper'
 
 describe PlayersController, type: :controller do

@@ -5,12 +5,12 @@
 #  id              :integer          not null, primary key
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  current         :boolean          default("f")
+#  current         :boolean          default(FALSE)
 #  season_id       :integer
 #  state           :string           default("preparing")
 #  moves           :text
 #  winner          :string
-#  match_length    :integer          default("0"), not null
+#  match_length    :integer          default(0), not null
 #  scheduled_start :datetime
 #  mvps            :text
 #  played_at       :datetime

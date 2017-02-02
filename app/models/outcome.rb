@@ -13,8 +13,8 @@
 #  flag_carry_distance :integer          not null
 #  captures            :integer          not null
 #  game_id             :integer
-#  attack_mvp          :boolean          default("f"), not null
-#  defend_mvp          :boolean          default("f"), not null
+#  attack_mvp          :boolean          default(FALSE), not null
+#  defend_mvp          :boolean          default(FALSE), not null
 #
 # Indexes
 #
