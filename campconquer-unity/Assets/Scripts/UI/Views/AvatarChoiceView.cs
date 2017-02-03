@@ -14,6 +14,7 @@ public class AvatarChoiceView : UIView
     const int BUTTON_COUNT = 5;
     const float SMALL_BUTTON_SIZE = 0.75f;
     const float SELECTED_COLOR = 0.7f;
+    const float UNSELECTED_ALPHA = 0.4f;
     const string BODY_ICON_NAME = "Icon_Body_00";
     const string FACE_ICON_NAME = "faceIcon";
     const string HAIR_ICON_NAME = "hairIcon";
@@ -49,19 +50,23 @@ public class AvatarChoiceView : UIView
             {
                 case (int)AvatarItemType.BODY:
                     avatarNavButton.Disable();
-                    avatarNavButton.Button.image.color = new Color(SELECTED_COLOR, SELECTED_COLOR, SELECTED_COLOR);
+                    //avatarNavButton.Button.image.color = new Color(SELECTED_COLOR, SELECTED_COLOR, SELECTED_COLOR);
                     avatarNavButton.Image.sprite = AssetLookUp.Instance.GetAvatarNavIcon(BODY_ICON_NAME);
                     break;
                 case (int)AvatarItemType.FACE:
+                    avatarNavButton.BGImage.color = new Color(1.0f, 1.0f, 1.0f, UNSELECTED_ALPHA);
                     avatarNavButton.Image.sprite = AssetLookUp.Instance.GetAvatarNavIcon(FACE_ICON_NAME);
                     break;
                 case (int)AvatarItemType.HAIR:
+                    avatarNavButton.BGImage.color = new Color(1.0f, 1.0f, 1.0f, UNSELECTED_ALPHA);
                     avatarNavButton.Image.sprite = AssetLookUp.Instance.GetAvatarNavIcon(HAIR_ICON_NAME);
                     break;
                 case (int)AvatarItemType.HAIR_COLOR:
+                    avatarNavButton.BGImage.color = new Color(1.0f, 1.0f, 1.0f, UNSELECTED_ALPHA);
                     avatarNavButton.Image.sprite = AssetLookUp.Instance.GetAvatarNavIcon(HAIR_COLOR_ICON_NAME);
                     break;
                 case (int)AvatarItemType.SKIN_COLOR:
+                    avatarNavButton.BGImage.color = new Color(1.0f, 1.0f, 1.0f, UNSELECTED_ALPHA);
                     avatarNavButton.Image.sprite = AssetLookUp.Instance.GetAvatarNavIcon(SKIN_COLOR_ICON_NAME);
                     break;
             }
@@ -115,12 +120,12 @@ public class AvatarChoiceView : UIView
 
             if (i != _page)
             {
-                avatarNavButton.Button.image.color = Color.white;
+                avatarNavButton.BGImage.color = new Color(1.0f, 1.0f, 1.0f, UNSELECTED_ALPHA);
                 avatarNavButton.Enable();
             }
             else
             {
-                avatarNavButton.Button.image.color = new Color(SELECTED_COLOR, SELECTED_COLOR, SELECTED_COLOR);
+                avatarNavButton.BGImage.color = Color.white;
                 avatarNavButton.Disable();
             }
         }

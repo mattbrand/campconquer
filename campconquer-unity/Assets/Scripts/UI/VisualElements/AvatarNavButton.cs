@@ -4,7 +4,7 @@ using gametheory.UI;
 public class AvatarNavButton : ListElement 
 {
     #region Public Vars
-    public Button Button;
+    public Image BGImage;
     public Image Image;
     #endregion
 
@@ -13,25 +13,23 @@ public class AvatarNavButton : ListElement
     {
         base.PresentVisuals(display);
 
+        /*
         if (Button != null)
         {
             Button.enabled = display;
             Button.targetGraphic.enabled = display;
         }
+        */
     }
 
     protected override void Enabled()
     {
         base.Enabled();
-
-        Button.interactable = true;
     }
 
     protected override void Disabled()
     {
         base.Disabled();
-
-        Button.interactable = false;
     }
     #endregion
 

@@ -119,7 +119,7 @@ MonoBehaviour:
   CanvasGroup: {fileID: 0}
   Elements: []
   NavButtonLayout: {fileID: 11402282}
-  NavButtonPrefab: {fileID: 114000012849069708, guid: 5206f03cd04fd4d0bb3c8d2fdeba9e1f,
+  NavButtonPrefab: {fileID: 114225307291629792, guid: 5206f03cd04fd4d0bb3c8d2fdeba9e1f,
     type: 2}
   ChoiceButtonPrefab: {fileID: 114000010037179658, guid: c57596255f1e84c3cba31d78f1f4a481,
     type: 2}
