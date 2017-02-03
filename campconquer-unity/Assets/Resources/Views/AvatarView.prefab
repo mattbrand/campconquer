@@ -2686,6 +2686,7 @@ MonoBehaviour:
   ShirtDecalImage: {fileID: 114000014246711728}
   ShoesImage: {fileID: 114000014291418476}
   AccessoriesImage: {fileID: 114000012848501264}
+  StoreRefreshButtonObj: {fileID: 0}
 --- !u!114 &11450818
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5463,8 +5464,8 @@ RectTransform:
   - {fileID: 22459880}
   - {fileID: 22409160}
   - {fileID: 22404700}
-  - {fileID: 224000013840417126}
   - {fileID: 224000014019159672}
+  - {fileID: 224000013840417126}
   - {fileID: 224000013374267054}
   - {fileID: 22440532}
   - {fileID: 22413174}
@@ -6328,7 +6329,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 22491568}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.07509394, y: 0.20072123}
   m_AnchorMax: {x: 1.051314, y: 1.0159562}
@@ -6346,7 +6347,7 @@ RectTransform:
   m_LocalScale: {x: 0.99999994, y: 0.99999994, z: 1}
   m_Children: []
   m_Father: {fileID: 22491568}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.07509394, y: 0.20072123}
   m_AnchorMax: {x: 1.051314, y: 1.0159562}
