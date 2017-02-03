@@ -138,7 +138,7 @@ namespace gametheory.Utilities
 
         public IEnumerator CallToServerForJson(string url, HTTPMethods method, List<HTTPTuple> tupleParameters, Action<string> successCallback = null, Action<Dictionary<string, object>> requestNotOKCallback = null, Action<Dictionary<string, object>> failureCallback = null, Action requestFailureCallback = null)
         {
-            Debug.Log("CallToServerForJson " + url);
+            //Debug.Log("CallToServerForJson " + url);
 
             if (tupleParameters != null)
             {

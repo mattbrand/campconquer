@@ -7,10 +7,10 @@
 #  date                   :date
 #  created_at             :datetime
 #  updated_at             :datetime
-#  steps                  :integer          default("0"), not null
-#  steps_claimed          :integer          default("0"), not null
-#  active_minutes         :integer          default("0"), not null
-#  active_minutes_claimed :boolean          default("f"), not null
+#  steps                  :integer          default(0), not null
+#  steps_claimed          :integer          default(0), not null
+#  active_minutes         :integer          default(0), not null
+#  active_minutes_claimed :boolean          default(FALSE), not null
 #
 # Indexes
 #

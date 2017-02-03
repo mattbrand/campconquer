@@ -42,23 +42,23 @@ public class AmmoDisplay : VisualElement
         {
             case AmmoType.BALLOON:
                 if (Avatar.Instance.Color == TeamColor.BLUE)
-                    AmmoImage.Image.sprite = AssetLookUp.Instance.BlueBalloons[0];
+                    AmmoImage.Image.sprite = AssetLookUp.Instance.BlueBalloonIcons[0];
                 else
-                    AmmoImage.Image.sprite = AssetLookUp.Instance.RedBalloons[0];
+                    AmmoImage.Image.sprite = AssetLookUp.Instance.RedBalloonIcons[0];
                 //Debug.Log("balloon setting image to " + AmmoImage.Image.sprite);
                 break;
             case AmmoType.ARROW:
                 if (Avatar.Instance.Color == TeamColor.BLUE)
-                    AmmoImage.Image.sprite = AssetLookUp.Instance.BlueBalloons[1];
+                    AmmoImage.Image.sprite = AssetLookUp.Instance.BlueBalloonIcons[1];
                 else
-                    AmmoImage.Image.sprite = AssetLookUp.Instance.RedBalloons[1];
+                    AmmoImage.Image.sprite = AssetLookUp.Instance.RedBalloonIcons[1];
                 //Debug.Log("arrow setting image to " + AmmoImage.Image.sprite);
                 break;
             case AmmoType.BOMB:
                 if (Avatar.Instance.Color == TeamColor.BLUE)
-                    AmmoImage.Image.sprite = AssetLookUp.Instance.BlueBalloons[2];
+                    AmmoImage.Image.sprite = AssetLookUp.Instance.BlueBalloonIcons[2];
                 else
-                    AmmoImage.Image.sprite = AssetLookUp.Instance.RedBalloons[2];
+                    AmmoImage.Image.sprite = AssetLookUp.Instance.RedBalloonIcons[2];
                 //Debug.Log("bomb setting image to " + AmmoImage.Image.sprite);
                 break;
         }
@@ -96,6 +96,7 @@ public class AmmoDisplay : VisualElement
     public void Clear()
     {
         AmmoImage.Deactivate();
+        _set = false;
     }
 
     public void ShowImage()
@@ -139,6 +140,7 @@ public class AmmoDisplay : VisualElement
     public bool Set
     {
         get { return _set; }
+        set { _set = value; }
     }
     #endregion
 }

@@ -26,9 +26,9 @@ public class AmmoEquipView : UIView
 
         if (Avatar.Instance.Color == TeamColor.BLUE)
         {
-            BalloonImage.Image.sprite = AssetLookUp.Instance.BlueBalloons[0];
-            ArrowImage.Image.sprite = AssetLookUp.Instance.BlueBalloons[1];
-            BombImage.Image.sprite = AssetLookUp.Instance.BlueBalloons[2];
+            BalloonImage.Image.sprite = AssetLookUp.Instance.BlueBalloonIcons[0];
+            ArrowImage.Image.sprite = AssetLookUp.Instance.BlueBalloonIcons[1];
+            BombImage.Image.sprite = AssetLookUp.Instance.BlueBalloonIcons[2];
         }
     }
 

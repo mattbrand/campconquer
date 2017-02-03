@@ -237,6 +237,8 @@ public class OnlineManager : MonoBehaviour
 
         //Debug.Log("2");
 
+        Avatar.Instance.ClearAmmo();
+
         // set avatar info from piece data
         PieceData piece = playerData.piece;
 		if (piece != null) {

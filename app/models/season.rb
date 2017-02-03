@@ -6,7 +6,7 @@
 #  created_at :datetime
 #  updated_at :datetime
 #  name       :string
-#  current    :boolean          default("f"), not null
+#  current    :boolean          default(FALSE), not null
 #  start_at   :date
 #
 

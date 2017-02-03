@@ -4,7 +4,7 @@
 #
 #  id        :integer          not null, primary key
 #  piece_id  :integer          not null
-#  equipped  :boolean          default("f"), not null
+#  equipped  :boolean          default(FALSE), not null
 #  gear_name :string
 #
 # Indexes

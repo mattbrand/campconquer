@@ -9,13 +9,13 @@
 #  updated_at           :datetime         not null
 #  fitbit_token_hash    :text
 #  anti_forgery_token   :string
-#  coins                :integer          default("0"), not null
-#  gems                 :integer          default("0"), not null
-#  embodied             :boolean          default("f"), not null
+#  coins                :integer          default(0), not null
+#  gems                 :integer          default(0), not null
+#  embodied             :boolean          default(FALSE), not null
 #  session_token        :string
 #  encrypted_password   :string
 #  salt                 :string
-#  admin                :boolean          default("f"), not null
+#  admin                :boolean          default(FALSE), not null
 #  activities_synced_at :datetime
 #
 # Indexes
