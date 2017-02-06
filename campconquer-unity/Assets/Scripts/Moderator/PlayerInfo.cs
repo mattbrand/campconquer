@@ -31,13 +31,7 @@ public class PlayerInfo : VisualElement
             PlayerIndicator.color = Colors.RedBannerColor;
         else
             PlayerIndicator.color = Colors.BlueBannerColor;
-        //InfoBox.text = playerName;
-        //Debug.Log("before set name, width = " + PlayerName.rectTransform.sizeDelta.x);
         PlayerName.text = playerName;
-        //Debug.Log("after set name, width = " + PlayerName.rectTransform.sizeDelta.x);
-        //Debug.Log("before set box, width = " + InfoBox.rectTransform.sizeDelta.x);
-        //InfoBox.rectTransform.sizeDelta = new Vector2(PlayerName.rectTransform.sizeDelta.x, InfoBox.rectTransform.sizeDelta.y);
-        //Debug.Log("after set box, width = " + InfoBox.rectTransform.sizeDelta.x);
     }
 
     public void SetPosition(Vector2 position)

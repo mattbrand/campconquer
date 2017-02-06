@@ -101,6 +101,7 @@ public class StoreView : UIView
             _filter = GearType.NONE;
             UnlockScreen();
             PresentStore();
+            FilterHeadItems();
         }
         else
         {
@@ -419,66 +420,50 @@ public class StoreView : UIView
     #region Filter Methods
     public void FilterHeadItems()
     {
-        if (_filter == GearType.HEAD)
-        {
-            ShowAllItems();
-            HeadButton.Button.image.color = Color.white;
-        }
-        else
-        {
-            ShowTypeItems(GearType.HEAD);
-            LightenAllButtons();
-            HeadButton.Button.image.color = new Color(0.7f, 0.7f, 0.7f, 1.0f);
-            CheckCurrentItemForFilter();
-        }
+        ShowTypeItems(GearType.HEAD);
+        LightenAllButtons();
+        CheckCurrentItemForFilter();
+
+        HeadButton.Button.transform.localScale = new Vector3(1.25f, 1.25f, 1.25f);
+        ShirtButton.Button.transform.localScale = Vector3.one;
+        ShoesButton.Button.transform.localScale = Vector3.one;
+        AccessoryButton.Button.transform.localScale = Vector3.one;
     }
 
     public void FilterShirtItems()
     {
-        if (_filter == GearType.SHIRT)
-        {
-            ShowAllItems();
-            ShirtButton.Button.image.color = Color.white;
-        }
-        else
-        {
-            ShowTypeItems(GearType.SHIRT);
-            LightenAllButtons();
-            ShirtButton.Button.image.color = new Color(0.7f, 0.7f, 0.7f, 1.0f);
-            CheckCurrentItemForFilter();
-        }
+        ShowTypeItems(GearType.SHIRT);
+        LightenAllButtons();
+        CheckCurrentItemForFilter();
+
+        HeadButton.Button.transform.localScale = Vector3.one;
+        ShirtButton.Button.transform.localScale = new Vector3(1.25f, 1.25f, 1.25f);
+        ShoesButton.Button.transform.localScale = Vector3.one;
+        AccessoryButton.Button.transform.localScale = Vector3.one;
     }
 
     public void FilterShoesItems()
     {
-        if (_filter == GearType.SHOES)
-        {
-            ShowAllItems();
-            ShoesButton.Button.image.color = Color.white;
-        }
-        else
-        {
-            ShowTypeItems(GearType.SHOES);
-            LightenAllButtons();
-            ShoesButton.Button.image.color = new Color(0.7f, 0.7f, 0.7f, 1.0f);
-            CheckCurrentItemForFilter();
-        }
+        ShowTypeItems(GearType.SHOES);
+        LightenAllButtons();
+        CheckCurrentItemForFilter();
+
+        HeadButton.Button.transform.localScale = Vector3.one;
+        ShirtButton.Button.transform.localScale = Vector3.one;
+        ShoesButton.Button.transform.localScale = new Vector3(1.25f, 1.25f, 1.25f);
+        AccessoryButton.Button.transform.localScale = Vector3.one;
     }
 
     public void FilterAccessoryItems()
     {
-        if (_filter == GearType.ACCESSORY)
-        {
-            ShowAllItems();
-            AccessoryButton.Button.image.color = Color.white;
-        }
-        else
-        {
-            ShowTypeItems(GearType.ACCESSORY);
-            LightenAllButtons();
-            AccessoryButton.Button.image.color = new Color(0.7f, 0.7f, 0.7f, 1.0f);
-            CheckCurrentItemForFilter();
-        }
+        ShowTypeItems(GearType.ACCESSORY);
+        LightenAllButtons();
+        CheckCurrentItemForFilter();
+
+        HeadButton.Button.transform.localScale = Vector3.one;
+        ShirtButton.Button.transform.localScale = Vector3.one;
+        ShoesButton.Button.transform.localScale = Vector3.one;
+        AccessoryButton.Button.transform.localScale = new Vector3(1.25f, 1.25f, 1.25f);
     }
 
     void ShowAllItems()

@@ -38,6 +38,7 @@ GameObject:
   - component: {fileID: 212000011093768276}
   - component: {fileID: 95000014120325998}
   - component: {fileID: 114000011227399812}
+  - component: {fileID: 70245108491747320}
   m_Layer: 8
   m_Name: F
   m_TagString: Untagged
@@ -162,6 +163,20 @@ Transform:
   m_Father: {fileID: 4000011395310934}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!70 &70245108491747320
+CapsuleCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000010583406920}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_Offset: {x: 0.0000019073486, y: 0}
+  m_Size: {x: 1, y: 1.61}
+  m_Direction: 0
 --- !u!95 &95000014120325998
 Animator:
   serializedVersion: 3

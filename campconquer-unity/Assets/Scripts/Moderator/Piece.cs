@@ -14,6 +14,11 @@ public enum PieceType { GENDER_NEUTRAL_1 = 0, GENDER_NEUTRAL_2, MALE, FEMALE }
 
 public class Piece : MonoBehaviour
 {
+    #region Events
+    public static System.Action<Piece> MouseOverPiece;
+    public static System.Action<Piece> MouseOutPiece;
+    #endregion
+
     #region Constants
     const string SETUP_PLAYER_SORT_LAYER = "SetupPlayers";
     const float SPEED = 0.025f;
@@ -130,6 +135,18 @@ public class Piece : MonoBehaviour
                 //Destroy(this.gameObject);
             }
         }
+    }
+
+    void OnMouseOver()
+    {
+        if (MouseOverPiece != null)
+            MouseOverPiece(this);
+    }
+
+    void OnMouseExit()
+    {
+        if (MouseOutPiece != null)
+            MouseOutPiece(this);
     }
     #endregion
 

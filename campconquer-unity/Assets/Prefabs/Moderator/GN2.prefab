@@ -54,6 +54,7 @@ GameObject:
   - component: {fileID: 212000011715511612}
   - component: {fileID: 95000011767470620}
   - component: {fileID: 114000013324920978}
+  - component: {fileID: 70089652714145420}
   m_Layer: 8
   m_Name: GN2
   m_TagString: Untagged
@@ -162,6 +163,20 @@ Transform:
   m_Father: {fileID: 4000010069146454}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!70 &70089652714145420
+CapsuleCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012615076142}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 1, y: 1.61}
+  m_Direction: 0
 --- !u!95 &95000011767470620
 Animator:
   serializedVersion: 3

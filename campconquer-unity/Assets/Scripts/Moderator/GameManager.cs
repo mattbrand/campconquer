@@ -26,7 +26,6 @@ public class GameManager : MonoBehaviour
     public GameObject BlueFlagPrefab;
     public GameObject RedFlagPrefab;
     public PlayerInfo PlayerInfoPrefab;
-    public Image PieceInfoPrefab;
     public Piece GN1Prefab;
     public Piece GN2Prefab;
     public Piece MPrefab;
@@ -47,6 +46,7 @@ public class GameManager : MonoBehaviour
     #region Private Vars
     List<Balloon> _balloons;
     Piece _replayWatcherPiece;
+    Piece _mouseOverPiece;
     Team _redTeam;
     Team _blueTeam;
     Flag _redFlag;
@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour
     DateTime _startTime;
     TimeSpan _gameTime;
     PlayerInfo _replayWatcherInfo;
-    //Image _replayWatcherInfo;
+    PlayerInfo _mouseOverInfo;
     string _gameID;
     float _countdownTimer;
     float _gameOverTimer;
@@ -73,10 +73,17 @@ public class GameManager : MonoBehaviour
         _gameOver = false;
         enabled = false;
         SetUpButtons();
+        Piece.MouseOverPiece += MouseOverPiece;
+        Piece.MouseOutPiece += MouseOutPiece;
     }
 
     void FixedUpdate()
     {
+        if (_mouseOverInfo != null && _mouseOverPiece != null)
+        {
+            _mouseOverInfo.SetPosition(_mouseOverPiece.transform.position);
+        }
+
         if (_replay)
         {
             if (_gameOver)
@@ -183,6 +190,12 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    void OnDestroy()
+    {
+        Piece.MouseOverPiece -= MouseOverPiece;
+        Piece.MouseOutPiece -= MouseOutPiece;
     }
     #endregion
 
@@ -336,41 +349,17 @@ public class GameManager : MonoBehaviour
 
             _replayWatcherInfo = (PlayerInfo)Instantiate(PlayerInfoPrefab, Vector3.zero, Quaternion.identity);
             _replayWatcherInfo.transform.SetParent(Canvas.transform, false);
-
-            //_replayWatcherInfo = (Image)Instantiate(PieceInfoPrefab, Vector3.zero, Quaternion.identity);
-            //_replayWatcherInfo.transform.SetParent(Canvas.transform, false);
-            /*
-            if (piece.GetTeam == _redTeam)
-                _replayWatcherInfo.color = Colors.RedBannerColor;
-            else
-                _replayWatcherInfo.color = Colors.BlueBannerColor;
-*/
-            //Text replayWatcherName = _replayWatcherInfo.transform.GetChild(0).transform.GetChild(1).GetComponent<Text>();
-            //replayWatcherName.text = pieceData.player_name;
-
             _replayWatcherInfo.Initialize(piece.GetTeam.GetColor, pieceData.player_name);
-            _replayWatcherInfo.SetPosition(_replayWatcherPiece.transform.position);
+            _replayWatcherInfo.SetPosition(piece.transform.position);
+        }
 
-            //SetWatcherInfoPosition();
-        }
+        // create mouse over info
+        _mouseOverInfo = (PlayerInfo)Instantiate(PlayerInfoPrefab, Vector3.zero, Quaternion.identity);
+        _mouseOverInfo.transform.SetParent(Canvas.transform, false);
+        _mouseOverInfo.Initialize(piece.GetTeam.GetColor, pieceData.player_name);
+        _mouseOverInfo.SetPosition(piece.transform.position);
+        _mouseOverInfo.gameObject.SetActive(false);
     }
-
-    /*
-    void SetWatcherInfoPosition()
-    {
-        if (_replayWatcherPiece != null)
-        {
-            RectTransform CanvasRect = Canvas.GetComponent<RectTransform>();
-            Vector2 ViewportPosition = MainCamera.WorldToViewportPoint(_replayWatcherPiece.transform.position);
-            Vector2 WorldObject_ScreenPosition = new Vector2(((ViewportPosition.x * CanvasRect.sizeDelta.x) - (CanvasRect.sizeDelta.x * X_FACTOR)), ((ViewportPosition.y * CanvasRect.sizeDelta.y) - (CanvasRect.sizeDelta.y * Y_FACTOR)));
-            _replayWatcherInfo.rectTransform.anchoredPosition3D = new Vector3(WorldObject_ScreenPosition.x, WorldObject_ScreenPosition.y, 0.0f);
-        }
-        else
-        {
-            Destroy(_replayWatcherInfo.gameObject);
-        }
-    }
-    */
 
     void StartGame()
     {
@@ -610,6 +599,20 @@ public class GameManager : MonoBehaviour
         _redTeam.RecordPieceMoves();
         _blueTeam.RecordPieceMoves();
     }
+
+    void MouseOverPiece(Piece piece)
+    {
+        _mouseOverPiece = piece;
+        _mouseOverInfo.PlayerName.text = piece.Name;
+        _mouseOverInfo.SetPosition(piece.transform.position);
+        _mouseOverInfo.gameObject.SetActive(true);
+    }
+
+    void MouseOutPiece(Piece piece)
+    {
+        _mouseOverPiece = null;
+        _mouseOverInfo.gameObject.SetActive(false);
+    }
     #endregion
 
     #region UI Methods
@@ -703,7 +706,6 @@ public class GameManager : MonoBehaviour
 
     public void ClickReplayGame()
     {
-        //OnlineManager.Instance.SetServer(true, false, false);
         PathManager.Instance.Initialize();
 
         StartCoroutine(ReplayGame());
@@ -718,8 +720,6 @@ public class GameManager : MonoBehaviour
         yield return StartCoroutine(OnlineManager.Instance.StartReplayGame());
 
         PathManager.Instance.Initialize();
-
-        //_loadedGameData = true;
 
         SetUpGameFromData();
 
