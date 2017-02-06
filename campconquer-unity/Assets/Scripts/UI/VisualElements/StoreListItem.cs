@@ -16,9 +16,10 @@ public class StoreListItem : ListElement
 	public bool Locked;
 	public Image Icon;
 	public Button ActionButton;
-	#endregion
+    #endregion
 
-	#region Private Vars
+    #region Private Vars
+    GearType _type;
 	Image _goalImage;
 	bool _selected;
 	static Color PurchasedColor = UnityExtensions.ColorFromRGB(195,195,195);
@@ -103,4 +104,12 @@ public class StoreListItem : ListElement
 			ActionButton.image.sprite = AssetLookUp.Instance.StoreNormal;
 	}
 	#endregion
+
+    #region Accessors
+    public GearType Type
+    {
+        get { return _type; }
+        set { _type = value; }
+    }
+    #endregion
 }

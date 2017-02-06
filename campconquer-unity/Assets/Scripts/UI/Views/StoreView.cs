@@ -166,12 +166,29 @@ public class StoreView : UIView
         CoinsCostText.Text = "";
 
 		StoreItem storeItem = null;
-        for(int i = 0; i < Database.Instance.CurrentGearList.Count; i++)
+        int i;
+        // add purchased items
+        for(i = 0; i < Database.Instance.CurrentGearList.Count; i++)
 		{
-            StoreListItem item = (StoreListItem)GameObject.Instantiate(ItemPrefab, Vector3.zero, Quaternion.identity);
-            item.Setup(Database.Instance.CurrentGearList[i]);
-            StoreList.AddListElement(item);
+            if (Database.Instance.CurrentGearList[i].Purchased)
+            {
+                StoreListItem item = (StoreListItem)GameObject.Instantiate(ItemPrefab, Vector3.zero, Quaternion.identity);
+                item.Type = (GearType)Enum.Parse(typeof(GearType), Database.Instance.CurrentGearList[i].Type, true);
+                item.Setup(Database.Instance.CurrentGearList[i]);
+                StoreList.AddListElement(item);
+            }
 		}
+        // add non-purchased items
+        for (i = 0; i < Database.Instance.CurrentGearList.Count; i++)
+        {
+            if (!Database.Instance.CurrentGearList[i].Purchased)
+            {
+                StoreListItem item = (StoreListItem)GameObject.Instantiate(ItemPrefab, Vector3.zero, Quaternion.identity);
+                item.Type = (GearType)Enum.Parse(typeof(GearType), Database.Instance.CurrentGearList[i].Type, true);
+                item.Setup(Database.Instance.CurrentGearList[i]);
+                StoreList.AddListElement(item);
+            }
+        }
 	}
 
 	void SetupData()
@@ -486,16 +503,13 @@ public class StoreView : UIView
     void ShowTypeItems(GearType gearType)
     {
         //Debug.Log("show item types " + gearType);
-        for (int i = 0; i < Database.Instance.CurrentGearList.Count; i++)
+        for (int i = 0; i < StoreList.ListItems.Count; i++)
         {
-            if (Database.Instance.CurrentGearList[i].Type != gearType.ToString())
-            {
-                StoreList.ListItems[i].gameObject.SetActive(false);
-            }
-            else
-            {
+            StoreListItem storeListItem = StoreList.ListItems[i] as StoreListItem;
+            if (storeListItem.Type == gearType)
                 StoreList.ListItems[i].gameObject.SetActive(true);
-            }
+            else
+                StoreList.ListItems[i].gameObject.SetActive(false);
         }
         _filter = gearType;
     }

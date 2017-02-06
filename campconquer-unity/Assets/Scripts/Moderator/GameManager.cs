@@ -134,6 +134,8 @@ public class GameManager : MonoBehaviour
                         _gameOverTimer += Time.deltaTime;
                         if (_gameOverTimer >= GAME_OVER_TIME)
                         {
+                            if (_mouseOverInfo != null)
+                                Destroy(_mouseOverInfo.gameObject);
                             enabled = false;
                             LoadingAlert.Present();
                             PlayerPrefs.SetString("LAST_GAME_VIEWED", OnlineManager.Instance.GameData.id);
@@ -146,6 +148,8 @@ public class GameManager : MonoBehaviour
                     {
                         if (_replayWatcherInfo != null)
                             Destroy(_replayWatcherInfo.gameObject);
+                        if (_mouseOverInfo != null)
+                            Destroy(_mouseOverInfo.gameObject);
                         _redTeam.StopPieceAnimations();
                         _blueTeam.StopPieceAnimations();
                         _gameOver = true;
