@@ -35,10 +35,13 @@ public class ClientMainView : UIView
         if (!_loggedIn && !GameManager.Client)
         {
             _loggedIn = true;
-            LoginAlert.Present();
+            Debug.Log("presenting login alert");
+            LoadingAlert.Present();
+            //LoginAlert.Present();
         }
         else if (GameManager.Client)
         {
+            // after game replay
             LoadingAlert.Present();
             OnlineManager.Instance.SetServer(OnlineManager.Local, OnlineManager.Staging, OnlineManager.Production);
             StartCoroutine(LogBackIn());

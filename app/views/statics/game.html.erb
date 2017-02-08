@@ -1,3 +1,9 @@
 <iframe src='CampConquer/index.html' allowfullscreen="true" width="1024" height="680" >
   <p>Your browser does not support iframes.</p>
 </iframe>
+
+<script>
+setTimeout(function() {
+frames[0].SendMessage("OnlineManager", "StartSignInFromWeb", "<%= current_player.start_session %>");
+}, 10000);
+</script>

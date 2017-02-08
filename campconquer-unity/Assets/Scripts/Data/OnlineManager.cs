@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using BestHTTP;
 using Newtonsoft.Json;
+using gametheory.UI;
 using gametheory.Utilities;
 using CampConquer;
 
@@ -36,22 +37,28 @@ public class OnlineManager : MonoBehaviour
     SeasonData _seasonSyncData;
     PlayerResponseData _playerResponseData;
     GearResponseData _gearResponseData;
-    //PathResponseData _pathResponseData;
     ResponseData _responseData;
     OnlineGameStatus _gameStatus;
     OnlineGameStatus _previousGameStatus;
     string _playerName;
     string _url;
     string _error;
+    string _token;
     int _coinsClaimed;
     int _stepsClaimed;
+    int _webCounter;
     bool _requestFailure;
+    static bool _remoteLogin;
     #endregion
 
     #region Unity Methods
     void Start()
     {
-        enabled = false;
+        Debug.Log("start OnlineManager");
+
+        enabled = true;
+
+        _webCounter = 0;
 
         if (Instance == null)
         {
@@ -69,6 +76,22 @@ public class OnlineManager : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        if (_remoteLogin)
+        {
+            _webCounter++;
+            Debug.Log("in update, webCounter = " + _webCounter);
+            if (_webCounter > 3)
+            {
+                Debug.Log("update - calling SignInFromWeb");
+                _remoteLogin = false;
+                StartCoroutine(SignInFromWeb());
+                enabled = false;
+            }
+        }
+    }
+
     void OnDestroy()
     {
         Instance = null;
@@ -76,6 +99,62 @@ public class OnlineManager : MonoBehaviour
     #endregion
 
     #region Methods
+    void StartSignInFromWeb(string token)
+    {
+        Debug.Log("StartSignInFromWeb - " + token);
+
+        Token = token;
+        _remoteLogin = true;
+
+        //StartCoroutine(SignInFromWeb(token));
+    }
+
+    public IEnumerator SignInFromWeb()
+    {
+        //Token = token;
+        Debug.Log("SignInFromWeb " + Token);
+
+        yield return StartGetPlayer("current");
+
+        Debug.Log("back from StartGetPlayer");
+
+        if (OnlineManager.Instance.PlayerReponseData.player.gamemaster)
+        {
+            GameManager.Client = false;
+            SceneManager.LoadScene("Moderator");
+        }
+
+        //Debug.Log("test");
+
+        //Debug.Log(OnlineManager.Instance.PlayerReponseData.status);
+
+        if (!OnlineManager.Instance.GetRequestFailure)
+        {
+            if (OnlineManager.Instance.PlayerID == null || OnlineManager.Instance.PlayerReponseData.status != "ok")
+            {
+                LoadingAlert.FinishLoading();
+                HTTPAlert.Present("Login Error", OnlineManager.Instance.Error, null, null, true);
+            }
+            else
+            {
+                yield return StartCoroutine(OnlineManager.Instance.StartGetGame());
+                yield return StartCoroutine(OnlineManager.Instance.StartGetGear());
+                //Debug.Log("going to build lists - body type = " + Avatar.Instance.BodyType);
+                Database.Instance.BuildAllData();
+                Database.Instance.BuildGearList();
+                PathManager.Instance.Initialize();
+
+                if (!Avatar.Instance.Embodied)
+                {
+                    UIViewController.ActivateUIView(AvatarCreationView.Load());
+                    UIViewController.ActivateUIView(AvatarStatsView.Load());
+                }
+
+                LoadingAlert.FinishLoading();
+            }
+        }
+    }
+
     public void SetServer(bool local, bool staging, bool production)
     {
         string url = "";
