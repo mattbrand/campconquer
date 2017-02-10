@@ -75,6 +75,12 @@ public class RoleView : UIView
         base.OnActivate();
 
         StartCoroutine(CheckBattleStatus());
+
+        if (!PlayerPrefs.HasKey("RoleViewTutorial") || PlayerPrefs.GetInt("RoleViewTutorial") != 1)
+        {
+            ClickTutorial();
+            PlayerPrefs.SetInt("RoleViewTutorial", 1);
+        }
     }
 
     protected override void OnCleanUp()

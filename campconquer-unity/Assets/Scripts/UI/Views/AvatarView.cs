@@ -89,6 +89,12 @@ public class AvatarView : UIView
         _state = AvatarViewState.MAIN;
         UIViewController.ActivateUIView(CoinsGemsView.Load());
         UIViewController.ActivateUIView(AmmoBeltView.Load());
+
+        if (!PlayerPrefs.HasKey("AvatarViewTutorial") || PlayerPrefs.GetInt("AvatarViewTutorial") != 1)
+        {
+            ClickTutorial();
+            PlayerPrefs.SetInt("AvatarViewTutorial", 1);
+        }
     }
 
     protected override void OnCleanUp()
