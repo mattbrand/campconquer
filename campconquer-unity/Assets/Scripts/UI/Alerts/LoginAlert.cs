@@ -89,6 +89,11 @@ public class LoginAlert : UIAlert
 
         LoadingAlert.Present();
 
+        OnlineManager.Local = LocalToggle.Toggle.isOn;
+        OnlineManager.Staging = StagingToggle.Toggle.isOn;
+        StartCoroutine(SignIn());
+
+        /*
         if (_username != "" && _password != "")
         {
             OnlineManager.Local = LocalToggle.Toggle.isOn;
@@ -100,19 +105,28 @@ public class LoginAlert : UIAlert
             LoadingAlert.FinishLoading();
             ErrorMessage.Activate();
         }
+        */
     }
 
     IEnumerator SignIn()
     {
         OnlineManager.Instance.SetServer(LocalToggle.Toggle.isOn, StagingToggle.Toggle.isOn, _production);
-
+        //Debug.Log("1");
+#if UNITY_EDITOR
         yield return StartCoroutine(OnlineManager.Instance.StartLogin(_username, _password));
-
+#else
+        //yield return StartCoroutine(OnlineManager.Instance.StartLoginFromWeb()); 
+#endif
+        //Debug.Log("OnlineManager.Token = " + OnlineManager.Token);
         if (OnlineManager.Token != null && OnlineManager.Token != "")
         {
             //Debug.Log("token = " + OnlineManager.Token);
-
+            //Debug.Log("2");
+#if UNITY_EDITOR
             yield return StartCoroutine(OnlineManager.Instance.StartGetPlayer(OnlineManager._playerID));
+#else
+            yield return StartCoroutine(OnlineManager.Instance.StartGetPlayerFromWeb());
+#endif
 
             //Debug.Log(OnlineManager.Instance.PlayerReponseData);
 
@@ -128,15 +142,19 @@ public class LoginAlert : UIAlert
 
             //Debug.Log(OnlineManager.Instance.PlayerReponseData.status);
 
+            //Debug.Log("3");
+
             if (!OnlineManager.Instance.GetRequestFailure)
             {
                 if (OnlineManager.Instance.PlayerID == null || OnlineManager.Instance.PlayerReponseData.status != "ok")
                 {
+                    //Debug.Log("4");
                     LoadingAlert.FinishLoading();
                     HTTPAlert.Present("Login Error", OnlineManager.Instance.Error, null, null, true);
                 }
                 else
                 {
+                    //Debug.Log("5");
                     yield return StartCoroutine(OnlineManager.Instance.StartGetGame());
                     yield return StartCoroutine(OnlineManager.Instance.StartGetGear());
                     //Debug.Log("going to build lists - body type = " + Avatar.Instance.BodyType);

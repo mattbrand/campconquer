@@ -43,22 +43,21 @@ public class OnlineManager : MonoBehaviour
     string _playerName;
     string _url;
     string _error;
-    string _token;
     int _coinsClaimed;
     int _stepsClaimed;
     int _webCounter;
     bool _requestFailure;
-    static bool _remoteLogin;
+    //static bool _remoteLogin;
     #endregion
 
     #region Unity Methods
     void Start()
     {
-        Debug.Log("start OnlineManager");
+        //Debug.Log("start OnlineManager");
 
-        enabled = true;
+        enabled = false;
 
-        _webCounter = 0;
+        //_webCounter = 0;
 
         if (Instance == null)
         {
@@ -76,6 +75,7 @@ public class OnlineManager : MonoBehaviour
         }
     }
 
+    /*
     void Update()
     {
         if (_remoteLogin)
@@ -91,6 +91,7 @@ public class OnlineManager : MonoBehaviour
             }
         }
     }
+    */
 
     void OnDestroy()
     {
@@ -99,6 +100,12 @@ public class OnlineManager : MonoBehaviour
     #endregion
 
     #region Methods
+    void SetTokenFromWeb(string token)
+    {
+        //Debug.Log("set token in SetTokenFromWeb - token = " + token);
+        Token = token;
+    }
+    /*
     void StartSignInFromWeb(string token)
     {
         Debug.Log("StartSignInFromWeb - " + token);
@@ -154,6 +161,7 @@ public class OnlineManager : MonoBehaviour
             }
         }
     }
+    */
 
     public void SetServer(bool local, bool staging, bool production)
     {
@@ -181,6 +189,16 @@ public class OnlineManager : MonoBehaviour
         List<HTTPTuple> tuples = new List<HTTPTuple>();
         tuples.Add(new HTTPTuple("name", username));
         tuples.Add(new HTTPTuple("password", password));
+        //Debug.Log(username + ", " + password);
+        yield return StartCoroutine(BestHTTPHelper.Instance.CallToServerForJson(url, HTTPMethods.Post, tuples, SetToken, DisplayError, DisplayError, RequestFailure));
+    }
+
+    public IEnumerator StartLoginFromWeb()
+    {
+        string url = _url + "/sessions";
+        List<HTTPTuple> tuples = new List<HTTPTuple>();
+        //tuples.Add(new HTTPTuple("name", _playerID));
+        //tuples.Add(new HTTPTuple("password", _password));
         //Debug.Log(username + ", " + password);
         yield return StartCoroutine(BestHTTPHelper.Instance.CallToServerForJson(url, HTTPMethods.Post, tuples, SetToken, DisplayError, DisplayError, RequestFailure));
     }
@@ -279,6 +297,13 @@ public class OnlineManager : MonoBehaviour
         //Debug.Log("StartGetPlayerCoroutine " + id + " url = " + _url);
         _requestFailure = false;
         string url = _url + "/players/" + id;
+        yield return StartCoroutine(BestHTTPHelper.Instance.CallToServerForJson(url, HTTPMethods.Get, NewParams(), SetPlayerInfo, StoreError, StoreError, RequestFailure));
+    }
+
+    public IEnumerator StartGetPlayerFromWeb()
+    {
+        _requestFailure = false;
+        string url = _url + "/players/current";
         yield return StartCoroutine(BestHTTPHelper.Instance.CallToServerForJson(url, HTTPMethods.Get, NewParams(), SetPlayerInfo, StoreError, StoreError, RequestFailure));
     }
 

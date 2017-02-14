@@ -527,9 +527,9 @@ PlayerSettings:
     Game_Performance: 0
     Hub: 0
     Purchasing: 0
-    UNet: 0
+    UNet: 1
     Unity_Ads: 0
-  cloudProjectId: 
-  projectName: 
-  organizationId: 
+  cloudProjectId: 8b0057d1-9a30-4cd6-a593-f46c8f20ce7f
+  projectName: Camp Conquer
+  organizationId: gametheory-co
   cloudEnabled: 0

@@ -4,6 +4,6 @@
 
 <script>
 setTimeout(function() {
-frames[0].SendMessage("OnlineManager", "StartSignInFromWeb", "<%= current_player.start_session %>");
+frames[0].SendMessage("OnlineManager", "SetTokenFromWeb", "<%= current_player.start_session %>");
 }, 10000);
 </script>

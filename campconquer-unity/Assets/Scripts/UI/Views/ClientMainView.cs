@@ -6,7 +6,7 @@ using CampConquer;
 public class ClientMainView : UIView 
 {
     #region Constants
-    const string VERSION = "1.2";
+    const string VERSION = "1.3";
     #endregion
 
     #region Public Vars
@@ -35,9 +35,9 @@ public class ClientMainView : UIView
         if (!_loggedIn && !GameManager.Client)
         {
             _loggedIn = true;
-            Debug.Log("presenting login alert");
-            LoadingAlert.Present();
-            //LoginAlert.Present();
+            //Debug.Log("presenting login alert");
+            //LoadingAlert.Present();
+            LoginAlert.Present();
         }
         else if (GameManager.Client)
         {
