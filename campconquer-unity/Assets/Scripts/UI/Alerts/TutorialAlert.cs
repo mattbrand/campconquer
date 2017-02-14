@@ -96,7 +96,6 @@ public class TutorialAlert : UIAlert
                 Text.Text = RewardsTextStrings[_screenIndex];
                 break;
         }
-        Debug.Log(Text.Text);
         Text.Text = Text.Text.Replace("<br>", "\n\n");
     }
 

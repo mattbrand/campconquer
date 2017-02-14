@@ -181,6 +181,12 @@ public class HistoryView : UIView
             LastSynced.Text = Convert.ToDateTime(syncedDateTime).ToString();
 
         StartCoroutine(LoadingFinishedJSON());
+
+        if (!PlayerPrefs.HasKey("HistoryViewTutorial") || PlayerPrefs.GetInt("HistoryViewTutorial") != 1)
+        {
+            ClickTutorial();
+            PlayerPrefs.SetInt("HistoryViewTutorial", 1);
+        }
     }
 
     protected override void OnDeactivate()
