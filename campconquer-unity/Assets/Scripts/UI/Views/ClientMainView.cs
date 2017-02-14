@@ -37,13 +37,16 @@ public class ClientMainView : UIView
             _loggedIn = true;
             //Debug.Log("presenting login alert");
             //LoadingAlert.Present();
-            LoginAlert.Present();
+            if (OnlineManager.Token == null || OnlineManager.Token == "")
+                FullLoginAlert.Present();
+            else
+                LoginAlert.Present();
         }
         else if (GameManager.Client)
         {
             // after game replay
             LoadingAlert.Present();
-            OnlineManager.Instance.SetServer(OnlineManager.Local, OnlineManager.Staging, OnlineManager.Production);
+            OnlineManager.Instance.SetServer();
             StartCoroutine(LogBackIn());
         }
 

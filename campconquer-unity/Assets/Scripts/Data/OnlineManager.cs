@@ -66,7 +66,7 @@ public class OnlineManager : MonoBehaviour
             if (SceneManager.GetActiveScene().name == "Moderator")
             {
                 //Debug.Log("on start of OnlineManager, local = " + Local + " staging = " + Staging);
-                SetServer(Local, Staging, false);
+                SetServer();
             }
         }
         else
@@ -163,7 +163,7 @@ public class OnlineManager : MonoBehaviour
     }
     */
 
-    public void SetServer(bool local, bool staging, bool production)
+    public void SetServer()
     {
         string url = "";
         string correctURL = "";
@@ -197,16 +197,13 @@ public class OnlineManager : MonoBehaviour
     {
         string url = _url + "/sessions";
         List<HTTPTuple> tuples = new List<HTTPTuple>();
-        //tuples.Add(new HTTPTuple("name", _playerID));
-        //tuples.Add(new HTTPTuple("password", _password));
-        //Debug.Log(username + ", " + password);
         yield return StartCoroutine(BestHTTPHelper.Instance.CallToServerForJson(url, HTTPMethods.Post, tuples, SetToken, DisplayError, DisplayError, RequestFailure));
     }
 
     void SetToken(string json)
     {
-        //Debug.Log("setting token");
         TokenResponseData tokenResponseData = JsonConvert.DeserializeObject<TokenResponseData>(json);
+        //Debug.Log("setting token - " + json);
         if (tokenResponseData.status == "ok")
         {
             Token = tokenResponseData.token;
