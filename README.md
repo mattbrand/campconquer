@@ -153,6 +153,8 @@ We are using [ActiveAdmin](http://activeadmin.info/) for some non-API UI
 * edit `.env` (see below)
 * `rake db:setup`
 
+> Problems with Nokogiri? Check here: http://stackoverflow.com/questions/40038953/installing-nokogiri-on-mac-os-sierra-10-12
+
 Optional setup:
 
 Alex recommends [JSON Viewer](https://chrome.google.com/webstore/detail/json-viewer/gbmdgpbipfallnflgajpaliibnhdgobh) for nicely viewing JSON output in Chrome

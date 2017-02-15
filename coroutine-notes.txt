@@ -1,0 +1,63 @@
+
+
+https://docs.unity3d.com/Manual/Coroutines.html
+
+The yield return line is the point at which execution will pause
+
+To set a coroutine running, you need to use the StartCoroutine function
+
+By default, a coroutine is resumed on the frame after it yields but it is also possible to introduce a time delay using WaitForSeconds:
+
+Many tasks in a game need to be carried out periodically and the most obvious way to do this is to include them in the Update function. However, this function will typically be called many times per second. When a task doesn’t need to be repeated quite so frequently, you can put it in a coroutine to get an update regularly but not every single frame.
+
+
+http://stackoverflow.com/questions/12932306/how-does-startcoroutine-yield-return-pattern-really-work-in-unity
+
+IEnumerator: MoveNext() calculates the next value in the sequence (returning false if there are no more values), and Current retrieves the value it calculated
+
+Ordinarily, if you wanted to implement an interface, you’d have to write a class, implement the members, and so on. Iterator blocks are a convenient way of implementing IEnumerator without all that hassle – you just follow a few rules, and the IEnumerator implementation is generated automatically by the compiler.
+
+An iterator block is a regular function that (a) returns IEnumerator, and (b) uses the yield keyword. So what does the yield keyword actually do? It declares what the next value in the sequence is – or that there are no more values. The point at which the code encounters a yield return X or yield break is the point at which IEnumerator.MoveNext() should stop; a yield return X causes MoveNext() to return true andCurrent to be assigned the value X, while a yield break causes MoveNext() to return false.
+
+a `yield return X` causes MoveNext() to return true andCurrent to be assigned the value X, while a `yield break` causes MoveNext() to return false.
+
+Each time MoveNext() is called, your iterator block runs to the next ‘yield’ statement, regardless of what expression it actually yields.
+A long sequence of nulls isn’t exactly useful, but we’re more interested in the side-effects. Aren’t we?
+
+Basically, when you call StartCoroutine(MyCoroutine()), it's exactly like a regular function call to MyCoroutine(), until the first yield return X, where X is something like null, new WaitForSeconds(3), StartCoroutine(AnotherCoroutine()), break, etc. This is when it starts differing from a function. Unity "pauses" that function right at that yield return X line, goes on with other business and some frames pass, and when it's time again, Unity resumes that function right after that line. It remembers the values for all the local variables in the function. This way, you can have a for loop that loops every two seconds, for example.
+
+If you used `yield return StartCoroutine(AnotherCoroutine())`, it resumes after AnotherCoroutine() is completely done, which enables you to nest behaviors in time. If you just used a `yield return null`;, it resumes right at the next frame.
+
+
+"In other words, fucking C# does some fucking crazy shit." - https://www.reddit.com/r/gamedev/comments/yum87/unity_coroutines_more_than_you_want_to_know/c5z8dsk/
+
+The state variable its responsible for is actually really interesting in its function:
+-2: Initialized as Enumerable. (Not yet an Enumerator)
+-1: Closed
+0: Initialized as Enumerator. If a new Enumerator is requested on the same instance, GetEnumerator() returns another new instance of YieldingEnumerator.
+1-n: Index of the yield return in the original GetFibonachiSequence() method
+
+
+http://twistedoakstudios.com/blog/Post83_coroutines-more-than-you-want-to-know
+
+Update will be called on MonoBehaviours with an Update function once per frame. At various points in the frame, Unity goes through the stored Coroutines and checks the Current value in their IEnumerators.
+* WWW - after Updates happen for all game objects; check the isDone flag. If true, call the IEnumerator's MoveNext() function;
+* WaitForSeconds - after Updates happen for all game objects; check if the time has elapsed, if it has, call MoveNext();
+* null or some unknown value - after Updates happen for all game objects; Call MoveNext()
+* WaitForEndOfFrame - after Render happens for all cameras; Call MoveNext
+MoveNext returns false if the last thing yielded was "break" or the end of the function that returned the IEnumerator was reached. If this is the case, unity removes the IEnumerator from the coroutines list.
+
+StartCoroutine returns a YieldInstruction subclass called "Coroutine". Your coroutine can yield one of these in order to wait for another coroutine to finish before resuming execution
+
+
+https://docs.unity3d.com/ScriptReference/MonoBehaviour.StartCoroutine.html
+StartCoroutine function always returns immediately, however you can yield the result. This will wait until the coroutine has finished execution.
+StartCoroutine using a string method name allows you to use StopCoroutine with a specific method name. The downside is that the string version has a higher runtime overhead to start the coroutine and you can pass only one parameter.
+
+
+
+https://unity3d.com/learn/tutorials/topics/scripting/coroutines (4 min video with sample code)
+
+
+
+
