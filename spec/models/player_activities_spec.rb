@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe Player, type: :model do
   describe 'Activities' do
-    let!(:player) { create_player(player_name: "Alice", password: "password", team: 'blue', coins: 0, gems: 0) }
+    let!(:player) { create_player(player_name: "Alice", password: "password", team_name: 'blue', coins: 0, gems: 0) }
     let!(:fake_fitbit) { instance_double(Fitbit) }
     let(:today) { Time.current.strftime('%F') }
     let(:yesterday) { (Time.current - 1.day).strftime('%F') }
@@ -247,7 +247,7 @@ describe Player, type: :model do
   end
 
   describe 'active minute goals' do
-    let(:player) { create_player(player_name: "Joe", password: "password", team: 'blue') }
+    let(:player) { create_player(player_name: "Joe", password: "password", team_name: 'blue') }
 
     context "when today's goal has not been reached" do
       before { player.activities.create!(date: Date.current, active_minutes: 20) }

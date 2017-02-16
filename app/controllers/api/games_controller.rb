@@ -65,7 +65,7 @@ module API
                                    :match_length,
                                    :moves,
                                    player_outcomes: [
-                                     :team,
+                                     :team_name,
                                      :player_id,
                                      :takedowns,
                                      :throws,

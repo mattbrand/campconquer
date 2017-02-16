@@ -166,7 +166,7 @@ public class Piece : MonoBehaviour
             GetNextDestination();
         else
             _destination = _position;
-       
+
         _type = pType;
         _dir = PieceDir.NONE;
         _moveState = PieceMoveState.NONE;
@@ -177,7 +177,7 @@ public class Piece : MonoBehaviour
             _coolDownTime = 1.0f;
         else
             _coolDownTime = 1.0f;
-        
+
         _ammo = new AmmoBandelier();
         GenerateRandomAmmo();
         SetPosition();
@@ -195,7 +195,7 @@ public class Piece : MonoBehaviour
                 break;
             case PieceType.FEMALE:
                 Anim.speed = UnityEngine.Random.Range(1.05f, 1.1f);
-                break;  
+                break;
         }
     }
 
@@ -243,7 +243,7 @@ public class Piece : MonoBehaviour
         _name = piece.player_name;
 
         // set team
-        if (piece.team == "red")
+        if (piece.team_name == "red")
         {
             _team = redTeam;
         }
@@ -911,7 +911,7 @@ public class Piece : MonoBehaviour
 
     #region Accessors
     public PieceRole Role
-    { 
+    {
         get { return _role; }
     }
 

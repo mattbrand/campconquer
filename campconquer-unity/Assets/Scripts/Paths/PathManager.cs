@@ -10,7 +10,7 @@ namespace CampConquer
 {
     public enum MapQuadrant { NONE=0, UPPER_LEFT, LOWER_LEFT, UPPER_RIGHT, LOWER_RIGHT }
 
-    public class PathManager : MonoBehaviour 
+    public class PathManager : MonoBehaviour
     {
         #region Constants
         public const float LONGEST_DIST = 15.0f;
@@ -34,7 +34,7 @@ namespace CampConquer
         #endregion
 
         #region Unity Methods
-        void Awake() 
+        void Awake()
         {
             if (Instance == null)
             {
@@ -122,7 +122,7 @@ namespace CampConquer
             {
                 PathData pathData = OnlineManager.Instance.GameData.paths[i];
                 TeamColor color = TeamColor.RED;
-                if (pathData.team == "blue")
+                if (pathData.team_name == "blue")
                 {
                     color = TeamColor.BLUE;
                 }
@@ -403,7 +403,7 @@ namespace CampConquer
         #endregion
     }
 
-    #region Related Classes        
+    #region Related Classes
     public class Path
     {
         public List<Point> Points;

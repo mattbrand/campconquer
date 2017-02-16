@@ -1,5 +1,5 @@
 # Walks through a list of outcomes and totals up the fields.
-# Used for post-game per-team report (TeamSummary)
+# Used for post-game per-team_name report (TeamSummary)
 # and for per-player season report (PlayerSummary).
 class Summary
   include ActiveModel::Model

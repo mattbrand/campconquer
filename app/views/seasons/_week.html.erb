@@ -16,7 +16,7 @@
 
       <table class="player-info">
         <tr>
-          <th>team</th>
+          <th>team_name</th>
           <% stats = (Summary::STATS - [:attack_mvp, :defend_mvp])
              stats.each do |stat| %>
               <th><%= stat %></th>
@@ -25,7 +25,7 @@
 
         <% week.team_summaries.each do |summary| %>
             <tr>
-              <th><%= summary.team %></th>
+              <th><%= summary.team_name %></th>
 
               <% stats.each do |stat| %>
                   <td><%= summary.send(stat) %></td>

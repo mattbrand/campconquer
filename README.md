@@ -205,7 +205,7 @@ Open the `campconquer-unity` directory as a project dir in Unity
             {
               "id": 1024,
               "name": "mod",
-              "team": "red",
+              "team_name": "red",
               ...
               
 3. Use POSTMAN, it's good
@@ -258,7 +258,7 @@ Player.all.each {|p| Gear.where(owned_by_default: true).each {|g| p.buy_gear! g.
 *set a random path on a player `p`*
 
 ```
- path = path: Path.where(team: 'red', role: 'offense').sample
+ path = path: Path.where(team_name: 'red', role: 'offense').sample
  player.piece.update!(path.points)
 ```
 

@@ -3,20 +3,20 @@ ActiveAdmin.register Player do
 
   permit_params :name,
                 :password,
-                :team,
+                :team_name,
                 :coins,
                 :gems,
                 :embodied,
                 :admin
 
   filter :name
-  filter :team, as: :select
+  filter :team_name, as: :select
 
   index do
     selectable_column
     column :id
     column :name
-    column :team
+    column :team_name
     column :coins
     column :gems
     column :password_set? do |p|
@@ -54,7 +54,7 @@ ActiveAdmin.register Player do
       f.input :name
       f.input :password_set?, as: :string, input_html: readonly
       f.input :password
-      f.input :team, :as => :select, :collection => Team::ALL.values
+      f.input :team_name, :as => :select, :collection => Team::ALL.values
       # https://github.com/justinfrench/formtastic/issues/171
       f.input :activities_synced_at, as: :string, input_html: readonly
       f.input :fitbit_token_hash, as: :string, input_html: readonly

@@ -2,7 +2,7 @@ namespace :db do
   task :seed_players => :environment do
     Season.current.games.destroy_all
     Player.destroy_all
-    Player.create!(name: 'mod', password: 'xyzzy', team: 'gamemaster', admin: true)
+    Player.create!(name: 'mod', password: 'xyzzy', team_name: 'gamemaster', admin: true)
     puts "Created mod"
     board = Board.new
     board.seed_teams
@@ -22,7 +22,7 @@ class Board
     @teams = {red: Team.new('red'), blue: Team.new('blue')}
   end
 
-  def team
+  def team_name
     @teams[@team_name.to_sym]
   end
 
@@ -51,7 +51,7 @@ class Board
 
   def seed_team
     10.times do
-      player = Player.create!(name: random_name, password: 'password', team: @team_name)
+      player = Player.create!(name: random_name, password: 'password', team_name: @team_name)
 
       role = Piece::ROLES.values.sample
       path_points = random_path(role: role)
@@ -80,13 +80,13 @@ class Board
     end
   end
 
-  def random_path(team: @team_name, role:)
-    Path.where(team: team, role: role).sample.points
+  def random_path(team_name: @team_name, role:)
+    Path.where(team_name: team_name, role: role).sample.points
   end
 
   def seed_control_group
     10.times do
-      player = Player.new(name: random_name, password: 'password', team: 'control')
+      player = Player.new(name: random_name, password: 'password', team_name: 'control')
       player.save!
       puts ["created control player ##{player.id}", player.name.ljust(20)].join("\t")
     end
@@ -94,7 +94,7 @@ class Board
 
   def setup_for_game
     Player.all.each do |player|
-      path_points = random_path(role: player.role, team: player.team)
+      path_points = random_path(role: player.role, team_name: player.team_name)
       if player.piece
         player.piece.update!(path: path_points, ammo: ["balloon", "arrow", "balloon"])
       end

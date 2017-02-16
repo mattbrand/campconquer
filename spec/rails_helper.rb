@@ -63,7 +63,7 @@ def create_gamemaster(player_name: 'gertie gamemaster',
                       password: 'password')
   Player.create!(name: player_name,
                  password: password,
-                 team: 'gamemaster',
+                 team_name: 'gamemaster',
                  embodied: false)
 end
 
@@ -71,22 +71,22 @@ def create_admin(player_name: 'annie admin',
                  password: 'password')
   Player.create!(name: player_name,
                  password: password,
-                 team: 'red',
+                 team_name: 'red',
                  embodied: false,
                  admin: true)
 end
 
 def create_alice_with_piece
-  create_player(player_name: 'alice', body_type: 'female', team: 'blue')
+  create_player(player_name: 'alice', body_type: 'female', team_name: 'blue')
 end
 
 def create_bob_with_piece
-  create_player(player_name: 'bob', body_type: 'male', team: 'blue')
+  create_player(player_name: 'bob', body_type: 'male', team_name: 'blue')
 end
 
 def create_player(player_name: 'peter',
                   password: 'password',
-                  team: 'red',
+                  team_name: 'red',
                   body_type: 'female',
                   role: 'defense',
                   coins: 100,
@@ -94,7 +94,7 @@ def create_player(player_name: 'peter',
                   embodied: true)
   player = Player.create!(name: player_name,
                           password: password,
-                          team: team,
+                          team_name: team_name,
                           coins: coins,
                           gems: gems,
                           embodied: embodied)

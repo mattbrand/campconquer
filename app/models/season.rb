@@ -53,10 +53,10 @@ class Season < ActiveRecord::Base
     super or id.to_s
   end
 
-  # sum of all game outcomes per team
+  # sum of all game outcomes per team_name
   def team_summaries
     Team::GAME_TEAMS.values.map do |team_name|
-      TeamSummary.new(team: team_name, games: self.games)
+      TeamSummary.new(team_name: team_name, games: self.games)
     end
   end
 

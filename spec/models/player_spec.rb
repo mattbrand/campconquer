@@ -4,7 +4,7 @@
 #
 #  id                   :integer          not null, primary key
 #  name                 :string
-#  team                 :string
+#  team_name            :string
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
 #  fitbit_token_hash    :text
@@ -26,33 +26,33 @@
 require 'rails_helper'
 
 describe Player, type: :model do
-  it "validates team name" do
-    player = Player.new(name: "Joe", password: "password", team: 'blue')
+  it "validates team_name name" do
+    player = Player.new(name: "Joe", password: "password", team_name: 'blue')
     expect(player).to be_valid
-    player = Player.new(name: "Joe", password: "password", team: 'mystic')
+    player = Player.new(name: "Joe", password: "password", team_name: 'mystic')
     expect(player).not_to be_valid
   end
 
   it "validates player name uniqueness" do
-    create_player(player_name: "Joe", password: "password", team: 'blue')
-    player = Player.new(name: "Joe", password: "password", team: 'red')
+    create_player(player_name: "Joe", password: "password", team_name: 'blue')
+    player = Player.new(name: "Joe", password: "password", team_name: 'red')
     expect(player).not_to be_valid
   end
 
   describe 'json' do
     it 'includes embodied (true)' do
-      p = create_player(player_name: "Joe", password: "password", team: 'blue', embodied: true)
+      p = create_player(player_name: "Joe", password: "password", team_name: 'blue', embodied: true)
       expect(p.as_json).to include({embodied: true}.stringify_keys)
     end
 
     it 'includes embodied (false)' do
-      p = create_player(player_name: "Joe", password: "password", team: 'blue', embodied: false)
+      p = create_player(player_name: "Joe", password: "password", team_name: 'blue', embodied: false)
       expect(p.as_json).to include({embodied: false}.stringify_keys)
     end
 
     it 'includes activities_synced_at' do
       nowish = Time.current - 1.minute
-      p = create_player(player_name: "Joe", password: "password", team: 'blue')
+      p = create_player(player_name: "Joe", password: "password", team_name: 'blue')
       p.activities_synced_at = nowish
       expect(p.as_json).to include({activities_synced_at: nowish}.stringify_keys)
     end
@@ -66,7 +66,7 @@ describe Player, type: :model do
   end
 
   describe 'set_piece' do
-    let(:player) { create_player(player_name: "Joe", password: "password", team: 'blue') }
+    let(:player) { create_player(player_name: "Joe", password: "password", team_name: 'blue') }
 
     it 'saves the piece' do
       player.set_piece()
@@ -90,10 +90,10 @@ describe Player, type: :model do
       expect(player.piece.body_type).to eq('male')
     end
 
-    it 'sets the team' do
+    it 'sets the team_name' do
       player.set_piece()
       player.reload
-      expect(player.piece.team).to eq('blue')
+      expect(player.piece.team_name).to eq('blue')
     end
 
     it 'rejects all but a few attributes' do
@@ -108,7 +108,7 @@ describe Player, type: :model do
       end
 
       {
-          team: 'red',
+          team_name: 'red',
           created_at: 9,
           updated_at: 9,
           game_id: 9999,
@@ -124,7 +124,7 @@ describe Player, type: :model do
   end
 
   context "fitbit" do
-    let(:player) { create_player(player_name: "Joe", password: "password", team: 'blue') }
+    let(:player) { create_player(player_name: "Joe", password: "password", team_name: 'blue') }
 
     it "saves & restores a fitbit token hash" do
       hash = {bogus: true}

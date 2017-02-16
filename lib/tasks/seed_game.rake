@@ -16,7 +16,7 @@ namespace :db do
     outcomes = game.pieces.map do |piece|
       {
         player_id: piece.player_id,
-        team: piece.team,
+        team_name: piece.team_name,
         takedowns: rand(10),
         throws: rand(10),
         pickups: rand(10),

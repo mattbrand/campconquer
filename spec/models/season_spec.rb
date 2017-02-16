@@ -77,10 +77,10 @@ describe Season do
   describe "as_json" do
     it "includes team_summaries and player_summaries" do
       players = [
-          betty = create_player(player_name: 'betty', team: 'blue'),
-          bob = create_player(player_name: 'bob', team: 'blue'),
-          roger = create_player(player_name: 'roger', team: 'red'),
-          rita = create_player(player_name: 'rita', team: 'red'),
+          betty = create_player(player_name: 'betty', team_name: 'blue'),
+          bob = create_player(player_name: 'bob', team_name: 'blue'),
+          roger = create_player(player_name: 'roger', team_name: 'red'),
+          rita = create_player(player_name: 'rita', team_name: 'red'),
       ]
 
       games = []
@@ -97,7 +97,7 @@ describe Season do
       num_games = 3
       num_games.times do
         player_outcomes = players.map do |player|
-          Outcome.new(({team: player.team,
+          Outcome.new(({team_name: player.team_name,
                         player_id: player.id,
                         captures: player.name == 'betty' ? 1 : 0,
           } + player_outcome_base).with_indifferent_access)
@@ -122,14 +122,14 @@ describe Season do
 
       expect(json).to include('team_summaries')
 
-      blue = json['team_summaries'].find { |h| h['team'] == 'blue' }
+      blue = json['team_summaries'].find { |h| h['team_name'] == 'blue' }
       expect(blue['captures']).to eq(num_games)
       expect(blue['captures']).to eq(num_games)
       expect(blue['takedowns']).to eq(num_games * player_outcome_base[:takedowns] * 2)
       expect(blue['throws']).to eq(num_games * player_outcome_base[:throws] * 2)
       expect(blue['pickups']).to eq(num_games * player_outcome_base[:pickups] * 2)
 
-      red = json['team_summaries'].find { |h| h['team'] == 'red' }
+      red = json['team_summaries'].find { |h| h['team_name'] == 'red' }
       expect(red['captures']).to eq(0)
       expect(red['captures']).to eq(0)
       expect(red['takedowns']).to eq(num_games * player_outcome_base[:takedowns] * 2)
@@ -252,4 +252,9 @@ describe Season do
 
     end
   end
+
+  describe "switching teams" do
+
+  end
+
 end

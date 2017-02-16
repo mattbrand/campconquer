@@ -3,7 +3,7 @@
 # Table name: tallied_outcomes
 #
 #  id         :integer          not null, primary key
-#  team       :string
+#  team_name       :string
 #  takedowns  :integer
 #  throws     :integer
 #  pickups    :integer
@@ -32,7 +32,7 @@ RSpec.describe Summary, type: :model do
   context "given a game" do
     it "adds up stats" do
       player_outcomes = [
-          Outcome.new({team: 'blue',
+          Outcome.new({team_name: 'blue',
                        player_id: 100,
                        takedowns: 1,
                        throws: 2,
@@ -42,7 +42,7 @@ RSpec.describe Summary, type: :model do
                        attack_mvp: true,
                       }.with_indifferent_access),
 
-          Outcome.new({team: 'red',
+          Outcome.new({team_name: 'red',
                        player_id: 200,
                        takedowns: 10,
                        throws: 20,

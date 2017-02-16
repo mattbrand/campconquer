@@ -9,14 +9,14 @@ describe API::PlayersController, type: :controller do
     {
         name: 'Alice',
         password: 'password',
-        team: 'blue'
+        team_name: 'blue'
     }
   }
 
   let(:invalid_attributes) {
     {
-        name: 'Bob',
-        team: 'mango'
+      name: 'Bob',
+      team_name: 'mango'
     }
   }
 
@@ -69,18 +69,18 @@ describe API::PlayersController, type: :controller do
     context "with valid params" do
       let(:new_attributes) {
         {
-            team: 'red',
+            team_name: 'red',
             embodied: true,
         }
       }
 
       it "updates the requested player" do
-        expect(player.team).to eq('blue')
+        expect(player.team_name).to eq('blue')
         expect(player.embodied).to be false
 
         put :update, {:id => player.to_param, :player => new_attributes}, valid_session
         player.reload
-        expect(player.team).to eq('red')
+        expect(player.team_name).to eq('red')
         expect(player.embodied).to be true
       end
 
@@ -96,12 +96,12 @@ describe API::PlayersController, type: :controller do
     context "with invalid params" do
       it "does not update the player" do
         put :update, {:id => player.to_param, :player => invalid_attributes}, valid_session
-        expect(player.reload.team).to eq('blue')
+        expect(player.reload.team_name).to eq('blue')
       end
 
       it "renders error json" do
         put :update, {:id => player.to_param, :player => invalid_attributes}, valid_session
-        expect_error("Team must be \"blue\" or \"red\"")
+        expect_error("Team name must be \"blue\" or \"red\"")
       end
     end
   end

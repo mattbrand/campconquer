@@ -156,10 +156,10 @@ describe API::GamesController, type: :controller do
 
     describe 'POST /games/1/lock' do
       before do
-        @betsy = create_player(player_name: 'Betsy', team: 'blue')
+        @betsy = create_player(player_name: 'Betsy', team_name: 'blue')
         @betsys_piece = @betsy.set_piece(body_type: 'female', role: 'offense')
 
-        @randy = create_player(player_name: 'Randy', team: 'red')
+        @randy = create_player(player_name: 'Randy', team_name: 'red')
         @randys_piece = @randy.set_piece(body_type: 'male', role: 'defense')
 
       end
@@ -181,10 +181,10 @@ describe API::GamesController, type: :controller do
 
         # make sure it has the original's values
         pieces_hash = @game.pieces.as_json.map do |hash|
-          hash.pick(:team, :body_type, :role, :path)
+          hash.pick(:team_name, :body_type, :role, :path)
         end
-        betsys_hash = @betsys_piece.as_json.pick(:team, :body_type, :role, :path)
-        randys_hash = @randys_piece.as_json.pick(:team, :body_type, :role, :path)
+        betsys_hash = @betsys_piece.as_json.pick(:team_name, :body_type, :role, :path)
+        randys_hash = @randys_piece.as_json.pick(:team_name, :body_type, :role, :path)
         expect(pieces_hash).to include(betsys_hash)
         expect(pieces_hash).to include(randys_hash)
       end
@@ -229,7 +229,7 @@ describe API::GamesController, type: :controller do
 
     describe 'DELETE /games/1/lock' do
       before do
-        @betsy = create_player(player_name: 'Betsy', team: 'blue')
+        @betsy = create_player(player_name: 'Betsy', team_name: 'blue')
         @betsys_piece = @betsy.set_piece(body_type: 'female', role: 'offense')
 
         @game.lock_game!
@@ -257,8 +257,8 @@ describe API::GamesController, type: :controller do
 
 
   describe 'finishing' do
-    let!(:bob) { create_player player_name: 'bob', team: 'blue' }
-    let!(:rhoda) { create_player player_name: 'rhoda', team: 'red' }
+    let!(:bob) { create_player player_name: 'bob', team_name: 'blue' }
+    let!(:rhoda) { create_player player_name: 'rhoda', team_name: 'red' }
 
     let(:bobs_leftover_ammo) { ['balloon'] }
     let(:rhodas_leftover_ammo) { ['arrow', 'bomb'] }
@@ -272,7 +272,7 @@ describe API::GamesController, type: :controller do
         moves: 'OMGMOVES',
         player_outcomes: [
           {
-            team: 'blue',
+            team_name: 'blue',
             player_id: bob.id,
             takedowns: 2,
             throws: 3,
@@ -282,7 +282,7 @@ describe API::GamesController, type: :controller do
             ammo: bobs_leftover_ammo,
           },
           {
-            team: 'red',
+            team_name: 'red',
             player_id: rhoda.id,
             takedowns: 12,
             throws: 13,

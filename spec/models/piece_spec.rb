@@ -3,7 +3,7 @@
 # Table name: pieces
 #
 #  id         :integer          not null, primary key
-#  team       :string
+#  team_name  :string
 #  role       :string
 #  path       :text
 #  speed      :integer          default(0), not null
@@ -25,24 +25,24 @@ require 'rails_helper'
 
 RSpec.describe Piece, type: :model do
 
-  it "validates team" do
-    expect(Piece.new(team: 'blue')).to be_valid
-    expect(Piece.new(team: 'mauve')).not_to be_valid
+  it "validates team_name" do
+    expect(Piece.new(team_name: 'blue')).to be_valid
+    expect(Piece.new(team_name: 'mauve')).not_to be_valid
   end
 
   it "validates body" do
-    expect(Piece.new(team: 'blue', body_type: 'male')).to be_valid
-    expect(Piece.new(team: 'blue', body_type: 'alien')).not_to be_valid
+    expect(Piece.new(team_name: 'blue', body_type: 'male')).to be_valid
+    expect(Piece.new(team_name: 'blue', body_type: 'alien')).not_to be_valid
   end
 
   it "validates role" do
-    expect(Piece.new(team: 'blue', role: 'offense')).to be_valid
-    expect(Piece.new(team: 'blue', role: 'management')).not_to be_valid
+    expect(Piece.new(team_name: 'blue', role: 'offense')).to be_valid
+    expect(Piece.new(team_name: 'blue', role: 'management')).not_to be_valid
   end
 
   it "validates ammo type" do
-    expect(Piece.new(team: 'blue', role: 'offense', ammo: ['balloon'])).to be_valid
-    expect(Piece.new(team: 'blue', role: 'offense', ammo: ['tomato'])).not_to be_valid
+    expect(Piece.new(team_name: 'blue', role: 'offense', ammo: ['balloon'])).to be_valid
+    expect(Piece.new(team_name: 'blue', role: 'offense', ammo: ['tomato'])).not_to be_valid
   end
 
 
@@ -51,34 +51,34 @@ RSpec.describe Piece, type: :model do
     let(:point3_4) { Point.new(x: 3, y: 4) }
 
     it "serializes a list of points into path" do
-      piece = Piece.new(team: 'blue', path: [point1_2, point3_4])
+      piece = Piece.new(team_name: 'blue', path: [point1_2, point3_4])
       piece.save!
       piece.reload
       expect(piece.path).to eq([point1_2, point3_4])
     end
 
     it "serializes a list of tuples into path" do
-      piece = Piece.new(team: 'blue', path: [[1, 2], [3, 4]])
+      piece = Piece.new(team_name: 'blue', path: [[1, 2], [3, 4]])
       piece.save!
       piece.reload
       expect(piece.path).to eq([point1_2, point3_4])
     end
 
     it "serializes a list of hashes into path" do
-      piece = Piece.new(team: 'blue', path: [{x:1, y:2}, {x:3, y:4}])
+      piece = Piece.new(team_name: 'blue', path: [{x:1, y:2}, {x:3, y:4}])
       piece.save!
       piece.reload
       expect(piece.path).to eq([point1_2, point3_4])
     end
 
     it "gets as_jsoned as a list of hashes" do
-      piece = Piece.new(team: 'blue', path: [[1, 2], [3, 4]])
+      piece = Piece.new(team_name: 'blue', path: [[1, 2], [3, 4]])
       expect(piece.as_json['path']).to eq([{x:1, y:2}, {x:3, y:4}])
     end
   end
 
   context "gear" do
-    let!(:piece) { Piece.create!(team: 'blue') }
+    let!(:piece) { Piece.create!(team_name: 'blue') }
 
     let!(:galoshes) { Gear.new(name: 'galoshes', gear_type: 'shoes', coins: 1, gems: 0) }
     let!(:tee_shirt) { Gear.new(name: 'tee-shirt', gear_type: 'shirt') }

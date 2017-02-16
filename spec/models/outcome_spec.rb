@@ -3,7 +3,7 @@
 # Table name: outcomes
 #
 #  id                  :integer          not null, primary key
-#  team                :string
+#  team_name           :string
 #  takedowns           :integer
 #  throws              :integer
 #  pickups             :integer
@@ -26,31 +26,31 @@ require 'rails_helper'
 
 RSpec.describe Outcome, type: :model do
 
-  let!(:player) { create_player player_name: 'alice', team: 'red' }
+  let!(:player) { create_player player_name: 'alice', team_name: 'red' }
 
   it "requires a team" do
-    outcome = Outcome.new(player_id: player.id, team: nil)
+    outcome = Outcome.new(player_id: player.id, team_name: nil)
     expect(outcome).not_to be_valid
   end
 
   it "validates team name" do
-    outcome = Outcome.new(player_id: player.id, team: 'blue')
+    outcome = Outcome.new(player_id: player.id, team_name: 'blue')
     expect(outcome).to be_valid
   end
 
   it "winner can not be a non-team name" do
-    outcome = Outcome.new(player_id: player.id, team: 'silly')
+    outcome = Outcome.new(player_id: player.id, team_name: 'silly')
     expect(outcome).not_to be_valid
   end
 
   it "requires player" do
-    player_outcome = Outcome.new(player_id: nil, team: 'red')
+    player_outcome = Outcome.new(player_id: nil, team_name: 'red')
     expect(player_outcome).not_to be_valid
   end
 
   it "validates player id" do
     NOT_A_REAL_PLAYER_ID = -99
-    outcome = Outcome.new(team: 'blue', player_id: NOT_A_REAL_PLAYER_ID)
+    outcome = Outcome.new(team_name: 'blue', player_id: NOT_A_REAL_PLAYER_ID)
     expect(outcome).not_to be_valid
     expect do
       outcome.save! # in case we decide to use db constraints instead of app validation

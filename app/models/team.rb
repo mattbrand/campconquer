@@ -18,8 +18,8 @@ class Team
   def initialize(team_name)
     @team_name = team_name
 
-    @offense_paths = Path.where(team: team_name, role: 'offense').map(&:points)
-    @defense_points = Path.where(team: team_name, role: 'defense').map(&:point)
+    @offense_paths = Path.where(team_name: team_name, role: 'offense').map(&:points)
+    @defense_points = Path.where(team_name: team_name, role: 'defense').map(&:point)
   end
 
 end

@@ -10,7 +10,7 @@ types:
     type: object
     properties:
       name: string
-      team:
+      team_name:
         type: string
         enum:
           - blue
@@ -64,7 +64,7 @@ types:
       for offense, the path to follow
     properties:
       route: Point[]
-      team:
+      team_name:
         type: string
         enum:
           - blue
@@ -91,7 +91,7 @@ types:
         description: if true, game setup cannot be changed
       winner:
         type: string
-        description: team name of winner, or null if a draw
+        description: team_name name of winner, or null if a draw
       moves:
         type: string
         description: all the moves and throws, as a huge json string blob :-( -- not always present in output
@@ -100,16 +100,16 @@ types:
         description: duration of game in seconds
       player_outcomes:
         type: Outcome[]
-        description: once played, stats for each player of this game; should be in alphabetical order by team name when returned by server
+        description: once played, stats for each player of this game; should be in alphabetical order by team_name name when returned by server
       team_summaries:
         type: Summary[]
-        description: (read-only) once played, stats for each team for this game
+        description: (read-only) once played, stats for each team_name for this game
 
   Piece:
     type: object
     description: a player's piece and its starting setup
     properties:
-      team:
+      team_name:
         type: string
       player_name:
         type: string
@@ -207,14 +207,14 @@ types:
     description: the results of a finished game for a particular player
     properties:
       created: datetime
-      team:
+      team_name:
         type: string
       captures:
         type: integer
-        description: number of times this team captured the flag (i.e. games this team won)
+        description: number of times this team_name captured the flag (i.e. games this team_name won)
       takedowns:
         type: integer
-        description: count of players on *other* teams who died at this team's (or player's) hand
+        description: count of players on *other* teams who died at this team_name's (or player's) hand
       throws:
         type: integer
         description: number of balloons thrown
@@ -224,7 +224,7 @@ types:
       flag_carry_distance:
         type: number
         format: float
-        description: number of meters this team carried the flag
+        description: number of meters this team_name carried the flag
       attack_mvp:
         type: boolean
         description: was this player a top attacker this game?
@@ -237,14 +237,14 @@ types:
     description: results tallied across several games or players
     properties:
       created: datetime
-      team:
+      team_name:
         type: string
       captures:
         type: integer
-        description: number of times this team captured the flag (i.e. games this team won)
+        description: number of times this team_name captured the flag (i.e. games this team_name won)
       takedowns:
         type: integer
-        description: count of players on *other* teams who died at this team's (or player's) hand
+        description: count of players on *other* teams who died at this team_name's (or player's) hand
       throws:
         type: integer
         description: number of balloons thrown
@@ -254,7 +254,7 @@ types:
       flag_carry_distance:
         type: number
         format: float
-        description: number of meters this team carried the flag
+        description: number of meters this team_name carried the flag
 
       attack_mvps:
         type: integer[]
@@ -283,7 +283,7 @@ types:
         type: boolean
       team_summaries:
         type: Summary[]
-        description: results per team for all games this season, totalled
+        description: results per team_name for all games this season, totalled
       player_summaries:
         type: Summary[]
         description: results per player for all games this season, totalled
@@ -404,7 +404,7 @@ types:
           winner: string
           match_length: integer
           moves: string
-          player_outcomes[][team]: string
+          player_outcomes[][team_name]: string
           player_outcomes[][player_id]: integer
           player_outcomes[][takedowns]: integer
           player_outcomes[][throws]: integer
@@ -428,14 +428,14 @@ types:
     description: create a player
     queryParameters:
         name: string
-        team: string
+        team_name: string
 
   /{player_id}:
     post:
-      description: update a player - change her team, name, or embodied state only
+      description: update a player - change her team_name, name, or embodied state only
       queryParameters:
           name: string
-          team: string
+          team_name: string
           embodied: boolean
 
     get:

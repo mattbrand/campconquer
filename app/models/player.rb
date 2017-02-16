@@ -4,7 +4,7 @@
 #
 #  id                   :integer          not null, primary key
 #  name                 :string
-#  team                 :string
+#  team_name            :string
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
 #  fitbit_token_hash    :text
@@ -91,7 +91,7 @@ class Player < ActiveRecord::Base
   serialize :fitbit_token_hash
 
   validates_uniqueness_of :name
-  validates :team, inclusion: {in: Team::ALL.values, message: Team::ALL.validation_message}
+  validates :team_name, inclusion: {in: Team::ALL.values, message: Team::ALL.validation_message}
 
 
   # def require_piece
@@ -106,11 +106,11 @@ class Player < ActiveRecord::Base
   end
 
   def in_control_group?
-    team == 'control'
+    team_name == 'control'
   end
 
   def gamemaster?
-    team == 'gamemaster'
+    team_name == 'gamemaster'
   end
 
   alias_method :gamemaster, :gamemaster?
@@ -134,7 +134,7 @@ class Player < ActiveRecord::Base
       self.piece.reload.update!(params)
     else
       piece_defaults = {role: 'defense', health: 0, speed: 0, range: 0}
-      self.piece = Piece.create!({player_id: self.id, team: self.team} + piece_defaults + params)
+      self.piece = Piece.create!({player_id: self.id, team_name: self.team_name} + piece_defaults + params)
     end
     self.piece
   end

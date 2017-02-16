@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170105202606) do
+ActiveRecord::Schema.define(version: 20170216191544) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -59,6 +59,21 @@ ActiveRecord::Schema.define(version: 20170105202606) do
   add_index "games", ["current"], name: "index_games_on_current"
   add_index "games", ["season_id"], name: "index_games_on_season_id"
 
+  create_table "gears", force: :cascade do |t|
+    t.string  "name"
+    t.string  "display_name"
+    t.string  "description"
+    t.integer "health_bonus"
+    t.integer "speed_bonus"
+    t.integer "range_bonus"
+    t.string  "gear_type"
+    t.string  "asset_name"
+    t.string  "icon_name"
+    t.integer "gold",         default: 0, null: false
+    t.integer "gems",         default: 0, null: false
+    t.integer "level",        default: 0, null: false
+  end
+
   create_table "items", force: :cascade do |t|
     t.integer "piece_id",                  null: false
     t.boolean "equipped",  default: false, null: false
@@ -68,7 +83,7 @@ ActiveRecord::Schema.define(version: 20170105202606) do
   add_index "items", ["piece_id"], name: "index_items_on_piece_id_and_gear_id"
 
   create_table "outcomes", force: :cascade do |t|
-    t.string   "team"
+    t.string   "team_name"
     t.integer  "takedowns"
     t.integer  "throws"
     t.integer  "pickups"
@@ -86,7 +101,7 @@ ActiveRecord::Schema.define(version: 20170105202606) do
   add_index "outcomes", ["player_id"], name: "index_outcomes_on_player_id"
 
   create_table "pieces", force: :cascade do |t|
-    t.string   "team"
+    t.string   "team_name"
     t.string   "role"
     t.text     "path"
     t.integer  "speed",      default: 0, null: false
@@ -104,9 +119,27 @@ ActiveRecord::Schema.define(version: 20170105202606) do
     t.text     "ammo"
   end
 
+  create_table "player_outcomes", force: :cascade do |t|
+    t.string   "team"
+    t.integer  "takedowns"
+    t.integer  "throws"
+    t.integer  "pickups"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+    t.integer  "outcome_id"
+    t.integer  "player_id"
+    t.integer  "flag_carry_distance", null: false
+    t.integer  "captures",            null: false
+    t.integer  "attack_mvp",          null: false
+    t.integer  "defend_mvp",          null: false
+  end
+
+  add_index "player_outcomes", ["outcome_id"], name: "index_player_outcomes_on_outcome_id"
+  add_index "player_outcomes", ["player_id"], name: "index_player_outcomes_on_player_id"
+
   create_table "players", force: :cascade do |t|
     t.string   "name"
-    t.string   "team"
+    t.string   "team_name"
     t.datetime "created_at",                           null: false
     t.datetime "updated_at",                           null: false
     t.text     "fitbit_token_hash"

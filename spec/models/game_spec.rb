@@ -61,7 +61,7 @@ describe Game do
         @previous_game = Game.create! state: 'completed'
 
         # todo: better piece factory, including player etc
-        @previous_game.pieces.create! team: 'blue'
+        @previous_game.pieces.create! team_name: 'blue'
       end
 
       it "creates one" do
@@ -133,7 +133,7 @@ describe Game do
         piece = current_game.pieces.first
         expect(piece.game).to eq(current_game)
         expect(piece.player).to eq(alice)
-        expect(piece.team).to eq(alice.team)
+        expect(piece.team_name).to eq(alice.team_name)
         expect(piece.body_type).to eq('female')
         expect(piece.role).to eq('defense')
         expect(piece.path).to eq([Point.new(x: 0, y: 0)])
@@ -191,7 +191,7 @@ describe Game do
       context 'when there is a player with no piece' do
         it 'ignores it' do
           alice = create_alice_with_piece
-          bob = create_player(player_name: 'bob', team: 'blue')
+          bob = create_player(player_name: 'bob', team_name: 'blue')
           bob.piece.destroy! # this is a little weird now that pieces are always created
           current_game.lock_game! # assert no raise
           expect(current_game).to be_locked
@@ -238,10 +238,10 @@ describe Game do
 
   describe "as_json" do
 
-    let!(:alice) { create_player(player_name: 'alice', team: 'blue') }
-    let!(:bob) { create_player(player_name: 'bob', team: 'red') }
+    let!(:alice) { create_player(player_name: 'alice', team_name: 'blue') }
+    let!(:bob) { create_player(player_name: 'bob', team_name: 'red') }
 
-    let!(:alices_path) { Path.where(team: alice.team, role: alice.role).sample }
+    let!(:alices_path) { Path.where(team_name: alice.team_name, role: alice.role).sample }
 
     let(:game) { Game.current }
 
@@ -251,8 +251,8 @@ describe Game do
       game.lock_game!
       game.finish_game! winner: 'red',
                         player_outcomes_attributes: [# rails is weird
-                          {player_id: alice.id, team: 'blue', takedowns: 2},
-                          {player_id: bob.id, team: 'red', takedowns: 3, captures: 1},
+                          {player_id: alice.id, team_name: 'blue', takedowns: 2},
+                          {player_id: bob.id, team_name: 'red', takedowns: 3, captures: 1},
                         ]
 
     end
@@ -265,9 +265,9 @@ describe Game do
       expect(json['team_summaries']).to be
       expect(json['player_outcomes']).to be
       expect(json['player_outcomes'].size).to eq(2)
-      expect(json['player_outcomes'][0]['team']).to eq('blue')
+      expect(json['player_outcomes'][0]['team_name']).to eq('blue')
       expect(json['player_outcomes'][0]['takedowns']).to eq(2)
-      expect(json['player_outcomes'][1]['team']).to eq('red')
+      expect(json['player_outcomes'][1]['team_name']).to eq('red')
       expect(json['player_outcomes'][1]['takedowns']).to eq(3)
     end
 
@@ -299,7 +299,7 @@ describe Game do
       game_mvps = game.mvps
       json = game.as_json
       Team::GAME_TEAMS.values.each do |team_name|
-        team_json = json['team_summaries'].detect { |h| h['team'] == team_name }
+        team_json = json['team_summaries'].detect { |h| h['team_name'] == team_name }
         expect(team_json['attack_mvps']).to eq(game_mvps[team_name]['attack_mvps'])
         expect(team_json['defend_mvps']).to eq(game_mvps[team_name]['defend_mvps'])
       end
@@ -317,10 +317,10 @@ describe Game do
 
   describe 'paths' do
 
-    let(:red_offense_path) { Path.where(team: 'red', role: 'offense').first }
-    let(:red_defense_path) { Path.where(team: 'red', role: 'offense').first }
-    let(:blue_offense_path) { Path.where(team: 'blue', role: 'defense').first }
-    let(:blue_defense_path) { Path.where(team: 'blue', role: 'defense').first }
+    let(:red_offense_path) { Path.where(team_name: 'red', role: 'offense').first }
+    let(:red_defense_path) { Path.where(team_name: 'red', role: 'offense').first }
+    let(:blue_offense_path) { Path.where(team_name: 'blue', role: 'defense').first }
+    let(:blue_defense_path) { Path.where(team_name: 'blue', role: 'defense').first }
 
     let(:some_paths) { [
       red_offense_path,
@@ -368,8 +368,8 @@ describe Game do
 
     context 'on a locked (in_progress) game' do
 
-      let!(:bob) { create_player player_name: 'bob', team: 'blue' }
-      let!(:rhoda) { create_player player_name: 'rhoda', team: 'red' }
+      let!(:bob) { create_player player_name: 'bob', team_name: 'blue' }
+      let!(:rhoda) { create_player player_name: 'rhoda', team_name: 'red' }
 
       before do
         bob.set_piece(role: 'offense', path: '[{"x": 1}, {"y": 2}]', ammo: ['balloon'])
@@ -379,7 +379,7 @@ describe Game do
 
       let(:player_outcomes_hashes) { [
         {
-          team: 'blue',
+          team_name: 'blue',
           player_id: bob.id,
           takedowns: 2,
           throws: 3,
@@ -389,7 +389,7 @@ describe Game do
           ammo: ['balloon'],
         },
         {
-          team: 'red',
+          team_name: 'red',
           player_id: rhoda.id,
           takedowns: 12,
           throws: 13,
@@ -484,10 +484,10 @@ describe Game do
 
   describe 'calculating post-game stats' do
 
-    let!(:betty) { create_player team: 'blue', player_name: 'betty' }
-    let!(:bob) { create_player team: 'blue', player_name: 'bob' }
-    let!(:roger) { create_player team: 'red', player_name: 'roger' }
-    let!(:rebecca) { create_player team: 'red', player_name: 'rebecca' }
+    let!(:betty) { create_player team_name: 'blue', player_name: 'betty' }
+    let!(:bob) { create_player team_name: 'blue', player_name: 'bob' }
+    let!(:roger) { create_player team_name: 'red', player_name: 'roger' }
+    let!(:rebecca) { create_player team_name: 'red', player_name: 'rebecca' }
 
     before do
       betty.set_piece(role: 'offense')
@@ -498,11 +498,11 @@ describe Game do
 
     let(:outcomes) {
       [
-        # blue team won
-        Outcome.new(team: 'blue', player_id: betty.id, captures: 1, takedowns: 1, flag_carry_distance: 10),
-        Outcome.new(team: 'blue', player_id: bob.id, captures: 0, takedowns: 2, flag_carry_distance: 20),
-        Outcome.new(team: 'red', player_id: roger.id, captures: 0, takedowns: 1, flag_carry_distance: 11),
-        Outcome.new(team: 'red', player_id: rebecca.id, captures: 0, takedowns: 3, flag_carry_distance: 7),
+        # blue team_name won
+        Outcome.new(team_name: 'blue', player_id: betty.id, captures: 1, takedowns: 1, flag_carry_distance: 10),
+        Outcome.new(team_name: 'blue', player_id: bob.id, captures: 0, takedowns: 2, flag_carry_distance: 20),
+        Outcome.new(team_name: 'red', player_id: roger.id, captures: 0, takedowns: 1, flag_carry_distance: 11),
+        Outcome.new(team_name: 'red', player_id: rebecca.id, captures: 0, takedowns: 3, flag_carry_distance: 7),
       ]
     }
 
@@ -570,16 +570,16 @@ describe Game do
     end
 
     context 'when there are several potential mvps' do
-      let(:billie) { create_player player_name: 'billie', team: 'blue', role: 'defense' }
+      let(:billie) { create_player player_name: 'billie', team_name: 'blue', role: 'defense' }
 
       let(:outcomes) {
         [
-          # blue team won
-          Outcome.new(team: 'blue', player_id: betty.id, captures: 1, takedowns: 1, flag_carry_distance: 10),
-          Outcome.new(team: 'blue', player_id: bob.id, captures: 0, takedowns: 2, flag_carry_distance: 20),
-          Outcome.new(team: 'blue', player_id: billie.id, captures: 0, takedowns: 2, flag_carry_distance: 20),
-          Outcome.new(team: 'red', player_id: roger.id, captures: 0, takedowns: 1, flag_carry_distance: 11),
-          Outcome.new(team: 'red', player_id: rebecca.id, captures: 0, takedowns: 3, flag_carry_distance: 7),
+          # blue team_name won
+          Outcome.new(team_name: 'blue', player_id: betty.id, captures: 1, takedowns: 1, flag_carry_distance: 10),
+          Outcome.new(team_name: 'blue', player_id: bob.id, captures: 0, takedowns: 2, flag_carry_distance: 20),
+          Outcome.new(team_name: 'blue', player_id: billie.id, captures: 0, takedowns: 2, flag_carry_distance: 20),
+          Outcome.new(team_name: 'red', player_id: roger.id, captures: 0, takedowns: 1, flag_carry_distance: 11),
+          Outcome.new(team_name: 'red', player_id: rebecca.id, captures: 0, takedowns: 3, flag_carry_distance: 7),
         ]
       }
 
@@ -606,10 +606,10 @@ describe Game do
 
       let(:outcomes) {
         [
-          Outcome.new(team: 'blue', player_id: betty.id, captures: 0, takedowns: 0, flag_carry_distance: 0),
-          Outcome.new(team: 'blue', player_id: bob.id, captures: 0, takedowns: 0, flag_carry_distance: 0),
-          Outcome.new(team: 'red', player_id: roger.id, captures: 0, takedowns: 0, flag_carry_distance: 0),
-          Outcome.new(team: 'red', player_id: rebecca.id, captures: 0, takedowns: 0, flag_carry_distance: 0),
+          Outcome.new(team_name: 'blue', player_id: betty.id, captures: 0, takedowns: 0, flag_carry_distance: 0),
+          Outcome.new(team_name: 'blue', player_id: bob.id, captures: 0, takedowns: 0, flag_carry_distance: 0),
+          Outcome.new(team_name: 'red', player_id: roger.id, captures: 0, takedowns: 0, flag_carry_distance: 0),
+          Outcome.new(team_name: 'red', player_id: rebecca.id, captures: 0, takedowns: 0, flag_carry_distance: 0),
         ]
       }
       before { game.finish_game! }
@@ -636,7 +636,7 @@ describe Game do
         end
       end
 
-      it "every player on the winning team gets 1 gem" do
+      it "every player on the winning team_name gets 1 gem" do
         game.award_prizes! winner: 'red'
         expect(betty.reload.gems).to eq(0)
         expect(bob.reload.gems).to eq(0)

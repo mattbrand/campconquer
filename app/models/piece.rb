@@ -3,7 +3,7 @@
 # Table name: pieces
 #
 #  id         :integer          not null, primary key
-#  team       :string
+#  team_name  :string
 #  role       :string
 #  path       :text
 #  speed      :integer          default(0), not null
@@ -51,7 +51,7 @@ class Piece < ActiveRecord::Base
   serialize :path
   serialize :ammo, JSON
 
-  validates :team, inclusion: {
+  validates :team_name, inclusion: {
       in: Team::GAME_TEAMS.values,
       message: Team::GAME_TEAMS.validation_message
   }
@@ -137,7 +137,7 @@ class Piece < ActiveRecord::Base
   def self.serialization_options
     {
         only: [:player_id,
-               :team,
+               :team_name,
                :body_type,
                :role,
                :path,

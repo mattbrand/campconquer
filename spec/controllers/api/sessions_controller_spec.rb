@@ -77,7 +77,7 @@ describe API::SessionsController, type: :controller do
 
   context 'given a valid username and password for a CONTROL GROUP user' do
     it 'fails to start a session' do
-      charlie = Player.create!(name: 'charlie', password: good_password, team: 'control')
+      charlie = Player.create!(name: 'charlie', password: good_password, team_name: 'control')
 
       get :create, name: 'charlie', password: good_password
       expect(response.body).to include('"status":"error"')
