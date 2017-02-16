@@ -1,5 +1,5 @@
 class SeasonsController < WebController
-  before_action :find_season, only: [:show, :edit, :update, :destroy]
+  before_action :find_season, except: [:new, :index, :create] # [:show, :edit, :update, :destroy]
 
   before_action -> {
     require_role('gamemaster', 'admin')
@@ -41,6 +41,16 @@ class SeasonsController < WebController
     else
       render :edit
     end
+  end
+
+  # sub-resources
+
+  # GET /seasons/1/weeks
+  def weeks
+  end
+
+  # GET /seasons/1/players
+  def players
   end
 
   private

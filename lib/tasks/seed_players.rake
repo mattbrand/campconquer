@@ -15,11 +15,24 @@ namespace :db do
   end
 end
 
+class SeedTeam
+
+  attr_reader :offense_paths, :defense_points
+
+  def initialize(team_name)
+    @team_name = team_name
+
+    @offense_paths = Path.where(team_name: team_name, role: 'offense').map(&:points)
+    @defense_points = Path.where(team_name: team_name, role: 'defense').map(&:point)
+  end
+
+end
+
 class Board
   def initialize
     @names = Set.new
     @paths = {}
-    @teams = {red: Team.new('red'), blue: Team.new('blue')}
+    @teams = {red: SeedTeam.new('red'), blue: SeedTeam.new('blue')}
   end
 
   def team_name
@@ -75,6 +88,8 @@ class Board
           ammo: ["balloon", "arrow", "balloon"]
       )
       player.update(embodied: true)
+
+      Season.current.add_player(player)
 
       puts ["created player ##{player.id}", player.name.ljust(20), @team_name, piece.role, piece.body_type].join("\t")
     end

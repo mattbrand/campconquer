@@ -186,6 +186,7 @@ class Game < ActiveRecord::Base
       path_points = piece.path # # todo: resolve "path" vs "points" ambiguity
       seeking_path = Path.new(team_name: piece.team_name, role: piece.role, points: path_points)
 
+
       found_path = all_paths.detect { |p| p == seeking_path }
       if found_path
         found_path.increment_count

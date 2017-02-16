@@ -1,0 +1,44 @@
+
+<%= render 'seasons_nav' %>
+
+
+<h2>Players</h2>
+
+<% Team::ALL.each do |team_name| %>
+    <h3><%= team_name.label %></h3>
+    <table class="player-info">
+      <tr>
+        <th>id</th>
+        <th>name</th>
+
+        <th>team_name</th>
+        <th>role</th>
+        <th>speed</th>
+        <th>health</th>
+        <th>range</th>
+
+        <th>last synced</th>
+      </tr>
+
+      <% players = @season.players.includes(:piece) %>
+      <% players.select { |p| p.team_name == team_name.value.to_s }.each do |player| %>
+
+          <tr>
+            <td><%= player.id %></td>
+            <td><%= link_to player.name, player_path(player) %></td>
+
+            <td><%= player.team_name %></td>
+            <td><%= player.role %></td>
+            <td><%= player.speed %></td>
+            <td><%= player.health %></td>
+            <td><%= player.range %></td>
+
+            <td><%=
+              player.activities_synced_at.try(:strftime, "%A, %B %-d, %Y, %l:%M %p %Z")
+            %></td>
+          </tr>
+
+      <% end %>
+    </table>
+<% end %>
+
