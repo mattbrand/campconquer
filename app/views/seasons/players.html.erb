@@ -1,12 +1,11 @@
-
 <%= render 'seasons_nav' %>
-
 
 <h2>Players</h2>
 
-<% Team::ALL.each do |team_name| %>
-    <h3><%= team_name.label %></h3>
-    <table class="player-info">
+<% Team::ALL.each do |team_item| %>
+    <h3><%= team_item.label %></h3>
+    <% team_name = team_item.value.to_s %>
+    <table class="info-table">
       <tr>
         <th>id</th>
         <th>name</th>
@@ -18,10 +17,12 @@
         <th>range</th>
 
         <th>last synced</th>
+
+        <th>actions</th>
       </tr>
 
-      <% players = @season.players.includes(:piece) %>
-      <% players.select { |p| p.team_name == team_name.value.to_s }.each do |player| %>
+      <% players = @season.team_members(team_name) %>
+      <% players.each do |player| %>
 
           <tr>
             <td><%= player.id %></td>
@@ -36,6 +37,30 @@
             <td><%=
               player.activities_synced_at.try(:strftime, "%A, %B %-d, %Y, %l:%M %p %Z")
             %></td>
+
+            <td>
+              <% other_team_name = case team_name
+                                   when 'red'
+                                     'blue'
+                                   when 'blue'
+                                     'red'
+                                   when 'control'
+                                     nil
+                                   when 'gamemaster'
+                                     nil
+                                   end
+              %>
+              <% if other_team_name %>
+                  <%= form_for @season,
+                               method: 'POST',
+                               url: "#{players_season_path(@season)}/#{player.id}" do |f| %>
+
+                      <input type="hidden" name="team_name" value="<%= other_team_name %>">
+                      <input type="submit" value="Switch to <%= other_team_name %> team">
+                  <% end %>
+              <% end %>
+            </td>
+
           </tr>
 
       <% end %>

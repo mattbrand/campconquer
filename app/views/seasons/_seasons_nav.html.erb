@@ -1,16 +1,23 @@
 <br /> <%#todo: css%>
+
+<%= params[:action] %>
 <nav>
   <ul>
     <li>
-      <a href="<%= season_path(@season) %>">Season <%= @season.name %>
+      <a href="<%= seasons_path %>"><< All Seasons</a>
+    </li>
+
+    <li class="<%= 'active' if params[:action] == 'show' %>">
+      <a href="<%= season_path(@season) %>"><%= @season.name %>
         <%= " (Current)" if @season.current? %>
       </a>
     </li>
-    <li>
+    <li class="<%= 'active' if params[:action] == 'players' %>">
       <a href="<%= players_season_path(@season) %>">Players
+        <%= %>
       </a>
     </li>
-    <li>
+    <li class="<%= 'active' if params[:action] == 'weeks' %>">
       <a href="<%= weeks_season_path(@season) %>">Weeks
       </a>
     </li>

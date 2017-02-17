@@ -24,7 +24,7 @@ class Season < ActiveRecord::Base
   has_many :players, through: :memberships
 
   def team_members(team_name)
-    memberships.where(season_id: self.id, team_name: team_name).map(&:player)
+    memberships.where(season_id: self.id, team_name: team_name).all.map(&:player)
   end
 
   def self.current
@@ -66,9 +66,7 @@ class Season < ActiveRecord::Base
     Season.where(current: true).update_all(current: false)
     update!(current: true)
     memberships.includes(:player).includes(:piece).each do |membership|
-
       membership.set_player_team!
-
     end
   end
 
@@ -77,7 +75,7 @@ class Season < ActiveRecord::Base
   end
 
   def name
-    super or id.to_s
+    super or "Season #{id}"
   end
 
   # sum of all game outcomes per team_name
@@ -123,7 +121,10 @@ class Season < ActiveRecord::Base
   def switch_team player, new_team
     membership = memberships.where(player_id: player.id).first
     membership.update!(team_name: new_team)
-    player.piece.update(path: nil) # this is a little hacky -- maybe should be done only if switching during current season
+    if current?
+      membership.set_player_team!
+      player.piece.update(path: nil)
+    end
   end
 
   private

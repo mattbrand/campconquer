@@ -1,4 +1,22 @@
-
 <%= render 'seasons_nav' %>
 
+<br />
+
+<table class="info-table">
+  <tr>
+    <th>name</th>
+    <td><%= @season.name %></td>
+  </tr>
+
+  <tr>
+    <th>current?</th>
+    <td><%= @season.current? %></td>
+  </tr>
+
+  <tr>
+    <th>start at</th>
+    <td><%= @season.start_at %></td>
+  </tr>
+
+</table>
 

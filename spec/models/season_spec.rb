@@ -285,12 +285,13 @@ describe Season do
           expect(season.team_members('blue')).to match_array([bob])
         end
 
-        it 'clears the player path setup info' do
+        it 'does not clear the player path setup info' do
+          betty.piece.update!(path: "{}")
           season.switch_team(betty, 'red')
-          expect(betty.piece.path).to be_nil
+          expect(betty.piece.path).not_to be_nil
         end
 
-        it 'does not change the player/piece info for the current season' do
+        it 'does change the player/piece info for the current season' do
           season.switch_team(betty, 'red')
           expect(betty.team_name).to eq('blue')
           expect(betty.piece.team_name).to eq('blue')
@@ -302,9 +303,31 @@ describe Season do
           betty.reload
           expect(betty.team_name).to eq('red')
           expect(betty.piece.team_name).to eq('red')
-
         end
 
+      end
+
+      describe "for the current season" do
+        before { Season.current.add_all_players } # :-(
+        let!(:season) { Season.current }
+
+        it "can switch players between teams" do
+          season.switch_team(betty, 'red')
+          expect(season.team_members('red')).to match_array([roger, rita, betty])
+          expect(season.team_members('blue')).to match_array([bob])
+        end
+
+        it 'clears the player path setup info' do
+          betty.piece.update!(path: "{}")
+          season.switch_team(betty, 'red')
+          expect(betty.piece.path).to be_nil
+        end
+
+        it 'does not change the player/piece info for the current season' do
+          season.switch_team(betty, 'red')
+          expect(betty.team_name).to eq('blue')
+          expect(betty.piece.team_name).to eq('blue')
+        end
       end
     end
 
@@ -312,12 +335,14 @@ describe Season do
       let!(:initial_season) { Season.current }
       let!(:season) { Season.create! }
 
+      before { season.start! }
+
       it 'makes this season current' do
-        expect(season).to be_current
+        expect(season.reload).to be_current
       end
 
       it 'makes the other season not current' do
-        expect(initial_season).to be_current
+        expect(initial_season.reload).not_to be_current
       end
     end
 

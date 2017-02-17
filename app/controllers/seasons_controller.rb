@@ -1,6 +1,8 @@
 class SeasonsController < WebController
   before_action :find_season, except: [:new, :index, :create] # [:show, :edit, :update, :destroy]
 
+  before_action :find_player, only: [:update_player]
+
   before_action -> {
     require_role('gamemaster', 'admin')
   }
@@ -52,6 +54,16 @@ class SeasonsController < WebController
   # GET /seasons/1/players
   def players
   end
+
+  # todo: test
+  # POST /seasons/1/players/1?team_name=red
+  def update_player
+    @season.switch_team(@player, params[:team_name])
+    @season.reload
+    redirect_to players_season_path(@season),
+                notice: "Switched #{@player.name} to #{params[:team_name]} team for Season #{@season.name}"
+  end
+
 
   private
   def season_params
