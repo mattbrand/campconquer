@@ -148,7 +148,7 @@ class Game < ActiveRecord::Base
 
   def team_summaries
     Team::GAME_TEAMS.values.map do |team_name|
-      TeamSummary.new(team: team_name, games: [self])
+      TeamSummary.new(team_name: team_name, games: [self])
     end
   end
 
@@ -168,8 +168,8 @@ class Game < ActiveRecord::Base
     pieces.destroy_all
   end
 
-  def pieces_on_team(team)
-    pieces.where(team: team)
+  def pieces_on_team(team_name)
+    pieces.where(team_name: team_name)
   end
 
   def paths
@@ -184,7 +184,8 @@ class Game < ActiveRecord::Base
 
     pieces.each do |piece|
       path_points = piece.path # # todo: resolve "path" vs "points" ambiguity
-      seeking_path = Path.new(team: piece.team, role: piece.role, points: path_points)
+      seeking_path = Path.new(team_name: piece.team_name, role: piece.role, points: path_points)
+
 
       found_path = all_paths.detect { |p| p == seeking_path }
       if found_path
@@ -202,7 +203,7 @@ class Game < ActiveRecord::Base
   # :match_length,
   # :moves,
   # player_outcomes: [{
-  #     :player_id, :team, :takedowns, :throws, :pickups, ...
+  #     :player_id, :team_name, :takedowns, :throws, :pickups, ...
   # }]
 
   def finish_game! params = {}
@@ -284,7 +285,7 @@ class Game < ActiveRecord::Base
   def calculate_winner
     capture = player_outcomes.detect { |o| o.captures == 1 }
     if capture
-      capture.team
+      capture.team_name
     else
       nil
     end
@@ -295,16 +296,16 @@ class Game < ActiveRecord::Base
   def calculate_mvps!
     winner = calculate_winner
     result = {}
-    Team::GAME_TEAMS.values.each do |team|
-      result[team] = {}
-      result[team]['attack_mvps'] = calculate_mvps_for(team, 'offense') do |outcome|
-        if team == winner
+    Team::GAME_TEAMS.values.each do |team_name|
+      result[team_name] = {}
+      result[team_name]['attack_mvps'] = calculate_mvps_for(team_name, 'offense') do |outcome|
+        if team_name == winner
           outcome.captures
         else
           outcome.flag_carry_distance
         end
       end
-      result[team]['defend_mvps'] = calculate_mvps_for(team, 'defense') do |outcome|
+      result[team_name]['defend_mvps'] = calculate_mvps_for(team_name, 'defense') do |outcome|
         outcome.takedowns
       end
     end
@@ -312,12 +313,12 @@ class Game < ActiveRecord::Base
     result
   end
 
-  def calculate_mvps_for team, role
+  def calculate_mvps_for team_name, role
     mvps = []
     best = 0
 
     relevant_outcomes = player_outcomes.select do |o|
-      o.team == team and begin
+      o.team_name == team_name and begin
         player_id = o.player_id
         piece = player_from_pieces(player_id)
         piece.role == role if piece
@@ -380,14 +381,14 @@ class Game < ActiveRecord::Base
 
   def award_prizes! winner: self.winner
     player_outcomes.each do |outcome|
-      if outcome.team == winner
+      if outcome.team_name == winner
         outcome.player.increment_gems!
       end
     end
   end
 
   def award_mvp_prizes!
-    self.mvps.each_pair do |team, team_mvps|
+    self.mvps.each_pair do |team_name, team_mvps|
       team_mvps.each_pair do |mvp_type, players|
         players.each do |player_id|
           Player.find(player_id).increment_gems!
@@ -397,7 +398,7 @@ class Game < ActiveRecord::Base
   end
 
   def set_mvps_in_outcomes!
-    self.mvps.each_pair do |team, team_mvps|
+    self.mvps.each_pair do |team_name, team_mvps|
       team_mvps.each_pair do |mvp_type, players|
         players.each do |player_id|
           mvp_attr = mvp_type.chomp("s")

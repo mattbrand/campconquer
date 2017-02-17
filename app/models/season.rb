@@ -19,10 +19,19 @@ class Season < ActiveRecord::Base
                           unless: Proc.new { |game| !game.current? },
                           message: 'should be true for only one season'
 
+  has_many :memberships
+
+  has_many :players, through: :memberships
+
+  def team_members(team_name)
+    memberships.where(season_id: self.id, team_name: team_name).all.map(&:player)
+  end
+
   def self.current
     current_season = where(current: true).first
     if current_season.nil?
       current_season = Season.create! current: true
+      current_season.add_all_players # ?
     end
     current_season
   end
@@ -31,32 +40,48 @@ class Season < ActiveRecord::Base
     where(current: false).order(updated_at: :desc).first
   end
 
-  after_create do
+  before_create do
     self.start_at = Chronic.parse("next Sunday").to_date if self.start_at.nil?
+  end
+
+  after_create do
+    add_all_players
   end
 
   def start_at
     super.try(:to_date)
   end
 
-  # was has_many :players, -> { uniq }, through: :pieces
-  # but we need a better season/player/game hierarchy and workflow
-  def players
-    Player.all
+  def add_all_players
+    Player.all.each do |player|
+      add_player(player) unless players.include?(player)
+    end
+  end
+
+  def add_player(player)
+    memberships.create! player_id: player.id, team_name: player.team_name
+  end
+
+  def start!
+    Season.where(current: true).update_all(current: false)
+    update!(current: true)
+    memberships.includes(:player).includes(:piece).each do |membership|
+      membership.set_player_team!
+    end
   end
 
   def begun?
-    self.games.count > 0
+    self.games.count > 0  # or, today >= start_at?
   end
 
   def name
-    super or id.to_s
+    super or "Season #{id}"
   end
 
-  # sum of all game outcomes per team
+  # sum of all game outcomes per team_name
   def team_summaries
     Team::GAME_TEAMS.values.map do |team_name|
-      TeamSummary.new(team: team_name, games: self.games)
+      TeamSummary.new(team_name: team_name, games: self.games)
     end
   end
 
@@ -91,6 +116,15 @@ class Season < ActiveRecord::Base
     raise "Assertion failed: #{week_game_count} != #{completed_games.size}" if week_game_count != completed_games.size
 
     list
+  end
+
+  def switch_team player, new_team
+    membership = memberships.where(player_id: player.id).first
+    membership.update!(team_name: new_team)
+    if current?
+      membership.set_player_team!
+      player.piece.update(path: nil)
+    end
   end
 
   private

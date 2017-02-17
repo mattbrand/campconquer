@@ -3,7 +3,7 @@ require 'rails_helper'
 module API
   describe APIController, type: :controller do
 
-    let(:alice) { create_player player_name: 'alice', team: 'red' }
+    let(:alice) { create_player player_name: 'alice', team_name: 'red' }
     before { start_session(alice) }
 
     context 'given no token' do

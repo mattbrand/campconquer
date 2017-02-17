@@ -47,6 +47,14 @@ Rails.application.routes.draw do
   resources :sessions, only: ['create']
 
   resources :seasons do
+    member do
+      get :weeks
+      get :players
+      post :players
+      match "/players/:player_id/", to: 'seasons#update_player', via: 'post'
+    end
+
+
   end
 
   resources :players do

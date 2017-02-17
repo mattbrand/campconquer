@@ -33,7 +33,7 @@ describe Player, type: :model do
   end
 
   describe 'gear' do
-    let!(:player) { create_player(player_name: "alice", team: 'blue', coins: 15, gems: 1) }
+    let!(:player) { create_player(player_name: "alice", team_name: 'blue', coins: 15, gems: 1) }
 
     before do
       player.set_piece
@@ -186,7 +186,7 @@ describe Player, type: :model do
   end
 
   describe 'ammo' do
-    let!(:player) { create_player(player_name: "alice", team: 'blue', coins: 1500) }
+    let!(:player) { create_player(player_name: "alice", team_name: 'blue', coins: 1500) }
 
     it 'is empty by default' do
       expect(player.ammo).to be_empty

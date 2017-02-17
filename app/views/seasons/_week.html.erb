@@ -1,7 +1,7 @@
 <%# todo: refactor and test the hell out of this %>
 <div style="border: 3px solid blue; padding: 1em; width: 90%">
 
-  <table class="player-info" style="float: right">
+  <table class="info-table" style="float: right">
     <tr>
       <td colspan="3">from <%= week.start_at %> to <%= week.finish_at - 1.day %></td>
       <td><%= pluralize(week.games.size, "game") %></td>
@@ -14,9 +14,9 @@
   <% unless week.games.size == 0 %>
       <!--<th>Team Stats</th>-->
 
-      <table class="player-info">
+      <table class="info-table">
         <tr>
-          <th>team</th>
+          <th>team_name</th>
           <% stats = (Summary::STATS - [:attack_mvp, :defend_mvp])
              stats.each do |stat| %>
               <th><%= stat %></th>
@@ -25,7 +25,7 @@
 
         <% week.team_summaries.each do |summary| %>
             <tr>
-              <th><%= summary.team %></th>
+              <th><%= summary.team_name %></th>
 
               <% stats.each do |stat| %>
                   <td><%= summary.send(stat) %></td>
@@ -39,7 +39,7 @@
 
       <br/>
       <h3>Top Players</h3>
-      <table class="player-info">
+      <table class="info-table">
         <tr>
           <th>top</th>
           <th>count</th>
@@ -59,7 +59,7 @@
       <br/>
 
       <h3>Physically Active (weekdays only)</h3>
-      <table class="player-info">
+      <table class="info-table">
         <tr>
           <th>active</th>
           <th>count</th>

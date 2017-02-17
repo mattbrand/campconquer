@@ -85,7 +85,7 @@ class API::PlayersController < ::API::APIController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def player_params
-    params.require(:player).permit(:name, :password, :team, :embodied)
+    params.require(:player).permit(:name, :password, :team_name, :embodied)
   end
 
 

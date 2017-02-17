@@ -3,7 +3,7 @@
 # Table name: outcomes
 #
 #  id                  :integer          not null, primary key
-#  team                :string
+#  team_name           :string
 #  takedowns           :integer
 #  throws              :integer
 #  pickups             :integer
@@ -26,7 +26,7 @@ class Outcome < ActiveRecord::Base
   belongs_to :game
   belongs_to :player
 
-  validates :team, inclusion: {in: Team::GAME_TEAMS.values, message: Team::GAME_TEAMS.validation_message}
+  validates :team_name, inclusion: {in: Team::GAME_TEAMS.values, message: Team::GAME_TEAMS.validation_message}
   validates :player_id, presence: true # todo: should validate that it's a real player too
 
   class PlayerExists < ActiveModel::Validator
@@ -54,7 +54,7 @@ class Outcome < ActiveRecord::Base
   # so we have to call these options explicitly from the parent's as_json
   def self.serialization_options
     {
-        only: [:team, :player_id] + numeric_fields + [:attack_mvp, :defend_mvp],
+        only: [:team_name, :player_id] + numeric_fields + [:attack_mvp, :defend_mvp],
     }
   end
 

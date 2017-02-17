@@ -1,0 +1,69 @@
+<%= render 'seasons_nav' %>
+
+<h2>Players</h2>
+
+<% Team::ALL.each do |team_item| %>
+    <h3><%= team_item.label %></h3>
+    <% team_name = team_item.value.to_s %>
+    <table class="info-table">
+      <tr>
+        <th>id</th>
+        <th>name</th>
+
+        <th>team_name</th>
+        <th>role</th>
+        <th>speed</th>
+        <th>health</th>
+        <th>range</th>
+
+        <th>last synced</th>
+
+        <th>actions</th>
+      </tr>
+
+      <% players = @season.team_members(team_name) %>
+      <% players.each do |player| %>
+
+          <tr>
+            <td><%= player.id %></td>
+            <td><%= link_to player.name, player_path(player) %></td>
+
+            <td><%= player.team_name %></td>
+            <td><%= player.role %></td>
+            <td><%= player.speed %></td>
+            <td><%= player.health %></td>
+            <td><%= player.range %></td>
+
+            <td><%=
+              player.activities_synced_at.try(:strftime, "%A, %B %-d, %Y, %l:%M %p %Z")
+            %></td>
+
+            <td>
+              <% other_team_name = case team_name
+                                   when 'red'
+                                     'blue'
+                                   when 'blue'
+                                     'red'
+                                   when 'control'
+                                     nil
+                                   when 'gamemaster'
+                                     nil
+                                   end
+              %>
+              <% if other_team_name %>
+                  <%= form_for @season,
+                               method: 'POST',
+                               url: "#{players_season_path(@season)}/#{player.id}" do |f| %>
+
+                      <input type="hidden" name="team_name" value="<%= other_team_name %>">
+                      <input type="submit" value="Switch to <%= other_team_name %> team">
+                  <% end %>
+              <% end %>
+            </td>
+
+          </tr>
+
+      <% end %>
+    </table>
+<% end %>
+

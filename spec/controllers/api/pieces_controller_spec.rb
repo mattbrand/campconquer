@@ -28,7 +28,7 @@ describe API::PiecesController, type: :controller do
   }
 
 
-  let!(:abby) { create_player(player_name: 'Abby', team: 'blue') }
+  let!(:abby) { create_player(player_name: 'Abby', team_name: 'blue') }
   before { start_session(abby) }
 
   describe "POST #create" do
@@ -47,7 +47,7 @@ describe API::PiecesController, type: :controller do
 
       it "sets the team based on the player's team" do
         post :create, {player_id: abby.id, piece: valid_attributes}, valid_session
-        expect(assigns(:piece).team).to eq(abby.team)
+        expect(assigns(:piece).team_name).to eq(abby.team_name)
       end
 
       it "sets the newly created piece on the player" do

@@ -2,7 +2,7 @@
 
 <h2>Activity</h2>
 </tr>
-<table class="player-info">
+<table class="info-table">
   <tr>
     <th>last synced</th>
     <td><%=
@@ -22,7 +22,7 @@
   <tr>
     <th>Activity Details</th>
     <td>
-      <table class="player-info">
+      <table class="info-table">
         <tr>
           <th>date</th>
           <th>steps</th>
@@ -64,10 +64,10 @@
 <% unless @player.in_control_group? %>
 
 <h2>Info</h2>
-<table class="player-info">
+<table class="info-table">
   <tr>
-    <th>team</th>
-    <td><%= @player.team %></td>
+    <th>team_name</th>
+    <td><%= @player.team_name %></td>
   </tr>
   <tr>
     <th>role</th>
@@ -88,7 +88,7 @@
 </table>
 
 <h2>Currency</h2>
-<table class="player-info">
+<table class="info-table">
   <tr>
     <th>coins</th>
     <td><%= @player.coins %></td>
@@ -100,7 +100,7 @@
 </table>
 
 <h2>Gear</h2>
-<table class="player-info">
+<table class="info-table">
   <tr>
     <th>equipped</th>
     <td><%= @player.piece.items_equipped.map { |item| item.gear.display_name }.join(", ") %></td>
@@ -118,7 +118,7 @@
 <h2>Summaries</h2>
 <h3>Current Season</h3>
 <% summary = PlayerSummary.new(player: @player, games: Season.current.games) %>
-<table class="player-info">
+<table class="info-table">
 
   <tr>
     <th>Games</th>

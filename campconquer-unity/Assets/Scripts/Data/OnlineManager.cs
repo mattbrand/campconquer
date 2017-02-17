@@ -319,7 +319,7 @@ public class OnlineManager : MonoBehaviour
         // set player data
         _playerID = playerData.id.ToString();
         _playerName = playerData.name;
-        if (playerData.team == "red")
+        if (playerData.team_name == "red")
             Avatar.Instance.Color = TeamColor.RED;
         else
             Avatar.Instance.Color = TeamColor.BLUE;
@@ -530,7 +530,7 @@ public class OnlineManager : MonoBehaviour
         {
             piece = team.Pieces[i];
 
-			tupleList.Add(PlayerOutcomeTuple("team", team.GetColor.ToString().ToLower()));
+			tupleList.Add(PlayerOutcomeTuple("team_name", team.GetColor.ToString().ToLower()));
 			tupleList.Add(PlayerOutcomeTuple("player_id", piece.ID.ToString()));
 			tupleList.Add(PlayerOutcomeTuple("takedowns", piece.Takedowns.ToString()));
 			tupleList.Add(PlayerOutcomeTuple("throws", piece.BalloonsThrown.ToString()));
@@ -832,7 +832,7 @@ public class GameData
 
 public class TeamOutcomeData
 {
-    public string team;
+    public string team_name;
     public List<int> attack_mvps;
     public List<int> defend_mvps;
     public int takedowns;
@@ -844,7 +844,7 @@ public class TeamOutcomeData
 
 public class TeamSummaryData
 {
-    public string team;
+    public string team_name;
     public List<int> attack_mvps;
     public List<int> defend_mvps;
     public int takedowns;
@@ -856,7 +856,7 @@ public class TeamSummaryData
 
 public class PieceData
 {
-    public string team;
+    public string team_name;
     public string role;
     public List<Point> path;
     public float speed;
@@ -877,7 +877,7 @@ public class PieceData
 public class PlayerOutcomeData
 {
     public int id;
-    public string team;
+    public string team_name;
     public int takedowns;
     public int throws;
     public int pickups;
@@ -930,7 +930,7 @@ public class PlayerData
 {
     public int id;
     public string name;
-    public string team;
+    public string team_name;
     public string created_at;
     public string updated_at;
     public int coins;
@@ -952,7 +952,7 @@ public class PlayerData
 
 public class PathData
 {
-    public string team;
+    public string team_name;
     public Point button_position;
     public int button_angle;
     public string role;

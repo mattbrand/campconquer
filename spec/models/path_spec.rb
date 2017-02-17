@@ -5,11 +5,11 @@ describe Path do
 
 
   describe 'where' do
-    it 'can select by team' do
-      paths = Path.where(team: 'red')
+    it 'can select by team_name' do
+      paths = Path.where(team_name: 'red')
       expect(paths).not_to be_empty
       paths.each do |p|
-        expect(p.team).to eq('red')
+        expect(p.team_name).to eq('red')
       end
     end
 
@@ -21,17 +21,17 @@ describe Path do
       end
     end
 
-    it 'can select by team and role' do
-      paths = Path.where(team: 'blue', role: 'defense')
+    it 'can select by team_name and role' do
+      paths = Path.where(team_name: 'blue', role: 'defense')
       expect(paths).not_to be_empty
       paths.each do |p|
-        expect(p.team).to eq('blue')
+        expect(p.team_name).to eq('blue')
         expect(p.role).to eq('defense')
       end
     end
   end
 
-  let(:path) { Path.new(team: 'red',
+  let(:path) { Path.new(team_name: 'red',
                         button_position: Point.new(x: 1, y: 2),
                         button_angle: -45,
                         role: 'defense',
@@ -49,7 +49,7 @@ describe Path do
     it 'works' do
       path.increment_count
       expect(path.as_json).to eq({
-                                   'team' => 'red',
+                                   'team_name' => 'red',
                                    "button_position"=>{"x"=>1, "y"=>2},
                                    "button_angle"=>-45,
                                    'role' => 'defense',
@@ -73,29 +73,29 @@ describe Path do
     end
 
     it 'works' do
-      red_offense_path_1 = Path.new(team: 'red', role: 'offense', points: [Point.new(x: 1, y: 2)])
-      red_offense_path_2 = Path.new(team: 'red', role: 'offense', points: [Point.new(x: 1, y: 2)])
+      red_offense_path_1 = Path.new(team_name: 'red', role: 'offense', points: [Point.new(x: 1, y: 2)])
+      red_offense_path_2 = Path.new(team_name: 'red', role: 'offense', points: [Point.new(x: 1, y: 2)])
 
       expect_equal(red_offense_path_1, red_offense_path_1)
       expect_equal(red_offense_path_1, red_offense_path_2)
 
-      red_offense_path_3 = Path.new(team: 'red', role: 'offense', points: [Point.new(x: 1, y: 2),
+      red_offense_path_3 = Path.new(team_name: 'red', role: 'offense', points: [Point.new(x: 1, y: 2),
                                                                            Point.new(x: 2, y: 1)])
 
       expect_not_equal(red_offense_path_1, red_offense_path_3)
 
-      red_defense_path_1 = Path.new(team: 'red', role: 'defense', points: [Point.new(x: 1, y: 2)])
+      red_defense_path_1 = Path.new(team_name: 'red', role: 'defense', points: [Point.new(x: 1, y: 2)])
 
       expect_not_equal(red_offense_path_1, red_defense_path_1)
 
-      red_defense_path_2 = Path.new(team: 'red', role: 'defense', points: [Point.new(x: 1, y: 3)])
+      red_defense_path_2 = Path.new(team_name: 'red', role: 'defense', points: [Point.new(x: 1, y: 3)])
 
       expect_not_equal(red_offense_path_1, red_defense_path_2)
       expect_not_equal(red_defense_path_1, red_defense_path_2)
 
-      blue_defense_path = Path.new(team: 'blue', role: 'defense', points: [Point.new(x: 1, y: 2)])
+      blue_defense_path = Path.new(team_name: 'blue', role: 'defense', points: [Point.new(x: 1, y: 2)])
 
-      blue_offense_path = Path.new(team: 'blue', role: 'offense', points: [Point.new(x: 1, y: 2)])
+      blue_offense_path = Path.new(team_name: 'blue', role: 'offense', points: [Point.new(x: 1, y: 2)])
       expect_not_equal(red_offense_path_1, blue_offense_path)
       expect_not_equal(red_offense_path_1, blue_defense_path)
 

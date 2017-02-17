@@ -5,7 +5,7 @@ using System;
 using System.Collections;
 using gametheory.UI;
 
-public class HistoryView : UIView 
+public class HistoryView : UIView
 {
     #region Enums
     enum HistoryViewState { NONE = 0, FILL, REDUCE };
@@ -284,7 +284,7 @@ public class HistoryView : UIView
         TutorialAlert.Present(TutorialAlertType.REWARDS);
     }
 
-    public void ClickRefresh() 
+    public void ClickRefresh()
     {
         LoadingAlert.Present();
 
@@ -309,7 +309,7 @@ public class HistoryView : UIView
         for (int i = 0; i < OnlineManager.Instance.SeasonSyncData.team_summaries.Count; i++)
         {
             TeamSummaryData teamData = OnlineManager.Instance.SeasonSyncData.team_summaries[i];
-            if (teamData.team == "blue")
+            if (teamData.team_name == "blue")
             {
                 blueWins = teamData.captures;
             }

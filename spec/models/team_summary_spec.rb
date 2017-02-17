@@ -2,19 +2,19 @@ require 'rails_helper'
 
 describe TeamSummary do
   it "requires team name" do
-    team_outcome = TeamSummary.new(team: nil, games: nil)
+    team_outcome = TeamSummary.new(team_name: nil, games: nil)
     expect(team_outcome).not_to be_valid
   end
 
   it "validates team name" do
-    team_outcome = TeamSummary.new(team: 'blue', games: nil)
+    team_outcome = TeamSummary.new(team_name: 'blue', games: nil)
     expect(team_outcome).to be_valid
   end
 
   context "given a game" do
 
     let(:player_outcomes) { [
-      Outcome.new({team: 'blue',
+      Outcome.new({team_name: 'blue',
                    takedowns: 1,
                    throws: 2,
                    pickups: 3,
@@ -22,7 +22,7 @@ describe TeamSummary do
                    captures: 1,
                   }.with_indifferent_access),
 
-      Outcome.new({team: 'red',
+      Outcome.new({team_name: 'red',
                    takedowns: 11,
                    throws: 12,
                    pickups: 13,
@@ -39,8 +39,8 @@ describe TeamSummary do
     let(:games) { [game] }
 
     it "adds up stats" do
-      team_outcome = TeamSummary.new(team: 'blue', games: games)
-      expect(team_outcome.as_json).to eq({team: 'blue',
+      team_outcome = TeamSummary.new(team_name: 'blue', games: games)
+      expect(team_outcome.as_json).to eq({team_name: 'blue',
                                           captures: 1,
                                           takedowns: 1,
                                           throws: 2,
@@ -53,8 +53,8 @@ describe TeamSummary do
 
                                          }.with_indifferent_access)
 
-      team_outcome = TeamSummary.new(team: 'red', games: games)
-      expect(team_outcome.as_json).to eq({team: 'red',
+      team_outcome = TeamSummary.new(team_name: 'red', games: games)
+      expect(team_outcome.as_json).to eq({team_name: 'red',
                                           takedowns: 11,
                                           throws: 12,
                                           pickups: 13,
@@ -69,7 +69,7 @@ describe TeamSummary do
     end
 
     it "optionally freaks out if given more than one capture per game" do
-      cheater = Outcome.new({team: 'blue',
+      cheater = Outcome.new({team_name: 'blue',
                              takedowns: 0,
                              throws: 0,
                              pickups: 0,
@@ -78,7 +78,7 @@ describe TeamSummary do
                             }.with_indifferent_access)
       player_outcomes << cheater
       expect do
-        team_outcome = TeamSummary.new(team: 'blue', games: games, max: {captures: 1})
+        team_outcome = TeamSummary.new(team_name: 'blue', games: games, max: {captures: 1})
         ap team_outcome.as_json
       end.to raise_error(RuntimeError, "exceeded maximum value for captures")
     end
@@ -106,7 +106,7 @@ describe TeamSummary do
           totals[team_name][stat] += val
         end
 
-        player_outcomes << Outcome.new({team: team_name} + stats)
+        player_outcomes << Outcome.new({team_name: team_name} + stats)
       end
 
       game = Game.new(
@@ -118,7 +118,7 @@ describe TeamSummary do
       games << game
 
       Team::GAME_TEAMS.values.each do |team_name|
-        team_outcome = TeamSummary.new(team: team_name, games: games)
+        team_outcome = TeamSummary.new(team_name: team_name, games: games)
         expect(team_outcome.as_json).to include(totals[team_name])
       end
     end

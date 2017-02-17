@@ -293,7 +293,7 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < OnlineManager.Instance.GameData.pieces.Count; i++)
         {
             PieceData pieceData = OnlineManager.Instance.GameData.pieces[i];
-            if (pieceData.team == "red")
+            if (pieceData.team_name == "red")
             {
                 team = _redTeam;
                 currentPieceList = redPieces;
@@ -534,7 +534,7 @@ public class GameManager : MonoBehaviour
         int blueAttackMVP = -1;
         int redDefenseMVP = -1;
         int blueDefenseMVP = -1;
-        if (OnlineManager.Instance.GameData.team_summaries[0].team == "red")
+        if (OnlineManager.Instance.GameData.team_summaries[0].team_name == "red")
         {
             _redTeam.Downs = OnlineManager.Instance.GameData.team_summaries[0].takedowns;
             _redTeam.FlagCaptures = OnlineManager.Instance.GameData.team_summaries[0].pickups;
