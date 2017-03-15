@@ -44,17 +44,12 @@ class Week
   end
 
   # todo: test, no really, i mean it
+  # players who were active on at least one weekday
   def active_players players
     players.map do |player|
       player.activities.map do |activity|
-        if self.includes?(activity.date) and
-            activity.active? and
-            activity.date.weekday?
-          player
-        else
-          nil
-        end
-      end.compact
+        player if active_in_week?(activity)
+      end.compact.uniq
     end.flatten
   end
 
@@ -79,5 +74,13 @@ class Week
   def all_top_defenders
     Player.find(team_summaries.inject(Set.new) { |tops, summary| tops.merge(summary.defend_mvps) }.to_a)
   end
+
+  private
+
+   def active_in_week?(activity)
+     self.includes?(activity.date) and
+       activity.active? and
+       activity.date.weekday?
+   end
 
 end
