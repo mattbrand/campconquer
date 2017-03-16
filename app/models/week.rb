@@ -36,26 +36,25 @@ class Week
   end
 
   def game_players
-    games.collect{|g| g.players}.flatten.uniq
+    games.collect{|g| g.players}.flatten
   end
 
   def control_players
-    Player.where(team_name: 'control').includes(:activities)
+    Player.where(team_name: 'control').includes(:activities) # todo: allow player to change off control team between seasons?
   end
 
-  # todo: test, no really, i mean it
   # players who were active on at least one weekday
-  def active_players players
-    players.map do |player|
+  def physically_active_players players
+    players.uniq.map do |player|
       player.activities.map do |activity|
         player if active_in_week?(activity)
-      end.compact.uniq
+      end.compact
     end.flatten
   end
 
   # sum of all game outcomes per player
   def player_summaries
-    game_players.map do |player|
+    game_players.uniq.map do |player|
       PlayerSummary.new(games: self.games, player: player)
     end
   end
