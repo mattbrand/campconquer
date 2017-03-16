@@ -74,6 +74,10 @@ class Week
     Player.find(team_summaries.inject(Set.new) { |tops, summary| tops.merge(summary.defend_mvps) }.to_a)
   end
 
+  def active_and_gaming
+    physically_active_players(game_players).uniq
+  end
+
   private
 
    def active_in_week?(activity)
