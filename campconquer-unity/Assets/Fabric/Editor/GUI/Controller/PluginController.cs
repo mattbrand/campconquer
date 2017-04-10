@@ -55,7 +55,7 @@
 			}
 
 			string organization = Settings.Instance.Organization.Name;
-			string bundleIdentifier = PlayerSettings.bundleIdentifier;
+			string bundleIdentifier = PlayerSettings.applicationIdentifier;
 			BuildTarget buildTarget = EditorUserBuildSettings.activeBuildTarget;
 
 			kitInstallationChecker = new KitInstallationChecker ();

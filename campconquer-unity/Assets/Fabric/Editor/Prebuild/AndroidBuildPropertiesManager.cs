@@ -27,7 +27,7 @@
 		{
 			Dictionary<string, string> properties = new Dictionary<string, string> () {
 				{ AppNameKey, PlayerSettings.productName },
-				{ PackageNameKey, PlayerSettings.bundleIdentifier },
+				{ PackageNameKey, PlayerSettings.applicationIdentifier },
 				{ BuildIdKey, buildId },
 				{ VersionCodeKey, PlayerSettings.Android.bundleVersionCode.ToString () },
 				{ VersionNameKey, PlayerSettings.bundleVersion }
