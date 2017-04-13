@@ -1,0 +1,10 @@
+{
+"TOTAL_MEMORY": 2130706432,
+"dataUrl": "CampConquer.data.unityweb",
+"asmCodeUrl": "CampConquer.asm.code.unityweb",
+"asmMemoryUrl": "CampConquer.asm.memory.unityweb",
+"asmFrameworkUrl": "CampConquer.asm.framework.unityweb",
+"asmSymbolsUrl": "CampConquer.asm.symbols.unityweb",
+"splashScreenStyle": "Dark",
+"backgroundColor": "#222C36"
+}
