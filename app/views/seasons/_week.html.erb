@@ -44,6 +44,8 @@
           <th>top</th>
           <th>count</th>
           <th>names</th>
+          <th>|</th>
+          <th>shares</th>
           <th colspan="2">random</th>
         </tr>
         <tr>
@@ -64,18 +66,52 @@
           <th>active</th>
           <th>count</th>
           <th>names</th>
+          <th>|</th>
+          <th>shares</th>
+          <th colspan="2">random</th>
+        </tr>
+        <tr>
+          <th>gamers</th>
+          <%= render partial: 'players_with_chosen_one', locals: {players: week.physically_active_players(week.game_players)} %>
+        </tr>
+        <tr>
+          <th>control group members</th>
+          <%= render partial: 'players_with_chosen_one', locals: {players: week.physically_active_players(week.control_players)} %>
+        </tr>
+      </table>
+
+      <br/>
+
+      <h3>Players participating in at least one game</h3>
+      <table class="info-table">
+        <tr>
+          <th>active</th>
+          <th>count</th>
+          <th>names</th>
+          <th>|</th>
+          <th>shares</th>
           <th colspan="2">random</th>
         </tr>
         <tr>
           <th>game players</th>
-          <%= render partial: 'players_with_chosen_one', locals: {players: week.active_players(week.game_players)} %>
+          <%= render partial: 'players_with_chosen_one', locals: {players: week.game_players} %>
+        </tr>
+      </table>
+
+      <h3>Players who participated and were physically active</h3>
+      <table class="info-table">
+        <tr>
+          <th>count</th>
+          <th>names</th>
         </tr>
         <tr>
-          <th>control group members</th>
-          <%= render partial: 'players_with_chosen_one', locals: {players: week.active_players(week.control_players)} %>
+          <td><%= week.active_and_gaming.size %></td>
+          <td>
+            <%= week.active_and_gaming.map(&:name).sort.uniq.join(', ') %>
+          </td>
         </tr>
-
       </table>
+
   <% end %>
 </div>
 <br style="clear:both"/>
