@@ -1,9 +1,36 @@
-<iframe src='CampConquer/index.html' allowfullscreen="true" width="1024" height="680" >
+<iframe src='CampConquer/index.html' allowfullscreen="true" width="1024" height="680">
   <p>Your browser does not support iframes.</p>
 </iframe>
 
 <script>
-setTimeout(function() {
-frames[0].SendMessage("OnlineManager", "SetTokenFromWeb", "<%= current_player.start_session %>");
-}, 12000);
+  function setToken() {
+    console.log("Sending token...")
+    console.log(frames[0].SendMessage);
+    console.log(frames[0]);
+
+    if (frames[0].gameInstance && frames[0].gameInstance.SendMessage) {
+      frames[0].gameInstance.SendMessage("OnlineManager", "SetTokenFromWeb", "<%= current_player.start_session %>");
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  var count = 0;
+  function trySetToken() {
+    if (setToken()) {
+      console.log("Token sent to game.");
+    }
+    else {
+      count += 1;
+      if (count > 20) {
+        console.log("Game not found; aborting.");
+      } else {
+        console.log("Game not found; waiting...");
+        setTimeout(trySetToken, 1000);
+      }
+    }
+  }
+
+  setTimeout(trySetToken, 6000);
 </script>
