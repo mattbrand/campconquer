@@ -25,6 +25,12 @@ public class FullLoginAlert : UIAlert
     #region Unity Methods
     void Update()
     {
+        if (OnlineManager.Token != null && OnlineManager.Token != "")
+        {
+            Deactivate();
+            LoginAlert.Present();
+        }
+
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             if (Username.InputField.isFocused)

@@ -14,10 +14,6 @@
     }
   }
 
-  function newSetToken() {
-    frames[0].gameInstance.SendMessage("OnlineManager", "SetTokenFromWeb", sessionToken);
-  }
-
   var count = 0;
   function trySetToken() {
     if (setToken()) {
@@ -34,7 +30,5 @@
     }
   }
 
-  //setTimeout(trySetToken, 6000);
-
-  setTimeout(newSetToken, 20000);
+  // setTimeout(trySetToken, 6000);
 </script>

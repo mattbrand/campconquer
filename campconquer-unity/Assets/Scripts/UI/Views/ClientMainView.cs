@@ -37,10 +37,16 @@ public class ClientMainView : UIView
             _loggedIn = true;
             //Debug.Log("presenting login alert");
             //LoadingAlert.Present();
+
+            /*
             if (OnlineManager.Token == null || OnlineManager.Token == "")
                 FullLoginAlert.Present();
             else
                 LoginAlert.Present();
+                */
+
+            Application.ExternalCall("trySetToken");
+            FullLoginAlert.Present();
         }
         else if (GameManager.Client)
         {
@@ -48,6 +54,10 @@ public class ClientMainView : UIView
             LoadingAlert.Present();
             OnlineManager.Instance.SetServer();
             StartCoroutine(LogBackIn());
+        }
+        else
+        {
+            //DefaultAlert.Present(
         }
 
         BattleButton.Reset();
