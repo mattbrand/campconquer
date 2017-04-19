@@ -6,7 +6,7 @@
   sessionToken = "<%= current_player.start_session %>"; // todo: load via AJAX (more secure than in page source)
 
   function setToken() {
-    if (frames[0].gameInstance && frames[0].gameInstance.SendMessage) {
+    if (frames[0].gameInstance && frames[0].gameInstance.SendMessage && frames[0].sendMeTheToken) {
       frames[0].gameInstance.SendMessage("OnlineManager", "SetTokenFromWeb", sessionToken);
       return true;
     } else {
@@ -30,5 +30,5 @@
     }
   }
 
-  // setTimeout(trySetToken, 6000);
+  setTimeout(trySetToken, 2000);
 </script>

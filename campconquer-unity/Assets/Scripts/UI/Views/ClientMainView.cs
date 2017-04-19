@@ -45,7 +45,8 @@ public class ClientMainView : UIView
                 LoginAlert.Present();
                 */
 
-            Application.ExternalCall("trySetToken");
+            // Application.ExternalCall("trySetToken");
+            Application.ExternalEval("window.sendMeTheToken = true");
             FullLoginAlert.Present();
         }
         else if (GameManager.Client)
