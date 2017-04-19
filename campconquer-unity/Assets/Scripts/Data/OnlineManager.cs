@@ -102,7 +102,7 @@ public class OnlineManager : MonoBehaviour
     #region Methods
     void SetTokenFromWeb(string token)
     {
-        //Debug.Log("set token in SetTokenFromWeb - token = " + token);
+        Debug.Log("set token in SetTokenFromWeb - token = " + token);
         Token = token;
     }
     /*
@@ -195,6 +195,7 @@ public class OnlineManager : MonoBehaviour
 
     public IEnumerator StartLoginFromWeb()
     {
+        Debug.Log("StartLoginFromWeb");
         string url = _url + "/sessions";
         List<HTTPTuple> tuples = new List<HTTPTuple>();
         yield return StartCoroutine(BestHTTPHelper.Instance.CallToServerForJson(url, HTTPMethods.Post, tuples, SetToken, DisplayError, DisplayError, RequestFailure));
@@ -202,6 +203,7 @@ public class OnlineManager : MonoBehaviour
 
     void SetToken(string json)
     {
+        Debug.Log("SetToken with " + json);
         TokenResponseData tokenResponseData = JsonConvert.DeserializeObject<TokenResponseData>(json);
         //Debug.Log("setting token - " + json);
         if (tokenResponseData.status == "ok")
