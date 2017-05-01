@@ -151,9 +151,11 @@ class Season < ActiveRecord::Base
   def report
     out = []
     out << PlayerReport::HEADERS
-    Player.order(team: :asc).all.each do |player|
+    pieces.order(team_name: :asc).all.each do |piece|
+      player = piece.player
       out << PlayerReport.new(season: self, player: player)
     end
+    out
   end
 
   private

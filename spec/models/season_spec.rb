@@ -259,6 +259,13 @@ describe Season do
       expect(season.weeks.map(&:games)).to eq([
                                                   preseason, first_week, second_week, third_week, fourth_week
                                               ])
+
+
+      # todo: extract to separate test
+      report = season.report
+      expect(report.first).to eq(PlayerReport::HEADERS)
+      ap report
+
     end
 
     it "works with the game dates on staging (bugfix)" do
