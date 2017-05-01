@@ -153,7 +153,7 @@ class Season < ActiveRecord::Base
     out << PlayerReport::HEADERS
     pieces.order(team_name: :asc).all.each do |piece|
       player = piece.player
-      out << PlayerReport.new(season: self, player: player)
+      out << PlayerReport.new(season: self, player: player).values
     end
     out
   end
