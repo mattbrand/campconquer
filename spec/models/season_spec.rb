@@ -264,7 +264,6 @@ describe Season do
       # todo: extract to separate test
       report = season.report
       expect(report.first).to eq(PlayerReport::HEADERS)
-      ap report
 
     end
 
