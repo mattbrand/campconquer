@@ -43,7 +43,7 @@ class Week
     Player.where(team_name: 'control').includes(:activities) # todo: allow player to change off control team between seasons?
   end
 
-  # players who were active on at least one weekday
+   # players who were active on at least one weekday during this week
   def physically_active_players players
     players.uniq.map do |player|
       player.activities.map do |activity|
