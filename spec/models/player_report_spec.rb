@@ -15,7 +15,7 @@ describe PlayerReport do
   let(:next_sunday) {sunday + 1.week}
   let(:next_monday) {next_sunday + 1.day}
 
-  let(:timespan) {(sunday..next_sunday)}
+  let(:timespan) {Timespan.new(sunday, next_sunday)}
 
   it "calculates whether they were control or game group" do
     player = Player.new(team_name: "control")
@@ -28,11 +28,11 @@ describe PlayerReport do
   end
 
   describe 'activity measures' do
-    let(:player) {Player.create!(team_name: "red")}
-    it "calculates number of times a user hit their daily active minutes (weekdays only) (through whole season)" do
+    let(:player) {Player.create!(name: 'Moby', team_name: "red")}
 
-      hit = {steps: 100, active_minutes: Player::GOAL_MINUTES + 1}
-      miss = {steps: 1, active_minutes: Player::GOAL_MINUTES - 1}
+    before do
+      hit = {steps: 100, active_minutes: Player::GOAL_MINUTES}
+      miss = {steps: 1, active_minutes: 1}
 
       # some hits that will not be counted cause they're on a different span
       player.set_activity_for(previous_monday, hit)
@@ -44,20 +44,66 @@ describe PlayerReport do
       player.set_activity_for(monday, hit)
       player.set_activity_for(tuesday, miss)
       player.set_activity_for(wednesday, hit)
+    end
 
-      ap timespan
+    it "calculates number of times a user hit their daily active minutes (weekdays only)" do
       expect(player.report(timespan).active_weekdays).to eq(2)
+    end
+
+    it "calculates Average # of steps taken per day (weekdays only)" do
+      expect(player.report(timespan).average_steps_per_day).to eq((100 + 100 + 1)/5.0)
+    end
+
+    it "calculates Average # of steps taken per week (weekdays only)"
+
+    it "calculates Average # of active minutes per day (weekdays only)" do
+      expect(player.report(timespan).average_active_minutes_per_day).to eq((Player::GOAL_MINUTES + Player::GOAL_MINUTES + 1)/5.0)
+    end
+
+    it "calculates Average # of active minutes per week (weekdays only)"
+
+    it "calculates number of games participated in (if game group) (through whole season)" do
+      season = Season.current
+      alice = create_alice_with_piece
+
+      game = Game.current
+      alice.set_piece(path: [[0, 0]])
+      game.lock_game!
+      game.finish_game!
+
+      expect(PlayerReport.new(player: alice, season: season).games_played).to eq(1)
+
+      game = Game.current
+      alice.set_piece(path: [[0, 0]])
+      game.lock_game!
+      game.finish_game!
+
+      expect(PlayerReport.new(player: alice, season: season).games_played).to eq(2)
+
+      game = Game.current
+      alice.set_piece(path: nil)
+      game.lock_game!
+      game.finish_game!
+
+      expect(PlayerReport.new(player: alice, season: season).games_played).to eq(2)
+    end
+
+    describe 'CSV' do
+      it 'gives us some values' do
+        report = player.report(timespan)
+        expect(report.values).to eq(
+                                     [player.id,
+                                      player.name,
+                                      false,
+                                      report.games_played,
+                                      report.active_weekdays,
+                                      report.average_steps_per_day,
+                                      report.average_active_minutes_per_day]
+                                 )
+      end
 
     end
 
-    it "calculates Average # of steps taken (per day, week) (weekdays only)"
-    it "calculates Average # of active minutes (per day, week) (weekdays only)"
-
-
-    it "calculates number of games were participated in (if game group) (through whole season)" do
-
-    end
   end
-
 
 end

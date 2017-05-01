@@ -52,6 +52,27 @@ class Season < ActiveRecord::Base
     super.try(:to_date)
   end
 
+  def finish_at
+    future_seasons = Season.where('start_at > ?', start_at)
+    next_season = future_seasons.order(start_at: :asc).first
+    if next_season
+      next_season.start_at
+    else
+      Chronic.parse("tomorrow").to_date
+    end
+  end
+
+  def timespan
+    Timespan.new(start_at, finish_at)
+  end
+
+  def weekdays
+    timespan.weekdays
+  end
+
+  require_relative 'timespan.rb'
+
+
   def add_all_players
     Player.all.each do |player|
       add_player(player) unless players.include?(player)
@@ -124,6 +145,14 @@ class Season < ActiveRecord::Base
     if current?
       membership.set_player_team!
       player.piece.update(path: nil)
+    end
+  end
+
+  def report
+    out = []
+    out << PlayerReport::HEADERS
+    Player.order(team: :asc).all.each do |player|
+      out << PlayerReport.new(season: self, player: player)
     end
   end
 
