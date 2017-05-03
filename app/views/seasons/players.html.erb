@@ -67,23 +67,5 @@
     </table>
 <% end %>
 
-<h2>Report</h2>
-<% report = @season.report %>
-<table class="info-table">
-
-  <% headers = report.first %>
-  <% rows = report.slice(1..-1) %>
-  <tr>
-    <% headers.each do |name| %>
-        <th><%= name %></th>
-    <% end %>
-  </tr>
-
-  <% rows.each do |row| %>
-      <tr>
-        <% row.each do |value| %>
-            <td><%= value %></td>
-        <% end %>
-      </tr>
-  <% end %>
-</table>
+<h2>Report <a href="players.csv">[csv]</a></h2>
+<%= @season.report.html.html_safe %>

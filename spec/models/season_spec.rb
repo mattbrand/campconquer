@@ -261,10 +261,6 @@ describe Season do
                                               ])
 
 
-      # todo: extract to separate test
-      report = season.report
-      expect(report.first).to eq(PlayerReport::HEADERS)
-
     end
 
     it "works with the game dates on staging (bugfix)" do

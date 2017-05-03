@@ -11,12 +11,12 @@
 #
 
 class Season < ActiveRecord::Base
-  has_many :games, -> { includes(:player_outcomes) }
+  has_many :games, -> {includes(:player_outcomes)}
 
   has_many :pieces, through: :games
 
   validates_uniqueness_of :current,
-                          unless: Proc.new { |game| !game.current? },
+                          unless: Proc.new {|game| !game.current?},
                           message: 'should be true for only one season'
 
   has_many :memberships
@@ -70,9 +70,6 @@ class Season < ActiveRecord::Base
     timespan.weekdays
   end
 
-  require_relative 'timespan.rb'
-
-
   def add_all_players
     Player.all.each do |player|
       add_player(player) unless players.include?(player)
@@ -92,7 +89,7 @@ class Season < ActiveRecord::Base
   end
 
   def begun?
-    self.games.count > 0  # or, today >= start_at?
+    self.games.count > 0 # or, today >= start_at?
   end
 
   def name
@@ -132,8 +129,8 @@ class Season < ActiveRecord::Base
     list = all_weeks(latest_game.played_at)
 
     # sanity check
-    week_game_count = list.inject(0) { |sum, week| sum + week.size }
-    completed_games = games.select { |g| g.completed? }
+    week_game_count = list.inject(0) {|sum, week| sum + week.size}
+    completed_games = games.select {|g| g.completed?}
     raise "Assertion failed: #{week_game_count} != #{completed_games.size}" if week_game_count != completed_games.size
 
     list
@@ -149,13 +146,7 @@ class Season < ActiveRecord::Base
   end
 
   def report
-    out = []
-    out << PlayerReport::HEADERS
-    pieces.order(team_name: :asc).all.each do |piece|
-      player = piece.player
-      out << PlayerReport.new(season: self, player: player).values
-    end
-    out
+    SeasonReport.new(self)
   end
 
   private

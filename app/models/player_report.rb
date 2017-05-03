@@ -53,6 +53,19 @@ class PlayerReport
     end
   end
 
+  def html(out="")
+    out << "      <tr>"
+    values.each do |value|
+      out << "            <td>#{ value }</td>"
+    end
+    out << "      </tr>"
+    out
+  end
+
+  def csv(out)
+    out << values
+  end
+
   private
 
   def weekdays
