@@ -1,4 +1,5 @@
 namespace :db do
+  desc 'delete all players and create some random ones'
   task :seed_players => :environment do
     Season.current.games.destroy_all
     Player.destroy_all

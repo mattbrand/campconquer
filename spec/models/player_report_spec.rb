@@ -47,19 +47,18 @@ describe PlayerReport do
     end
 
     it "calculates number of times a user hit their daily active minutes (weekdays only)" do
-      expect(player.report(timespan).active_weekdays).to eq(2)
+      expect(player.report(timespan).activity_goal_reached).to eq(2)
     end
 
     it "calculates Average # of steps taken per day (weekdays only)" do
-      expect(player.report(timespan).average_steps_per_day).to eq((100 + 100 + 1)/5.0)
+      expect(player.report(timespan).mean_steps_per_day).to eq((100 + 100 + 1)/5.0)
+    end
+
+    it "calculates Average # of active minutes per day (weekdays only)" do
+      expect(player.report(timespan).mean_active_minutes_per_day).to eq((Player::GOAL_MINUTES + Player::GOAL_MINUTES + 1)/5.0)
     end
 
     it "calculates Average # of steps taken per week (weekdays only)"
-
-    it "calculates Average # of active minutes per day (weekdays only)" do
-      expect(player.report(timespan).average_active_minutes_per_day).to eq((Player::GOAL_MINUTES + Player::GOAL_MINUTES + 1)/5.0)
-    end
-
     it "calculates Average # of active minutes per week (weekdays only)"
 
     it "calculates number of games participated in (if game group) (through whole season)" do
@@ -96,9 +95,9 @@ describe PlayerReport do
                                       player.name,
                                       false,
                                       report.games_played,
-                                      report.active_weekdays,
-                                      report.average_steps_per_day,
-                                      report.average_active_minutes_per_day]
+                                      report.activity_goal_reached,
+                                      report.mean_steps_per_day,
+                                      report.mean_active_minutes_per_day]
                                  )
       end
 

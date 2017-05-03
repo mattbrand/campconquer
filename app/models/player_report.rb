@@ -4,9 +4,9 @@ class PlayerReport
              'player_name',
              'control_group',
              'games_played',
-             'active_weekdays',
-             'average_steps_per_day',
-             'average_active_minutes_per_day']
+             'activity_goal_reached',
+             'mean_steps_per_day',
+             'mean_active_minutes_per_day']
 
   attr_reader :player
 
@@ -32,23 +32,16 @@ class PlayerReport
     player.in_control_group?
   end
 
-  def active_weekdays
-    player.activities.order(date: :asc).
-        where('active_minutes >= ?', [Player::GOAL_MINUTES]).
-        where('date >= ?', @timespan.first).
-        where('date < ?', @timespan.last).
-        select {|activity| activity.date.weekday?}.
-        count
+  def activity_goal_reached
+    weekday_activities_where_goal_reached.size
   end
 
-  def average_steps_per_day
-    weekdays = @timespan.weekdays
-    player.activities.where(date: weekdays).sum(:steps) / weekdays.size.to_f
+  def mean_steps_per_day
+    mean_per_day(weekday_activities.sum(:steps))
   end
 
-  def average_active_minutes_per_day
-    weekdays = @timespan.weekdays
-    player.activities.where(date: weekdays).sum(:active_minutes) / weekdays.size.to_f
+  def mean_active_minutes_per_day
+    mean_per_day(weekday_activities.sum(:active_minutes))
   end
 
   def games_played
@@ -58,6 +51,24 @@ class PlayerReport
       @season.reload # ActiveRecord is weird
       @season.games.select {|game| game.players.include? @player}.size
     end
+  end
+
+  private
+
+  def weekdays
+    @timespan.weekdays
+  end
+
+  def weekday_activities
+    player.activities.order(date: :asc).where(date: weekdays)
+  end
+
+  def weekday_activities_where_goal_reached
+    weekday_activities.where('active_minutes >= ?', [Player::GOAL_MINUTES])
+  end
+
+  def mean_per_day total
+    (total / weekdays.size.to_f).round(2)
   end
 
 end

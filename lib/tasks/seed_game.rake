@@ -1,5 +1,5 @@
 namespace :db do
-  desc "creates a randomized game"
+  desc "create and finish a randomized game"
   task :seed_game => :environment do
     game = Game.current
     game.lock_game! unless game.in_progress?

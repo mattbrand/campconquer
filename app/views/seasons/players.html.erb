@@ -40,14 +40,14 @@
 
             <td>
               <% other_team_name = case team_name
-                                   when 'red'
-                                     'blue'
-                                   when 'blue'
-                                     'red'
-                                   when 'control'
-                                     nil
-                                   when 'gamemaster'
-                                     nil
+                                     when 'red'
+                                       'blue'
+                                     when 'blue'
+                                       'red'
+                                     when 'control'
+                                       nil
+                                     when 'gamemaster'
+                                       nil
                                    end
               %>
               <% if other_team_name %>
@@ -68,4 +68,22 @@
 <% end %>
 
 <h2>Report</h2>
-  <%= @season.report.ai(html: true) %>
+<% report = @season.report %>
+<table class="info-table">
+
+  <% headers = report.first %>
+  <% rows = report.slice(1..-1) %>
+  <tr>
+    <% headers.each do |name| %>
+        <th><%= name %></th>
+    <% end %>
+  </tr>
+
+  <% rows.each do |row| %>
+      <tr>
+        <% row.each do |value| %>
+            <td><%= value %></td>
+        <% end %>
+      </tr>
+  <% end %>
+</table>

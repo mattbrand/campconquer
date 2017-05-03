@@ -1,4 +1,5 @@
 namespace :db do
+  desc 'create up to 10 recent activities for each player'
   task :seed_activities => :environment do
     Player.all.each do |player|
 
