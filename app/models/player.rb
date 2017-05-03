@@ -375,6 +375,10 @@ class Player < ActiveRecord::Base
              active_minutes: summary["veryActiveMinutes"].to_i + summary["fairlyActiveMinutes"].to_i, }
     Rails.logger.info("FITBIT fetched " +
                           ({player: self.id, name: self.name, date: date} + attrs).inspect)
+    set_activity_for(date, attrs)
+  end
+
+  def set_activity_for(date, attrs)
     activity = activity_for(date)
     activity.update!(attrs)
     self.update!(activities_synced_at: DateTime.current)
@@ -430,6 +434,10 @@ class Player < ActiveRecord::Base
 
   def role
     self.piece.try(:role)
+  end
+
+  def report(timespan)
+    PlayerReport.new(player:self, timespan:timespan)
   end
 
   # LOGIN STUFF

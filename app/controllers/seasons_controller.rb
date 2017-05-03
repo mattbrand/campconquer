@@ -53,6 +53,12 @@ class SeasonsController < WebController
 
   # GET /seasons/1/players
   def players
+    respond_to do |format|
+      format.html
+      format.csv do
+        send_data @season.report.csv
+      end
+    end
   end
 
   # todo: test

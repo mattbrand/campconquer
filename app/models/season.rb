@@ -11,12 +11,12 @@
 #
 
 class Season < ActiveRecord::Base
-  has_many :games, -> { includes(:player_outcomes) }
+  has_many :games, -> {includes(:player_outcomes)}
 
   has_many :pieces, through: :games
 
   validates_uniqueness_of :current,
-                          unless: Proc.new { |game| !game.current? },
+                          unless: Proc.new {|game| !game.current?},
                           message: 'should be true for only one season'
 
   has_many :memberships
@@ -52,6 +52,24 @@ class Season < ActiveRecord::Base
     super.try(:to_date)
   end
 
+  def finish_at
+    future_seasons = Season.where('start_at > ?', start_at)
+    next_season = future_seasons.order(start_at: :asc).first
+    if next_season
+      next_season.start_at
+    else
+      Chronic.parse("tomorrow").to_date
+    end
+  end
+
+  def timespan
+    Timespan.new(start_at, finish_at)
+  end
+
+  def weekdays
+    timespan.weekdays
+  end
+
   def add_all_players
     Player.all.each do |player|
       add_player(player) unless players.include?(player)
@@ -71,7 +89,7 @@ class Season < ActiveRecord::Base
   end
 
   def begun?
-    self.games.count > 0  # or, today >= start_at?
+    self.games.count > 0 # or, today >= start_at?
   end
 
   def name
@@ -111,8 +129,8 @@ class Season < ActiveRecord::Base
     list = all_weeks(latest_game.played_at)
 
     # sanity check
-    week_game_count = list.inject(0) { |sum, week| sum + week.size }
-    completed_games = games.select { |g| g.completed? }
+    week_game_count = list.inject(0) {|sum, week| sum + week.size}
+    completed_games = games.select {|g| g.completed?}
     raise "Assertion failed: #{week_game_count} != #{completed_games.size}" if week_game_count != completed_games.size
 
     list
@@ -125,6 +143,10 @@ class Season < ActiveRecord::Base
       membership.set_player_team!
       player.piece.update(path: nil)
     end
+  end
+
+  def report
+    SeasonReport.new(self)
   end
 
   private
@@ -146,8 +168,6 @@ class Season < ActiveRecord::Base
   end
 
   public
-
-
   include ActiveModel::Serialization
 
   def as_json(options=nil)
