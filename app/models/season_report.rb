@@ -4,9 +4,7 @@ class SeasonReport
   end
 
   def players
-    @season.pieces.order(team_name: :asc).all.map do |piece|
-      piece.player
-    end
+    @season.players
   end
 
   def html(out="")
