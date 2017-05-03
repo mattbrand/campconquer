@@ -61,29 +61,27 @@ describe PlayerReport do
     it "calculates Average # of steps taken per week (weekdays only)"
     it "calculates Average # of active minutes per week (weekdays only)"
 
+    def run_game(alice, season, setup)
+      game = Game.current
+      alice.set_piece(path: setup)
+      game.lock_game!
+      game.finish_game!
+      season.reload
+    end
+
     it "calculates number of games participated in (if game group) (through whole season)" do
       season = Season.current
       alice = create_alice_with_piece
+      good_setup = [[0, 0]]
+      no_setup = nil
 
-      game = Game.current
-      alice.set_piece(path: [[0, 0]])
-      game.lock_game!
-      game.finish_game!
-
+      run_game(alice, season, good_setup)
       expect(PlayerReport.new(player: alice, season: season).games_played).to eq(1)
 
-      game = Game.current
-      alice.set_piece(path: [[0, 0]])
-      game.lock_game!
-      game.finish_game!
-
+      run_game(alice, season, good_setup)
       expect(PlayerReport.new(player: alice, season: season).games_played).to eq(2)
 
-      game = Game.current
-      alice.set_piece(path: nil)
-      game.lock_game!
-      game.finish_game!
-
+      run_game(alice, season, no_setup)
       expect(PlayerReport.new(player: alice, season: season).games_played).to eq(2)
     end
 

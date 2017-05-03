@@ -48,7 +48,6 @@ class PlayerReport
     if @season.nil? or control_group
       0
     else
-      @season.reload # ActiveRecord is weird
       @season.games.select {|game| game.players.include? @player}.size
     end
   end
