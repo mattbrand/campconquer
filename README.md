@@ -20,7 +20,6 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 
 - [ ] reexamine FitBit API to see if there's a more efficient call to fetch a bunch of days at once
 
-
 ## low priority features
 
 - [ ] round up remainder steps
@@ -37,6 +36,8 @@ Game Database: <https://docs.google.com/spreadsheets/d/1LY9Iklc3N7RkdJKkiuVNsMJ0
 
 
 ## chores
+- [ ] redo dump tests
+
 - [ ] look into memory usage errors
 
 - heroku addons

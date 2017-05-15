@@ -11,6 +11,7 @@ namespace :db do
     Rake::Task['db:seed_activities'].invoke
   end
 
+  desc 'create random paths for all players'
   task :setup_for_game => :environment do
     Board.new.setup_for_game
   end
@@ -97,6 +98,7 @@ class Board
   end
 
   def random_path(team_name: @team_name, role:)
+    ap [team_name, role]
     Path.where(team_name: team_name, role: role).sample.points
   end
 
@@ -109,7 +111,7 @@ class Board
   end
 
   def setup_for_game
-    Player.all.each do |player|
+    Player.where(team_name: ['red', 'blue']).each do |player|
       path_points = random_path(role: player.role, team_name: player.team_name)
       if player.piece
         player.piece.update!(path: path_points, ammo: ["balloon", "arrow", "balloon"])

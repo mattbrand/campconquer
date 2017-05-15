@@ -22,6 +22,7 @@ class Season < ActiveRecord::Base
   has_many :memberships
 
   has_many :players, through: :memberships
+  has_many :activities, through: :players
 
   def team_members(team_name)
     memberships.where(season_id: self.id, team_name: team_name).all.map(&:player)
@@ -145,8 +146,8 @@ class Season < ActiveRecord::Base
     end
   end
 
-  def report
-    SeasonReport.new(self)
+  def dump
+    SeasonDump.new(self)
   end
 
   private

@@ -20,5 +20,9 @@
       <a href="<%= weeks_season_path(@season) %>">Weeks
       </a>
     </li>
+    <li class="<%= 'active' if params[:action] == 'dump' %>">
+      <a href="<%= dump_season_path(@season) %>">Dump
+      </a>
+    </li>
   </ul>
 </nav>

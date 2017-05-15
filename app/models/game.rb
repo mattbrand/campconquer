@@ -291,6 +291,10 @@ class Game < ActiveRecord::Base
     end
   end
 
+  def date
+    (played_at or scheduled_start).to_date
+  end
+
   private
 
   def calculate_mvps!

@@ -1,5 +1,5 @@
 class SeasonsController < WebController
-  before_action :find_season, except: [:new, :index, :create] # [:show, :edit, :update, :destroy]
+  before_action :find_season, except: [:new, :index, :create]
 
   before_action :find_player, only: [:update_player]
 
@@ -53,10 +53,14 @@ class SeasonsController < WebController
 
   # GET /seasons/1/players
   def players
+  end
+
+  def dump
+    @season_dump = SeasonDump.new(@season)
     respond_to do |format|
       format.html
       format.csv do
-        send_data @season.report.csv
+        send_data @season_dump.csv, filename: "#{@season.name} dump.csv"
       end
     end
   end

@@ -436,10 +436,6 @@ class Player < ActiveRecord::Base
     self.piece.try(:role)
   end
 
-  def report(timespan)
-    PlayerReport.new(player:self, timespan:timespan)
-  end
-
   # LOGIN STUFF
 
   attr_accessor :password
