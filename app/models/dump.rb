@@ -86,7 +86,9 @@ class Dump
   end
 
   def games_played
-    season.games.select {|game| game.date == date and game.players.include? player}.size
+    games = season.games
+    games.preload(:pieces)
+    games.select {|game| game.date == date and game.pieces.map(&:player_id).include? player.id}.size
   end
 
   ##

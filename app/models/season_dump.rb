@@ -25,7 +25,7 @@ class SeasonDump
     end
 
     # overwrite blank activities with real activities
-    season_activities = season.activities # should this be weekdays only?
+    season_activities = season.activities.includes(:player) # should this be weekdays only?
     season_activities.each do |activity|
       activity_map[[activity.date, activity.player.id]] = activity
     end
