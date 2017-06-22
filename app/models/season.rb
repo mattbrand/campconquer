@@ -22,7 +22,6 @@ class Season < ActiveRecord::Base
   has_many :memberships
 
   has_many :players, through: :memberships
-  has_many :activities, through: :players
 
   def team_members(team_name)
     memberships.where(season_id: self.id, team_name: team_name).all.map(&:player)
@@ -59,8 +58,12 @@ class Season < ActiveRecord::Base
     if next_season
       next_season.start_at
     else
-      Chronic.parse("tomorrow").to_date
+      [start_at + 1.month, Chronic.parse("tomorrow").to_date].max
     end
+  end
+
+  def activities
+    Activity.where(player_id: players.map(&:id)).where(date: timespan)
   end
 
   def timespan
@@ -138,12 +141,16 @@ class Season < ActiveRecord::Base
   end
 
   def switch_team player, new_team
-    membership = memberships.where(player_id: player.id).first
+    membership = membership_for(player)
     membership.update!(team_name: new_team)
     if current?
       membership.set_player_team!
       player.piece.update(path: nil)
     end
+  end
+
+  def membership_for(player)
+    memberships.where(player_id: player.id).first
   end
 
   def dump

@@ -1,8 +1,7 @@
-# todo: test
 class Week
   attr_reader :number, :games
 
-  def initialize(number:, start_at:, finish_at:nil, games:[])
+  def initialize(number:, start_at:, finish_at: nil, games: [])
     @number, @start_at, @finish_at = number, start_at, finish_at
     @games = games
   end
@@ -20,8 +19,10 @@ class Week
   end
 
   def range
+    # todo: use Timespan class?
     (start_at...finish_at) # three dots = exclusive range
   end
+  alias_method :timespan, :range
 
   def name
     if number == 0
@@ -36,14 +37,14 @@ class Week
   end
 
   def game_players
-    games.collect{|g| g.players}.flatten
+    games.collect { |g| g.players }.flatten
   end
 
   def control_players
     Player.where(team_name: 'control').includes(:activities) # todo: allow player to change off control team between seasons?
   end
 
-   # players who were active on at least one weekday during this week
+  # players who were active on at least one weekday during this week
   def physically_active_players players
     players.uniq.map do |player|
       player.activities.map do |activity|
@@ -78,12 +79,33 @@ class Week
     physically_active_players(game_players).uniq
   end
 
+  def sunday
+    $stderr.puts "Warning: week should start on sunday, but it starts on #{start_at}" unless start_at.sunday?
+    start_at
+  end
+
+  def monday
+    sunday + 1.day
+  end
+
+  def tuesday
+    sunday + 2.days
+  end
+
+  def wednesday
+    sunday + 3.days
+  end
+
+  def timespan
+    Timespan.new(start_at, finish_at)
+  end
+
   private
 
-   def active_in_week?(activity)
-     self.includes?(activity.date) and
-       activity.active? and
-       activity.date.weekday?
-   end
+  def active_in_week?(activity)
+    self.includes?(activity.date) and
+        activity.active? and
+        activity.date.weekday?
+  end
 
 end

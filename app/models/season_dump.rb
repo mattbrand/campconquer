@@ -8,7 +8,7 @@ class SeasonDump
   def dumps
     @dumps ||=
         filled_activities.map do |activity|
-          Dump.new(season: season, activity: activity)
+          ActivityDump.new(season: season, activity: activity)
         end
   end
 

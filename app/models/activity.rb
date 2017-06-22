@@ -35,5 +35,14 @@ class Activity < ActiveRecord::Base
     steps > 0 or active_minutes > 0
   end
 
+  def randomize!
+  attrs = {
+      steps: rand(12000),
+      active_minutes: rand(100),
+  }
+    update!(attrs)
+  end
+
+
 end
 

@@ -43,7 +43,7 @@ describe Season do
     end
 
     context "when there is a current season" do
-      let!(:current_season) {Season.current}
+      let!(:current_season) { Season.current }
       it "returns it" do
         expect(Season.current).to eq(current_season)
       end
@@ -123,14 +123,14 @@ describe Season do
 
       expect(json).to include('team_summaries')
 
-      blue = json['team_summaries'].find {|h| h['team_name'] == 'blue'}
+      blue = json['team_summaries'].find { |h| h['team_name'] == 'blue' }
       expect(blue['captures']).to eq(num_games)
       expect(blue['captures']).to eq(num_games)
       expect(blue['takedowns']).to eq(num_games * player_outcome_base[:takedowns] * 2)
       expect(blue['throws']).to eq(num_games * player_outcome_base[:throws] * 2)
       expect(blue['pickups']).to eq(num_games * player_outcome_base[:pickups] * 2)
 
-      red = json['team_summaries'].find {|h| h['team_name'] == 'red'}
+      red = json['team_summaries'].find { |h| h['team_name'] == 'red' }
       expect(red['captures']).to eq(0)
       expect(red['captures']).to eq(0)
       expect(red['takedowns']).to eq(num_games * player_outcome_base[:takedowns] * 2)
@@ -208,7 +208,7 @@ describe Season do
         expect(season1.timespan).not_to include(sunday2)
       end
     end
-    
+
     describe 'weekdays' do
       it 'includes all weekdays inside its timespan' do
         sunday1 = Chronic.parse("01-06-2002").to_date
@@ -311,10 +311,10 @@ describe Season do
   end
 
   describe "teams" do
-    let!(:betty) {create_player(player_name: 'betty', team_name: 'blue')}
-    let!(:bob) {create_player(player_name: 'bob', team_name: 'blue')}
-    let!(:roger) {create_player(player_name: 'roger', team_name: 'red')}
-    let!(:rita) {create_player(player_name: 'rita', team_name: 'red')}
+    let!(:betty) { create_player(player_name: 'betty', team_name: 'blue') }
+    let!(:bob) { create_player(player_name: 'bob', team_name: 'blue') }
+    let!(:roger) { create_player(player_name: 'roger', team_name: 'red') }
+    let!(:rita) { create_player(player_name: 'rita', team_name: 'red') }
     # charlie = create_control_group_member(player_name: 'charlie', team_name: 'control')
 
     it "a newly created season has team members, based off the player's given team" do
@@ -334,7 +334,7 @@ describe Season do
     describe 'switch_team' do
       describe "for an upcoming (non-current) season" do
 
-        let!(:season) {Season.create!}
+        let!(:season) { Season.create! }
         it "can switch players between teams" do
           season.switch_team(betty, 'red')
           expect(season.team_members('red')).to match_array([roger, rita, betty])
@@ -364,8 +364,8 @@ describe Season do
       end
 
       describe "for the current season" do
-        before {Season.current.add_all_players} # :-(
-        let!(:season) {Season.current}
+        before { Season.current.add_all_players } # :-(
+        let!(:season) { Season.current }
 
         it "can switch players between teams" do
           season.switch_team(betty, 'red')
@@ -386,15 +386,13 @@ describe Season do
         end
       end
     end
-
-
   end
 
   describe "start!" do
-    let!(:initial_season) {Season.current}
-    let!(:season) {Season.create!}
+    let!(:initial_season) { Season.current }
+    let!(:season) { Season.create! }
 
-    before {season.start!}
+    before { season.start! }
 
     it 'makes this season current' do
       expect(season.reload).to be_current
@@ -405,4 +403,46 @@ describe Season do
     end
   end
 
+  describe 'activities' do
+
+    let(:week1) { Week.new(start_at: Chronic.parse("Sunday").to_date, number: 1) }
+    let(:week2) { Week.new(start_at: week1.finish_at, number: 2) }
+    let(:week3) { Week.new(start_at: week2.finish_at, number: 3) }
+
+    let!(:alice) { create_alice_with_piece }
+    let!(:bob) { create_bob_with_piece }
+
+    let!(:season1) { Season.create!(start_at: week1.start_at) }
+    let!(:season2) { Season.create!(start_at: week2.start_at) }
+    let!(:season3) { Season.create!(start_at: week3.start_at) }
+    let!(:season) { season2 }
+
+    before do
+      for player in [alice, bob]
+        for week in [week1, week2, week3]
+          # for day in week.timespan
+          for day in [week.start_at]
+            player.activity_for(day).randomize!
+          end
+        end
+      end
+    end
+
+    it 'includes only activities that happened during the season' do
+      expect(season.activities).not_to be_empty
+      for activity in season.activities
+        expect(week2.timespan).to include(activity.date)
+      end
+    end
+
+    it 'does not include activities for non-players that happened during the season' do
+      season.membership_for(bob).destroy!
+
+      expect(season.activities).not_to be_empty
+      for activity in season.activities
+        expect(activity.player).to eq(alice)
+      end
+    end
+
+  end
 end

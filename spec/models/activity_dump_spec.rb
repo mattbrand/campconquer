@@ -1,36 +1,62 @@
 require 'rails_helper'
 
-describe Dump do
+def expect_field_value(field_name, expected_value)
+  expect(dump.values[dump.headers.index(field_name)]).to eq(expected_value)
+end
 
-  pending 'redo dump tests'
+describe ActivityDump do
 
+  let(:week1) { Week.new(start_at: Chronic.parse("Sunday").to_date, number: 0) }
+  let(:week2) { Week.new(start_at: week1.finish_at, number: 0) }
 
-  #
-  # let(:sunday) {Chronic.parse("Sunday").to_date}
-  # let(:monday) {sunday + 1.day}
-  # let(:tuesday) {sunday + 2.days}
-  # let(:wednesday) {sunday + 3.days}
-  #
-  # let(:next_sunday) {sunday + 1.week}
-  #
-  # let(:previous_sunday) {sunday - 1.week}
-  # let(:previous_monday) {previous_sunday + 1.day}
-  #
-  # let(:next_sunday) {sunday + 1.week}
-  # let(:next_monday) {next_sunday + 1.day}
-  #
-  # let(:timespan) {Timespan.new(sunday, next_sunday)}
-  #
-  # it "calculates whether they were control or game group" do
-  #   player = Player.new(team_name: "control")
-  #   report = player.report(timespan)
-  #   expect(report.control_group).to eq(true)
-  #
-  #   player = Player.new(team_name: "red")
-  #   report = player.report(timespan)
-  #   expect(report.control_group).to eq(false)
-  # end
-  #
+  let(:alice) { create_alice_with_piece }
+  let(:season) { Season.current }
+
+  describe 'when empty' do
+
+    let(:activity) { Activity.new(date: week1.monday, player: alice) }
+    let(:dump) { ActivityDump.new(season: season, activity: activity) }
+
+    it 'has headers' do
+      expect(dump.headers).to include('season_id')
+      expect(dump.headers).to include('activity_id')
+    end
+
+    it 'has a season and an activity' do
+      expect(dump.season_id).to eq(season.id)
+      expect(dump.activity_id).to eq(activity.id)
+    end
+
+    it 'has values' do
+      expect_field_value('season_id', season.id)
+      expect_field_value('player_id', alice.id)
+      expect_field_value('player_name', alice.name)
+      expect_field_value('date', activity.date)
+      # todo: more fields?
+    end
+
+  end
+
+  describe 'control_group' do
+    it "calculates if they were control group" do
+      player = Player.new(team_name: "control")
+      activity = Activity.new(date: week1.monday, player: player)
+      dump = ActivityDump.new(season: season, activity: activity)
+      expect(dump.control_group).to eq(true)
+    end
+
+    it "calculates if they were game group" do
+      player = Player.new(team_name: "red")
+      activity = Activity.new(date: week1.monday, player: player)
+      dump = ActivityDump.new(season: season, activity: activity)
+      expect(dump.control_group).to eq(false)
+    end
+  end
+
+  describe 'games_played' do
+    it 'counts the number of games this season in which this player had a piece'
+  end
+
   # describe 'activity measures' do
   #   let(:player) {Player.create!(name: 'Moby', team_name: "red")}
   #

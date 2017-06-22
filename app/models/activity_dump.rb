@@ -9,7 +9,7 @@
 # season x player
 # - # of games played
 
-class Dump
+class ActivityDump
 
   def headers
     [
@@ -20,6 +20,7 @@ class Dump
 
         'control_group',
 
+        'activity_id',
         'date',
         'weekday',
         'active',
@@ -51,6 +52,10 @@ class Dump
 
   def player_id
     player.id
+  end
+
+  def activity_id
+    activity.id
   end
 
   def player_name
