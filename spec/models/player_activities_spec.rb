@@ -331,4 +331,39 @@ describe Player, type: :model do
     end
 
   end
+
+
+  describe 'most_recent_activity' do
+
+    let(:player) { create_alice_with_piece }
+
+    let(:activity_two_days_ago) { player.activities.create!(date: Date.current - 2.day,
+                                                             active_minutes: Player::GOAL_MINUTES + 20) }
+
+    it 'returns nil if no activity' do
+      expect(player.activities.count).to eq(0)
+      expect(player.most_recent_activity).to be_nil
+    end
+
+    let(:yesterday) { Date.current - 1.day }
+    let(:day_before_yesterday) { Date.current - 2.days }
+
+    it 'returns nil if zero activity' do
+      player.set_activity_for(day_before_yesterday, active_minutes: 0)
+      player.set_activity_for(Date.current - 1.day, steps: 0)
+      expect(player.most_recent_activity).to be_nil
+    end
+
+    it 'returns most recent activity' do
+      player.set_activity_for(day_before_yesterday, active_minutes: 10)
+      expect(player.most_recent_activity.date).to eq(day_before_yesterday)
+
+      player.set_activity_for(yesterday, steps: 20)
+      expect(player.most_recent_activity.date).to eq(yesterday)
+    end
+
+    it 'scopes to the given season' # TODO
+
+  end
+
 end

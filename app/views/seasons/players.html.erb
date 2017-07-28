@@ -17,6 +17,7 @@
         <th>range</th>
 
         <th>last synced</th>
+        <th>last active</th>
 
         <th>actions</th>
       </tr>
@@ -36,6 +37,10 @@
 
             <td><%=
               player.activities_synced_at.try(:strftime, "%A, %B %-d, %Y, %l:%M %p %Z")
+            %></td>
+
+            <td><%=
+              player.most_recent_activity.try(:date).try(:strftime, "%A, %B %-d, %Y")
             %></td>
 
             <td>

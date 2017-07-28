@@ -8,7 +8,6 @@ gem 'coffee-rails', '~> 4.1.0'
 
 # gem 'therubyracer', platforms: :ruby # See https://github.com/rails/execjs#readme for more supported runtimes
 
-
 gem 'jquery-rails'
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'activeadmin', git: 'https://github.com/activeadmin/activeadmin.git'
@@ -23,8 +22,8 @@ gem 'chronic' # https://github.com/mojombo/chronic
 gem 'puma'
 gem 'rack-timeout'
 
-gem 'sys-proctable', platforms: [:mingw, :mswin, :x64_mingw]
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
+# gem 'sys-proctable', platforms: [:mingw, :mswin, :x64_mingw]
+# gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
 
 group :development, :test do
   gem 'sqlite3'

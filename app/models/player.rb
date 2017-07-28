@@ -432,6 +432,10 @@ class Player < ActiveRecord::Base
     self.activities.find_or_create_by!(date: date)
   end
 
+  def most_recent_activity
+    activities.where('steps > 0 OR active_minutes > 0').order(date: :desc).first
+  end
+
   def role
     self.piece.try(:role)
   end
