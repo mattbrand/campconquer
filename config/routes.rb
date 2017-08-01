@@ -49,9 +49,10 @@ Rails.application.routes.draw do
   resources :seasons do
     member do
       get :weeks
-      get :dump
+      get :activities
       get :players
       post :players
+      get :switch_teams
       match "/players/:player_id/", to: 'seasons#update_player', via: 'post'
     end
 

@@ -154,7 +154,7 @@ class Season < ActiveRecord::Base
   end
 
   def dump
-    SeasonDump.new(self)
+    SeasonActivitiesDump.new(self)
   end
 
   private

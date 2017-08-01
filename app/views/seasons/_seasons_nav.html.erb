@@ -12,17 +12,16 @@
       </a>
     </li>
     <li class="<%= 'active' if params[:action] == 'players' %>">
-      <a href="<%= players_season_path(@season) %>">Players
-        <%= %>
-      </a>
+      <a href="<%= players_season_path(@season) %>">Players</a>
     </li>
     <li class="<%= 'active' if params[:action] == 'weeks' %>">
-      <a href="<%= weeks_season_path(@season) %>">Weeks
-      </a>
+      <a href="<%= weeks_season_path(@season) %>">Weeks</a>
     </li>
-    <li class="<%= 'active' if params[:action] == 'dump' %>">
-      <a href="<%= dump_season_path(@season) %>">Dump
-      </a>
+    <li class="<%= 'active' if params[:action] == 'activities' %>">
+      <a href="<%= activities_season_path(@season) %>">Activities</a>
+    </li>
+    <li class="<%= 'active' if params[:action] == 'switch_teams' %>">
+      <a href="<%= switch_teams_season_path(@season) %>">Switch Teams</a>
     </li>
   </ul>
 </nav>

@@ -53,14 +53,22 @@ class SeasonsController < WebController
 
   # GET /seasons/1/players
   def players
-  end
-
-  def dump
-    @season_dump = SeasonDump.new(@season)
+    @dump = SeasonPlayersDump.new(@season)
     respond_to do |format|
       format.html
       format.csv do
-        send_data @season_dump.csv, filename: "#{@season.name} dump.csv"
+        send_data @dump.csv, filename: "#{@season.name}-players.csv"
+      end
+    end
+  end
+
+  # GET /seasons/1/dump
+  def activities
+    @dump = SeasonActivitiesDump.new(@season)
+    respond_to do |format|
+      format.html
+      format.csv do
+        send_data @dump.csv, filename: "#{@season.name}-activities.csv"
       end
     end
   end
@@ -74,6 +82,10 @@ class SeasonsController < WebController
                 notice: "Switched #{@player.name} to #{params[:team_name]} team for Season #{@season.name}"
   end
 
+
+  def switch_teams
+
+  end
 
   private
   def season_params

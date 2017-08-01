@@ -1,14 +1,12 @@
 <%= render 'seasons_nav' %>
 
-<h2><%= @season.name %> Players</h2>
+<h2><%= @season.name %> Activities</h2>
 
-download: <a href="players.csv">[csv]</a>
+download: <a href="dump.csv">[csv]</a>
 
 <table class="info-table">
 
   <%= @dump.html.html_safe %>
 
 </table>
-
-
 
